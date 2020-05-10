@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "601602499777",
+    "firebase_url": "https://shareacab-df9e9.firebaseio.com",
+    "project_id": "shareacab-df9e9",
+    "storage_bucket": "shareacab-df9e9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601602499777:android:ed43aee964570d9ea9a040",
+        "android_client_info": {
+          "package_name": "com.devclub.shareacab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "601602499777-bfm8012m2t72hv9s5ds49rvpaake02cm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.devclub.shareacab",
+            "certificate_hash": "937dc5d255542dc6d4e574f56b1c54e395359bbc"
+          }
+        },
+        {
+          "client_id": "601602499777-0rnt0a40dt4q986j1jiqill4j9i1afve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCK0fGYjIa79OGe7oDe1yXXu_tDykaArzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "601602499777-0rnt0a40dt4q986j1jiqill4j9i1afve.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

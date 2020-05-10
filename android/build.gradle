@@ -8,8 +8,10 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.0.1'
     }
 }
+// the one in firebase asked 4.3.3 in gms version
 
 allprojects {
     repositories {

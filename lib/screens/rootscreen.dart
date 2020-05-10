@@ -8,9 +8,17 @@ class RootScreen extends StatefulWidget {
 class _RootScreenState extends State<RootScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold (
+    return Scaffold(
       appBar: AppBar(
-        title: Row(children: <Widget>[Text("ShareA"), Text("Cab", style: TextStyle(fontWeight: FontWeight.w900),)],),
+        title: Row(
+          children: <Widget>[
+            Text("Share A "),
+            Text(
+              "Cab",
+              style: TextStyle(fontWeight: FontWeight.w900),
+            )
+          ],
+        ),
       ),
       body: Center(child: Text("ShareACab")),
     );
