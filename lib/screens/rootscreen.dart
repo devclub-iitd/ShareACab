@@ -4,6 +4,9 @@ import 'messages.dart';
 import 'userprofile.dart';
 import 'notifications.dart';
 import 'myrequests.dart';
+import 'filter.dart';
+import 'settings.dart';
+import 'addroom.dart';
 
 class RootScreen extends StatefulWidget {
   @override
@@ -21,11 +24,19 @@ class _RootScreenState extends State<RootScreen> {
           new IconButton(
               icon: Icon(Icons.filter),
               color: Theme.of(context).accentColor,
-              onPressed: null),
+              onPressed: (){
+                Navigator.of(context).push( CupertinoPageRoute(builder: (BuildContext context) {
+                  return Filter();
+                }));
+              }),
           new IconButton(
               icon: Icon(Icons.settings),
               color: Theme.of(context).accentColor,
-              onPressed: null)
+              onPressed: (){
+                Navigator.of(context).push( CupertinoPageRoute(builder: (BuildContext context) {
+                  return Settings();
+                }));
+              })
         ],
       ),
       body: Center(
@@ -40,7 +51,11 @@ class _RootScreenState extends State<RootScreen> {
               Icons.add,
             ),
             iconSize: 40.0,
-            onPressed: null),
+            onPressed: (){
+              Navigator.of(context).push( CupertinoPageRoute(builder: (BuildContext context) {
+                return CreateRoom();
+              }));
+            }),
       ),
       bottomNavigationBar: new BottomNavigationBar(
         currentIndex: _currentIndex,
