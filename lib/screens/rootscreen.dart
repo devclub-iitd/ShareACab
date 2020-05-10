@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'messages.dart';
+import 'userprofile.dart';
+import 'notifications.dart';
+import 'myrequests.dart';
 
 class RootScreen extends StatefulWidget {
   @override
@@ -6,8 +11,7 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
-
-  int _currentIndex=0;
+  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,42 +33,87 @@ class _RootScreenState extends State<RootScreen> {
         "ShareACab",
         style: TextStyle(fontSize: 25.0),
       )),
-      floatingActionButton:  FloatingActionButton(onPressed: null ,
-      child: new IconButton(icon: Icon(Icons.add, ), iconSize: 40.0, onPressed: null),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: null,
+        child: new IconButton(
+            icon: Icon(
+              Icons.add,
+            ),
+            iconSize: 40.0,
+            onPressed: null),
+      ),
       bottomNavigationBar: new BottomNavigationBar(
-          currentIndex: _currentIndex,
-          type: BottomNavigationBarType.fixed,
-          iconSize: 20.0,
-          items: [
+        currentIndex: _currentIndex,
+        type: BottomNavigationBarType.fixed,
+        iconSize: 20.0,
+        items: [
+           BottomNavigationBarItem(
+              icon:  IconButton(icon: Icon(Icons.home), onPressed: null),
+              title:  Text("Home"),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor),
 
-        new BottomNavigationBarItem(
-            icon: new IconButton(icon: Icon(Icons.home), onPressed: null),
-            title: new Text("Home"),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor),
-        new BottomNavigationBarItem(
-            icon: new IconButton(icon: Icon(Icons.format_list_bulleted), onPressed: null),
-            title: new Text("My Request"),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor),
-        new BottomNavigationBarItem(
 
-            icon: new IconButton(icon: Icon(Icons.chat_bubble_outline), onPressed: null),
-            title: new Text("Messages"),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor),
-        new BottomNavigationBarItem(
-            icon: new IconButton(icon: Icon(Icons.notifications_none), onPressed: null),
-            title: new Text("Notifications"),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor),
-        new BottomNavigationBarItem(
-            icon: new IconButton(icon: Icon(Icons.person_outline), onPressed: null),
-            title: new Text("My Profile"),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor),
-      ],
-      onTap: (index){
-            setState(() {
-              _currentIndex = index;
 
-            });
-      },
+
+
+           BottomNavigationBarItem(
+              icon:  IconButton(
+                  icon: Icon(Icons.format_list_bulleted), onPressed: (){
+                    Navigator.of(context).push( CupertinoPageRoute(builder: (BuildContext context) {
+                      return MyRequests();
+                    }));
+              }),
+              title:  Text("My Request"),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor),
+
+
+
+
+           BottomNavigationBarItem(
+              icon:  IconButton(
+                  icon: Icon(Icons.chat_bubble_outline),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                         CupertinoPageRoute(builder: (BuildContext context) {
+                      return Messages();
+                    }));
+                  }),
+              title:  Text("Messages"),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor),
+
+
+
+
+           BottomNavigationBarItem(
+              icon:  IconButton(
+                  icon: Icon(Icons.notifications_none), onPressed: (){
+                    Navigator.of(context).push( CupertinoPageRoute(builder: (BuildContext context) {
+                      return Notifications();
+                    }));
+              }),
+              title:  Text("Notifications"),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor),
+
+
+
+
+           BottomNavigationBarItem(
+              icon:  IconButton(
+                  icon: Icon(Icons.person_outline),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                         CupertinoPageRoute(builder: (BuildContext context) {
+                      return MyProfile();
+                    }));
+                  }),
+              title:  Text("My Profile"),
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor),
+        ],
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
       ),
     );
   }
