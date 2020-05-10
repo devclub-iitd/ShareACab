@@ -7,7 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ShareACab',
+      title: 'Share A Cab',
       builder: (context, child) {
         return MediaQuery(
           child: child,
