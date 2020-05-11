@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shareacab/screens/authenticate/forgotpass.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/constants.dart';
 import 'package:shareacab/shared/loading.dart';
