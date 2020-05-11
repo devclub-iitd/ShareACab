@@ -4,13 +4,14 @@ import 'package:shareacab/services/auth.dart';
 import 'screens/rootscreen.dart';
 import 'package:provider/provider.dart';
 import 'models/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User>.value(
+    return StreamProvider<FirebaseUser>.value(
       value: AuthService().user,
       child: MaterialApp(
         title: 'Share A Cab',
