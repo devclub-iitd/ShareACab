@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shareacab/screens/authenticate/forgotpass.dart';
 import 'package:shareacab/screens/wrapper.dart';
 import 'package:shareacab/services/auth.dart';
-import 'screens/rootscreen.dart';
 import 'package:provider/provider.dart';
-import 'models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 void main() => runApp(MyApp());

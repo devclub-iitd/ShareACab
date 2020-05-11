@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/screens/authenticate/authenticate.dart';
-import 'package:shareacab/models/user.dart';
 import 'rootscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
