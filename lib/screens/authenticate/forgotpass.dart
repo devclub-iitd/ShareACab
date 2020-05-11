@@ -1,23 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:shareacab/screens/authenticate/forgotpass.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shareacab/screens/authenticate/sign_in.dart';
 import 'package:shareacab/services/auth.dart';
 
-class SignIn extends StatefulWidget {
-  final Function toggleView;
-  SignIn({this.toggleView});
-
+class ForgotPass extends StatefulWidget {
   @override
-  _SignInState createState() => _SignInState();
+  _ForgotPassState createState() => _ForgotPassState();
 }
 
-class _SignInState extends State<SignIn> {
+class _ForgotPassState extends State<ForgotPass> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
-  // text field states
   String email = '';
-  String password = '';
-  String error = '';
+  String message = '';
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +22,7 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
         elevation: 0.0,
-        title: Text('Sign in'),
-        actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.person_add),
-            label: Text('Register'),
-            onPressed: () {
-              widget.toggleView();
-            },
-          ),
-        ],
+        title: Text('Forgot Password'),
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -51,44 +38,32 @@ class _SignInState extends State<SignIn> {
                 },
               ),
               SizedBox(height: 20.0),
-              TextFormField(
-                validator: (val) =>
-                    val.length < 6 ? 'enter a pass >6 chars' : null,
-                obscureText: true,
-                onChanged: (val) {
-                  setState(() => password = val);
-                },
-              ),
-              SizedBox(height: 20.0),
               RaisedButton(
                 color: Colors.pink[400],
                 child: Text(
-                  'Sign in',
+                  'Send Password Reset Link',
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
-                    dynamic result =
-                        await _auth.signInWithEmailAndPassword(email, password);
-                    if (result == null) {
-                      setState(() => error = 'couldnt sign in');
-                    }
+                    await _auth.resetPassword(email);
+                    setState(() => message = 'email sent');
+                  } else {
+                    setState(() => message = 'incorrect email');
                   }
                 },
               ),
+              SizedBox(height: 12.0),
               RaisedButton(
                 color: Colors.blue,
-                child: Text(
-                  'Forgot Password',
-                  style: TextStyle(color: Colors.white),
-                ),
+                child: Text('Go back to Sign In'),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/accounts/forgotpass');
+                  Navigator.pop(context);
                 },
               ),
               SizedBox(height: 12.0),
               Text(
-                error,
+                message,
                 style: TextStyle(color: Colors.red, fontSize: 14.0),
               ),
             ],
