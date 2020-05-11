@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shareacab/services/auth.dart';
+import 'package:shareacab/shared/loading.dart';
 
 class RootScreen extends StatefulWidget {
   @override
@@ -8,30 +9,35 @@ class RootScreen extends StatefulWidget {
 
 class _RootScreenState extends State<RootScreen> {
   final AuthService _auth = AuthService();
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: <Widget>[
-            Text("Share A "),
-            Text(
-              "Cab",
-              style: TextStyle(fontWeight: FontWeight.w900),
-            )
-          ],
-        ),
-        actions: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.person),
-            onPressed: () async {
-              await _auth.signOut();
-            },
-            label: Text('Logout'),
-          )
-        ],
-      ),
-      body: Center(child: Text("ShareACab")),
-    );
+    return loading
+        ? Loading()
+        : Scaffold(
+            appBar: AppBar(
+              title: Row(
+                children: <Widget>[
+                  Text("Share A "),
+                  Text(
+                    "Cab",
+                    style: TextStyle(fontWeight: FontWeight.w900),
+                  )
+                ],
+              ),
+              actions: <Widget>[
+                FlatButton.icon(
+                  icon: Icon(Icons.person),
+                  onPressed: () async {
+                    setState(() => loading = true);
+                    await _auth.signOut();
+                    setState(() => loading = false);
+                  },
+                  label: Text('Logout'),
+                )
+              ],
+            ),
+            body: Center(child: Text("ShareACab")),
+          );
   }
 }
