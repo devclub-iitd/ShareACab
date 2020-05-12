@@ -3,22 +3,18 @@ import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/constants.dart';
 import 'package:shareacab/shared/loading.dart';
 
-class Register extends StatefulWidget {
-  final Function toggleView;
-  Register({this.toggleView});
-
+class ForgotPass extends StatefulWidget {
   @override
-  _RegisterState createState() => _RegisterState();
+  _ForgotPassState createState() => _ForgotPassState();
 }
 
-class _RegisterState extends State<Register> {
+class _ForgotPassState extends State<ForgotPass> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
   String email = '';
-  String password = '';
-  String error = '';
+  String message = '';
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +25,7 @@ class _RegisterState extends State<Register> {
             appBar: AppBar(
               backgroundColor: Colors.brown[400],
               elevation: 0.0,
-              title: Text('Sign up'),
-              actions: <Widget>[
-                FlatButton.icon(
-                  icon: Icon(Icons.person),
-                  label: Text('Sign in'),
-                  onPressed: () {
-                    widget.toggleView();
-                  },
-                ),
-              ],
+              title: Text('Forgot Password'),
             ),
             body: Container(
               padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -58,60 +45,56 @@ class _RegisterState extends State<Register> {
                         },
                       ),
                       SizedBox(height: 20.0),
-                      TextFormField(
-                        decoration:
-                            textInputDecoration.copyWith(hintText: 'Password'),
-                        validator: (val) => val.length < 6
-                            ? 'Enter a password greater than 6 characters.'
-                            : null,
-                        obscureText: true,
-                        onChanged: (val) {
-                          setState(() => password = val);
-                        },
-                      ),
-                      SizedBox(height: 20.0),
                       RaisedButton(
                         color: Colors.pink[400],
                         child: Text(
-                          'Register',
+                          'Send Password Reset Link',
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
                             try {
-                              await _auth.registerWithEmailAndPassword(
-                                  email, password);
-                              setState(() {
-                                loading = false;
-                                error =
-                                    "Verification link has been sent to mailbox. Please verify and sign in.";
-                              });
+                              await _auth.resetPassword(email);
+                              setState(() => message = 'Email sent');
+                              setState(() => loading = false);
                             } catch (e) {
                               setState(() {
                                 switch (e.code) {
-                                  case "ERROR_WEAK_PASSWORD":
-                                    error = "Your password is too weak";
+                                  case "ERROR_USER_NOT_FOUND":
+                                    message =
+                                        "User with this email doesn't exist.";
                                     break;
-                                  case "ERROR_INVALID_EMAIL":
-                                    error = "Your email is invalid";
+                                  case "ERROR_USER_DISABLED":
+                                    message =
+                                        "User with this email has been disabled.";
                                     break;
-                                  case "ERROR_EMAIL_ALREADY_IN_USE":
-                                    error =
-                                        "Email is already in use on different account";
+                                  case "ERROR_TOO_MANY_REQUESTS":
+                                    message =
+                                        "Too many requests. Try again later.";
                                     break;
                                   default:
-                                    error = "An undefined Error happened.";
+                                    message = "An undefined Error happened.";
                                 }
-                                loading = false;
                               });
+                              setState(() => loading = false);
                             }
+                          } else {
+                            setState(() => message = 'Incorrect Email');
                           }
                         },
                       ),
                       SizedBox(height: 12.0),
+                      RaisedButton(
+                        color: Colors.blue,
+                        child: Text('Go back to Sign In'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      SizedBox(height: 12.0),
                       Text(
-                        error,
+                        message,
                         style: TextStyle(color: Colors.red, fontSize: 14.0),
                       ),
                     ],

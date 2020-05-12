@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/screens/authenticate/authenticate.dart';
-import 'package:shareacab/models/user.dart';
 import 'rootscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -17,10 +16,10 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return Authenticate();
     } else if (user.isEmailVerified) {
-      print('Verified');
+      //print('Verified');
       return RootScreen();
     } else {
-      print('Not verified');
+      //print('Not verified');
       return Authenticate();
     }
   }
