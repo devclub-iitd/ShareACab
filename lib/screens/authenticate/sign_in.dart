@@ -118,7 +118,10 @@ class _SignInState extends State<SignIn> {
                                           "Signing in with Email and Password is not enabled.";
                                       break;
                                     default:
-                                      error = "An undefined Error happened.";
+                                      {
+                                        print("undefined error:" + error.toString());
+                                        error = "An undefined Error happened.";
+                                      }
                                   }
                                   loading = false;
                                 });
