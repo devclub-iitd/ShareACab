@@ -12,7 +12,7 @@ class AuthService {
   //sign in with email pass
 
   Future<bool> signInWithEmailAndPassword(String email, String password) async {
-    AuthResult result = await _auth.signInWithEmailAndPassword(
+    var result = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
     if (result.user.isEmailVerified) {
       return true;
@@ -26,7 +26,7 @@ class AuthService {
 
   Future<void> registerWithEmailAndPassword(
       String email, String password) async {
-    AuthResult result = await _auth.createUserWithEmailAndPassword(
+    var result = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
     await result.user.sendEmailVerification();
   }
