@@ -16,10 +16,10 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return Authenticate();
     } else if (user.isEmailVerified) {
-      print('Verified');
+      //print('Verified');
       return RootScreen();
     } else {
-      print('Not verified');
+      //print('Not verified');
       return Authenticate();
     }
   }

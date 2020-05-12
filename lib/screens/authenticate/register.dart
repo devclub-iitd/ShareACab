@@ -79,15 +79,32 @@ class _RegisterState extends State<Register> {
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
-                            dynamic result = await _auth
-                                .registerWithEmailAndPassword(email, password);
-                            setState(() => loading = false);
-                            if (result == null) {
-                              setState(
-                                  () => error = 'Please supply a valid email');
-                            } else {
-                              setState(() => error =
-                                  'Verification link has been sent to mailbox. Please verify and sign in.');
+                            try {
+                              await _auth.registerWithEmailAndPassword(
+                                  email, password);
+                              setState(() {
+                                loading = false;
+                                error =
+                                    "Verification link has been sent to mailbox. Please verify and sign in.";
+                              });
+                            } catch (e) {
+                              setState(() {
+                                switch (e.code) {
+                                  case "ERROR_WEAK_PASSWORD":
+                                    error = "Your password is too weak";
+                                    break;
+                                  case "ERROR_INVALID_EMAIL":
+                                    error = "Your email is invalid";
+                                    break;
+                                  case "ERROR_EMAIL_ALREADY_IN_USE":
+                                    error =
+                                        "Email is already in use on different account";
+                                    break;
+                                  default:
+                                    error = "An undefined Error happened.";
+                                }
+                                loading = false;
+                              });
                             }
                           }
                         },

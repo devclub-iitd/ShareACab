@@ -54,9 +54,31 @@ class _ForgotPassState extends State<ForgotPass> {
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
-                            await _auth.resetPassword(email);
-                            setState(() => loading = false);
-                            setState(() => message = 'Email sent');
+                            try {
+                              await _auth.resetPassword(email);
+                              setState(() => message = 'Email sent');
+                              setState(() => loading = false);
+                            } catch (e) {
+                              setState(() {
+                                switch (e.code) {
+                                  case "ERROR_USER_NOT_FOUND":
+                                    message =
+                                        "User with this email doesn't exist.";
+                                    break;
+                                  case "ERROR_USER_DISABLED":
+                                    message =
+                                        "User with this email has been disabled.";
+                                    break;
+                                  case "ERROR_TOO_MANY_REQUESTS":
+                                    message =
+                                        "Too many requests. Try again later.";
+                                    break;
+                                  default:
+                                    message = "An undefined Error happened.";
+                                }
+                              });
+                              setState(() => loading = false);
+                            }
                           } else {
                             setState(() => message = 'Incorrect Email');
                           }

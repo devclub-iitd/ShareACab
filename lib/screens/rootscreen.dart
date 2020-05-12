@@ -10,6 +10,7 @@ class RootScreen extends StatefulWidget {
 class _RootScreenState extends State<RootScreen> {
   final AuthService _auth = AuthService();
   bool loading = false;
+  String error = '';
   @override
   Widget build(BuildContext context) {
     return loading
@@ -30,8 +31,15 @@ class _RootScreenState extends State<RootScreen> {
                   icon: Icon(Icons.person),
                   onPressed: () async {
                     setState(() => loading = true);
-                    await _auth.signOut();
-                    setState(() => loading = false);
+                    try {
+                      await _auth.signOut();
+                      setState(() => loading = false);
+                    } catch (e) {
+                      setState(() {
+                        error = e.message;
+                        setState(() => loading = false);
+                      });
+                    }
                   },
                   label: Text('Logout'),
                 )
