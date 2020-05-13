@@ -119,6 +119,8 @@ class _RootScreenState extends State<RootScreen> {
                 isHome = false;
                 break;
               default:
+                _appBarTitle = 'Share A Cab';
+                isHome = true;
 
             }
           });
