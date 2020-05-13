@@ -85,23 +85,23 @@ class _RegisterState extends State<Register> {
                               setState(() {
                                 loading = false;
                                 error =
-                                    "Verification link has been sent to mailbox. Please verify and sign in.";
+                                    'Verification link has been sent to mailbox. Please verify and sign in.';
                               });
                             } catch (e) {
                               setState(() {
                                 switch (e.code) {
-                                  case "ERROR_WEAK_PASSWORD":
-                                    error = "Your password is too weak";
+                                  case 'ERROR_WEAK_PASSWORD':
+                                    error = 'Your password is too weak';
                                     break;
-                                  case "ERROR_INVALID_EMAIL":
-                                    error = "Your email is invalid";
+                                  case 'ERROR_INVALID_EMAIL':
+                                    error = 'Your email is invalid';
                                     break;
-                                  case "ERROR_EMAIL_ALREADY_IN_USE":
+                                  case 'ERROR_EMAIL_ALREADY_IN_USE':
                                     error =
-                                        "Email is already in use on different account";
+                                        'Email is already in use on different account';
                                     break;
                                   default:
-                                    error = "An undefined Error happened.";
+                                    error = 'An undefined Error happened.';
                                 }
                                 loading = false;
                               });

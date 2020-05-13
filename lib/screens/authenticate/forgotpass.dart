@@ -61,20 +61,20 @@ class _ForgotPassState extends State<ForgotPass> {
                             } catch (e) {
                               setState(() {
                                 switch (e.code) {
-                                  case "ERROR_USER_NOT_FOUND":
+                                  case 'ERROR_USER_NOT_FOUND':
                                     message =
                                         "User with this email doesn't exist.";
                                     break;
-                                  case "ERROR_USER_DISABLED":
+                                  case 'ERROR_USER_DISABLED':
                                     message =
-                                        "User with this email has been disabled.";
+                                        'User with this email has been disabled.';
                                     break;
-                                  case "ERROR_TOO_MANY_REQUESTS":
+                                  case 'ERROR_TOO_MANY_REQUESTS':
                                     message =
-                                        "Too many requests. Try again later.";
+                                        'Too many requests. Try again later.';
                                     break;
                                   default:
-                                    message = "An undefined Error happened.";
+                                    message = 'An undefined Error happened.';
                                 }
                               });
                               setState(() => loading = false);
