@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shareacab/screens/authenticate/forgotpass.dart';
+import 'package:shareacab/screens/rootscreen.dart';
 import 'package:shareacab/screens/wrapper.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         routes: {
           '/accounts/forgotpass': (context) => ForgotPass(),
+          '/rootscreen': (context) => RootScreen(),
         },
         title: 'Share A Cab',
         builder: (context, child) {

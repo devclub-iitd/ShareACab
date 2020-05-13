@@ -23,6 +23,14 @@ class AuthService {
     }
   }
 
+  Future<bool> checkVerification(FirebaseUser user) async {
+    if (user.isEmailVerified) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   // sign up with email pass
 
   Future<void> registerWithEmailAndPassword(String email, String password,

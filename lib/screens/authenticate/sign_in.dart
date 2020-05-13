@@ -119,11 +119,14 @@ class _SignInState extends State<SignIn> {
                                       break;
                                     default:
                                       {
-                                        print("undefined error:" + error.toString());
+                                        print("undefined error:" +
+                                            error.toString());
                                         error = "An undefined Error happened.";
                                       }
                                   }
                                   loading = false;
+                                  // Scaffold.of(context).showSnackBar(
+                                  //     SnackBar(content: Text(error)));
                                 });
                               }
                             }
