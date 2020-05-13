@@ -67,20 +67,16 @@ class _RootScreenState extends State<RootScreen> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: null,
-        child:  IconButton(
-            icon: Icon(
-              Icons.add,
-            ),
-            iconSize: 40.0,
-            onPressed: (){
-              return Navigator.push(context, MaterialPageRoute(builder: (context){
-                return CreateRoom();
-              }));
-            }),
+          onPressed: (){
+            return Navigator.push(context, MaterialPageRoute(builder: (context){
+              return CreateRoom();
+            }));
+          },
+        child:  Icon(Icons.add,),
+        backgroundColor: Theme.of(context).accentColor,
       ),
       bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         height: 50.0,
         items:
         <Widget>[
