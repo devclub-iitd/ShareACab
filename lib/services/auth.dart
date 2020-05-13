@@ -13,7 +13,7 @@ class AuthService {
   //sign in with email pass
 
   Future<bool> signInWithEmailAndPassword(String email, String password) async {
-    AuthResult result = await _auth.signInWithEmailAndPassword(
+    var result = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
     if (result.user.isEmailVerified) {
       return true;
