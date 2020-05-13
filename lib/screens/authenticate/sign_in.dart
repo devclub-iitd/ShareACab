@@ -81,46 +81,46 @@ class _SignInState extends State<SignIn> {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
                             try {
-                              bool flag = await _auth
+                              var flag = await _auth
                                   .signInWithEmailAndPassword(email, password);
                               if (flag == false) {
                                 setState(() {
                                   error =
-                                      "ID not verified, verification mail sent again.";
+                                      'ID not verified, verification mail sent again.';
                                 });
                               }
                               setState(() => loading = false);
                             } catch (e) {
-                              if (this.mounted) {
+                              if (mounted) {
                                 setState(() {
                                   switch (e.code) {
-                                    case "ERROR_INVALID_EMAIL":
+                                    case 'ERROR_INVALID_EMAIL':
                                       error =
-                                          "Your email address appears to be malformed.";
+                                          'Your email address appears to be malformed.';
                                       break;
-                                    case "ERROR_WRONG_PASSWORD":
-                                      error = "Your password is wrong.";
+                                    case 'ERROR_WRONG_PASSWORD':
+                                      error = 'Your password is wrong.';
                                       break;
-                                    case "ERROR_USER_NOT_FOUND":
+                                    case 'ERROR_USER_NOT_FOUND':
                                       error =
                                           "User with this email doesn't exist.";
                                       break;
-                                    case "ERROR_USER_DISABLED":
+                                    case 'ERROR_USER_DISABLED':
                                       error =
-                                          "User with this email has been disabled.";
+                                          'User with this email has been disabled.';
                                       break;
-                                    case "ERROR_TOO_MANY_REQUESTS":
+                                    case 'ERROR_TOO_MANY_REQUESTS':
                                       error =
-                                          "Too many requests. Try again later.";
+                                          'Too many requests. Try again later.';
                                       break;
-                                    case "ERROR_OPERATION_NOT_ALLOWED":
+                                    case 'ERROR_OPERATION_NOT_ALLOWED':
                                       error =
-                                          "Signing in with Email and Password is not enabled.";
+                                          'Signing in with Email and Password is not enabled.';
                                       break;
                                     default:
                                       {
-                                        print("undefined error:" + error.toString());
-                                        error = "An undefined Error happened.";
+                                        print('undefined error:' + error.toString());
+                                        error = 'An undefined Error happened.';
                                       }
                                   }
                                   loading = false;
