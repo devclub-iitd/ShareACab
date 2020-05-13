@@ -1,6 +1,7 @@
 import 'package:shareacab/chatscreen/chat_modules/chat_detail_page.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ChatUsersList extends StatefulWidget{
   String text;
   String secondaryText;
@@ -41,7 +42,7 @@ class _ChatUsersListState extends State<ChatUsersList> {
                         children: <Widget>[
                           Text(widget.text),
                           SizedBox(height: 6,),
-                          Text(widget.secondaryText,style: TextStyle(fontSize: 14,color: Colors.grey.shade500),),
+                          Text(widget.secondaryText,style: TextStyle(fontSize: 14,color: Theme.of(context).accentColor),),
                         ],
                       ),
                     ),
@@ -49,7 +50,7 @@ class _ChatUsersListState extends State<ChatUsersList> {
                 ],
               ),
             ),
-            Text(widget.time,style: TextStyle(fontSize: 12,color: widget.isMessageRead?Colors.pink:Colors.grey.shade500),),
+            Text(widget.time,style: TextStyle(fontSize: 12,color: Theme.of(context).accentColor),),
           ],
         ),
       ),

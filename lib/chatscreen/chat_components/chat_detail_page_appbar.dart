@@ -21,7 +21,7 @@ class ChatDetailPageAppBar extends StatelessWidget implements PreferredSizeWidge
               ),
               SizedBox(width: 2,),
               CircleAvatar(
-                backgroundImage: AssetImage("images/userImage1.jpeg"),
+                backgroundImage: AssetImage('images/userImage1.jpeg'),
                 maxRadius: 20,
               ),
               SizedBox(width: 12,),
@@ -30,10 +30,10 @@ class ChatDetailPageAppBar extends StatelessWidget implements PreferredSizeWidge
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text("Jane Russel",
+                    Text('Arpit Sir',
                       style: TextStyle(fontWeight: FontWeight.w600),),
                     SizedBox(height: 6,),
-                    Text("Online",
+                    Text('Online',
                       style: TextStyle(color: Colors.green, fontSize: 12),),
                   ],
                 ),

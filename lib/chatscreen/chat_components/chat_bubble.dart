@@ -3,6 +3,7 @@ import 'package:shareacab/chatscreen/chat_modules/chat_detail_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class ChatBubble extends StatefulWidget{
   ChatMessage chatMessage;
   ChatBubble({@required this.chatMessage});
