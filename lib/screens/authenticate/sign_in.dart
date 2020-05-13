@@ -81,6 +81,9 @@ class _SignInState extends State<SignIn> {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
                             try {
+                              setState(() {
+                                email = email.trim();
+                              });
                               var flag = await _auth.signInWithEmailAndPassword(
                                   email, password);
                               if (flag == false) {

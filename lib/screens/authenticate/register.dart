@@ -78,9 +78,20 @@ class _RegisterState extends State<Register> {
                       SizedBox(height: 20.0),
                       TextFormField(
                         decoration:
+                            // use this inputdecoration of IITD email
+                            //textInputDecoration.copyWith(hintText: 'Kerberos email'),
                             textInputDecoration.copyWith(hintText: 'Email'),
-                        validator: (val) =>
-                            val.isEmpty ? 'Enter a valid Email' : null,
+                        validator: (val) {
+                          val.isEmpty ? 'Enter a valid Email' : null;
+
+                          // uncomment below lines for iitd.ac.in validator
+
+                          // if (val.endsWith('iitd.ac.in')) {
+                          //   return null;
+                          // } else {
+                          //   return 'Enter valid IITD email';
+                          // }
+                        },
                         onChanged: (val) {
                           setState(() => email = val);
                         },
@@ -171,6 +182,9 @@ class _RegisterState extends State<Register> {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
                             try {
+                              setState(() {
+                                email = email.trim();
+                              });
                               await _auth.registerWithEmailAndPassword(email,
                                   password, name, mobileNum, hostel, sex);
                               setState(() {
@@ -179,23 +193,25 @@ class _RegisterState extends State<Register> {
                                     'Verification link has been sent to mailbox. Please verify and sign in.';
                               });
                             } catch (e) {
-                              setState(() {
-                                switch (e.code) {
-                                  case 'ERROR_WEAK_PASSWORD':
-                                    error = 'Your password is too weak';
-                                    break;
-                                  case 'ERROR_INVALID_EMAIL':
-                                    error = 'Your email is invalid';
-                                    break;
-                                  case 'ERROR_EMAIL_ALREADY_IN_USE':
-                                    error =
-                                        'Email is already in use on different account';
-                                    break;
-                                  default:
-                                    error = 'An undefined Error happened.';
-                                }
-                                loading = false;
-                              });
+                              if (mounted) {
+                                setState(() {
+                                  switch (e.code) {
+                                    case 'ERROR_WEAK_PASSWORD':
+                                      error = 'Your password is too weak';
+                                      break;
+                                    case 'ERROR_INVALID_EMAIL':
+                                      error = 'Your email is invalid';
+                                      break;
+                                    case 'ERROR_EMAIL_ALREADY_IN_USE':
+                                      error =
+                                          'Email is already in use on different account';
+                                      break;
+                                    default:
+                                      error = 'An undefined Error happened.';
+                                  }
+                                  loading = false;
+                                });
+                              }
                             }
                           }
                         },
