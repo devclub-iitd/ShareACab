@@ -13,9 +13,17 @@ class _NotificationsState extends State<Notifications> {
     return Scaffold(
 
       body:  Center(
-          child:  Text(
-            'Notifs will be shown here',
-            style: TextStyle(fontSize: 25.0),
+          child:  Column(
+            children: <Widget>[
+              Text(
+                'Notifs will be shown here',
+                style: TextStyle(fontSize: 25.0),
+              ),
+              TextFormField(
+                onChanged: (val) {
+                },
+              ),
+            ],
           )),
     );
   }
