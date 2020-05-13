@@ -9,6 +9,7 @@ import 'settings.dart';
 import 'addroom.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/loading.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class RootScreen extends StatefulWidget {
   @override
@@ -19,14 +20,17 @@ class _RootScreenState extends State<RootScreen> {
   final AuthService _auth = AuthService();
   bool loading = false;
   String error = '';
+  Widget choose;
+  String _appBarTitle = '';
+  bool isHome = true;
   @override
   Widget build(BuildContext context) {
     return loading ? Loading():
     Scaffold(
       appBar: AppBar(
-        title:  Text('ShareACab'),
+        title:  Text(_appBarTitle == '' ? 'Share A Cab' : _appBarTitle),
+        actions: isHome ? <Widget>[
 
-        actions: <Widget>[
           IconButton(
               icon: Icon(Icons.filter),
               color: Theme.of(context).accentColor,
@@ -45,15 +49,6 @@ class _RootScreenState extends State<RootScreen> {
               }),
           FlatButton.icon(
             icon: Icon(Icons.person),
-            color: Theme.of(context).accentColor,
-            onPressed: () async {
-              await _auth.signOut();
-            },
-            label: Text('Logout'),
-
-          ),
-          FlatButton.icon(
-            icon: Icon(Icons.person),
             onPressed: () async {
               setState(() => loading = true);
               try {
@@ -68,14 +63,9 @@ class _RootScreenState extends State<RootScreen> {
             },
             label: Text('Logout'),
           )
-        ],
+        ] : <Widget>[],
       ),
 
-      body: Center(
-          child: Text(
-            'ShareACab',
-            style: TextStyle(fontSize: 25.0),
-          )),
       floatingActionButton: FloatingActionButton(
         onPressed: null,
         child:  IconButton(
@@ -89,83 +79,57 @@ class _RootScreenState extends State<RootScreen> {
               }));
             }),
       ),
-      bottomNavigationBar: BottomNavBar(),
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        height: 50.0,
+        items:
+        <Widget>[
+          Icon(Icons.home, size: 20.0, color: Theme.of(context).accentColor,),
+          Icon(Icons.format_list_bulleted, size: 20.0, color: Theme.of(context).accentColor,),
+          Icon(Icons.chat_bubble_outline, size: 20.0, color: Theme.of(context).accentColor,),
+          Icon(Icons.notifications_none, size: 20.0, color: Theme.of(context).accentColor,),
+          Icon(Icons.person, size: 20.0, color: Theme.of(context).accentColor,),
+        ],
+        animationDuration: Duration(
+            milliseconds: 200
+        ),
+        index: 0,
+        animationCurve: Curves.bounceInOut,
+        onTap: (index){
+          setState(() {
+            switch (index){
+              case 1:
+                choose = MyRequests();
+                _appBarTitle = 'My Requests';
+                isHome = false;
+                break;
+              case 2:
+                choose = Messages();
+                _appBarTitle = 'Messages';
+                isHome = false;
+                break;
+              case 3:
+                choose = Notifications();
+                _appBarTitle = 'Notifications';
+                isHome = false;
+                break;
+              case 4:
+                choose = MyProfile();
+                _appBarTitle = 'My Profile';
+                isHome = false;
+                break;
+              default:
+
+            }
+          });
+        },
+      ) ,
+
+      body: Center(
+        child: choose,
+      ),
 
     );
   }
 }
 
-
-class BottomNavBar extends StatefulWidget {
-  @override
-  _BottomNavBarState createState() => _BottomNavBarState();
-}
-
-class _BottomNavBarState extends State<BottomNavBar> {
-  int _currentIndex=0;
-  @override
-
-  Widget build(BuildContext context) {
-
-    return BottomNavigationBar(
-      currentIndex: _currentIndex,
-      type: BottomNavigationBarType.fixed,
-      iconSize: 20.0,
-      items: [
-        BottomNavigationBarItem(
-            icon: IconButton(icon: Icon(Icons.home), onPressed: (){
-              return Navigator.push(context, MaterialPageRoute(builder: (context){
-                return RootScreen();
-              }));
-            },),
-            title:  Text('Home'),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor),
-
-
-        BottomNavigationBarItem(
-            icon: IconButton(icon: Icon(Icons.format_list_bulleted), onPressed: (){
-              return Navigator.push(context, MaterialPageRoute(builder: (context){
-                return MyRequests();
-              }));
-            },),
-            title:  Text('My Request'),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor),
-
-        BottomNavigationBarItem(
-            icon: IconButton(icon: Icon(Icons.chat_bubble_outline), onPressed: (){
-              return Navigator.push(context, MaterialPageRoute(builder: (context){
-                return Messages();
-              }));
-            },),
-            title:  Text('Messages'),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor),
-
-
-
-        BottomNavigationBarItem(
-            icon: IconButton(icon: Icon(Icons.notifications_none), onPressed: (){
-              return Navigator.push(context, MaterialPageRoute(builder: (context){
-                return Notifications();
-              }));
-            },),
-            title:  Text('Notifications'),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor),
-
-
-        BottomNavigationBarItem(
-            icon: IconButton(icon: Icon(Icons.person_outline), onPressed: (){
-              return Navigator.push(context, MaterialPageRoute(builder: (context){
-                return MyProfile();
-              }));
-            },),
-            title:  Text('My Profile'),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor),
-      ],
-      onTap: (index) {
-        setState(() {
-          _currentIndex = index;
-        });
-      },
-    );
-  }
-}
