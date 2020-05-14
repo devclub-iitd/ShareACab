@@ -21,6 +21,16 @@ jobs:
       # Disabled for now, causing issues
       # - run: flutter test
       - run: flutter build apk
+      - name: Create a Release
+        if: github.event_name == 'push'
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/apk/release/*.apk"
+          token: ${{ secrets.GITHUB_TOKEN }} 
+          prerelease: true
+          tag: "test"
+          commit: "master" 
+          allowUpdates: true
 
   build-xcode:
     runs-on: macos-latest
