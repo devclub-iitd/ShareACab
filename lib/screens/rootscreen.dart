@@ -23,6 +23,7 @@ class _RootScreenState extends State<RootScreen> {
   String error = '';
   Widget choose;
   String _appBarTitle = '';
+  bool justLoggedin = true;
   bool isHome = true;
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class _RootScreenState extends State<RootScreen> {
         ? Loading()
         : Scaffold(
             appBar: AppBar(
-              title: Text(_appBarTitle == '' ? 'Share A Cab' : _appBarTitle),
+              title: Text(_appBarTitle == '' ? 'Dashboard' : _appBarTitle),
               actions: isHome
                   ? <Widget>[
                       IconButton(
@@ -149,6 +150,7 @@ class _RootScreenState extends State<RootScreen> {
               animationCurve: Curves.bounceInOut,
               onTap: (index) {
                 setState(() {
+                  justLoggedin = false;
                   switch (index) {
                     case 0:
                       choose = Dashboard();
@@ -175,17 +177,22 @@ class _RootScreenState extends State<RootScreen> {
                       _appBarTitle = 'My Profile';
                       isHome = false;
                       break;
-                    default:
-                      choose = Dashboard();
-                      _appBarTitle = 'Share A Cab';
-                      isHome = true;
+                    // default:
+                    //   0;
+                    // choose = Dashboard();
+                    // _appBarTitle = 'Share A Cab';
+                    // isHome = true;
                   }
                 });
               },
             ),
-            body: Center(
-              child: choose,
-            ),
+            body: justLoggedin
+                ? Center(
+                    child: Dashboard(),
+                  )
+                : Center(
+                    child: choose,
+                  ),
           );
   }
 }

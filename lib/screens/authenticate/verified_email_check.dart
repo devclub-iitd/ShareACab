@@ -18,7 +18,6 @@ class _VerificationCheckState extends State<VerificationCheck> {
   bool loading = false;
   String error = '';
   bool verified = false;
-  Timer _timer;
 
   // void _checkIfVerified() async {
   //   await FirebaseAuth.instance.currentUser()
@@ -34,15 +33,14 @@ class _VerificationCheckState extends State<VerificationCheck> {
   @override
   void initState() {
     super.initState();
-
+    Timer _timer;
     // code for auto-check
 
     Future(() async {
       _timer = Timer.periodic(Duration(seconds: 5), (timer) async {
-        await FirebaseAuth.instance.currentUser()
-          ..reload();
+        FirebaseUser olduser = await FirebaseAuth.instance.currentUser();
+        await olduser.reload();
         var user = await FirebaseAuth.instance.currentUser();
-        print('hit');
         if (user.isEmailVerified) {
           setState(() {
             verified = user.isEmailVerified;
@@ -51,7 +49,7 @@ class _VerificationCheckState extends State<VerificationCheck> {
         }
       });
     });
-
+    _timer = _timer;
     // void _checkIfVerified() async {
     //   await FirebaseAuth.instance.currentUser()
     //     ..reload();
@@ -105,7 +103,7 @@ class _VerificationCheckState extends State<VerificationCheck> {
                     RichText(
                         text: TextSpan(
                       text:
-                          'Verification email has been resent to your ID. Please click on the verification link in your mail.',
+                          'Verification email has been sent to your ID. Please click on the verification link in your mail.',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 20.0,

@@ -48,6 +48,14 @@ class _RegisterState extends State<Register> {
     'Day Scholar',
   ];
 
+  bool passwordHide = false;
+
+  @override
+  void initState() {
+    passwordHide = true;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return loading
@@ -82,7 +90,11 @@ class _RegisterState extends State<Register> {
                             //textInputDecoration.copyWith(hintText: 'Kerberos email'),
                             textInputDecoration.copyWith(hintText: 'Email'),
                         validator: (val) {
-                          val.isEmpty ? 'Enter a valid Email' : null;
+                          if (val.isEmpty) {
+                            return 'Enter a valid Email';
+                          } else {
+                            return null;
+                          }
 
                           // uncomment below lines for iitd.ac.in validator
 
@@ -98,12 +110,26 @@ class _RegisterState extends State<Register> {
                       ),
                       SizedBox(height: 20.0),
                       TextFormField(
-                        decoration:
-                            textInputDecoration.copyWith(hintText: 'Password'),
+                        decoration: textInputDecoration.copyWith(
+                          hintText: 'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              passwordHide
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                passwordHide = !passwordHide;
+                              });
+                            },
+                          ),
+                        ),
                         validator: (val) => val.length < 6
                             ? 'Enter a password greater than 6 characters.'
                             : null,
-                        obscureText: true,
+                        obscureText: passwordHide,
                         onChanged: (val) {
                           setState(() => password = val);
                         },

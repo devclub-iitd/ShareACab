@@ -16,10 +16,18 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
+  bool passwordHide = false;
+
   // text field states
   String email = '';
   String password = '';
   String error = '';
+
+  @override
+  void initState() {
+    passwordHide = true;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,12 +68,26 @@ class _SignInState extends State<SignIn> {
                       ),
                       SizedBox(height: 20.0),
                       TextFormField(
-                        decoration:
-                            textInputDecoration.copyWith(hintText: 'Password'),
+                        decoration: textInputDecoration.copyWith(
+                          hintText: 'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              passwordHide
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                passwordHide = !passwordHide;
+                              });
+                            },
+                          ),
+                        ),
                         validator: (val) => val.length < 6
                             ? 'Enter a password greater than 6 characters.'
                             : null,
-                        obscureText: true,
+                        obscureText: passwordHide,
                         onChanged: (val) {
                           setState(() => password = val);
                         },
@@ -128,6 +150,7 @@ class _SignInState extends State<SignIn> {
                                       }
                                   }
                                   loading = false;
+
                                   // Scaffold.of(context).showSnackBar(
                                   //     SnackBar(content: Text(error)));
                                 });
