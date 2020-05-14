@@ -10,7 +10,7 @@ class DatabaseService {
       Firestore.instance.collection('userdetails');
 
   Future enterUserData(
-      String name, String mobileNumber, String hostel, String sex) async {
+      {String name, String mobileNumber, String hostel, String sex}) async {
     return await userDetails.document(uid).setData({
       'name': name,
       'mobileNumber': mobileNumber,

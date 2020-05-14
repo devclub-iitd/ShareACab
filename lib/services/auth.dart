@@ -24,24 +24,25 @@ class AuthService {
   }
 
   Future<bool> checkVerification(FirebaseUser user) async {
-    if (user.isEmailVerified) {
-      return true;
-    } else {
-      return false;
-    }
+    return user.isEmailVerified;
   }
 
   // sign up with email pass
 
-  Future<void> registerWithEmailAndPassword(String email, String password,
-      String name, String mobilenum, String hostel, String sex) async {
+  Future<void> registerWithEmailAndPassword(
+      {String email,
+      String password,
+      String name,
+      String mobilenum,
+      String hostel,
+      String sex}) async {
     AuthResult result = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
     FirebaseUser user = result.user;
 
     // creating a new document for user
-    await DatabaseService(uid: user.uid)
-        .enterUserData(name, mobilenum, hostel, sex);
+    await DatabaseService(uid: user.uid).enterUserData(
+        name: name, mobileNumber: mobilenum, hostel: hostel, sex: sex);
 
     await result.user.sendEmailVerification();
   }

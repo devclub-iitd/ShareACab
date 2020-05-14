@@ -211,8 +211,13 @@ class _RegisterState extends State<Register> {
                               setState(() {
                                 email = email.trim();
                               });
-                              await _auth.registerWithEmailAndPassword(email,
-                                  password, name, mobileNum, hostel, sex);
+                              await _auth.registerWithEmailAndPassword(
+                                  email: email,
+                                  password: password,
+                                  name: name,
+                                  mobilenum: mobileNum,
+                                  hostel: hostel,
+                                  sex: sex);
                               setState(() {
                                 loading = false;
                                 error =
