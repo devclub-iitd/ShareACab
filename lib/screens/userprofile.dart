@@ -29,16 +29,22 @@ class _MyProfileState extends State<MyProfile> {
         .document(currentuser.uid)
         .get()
         .then((value) {
-      setState(() {
-        name = value.data['name'];
-        hostel = value.data['hostel'];
-        sex = value.data['sex'];
-        mobilenum = value.data['mobileNumber'];
-        totalrides = value.data['totalRides'];
-        actualrating = value.data['actualRating'];
-        cancelledrides = value.data['cancelledRides'];
-        loading = false;
-      });
+      if (value.exists) {
+        setState(() {
+          name = value.data['name'];
+          hostel = value.data['hostel'];
+          sex = value.data['sex'];
+          mobilenum = value.data['mobileNumber'];
+          totalrides = value.data['totalRides'];
+          actualrating = value.data['actualRating'];
+          cancelledrides = value.data['cancelledRides'];
+          loading = false;
+        });
+      } else {
+        setState(() {
+          loading = false;
+        });
+      }
     });
 
     // users.forEach((user) {
@@ -56,19 +62,180 @@ class _MyProfileState extends State<MyProfile> {
                 child: Column(
                   children: <Widget>[
                     SizedBox(height: 20.0),
-                    Text('Name: $name'),
-                    SizedBox(height: 20.0),
-                    Text('Mobile Number: $mobilenum'),
-                    SizedBox(height: 20.0),
-                    Text('Hostel: $hostel'),
-                    SizedBox(height: 20.0),
-                    Text('Sex: $sex'),
-                    SizedBox(height: 20.0),
-                    Text('Total Rides: $totalrides'),
-                    SizedBox(height: 20.0),
-                    Text('Cancelled Rides: $cancelledrides'),
-                    SizedBox(height: 20.0),
-                    Text('Actual Ratings: $actualrating'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        RichText(
+                          text: TextSpan(
+                            text: 'Name:  ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: '$name',
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 30.0,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 14.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        RichText(
+                          text: TextSpan(
+                            text: 'Mobile: ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: '$mobilenum',
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 22.0,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 14.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        RichText(
+                          text: TextSpan(
+                            text: 'Hostel:  ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: '$hostel',
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 25.0,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 14.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        RichText(
+                          text: TextSpan(
+                            text: 'Sex:  ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: '$sex',
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 25.0,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 14.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        RichText(
+                          text: TextSpan(
+                            text: 'Total Rides:  ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: '$totalrides',
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 25.0,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 14.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        RichText(
+                          text: TextSpan(
+                            text: 'Cancelled Rides:  ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: '$cancelledrides',
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 25.0,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 14.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        RichText(
+                          text: TextSpan(
+                            text: 'Actual Ratings:  ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            text: '$actualrating',
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                              fontSize: 25.0,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ],
                 ),
               ),

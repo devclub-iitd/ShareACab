@@ -42,7 +42,6 @@ class AuthService {
     // creating a new document for user
     await DatabaseService(uid: user.uid)
         .enterUserData(name, mobilenum, hostel, sex);
-    //await DatabaseService(uid: user.uid).initializeUserData();
 
     await result.user.sendEmailVerification();
   }
@@ -53,9 +52,32 @@ class AuthService {
     await _auth.sendPasswordResetEmail(email: email);
   }
 
+  // verification mail resend
+
+  Future<void> verificationEmail(FirebaseUser user) async {
+    await user.sendEmailVerification();
+  }
+
   // sign out
   Future<void> signOut() async {
     await _auth.signOut();
+  }
+
+  // is user verified check
+  Future<bool> verificationcheck(FirebaseUser user) async {
+    await user.reload();
+    await user.getIdToken(refresh: true);
+    await user.reload();
+    bool flag = await user.isEmailVerified;
+    //print(flag);
+    return flag;
+  }
+
+  Future<FirebaseUser> reloadCurrentUser() async {
+    FirebaseUser oldUser = await FirebaseAuth.instance.currentUser();
+    await oldUser.reload();
+    FirebaseUser newUser = await FirebaseAuth.instance.currentUser();
+    return newUser;
   }
 
   Future<String> getCurrentUID() async {

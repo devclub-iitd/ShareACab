@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:shareacab/screens/dashboard.dart';
 import 'messages.dart';
 import 'userprofile.dart';
 import 'notifications.dart';
@@ -33,8 +34,10 @@ class _RootScreenState extends State<RootScreen> {
               actions: isHome
                   ? <Widget>[
                       IconButton(
-                          icon: Icon(Icons.filter),
-                          color: Theme.of(context).accentColor,
+                          icon: Icon(Icons.filter_list),
+                          iconSize: 30.0,
+                          //color: Theme.of(context).accentColor,
+                          color: Colors.black,
                           onPressed: () {
                             return Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
@@ -43,7 +46,8 @@ class _RootScreenState extends State<RootScreen> {
                           }),
                       IconButton(
                           icon: Icon(Icons.settings),
-                          color: Theme.of(context).accentColor,
+                          //color: Theme.of(context).accentColor,
+                          color: Colors.black,
                           onPressed: () {
                             return Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
@@ -67,20 +71,49 @@ class _RootScreenState extends State<RootScreen> {
                         label: Text('Logout'),
                       )
                     ]
-                  : <Widget>[],
+                  : <Widget>[
+                      IconButton(
+                          icon: Icon(Icons.settings),
+                          //color: Theme.of(context).accentColor,
+                          color: Colors.black,
+                          onPressed: () {
+                            return Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return Settings();
+                            }));
+                          }),
+                      FlatButton.icon(
+                        icon: Icon(Icons.person),
+                        onPressed: () async {
+                          setState(() => loading = true);
+                          try {
+                            await _auth.signOut();
+                            setState(() => loading = false);
+                          } catch (e) {
+                            setState(() {
+                              error = e.message;
+                              setState(() => loading = false);
+                            });
+                          }
+                        },
+                        label: Text('Logout'),
+                      )
+                    ],
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                return Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
-                  return CreateRoom();
-                }));
-              },
-              child: Icon(
-                Icons.add,
-              ),
-              backgroundColor: Theme.of(context).accentColor,
-            ),
+            floatingActionButton: isHome
+                ? FloatingActionButton(
+                    onPressed: () {
+                      return Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return CreateRoom();
+                      }));
+                    },
+                    child: Icon(
+                      Icons.add,
+                    ),
+                    backgroundColor: Theme.of(context).accentColor,
+                  )
+                : null,
             bottomNavigationBar: CurvedNavigationBar(
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               height: 50.0,
@@ -117,6 +150,11 @@ class _RootScreenState extends State<RootScreen> {
               onTap: (index) {
                 setState(() {
                   switch (index) {
+                    case 0:
+                      choose = Dashboard();
+                      _appBarTitle = 'Dashboard';
+                      isHome = true;
+                      break;
                     case 1:
                       choose = MyRequests();
                       _appBarTitle = 'My Requests';
@@ -138,6 +176,7 @@ class _RootScreenState extends State<RootScreen> {
                       isHome = false;
                       break;
                     default:
+                      choose = Dashboard();
                       _appBarTitle = 'Share A Cab';
                       isHome = true;
                   }

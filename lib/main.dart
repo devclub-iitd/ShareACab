@@ -14,7 +14,9 @@ class MyApp extends StatelessWidget {
     return StreamProvider<FirebaseUser>.value(
       value: AuthService().user,
       child: MaterialApp(
+        initialRoute: '/wrapper',
         routes: {
+          '/wrapper': (context) => Wrapper(),
           '/accounts/forgotpass': (context) => ForgotPass(),
           '/rootscreen': (context) => RootScreen(),
         },
