@@ -33,11 +33,10 @@ class _VerificationCheckState extends State<VerificationCheck> {
   @override
   void initState() {
     super.initState();
-    Timer _timer;
     // code for auto-check
 
     Future(() async {
-      _timer = Timer.periodic(Duration(seconds: 5), (timer) async {
+      Timer.periodic(Duration(seconds: 5), (timer) async {
         FirebaseUser olduser = await FirebaseAuth.instance.currentUser();
         await olduser.reload();
         var user = await FirebaseAuth.instance.currentUser();
@@ -49,7 +48,6 @@ class _VerificationCheckState extends State<VerificationCheck> {
         }
       });
     });
-    _timer = _timer;
     // void _checkIfVerified() async {
     //   await FirebaseAuth.instance.currentUser()
     //     ..reload();

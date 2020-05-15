@@ -208,11 +208,8 @@ class _RegisterState extends State<Register> {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
                             try {
-                              setState(() {
-                                email = email.trim();
-                              });
                               await _auth.registerWithEmailAndPassword(
-                                  email: email,
+                                  email: email.trim(),
                                   password: password,
                                   name: name,
                                   mobilenum: mobileNum,
