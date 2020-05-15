@@ -1,5 +1,5 @@
-import 'package:shareacab/chatscreen/chat_components/chat.dart';
-import 'package:shareacab/chatscreen/chat_models/chat_users.dart';
+import 'package:shareacab/screens/chatscreen/chat_components/chat.dart';
+import 'package:shareacab/screens/chatscreen/chat_models/chat_users.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

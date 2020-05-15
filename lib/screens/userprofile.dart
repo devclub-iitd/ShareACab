@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shareacab/shared/loading.dart';
 
 class MyProfile extends StatefulWidget {
   @override
@@ -6,12 +10,235 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
+  String name = '';
+  String hostel = '';
+  String mobilenum = '';
+  String sex = '';
+  int cancelledrides = 0;
+  int actualrating = 0;
+  int totalrides = 0;
+  bool loading = true;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final currentuser = Provider.of<FirebaseUser>(context);
+    //print(currentuser.uid);
 
-      body:  Center(
-        child: Text('User Profile will be shown here ', style: TextStyle(fontSize: 25.0),),
+    Firestore.instance
+        .collection('userdetails')
+        .document(currentuser.uid)
+        .get()
+        .then((value) {
+      if (value.exists) {
+        setState(() {
+          name = value.data['name'];
+          hostel = value.data['hostel'];
+          sex = value.data['sex'];
+          mobilenum = value.data['mobileNumber'];
+          totalrides = value.data['totalRides'];
+          actualrating = value.data['actualRating'];
+          cancelledrides = value.data['cancelledRides'];
+          loading = false;
+        });
+      } else {
+        setState(() {
+          loading = false;
+        });
+      }
+    });
+
+    // users.forEach((user) {
+    //   if (user.uid == currentuser.uid) {
+    //     print(user.name);
+    //   }
+    // });
+
+    return loading
+        ? Loading()
+        : Scaffold(
+      body: Container(
+        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 20.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(
+                      text: 'Name:  ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: '$name',
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 30.0,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 14.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(
+                      text: 'Mobile: ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: '$mobilenum',
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 22.0,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 14.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(
+                      text: 'Hostel:  ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: '$hostel',
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 14.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(
+                      text: 'Sex:  ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: '$sex',
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 14.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(
+                      text: 'Total Rides:  ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: '$totalrides',
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 14.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(
+                      text: 'Cancelled Rides:  ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: '$cancelledrides',
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              SizedBox(height: 14.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  RichText(
+                    text: TextSpan(
+                      text: 'Actual Ratings:  ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: '$actualrating',
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                        fontSize: 25.0,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shareacab/chatscreen/chat_modules/chat_page.dart';
+import 'package:shareacab/screens/chatscreen/chat_modules/chat_page.dart';
 
 class Messages extends StatefulWidget {
   @override

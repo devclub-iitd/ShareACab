@@ -1,7 +1,7 @@
-import 'package:shareacab/chatscreen/chat_components/chat_bubble.dart';
-import 'package:shareacab/chatscreen/chat_components/chat_detail_page_appbar.dart';
-import 'package:shareacab/chatscreen/chat_models/chat_message.dart';
-import 'package:shareacab/chatscreen/chat_models/send_menu_items.dart';
+import 'package:shareacab/screens/chatscreen/chat_components/chat_bubble.dart';
+import 'package:shareacab/screens/chatscreen/chat_components/chat_detail_page_appbar.dart';
+import 'package:shareacab/screens/chatscreen/chat_models/chat_message.dart';
+import 'package:shareacab/screens/chatscreen/chat_models/send_menu_items.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
