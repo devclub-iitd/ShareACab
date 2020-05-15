@@ -51,7 +51,6 @@ class _ChatPageState extends State<ChatPage> {
               itemCount: chatUsers.length,
               shrinkWrap: true,
               padding: EdgeInsets.only(top: 16),
-              physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context, index){
                 return ChatUsersList(
                   text: chatUsers[index].text,

@@ -23,6 +23,21 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     ChatMessage(message: "Hello Jane, I'm good what about you", type: MessageType.Sender),
     ChatMessage(message: "I'm fine, Working from home", type: MessageType.Receiver),
     ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(message: 'Oh! Nice. Same here man', type: MessageType.Sender),
   ];
 
   List<SendMenuItems> menuItems = [
@@ -59,7 +74,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                   ListView.builder(
                     itemCount: menuItems.length,
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index){
                       return Container(
                         padding: EdgeInsets.only(top: 10,bottom: 10),
@@ -92,16 +106,23 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       appBar: ChatDetailPageAppBar(),
       body: Stack(
         children: <Widget>[
-          ListView.builder(
-            itemCount: chatMessage.length,
-            shrinkWrap: true,
-            padding: EdgeInsets.only(top: 10,bottom: 10),
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index){
-              return ChatBubble(
-                chatMessage: chatMessage[index],
-              );
-            },
+          SingleChildScrollView(
+            child: Stack(
+              children: <Widget>[
+                ListView.builder(
+                  itemCount: chatMessage.length,
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(top: 10,bottom: 10),
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index){
+                    return ChatBubble(
+                      chatMessage: chatMessage[index],
+                    );
+                  },
+                ),
+
+              ],
+            ),
           ),
           Align(
             alignment: Alignment.bottomLeft,
@@ -152,8 +173,14 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               ),
             ),
           )
-        ],
+        ]
       ),
+
     );
   }
 }
+
+
+
+
+
