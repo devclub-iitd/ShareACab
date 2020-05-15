@@ -16,19 +16,31 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
+
+  bool passwordHide = false;
+
+
   // text field states
   String email = '';
   String password = '';
   String error = '';
 
   @override
+
+  void initState() {
+    passwordHide = true;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return loading
         ? Loading()
         : Scaffold(
-            backgroundColor: Colors.brown[100],
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
-              backgroundColor: Colors.brown[400],
+              backgroundColor: Theme.of(context).primaryColor,
+
               elevation: 0.0,
               title: Text('Sign in'),
               actions: <Widget>[
@@ -60,12 +72,26 @@ class _SignInState extends State<SignIn> {
                       ),
                       SizedBox(height: 20.0),
                       TextFormField(
-                        decoration:
-                            textInputDecoration.copyWith(hintText: 'Password'),
+                          decoration: textInputDecoration.copyWith(
+                          hintText: 'Password',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              passwordHide
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                passwordHide = !passwordHide;
+                              });
+                            },
+                          ),
+                        ),
                         validator: (val) => val.length < 6
                             ? 'Enter a password greater than 6 characters.'
                             : null,
-                        obscureText: true,
+                        obscureText: passwordHide,
                         onChanged: (val) {
                           setState(() => password = val);
                         },
@@ -81,8 +107,12 @@ class _SignInState extends State<SignIn> {
                           if (_formKey.currentState.validate()) {
                             setState(() => loading = true);
                             try {
-                              var flag = await _auth
-                                  .signInWithEmailAndPassword(email, password);
+
+                              setState(() {
+                                email = email.trim();
+                              });
+                              var flag = await _auth.signInWithEmailAndPassword(
+                                  email, password);
                               if (flag == false) {
                                 setState(() {
                                   error =
@@ -119,11 +149,16 @@ class _SignInState extends State<SignIn> {
                                       break;
                                     default:
                                       {
-                                        print('undefined error:' + error.toString());
-                                        error = 'An undefined Error happened.';
+
+                                        print("undefined error:" +
+                                            error.toString());
+                                        error = "An undefined Error happened.";
                                       }
                                   }
                                   loading = false;
+
+                                  // Scaffold.of(context).showSnackBar(
+                                  //     SnackBar(content: Text(error)));
                                 });
                               }
                             }

@@ -4,6 +4,8 @@ import 'package:shareacab/screens/authenticate/authenticate.dart';
 import 'rootscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'authenticate/verified_email_check.dart';
+
 class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,8 @@ class Wrapper extends StatelessWidget {
       return RootScreen();
     } else {
       //print('Not verified');
-      return Authenticate();
+
+      return VerificationCheck();
     }
   }
 }

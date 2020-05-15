@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,19 +11,12 @@ class _NotificationsState extends State<Notifications> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body:  Center(
-          child:  Column(
-            children: <Widget>[
-              Text(
-                'Notifs will be shown here',
-                style: TextStyle(fontSize: 25.0),
-              ),
-              TextFormField(
-                onChanged: (val) {
-                },
-              ),
-            ],
-          )),
+      body: Center(
+        child: Text(
+          'Notifications will be shown here',
+          style: TextStyle(fontSize: 25.0),
+        ),
+      ),
     );
   }
 }
