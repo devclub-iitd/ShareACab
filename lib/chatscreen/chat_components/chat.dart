@@ -42,7 +42,7 @@ class _ChatUsersListState extends State<ChatUsersList> {
                         children: <Widget>[
                           Text(widget.text),
                           SizedBox(height: 6,),
-                          Text(widget.secondaryText,style: TextStyle(fontSize: 14,color: Theme.of(context).accentColor),),
+                          Text(widget.secondaryText,style: TextStyle(fontSize: 14,color: Colors.grey.shade500),),
                         ],
                       ),
                     ),
@@ -50,7 +50,7 @@ class _ChatUsersListState extends State<ChatUsersList> {
                 ],
               ),
             ),
-            Text(widget.time,style: TextStyle(fontSize: 12,color: Theme.of(context).accentColor),),
+            Text(widget.time,style: TextStyle(fontSize: 12,color: widget.isMessageRead?Colors.pink:Colors.grey.shade500),),
           ],
         ),
       ),

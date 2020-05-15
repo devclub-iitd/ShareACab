@@ -23,6 +23,8 @@ class _RootScreenState extends State<RootScreen> {
   Widget choose;
   String _appBarTitle = '';
   bool isHome = true;
+  Icon appBarIcon;
+
   @override
   Widget build(BuildContext context) {
     return loading ? Loading():
@@ -32,7 +34,7 @@ class _RootScreenState extends State<RootScreen> {
         actions: isHome ? <Widget>[
 
           IconButton(
-              icon: Icon(Icons.filter),
+              icon: Icon(Icons.filter_list),
               color: Theme.of(context).accentColor,
               onPressed: (){
                 return Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -63,7 +65,16 @@ class _RootScreenState extends State<RootScreen> {
             },
             label: Text('Logout'),
           )
-        ] : <Widget>[],
+        ] : appBarIcon!=null?<Widget>[
+          IconButton(
+              icon: appBarIcon,
+              color: Theme.of(context).accentColor,
+              onPressed: (){
+                return Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return Filter();
+                }));
+              }),
+        ]: <Widget>[],
       ),
 
       floatingActionButton: isHome? FloatingActionButton(
@@ -97,21 +108,25 @@ class _RootScreenState extends State<RootScreen> {
               case 1:
                 choose = MyRequests();
                 _appBarTitle = 'My Requests';
+                appBarIcon = null;
                 isHome = false;
                 break;
               case 2:
                 choose = Messages();
                 _appBarTitle = 'Messages';
+                appBarIcon = Icon(Icons.search);
                 isHome = false;
                 break;
               case 3:
                 choose = Notifications();
                 _appBarTitle = 'Notifications';
+                appBarIcon = null;
                 isHome = false;
                 break;
               case 4:
                 choose = MyProfile();
                 _appBarTitle = 'My Profile';
+                appBarIcon = null;
                 isHome = false;
                 break;
               default:

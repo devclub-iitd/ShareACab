@@ -22,6 +22,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Column(
@@ -67,3 +68,4 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 }
+

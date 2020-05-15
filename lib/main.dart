@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.grey[600], //  Color(0xFFF3F5F7)
           accentColor: Colors.blueGrey[700],
           scaffoldBackgroundColor: Color(0xFFF3F5F7),
+
         ),
         home: Wrapper(),
       ),
