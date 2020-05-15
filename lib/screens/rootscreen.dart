@@ -25,6 +25,21 @@ class _RootScreenState extends State<RootScreen> {
   String _appBarTitle = '';
   bool justLoggedin = true;
   bool isHome = true;
+
+  int _selectedPage = 0;
+
+  List<Widget> pagelist = List<Widget>();
+
+  @override
+  void initState() {
+    pagelist.add(Dashboard());
+    pagelist.add(MyRequests());
+    pagelist.add(Messages());
+    pagelist.add(Notifications());
+    pagelist.add(MyProfile());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return loading
@@ -151,6 +166,7 @@ class _RootScreenState extends State<RootScreen> {
         onTap: (index) {
           setState(() {
             justLoggedin = false;
+            _selectedPage = index;
             switch (index) {
               case 0:
                 choose = Dashboard();
@@ -186,12 +202,20 @@ class _RootScreenState extends State<RootScreen> {
           });
         },
       ),
+      // body: justLoggedin
+      //     ? Center(
+      //         child: Dashboard(),
+      //       )
+      //     : Center(
+      //         child: choose,
+      //       ),
       body: justLoggedin
           ? Center(
         child: Dashboard(),
       )
-          : Center(
-        child: choose,
+          : IndexedStack(
+        index: _selectedPage,
+        children: pagelist,
       ),
     );
   }
