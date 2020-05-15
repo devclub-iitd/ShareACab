@@ -45,77 +45,7 @@ class _RootScreenState extends State<RootScreen> {
     return loading
         ? Loading()
         : Scaffold(
-      appBar: AppBar(
-        title: Text(_appBarTitle == '' ? 'Dashboard' : _appBarTitle),
-        actions: isHome
-            ? <Widget>[
-          IconButton(
-              icon: Icon(Icons.filter_list),
-              iconSize: 30.0,
-              //color: Theme.of(context).accentColor,
-              color: Colors.black,
-              onPressed: () {
-                return Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
-                      return Filter();
-                    }));
-              }),
-          IconButton(
-              icon: Icon(Icons.settings),
-              //color: Theme.of(context).accentColor,
-              color: Colors.black,
-              onPressed: () {
-                return Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
-                      return Settings();
-                    }));
-              }),
-          FlatButton.icon(
-            icon: Icon(Icons.person),
-            onPressed: () async {
-              setState(() => loading = true);
-              try {
-                await _auth.signOut();
-                setState(() => loading = false);
-              } catch (e) {
-                setState(() {
-                  error = e.message;
-                  setState(() => loading = false);
-                });
-              }
-            },
-            label: Text('Logout'),
-          )
-        ]
-            : <Widget>[
-          IconButton(
-              icon: Icon(Icons.settings),
-              //color: Theme.of(context).accentColor,
-              color: Colors.black,
-              onPressed: () {
-                return Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
-                      return Settings();
-                    }));
-              }),
-          FlatButton.icon(
-            icon: Icon(Icons.person),
-            onPressed: () async {
-              setState(() => loading = true);
-              try {
-                await _auth.signOut();
-                setState(() => loading = false);
-              } catch (e) {
-                setState(() {
-                  error = e.message;
-                  setState(() => loading = false);
-                });
-              }
-            },
-            label: Text('Logout'),
-          )
-        ],
-      ),
+      appBar: isHome ? AppBar(title: Text('Share A Cab'),) : null,
       floatingActionButton: isHome
           ? FloatingActionButton(
         onPressed: () {

@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/shared/loading.dart';
-
+import 'package:shareacab/main.dart';
 class MyProfile extends StatefulWidget {
   @override
   _MyProfileState createState() => _MyProfileState();
@@ -56,8 +56,10 @@ class _MyProfileState extends State<MyProfile> {
     return loading
         ? Loading()
         : Scaffold(
+      appBar: AppBar(title: Text('My Profile')),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
