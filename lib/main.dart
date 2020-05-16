@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 
-Color isOnline(BuildContext context) =>
+Color userIsOnline(BuildContext context) =>
     Colors.green;
 Color sendMessageIcon(BuildContext context) =>
     Colors.green;
@@ -50,8 +50,9 @@ class ThemeNotifier with ChangeNotifier {
   ThemeData _themeData;
 
   ThemeNotifier(this._themeData);
-  getTheme() => _themeData;
+  ThemeData getTheme() => _themeData;
 
+  // ignore: always_declare_return_types
   setTheme(ThemeData themeData) async {
     _themeData = themeData;
     notifyListeners();

@@ -145,7 +145,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                         color: Colors.blueGrey,
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      child: Icon(Icons.add,color: Theme.of(context).primaryColor,size: 21,),
+                      child: Icon(Icons.add,color: Theme.of(context).scaffoldBackgroundColor,size: 21,),
                     ),
                   ),
                   SizedBox(width: 16,),
@@ -153,7 +153,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                     child: TextField(
                       decoration: InputDecoration(
                           hintText: 'Type message...',
-                          hintStyle: TextStyle(color: Theme.of(context).primaryColor),
+                          hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
                           border: InputBorder.none
                       ),
                     ),
@@ -168,7 +168,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
               padding: EdgeInsets.only(right: 30,bottom: 50),
               child: FloatingActionButton(
                 onPressed: (){},
-                child: Icon(Icons.send,color: Theme.of(context).primaryColor,),
+                child: Icon(Icons.send,color: Theme.of(context).backgroundColor,),
                 backgroundColor: sendMessageIcon(context),
                 elevation: 0,
               ),

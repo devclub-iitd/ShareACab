@@ -23,11 +23,7 @@ class _ChatBubbleState extends State<ChatBubble> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            color: (widget.chatMessage.type == MessageType.Receiver ? Theme
-                .of(context)
-                .accentColor : Theme
-                .of(context)
-                .accentColor),
+            color: (widget.chatMessage.type == MessageType.Receiver ? Colors.grey : Colors.grey),
 //            HERE, BOTH RECEIVER MESSAGE COLOR AND SENDER MESSAGE COLOR NEEDS TO BE CHANGED
 //            (SUITABLE COLORS FOR DIFFERENT THEMES MUST BE DECIDED)
           ),
