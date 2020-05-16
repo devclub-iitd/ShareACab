@@ -52,8 +52,7 @@ class _RootScreenState extends State<RootScreen> {
                       IconButton(
                           icon: Icon(Icons.filter_list),
                           iconSize: 30.0,
-                          //color: Theme.of(context).accentColor,
-                          color: Colors.black,
+                          color: Theme.of(context).accentColor,
                           onPressed: () {
                             return Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
@@ -62,8 +61,7 @@ class _RootScreenState extends State<RootScreen> {
                           }),
                       IconButton(
                           icon: Icon(Icons.settings),
-                          //color: Theme.of(context).accentColor,
-                          color: Colors.black,
+                          color: Theme.of(context).accentColor,
                           onPressed: () {
                             return Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
@@ -90,8 +88,8 @@ class _RootScreenState extends State<RootScreen> {
                   : <Widget>[
                       IconButton(
                           icon: Icon(Icons.settings),
-                          //color: Theme.of(context).accentColor,
-                          color: Colors.black,
+                          color: Theme.of(context).accentColor,
+                          //color: Colors.black,
                           onPressed: () {
                             return Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
@@ -127,10 +125,10 @@ class _RootScreenState extends State<RootScreen> {
                     child: Icon(
                       Icons.add,
                     ),
-                    backgroundColor: Theme.of(context).accentColor,
                   )
                 : null,
             bottomNavigationBar: CurvedNavigationBar(
+              color: Theme.of(context).bottomAppBarColor,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               height: 50.0,
               items: <Widget>[
@@ -138,6 +136,7 @@ class _RootScreenState extends State<RootScreen> {
                   Icons.home,
                   size: 20.0,
                   color: Theme.of(context).accentColor,
+                  //color: Colors.black,
                 ),
                 Icon(
                   Icons.format_list_bulleted,
