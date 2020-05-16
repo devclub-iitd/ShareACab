@@ -5,12 +5,65 @@ import 'package:shareacab/screens/wrapper.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(MyApp());
+final darkTheme = ThemeData(
+  primarySwatch: Colors.grey,
+  bottomAppBarColor: Colors.black,
+  primaryColor: Colors.black,
+  brightness: Brightness.dark,
+  backgroundColor: const Color(0xFF212121),
+  accentColor: Color(0xFFff9f34),
+  accentIconTheme: IconThemeData(color: Colors.black),
+  dividerColor: Colors.black12,
+  scaffoldBackgroundColor: const Color(0xFF212121),
+  // inputDecorationTheme: const InputDecorationTheme(fillColor: Colors.black),
+);
+
+final lightTheme = ThemeData(
+    primarySwatch: Colors.grey,
+    bottomAppBarColor: Colors.white,
+    primaryColor: Colors.grey[600],
+    //primaryColor: Colors.white,
+    brightness: Brightness.light,
+    backgroundColor: const Color(0xFFE5E5E5),
+    accentColor: Colors.blueGrey[700],
+    //accentColor: Colors.blueGrey[700],
+    accentIconTheme: IconThemeData(color: Colors.white),
+    dividerColor: Colors.white54,
+    scaffoldBackgroundColor: const Color(0xFFE5E5E5),
+    //scaffoldBackgroundColor: const Color(0xFFFFFF)
+    );
+
+class ThemeNotifier with ChangeNotifier {
+  ThemeData _themeData;
+
+  ThemeNotifier(this._themeData);
+  getTheme() => _themeData;
+
+  setTheme(ThemeData themeData) async {
+    _themeData = themeData;
+    notifyListeners();
+  }
+}
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences.getInstance().then((prefs) {
+    var darkModeOn = prefs.getBool('darkMode') ?? true;
+    runApp(
+      ChangeNotifierProvider<ThemeNotifier>(
+        create: (_) => ThemeNotifier(darkModeOn ? darkTheme : lightTheme),
+        child: MyApp(),
+      ),
+    );
+  });
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return StreamProvider<FirebaseUser>.value(
       value: AuthService().user,
       child: MaterialApp(
@@ -28,11 +81,12 @@ class MyApp extends StatelessWidget {
           );
         },
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primaryColor: Colors.grey[600], //  Color(0xFFF3F5F7)
-          accentColor: Colors.blueGrey[700],
-          scaffoldBackgroundColor: Color(0xFFF3F5F7),
-        ),
+        theme: themeNotifier.getTheme(),
+        // theme: ThemeData(
+        //   primaryColor: Colors.grey[600], //  Color(0xFFF3F5F7)
+        //   accentColor: Colors.blueGrey[700],
+        //   scaffoldBackgroundColor: Color(0xFFF3F5F7),
+        // ),
         home: Wrapper(),
       ),
     );

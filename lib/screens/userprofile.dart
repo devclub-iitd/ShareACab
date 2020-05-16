@@ -71,7 +71,7 @@ class _MyProfileState extends State<MyProfile> {
                           text: TextSpan(
                             text: 'Name:  ',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Theme.of(context).accentColor,
                               fontSize: 25.0,
                               fontWeight: FontWeight.bold,
                             ),
@@ -96,7 +96,7 @@ class _MyProfileState extends State<MyProfile> {
                           text: TextSpan(
                             text: 'Mobile: ',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Theme.of(context).accentColor,
                               fontSize: 20.0,
                               fontWeight: FontWeight.bold,
                             ),
@@ -121,7 +121,7 @@ class _MyProfileState extends State<MyProfile> {
                           text: TextSpan(
                             text: 'Hostel:  ',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Theme.of(context).accentColor,
                               fontSize: 22.0,
                               fontWeight: FontWeight.bold,
                             ),
@@ -146,7 +146,7 @@ class _MyProfileState extends State<MyProfile> {
                           text: TextSpan(
                             text: 'Sex:  ',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Theme.of(context).accentColor,
                               fontSize: 22.0,
                               fontWeight: FontWeight.bold,
                             ),
@@ -171,7 +171,7 @@ class _MyProfileState extends State<MyProfile> {
                           text: TextSpan(
                             text: 'Total Rides:  ',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Theme.of(context).accentColor,
                               fontSize: 22.0,
                               fontWeight: FontWeight.bold,
                             ),
@@ -196,7 +196,7 @@ class _MyProfileState extends State<MyProfile> {
                           text: TextSpan(
                             text: 'Cancelled Rides:  ',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Theme.of(context).accentColor,
                               fontSize: 22.0,
                               fontWeight: FontWeight.bold,
                             ),
@@ -221,7 +221,7 @@ class _MyProfileState extends State<MyProfile> {
                           text: TextSpan(
                             text: 'Actual Ratings:  ',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: Theme.of(context).accentColor,
                               fontSize: 22.0,
                               fontWeight: FontWeight.bold,
                             ),
@@ -245,4 +245,3 @@ class _MyProfileState extends State<MyProfile> {
           );
   }
 }
->>>>>>> upstream/master

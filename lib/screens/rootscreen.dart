@@ -7,7 +7,6 @@ import 'notifications.dart';
 import 'myrequests.dart';
 import 'filter.dart';
 import 'settings.dart';
-import 'addroom.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/loading.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -25,6 +24,21 @@ class _RootScreenState extends State<RootScreen> {
   String _appBarTitle = '';
   bool justLoggedin = true;
   bool isHome = true;
+
+  int _selectedPage = 0;
+
+  List<Widget> pagelist = List<Widget>();
+
+  @override
+  void initState() {
+    pagelist.add(Dashboard());
+    pagelist.add(MyRequests());
+    pagelist.add(Messages());
+    pagelist.add(Notifications());
+    pagelist.add(MyProfile());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return loading
@@ -37,8 +51,7 @@ class _RootScreenState extends State<RootScreen> {
                       IconButton(
                           icon: Icon(Icons.filter_list),
                           iconSize: 30.0,
-                          //color: Theme.of(context).accentColor,
-                          color: Colors.black,
+                          color: Theme.of(context).accentColor,
                           onPressed: () {
                             return Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
@@ -47,8 +60,7 @@ class _RootScreenState extends State<RootScreen> {
                           }),
                       IconButton(
                           icon: Icon(Icons.settings),
-                          //color: Theme.of(context).accentColor,
-                          color: Colors.black,
+                          color: Theme.of(context).accentColor,
                           onPressed: () {
                             return Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
@@ -75,8 +87,8 @@ class _RootScreenState extends State<RootScreen> {
                   : <Widget>[
                       IconButton(
                           icon: Icon(Icons.settings),
-                          //color: Theme.of(context).accentColor,
-                          color: Colors.black,
+                          color: Theme.of(context).accentColor,
+                          //color: Colors.black,
                           onPressed: () {
                             return Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
@@ -101,21 +113,8 @@ class _RootScreenState extends State<RootScreen> {
                       )
                     ],
             ),
-            floatingActionButton: isHome
-                ? FloatingActionButton(
-                    onPressed: () {
-                      return Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return CreateRoom();
-                      }));
-                    },
-                    child: Icon(
-                      Icons.add,
-                    ),
-                    backgroundColor: Theme.of(context).accentColor,
-                  )
-                : null,
             bottomNavigationBar: CurvedNavigationBar(
+              color: Theme.of(context).bottomAppBarColor,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               height: 50.0,
               items: <Widget>[
@@ -123,6 +122,7 @@ class _RootScreenState extends State<RootScreen> {
                   Icons.home,
                   size: 20.0,
                   color: Theme.of(context).accentColor,
+                  //color: Colors.black,
                 ),
                 Icon(
                   Icons.format_list_bulleted,
@@ -151,6 +151,7 @@ class _RootScreenState extends State<RootScreen> {
               onTap: (index) {
                 setState(() {
                   justLoggedin = false;
+                  _selectedPage = index;
                   switch (index) {
                     case 0:
                       choose = Dashboard();
@@ -186,14 +187,21 @@ class _RootScreenState extends State<RootScreen> {
                 });
               },
             ),
+            // body: justLoggedin
+            //     ? Center(
+            //         child: Dashboard(),
+            //       )
+            //     : Center(
+            //         child: choose,
+            //       ),
             body: justLoggedin
                 ? Center(
                     child: Dashboard(),
                   )
-                : Center(
-                    child: choose,
+                : IndexedStack(
+                    index: _selectedPage,
+                    children: pagelist,
                   ),
           );
   }
 }
-
