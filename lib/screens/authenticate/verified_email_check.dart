@@ -28,7 +28,7 @@ class _VerificationCheckState extends State<VerificationCheck> {
 
     Future(() async {
       _timer = Timer.periodic(Duration(seconds: 5), (timer) async {
-        FirebaseUser olduser = await FirebaseAuth.instance.currentUser();
+        var olduser = await FirebaseAuth.instance.currentUser();
         await olduser.reload();
         var user = await FirebaseAuth.instance.currentUser();
         if (user.isEmailVerified) {

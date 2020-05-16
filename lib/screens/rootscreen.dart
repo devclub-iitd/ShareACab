@@ -22,13 +22,12 @@ class _RootScreenState extends State<RootScreen> {
   bool loading = false;
   String error = '';
   Widget choose;
-  String _appBarTitle = '';
   bool justLoggedin = true;
   bool isHome = true;
 
   int _selectedPage = 0;
 
-  List<Widget> pagelist = List<Widget>();
+  List<Widget> pagelist = <Widget>[];
 
   @override
   void initState() {
@@ -45,7 +44,35 @@ class _RootScreenState extends State<RootScreen> {
     return loading
         ? Loading()
         : Scaffold(
-      appBar: isHome ? AppBar(title: Text('Share A Cab'),) : null,
+      appBar: isHome ? AppBar(title: Text('Share A Cab'),actions: <Widget>[
+        IconButton(icon: Icon(Icons.filter_list), onPressed: (){
+          return Navigator.push(context, MaterialPageRoute(builder: (context){
+            return Filter();
+          }));
+        }),
+        IconButton(icon: Icon(Icons.settings), onPressed: (){
+          return Navigator.push(context, MaterialPageRoute(builder: (context){
+            return Settings();
+          }));
+        }),
+        FlatButton.icon(
+          icon: Icon(Icons.person),
+          onPressed: () async {
+            setState(() => loading = true);
+            try {
+              await _auth.signOut();
+              setState(() => loading = false);
+            } catch (e) {
+              setState(() {
+                error = e.message;
+                setState(() => loading = false);
+              });
+            }
+          },
+          label: Text('Logout'),
+        )
+
+      ],) : null,
       floatingActionButton: isHome
           ? FloatingActionButton(
         onPressed: () {
@@ -100,27 +127,22 @@ class _RootScreenState extends State<RootScreen> {
             switch (index) {
               case 0:
                 choose = Dashboard();
-                _appBarTitle = 'Dashboard';
                 isHome = true;
                 break;
               case 1:
                 choose = MyRequests();
-                _appBarTitle = 'My Requests';
                 isHome = false;
                 break;
               case 2:
                 choose = Messages();
-                _appBarTitle = 'Messages';
                 isHome = false;
                 break;
               case 3:
                 choose = Notifications();
-                _appBarTitle = 'Notifications';
                 isHome = false;
                 break;
               case 4:
                 choose = MyProfile();
-                _appBarTitle = 'My Profile';
                 isHome = false;
                 break;
             // default:

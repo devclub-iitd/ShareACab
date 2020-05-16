@@ -33,7 +33,6 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.blueGrey[700],
           scaffoldBackgroundColor: Color(0xFFF3F5F7),
           errorColor: Colors.pink
-
         ),
         home: Wrapper(),
       ),
@@ -47,10 +46,10 @@ class MyApp extends StatelessWidget {
 class MyAppBar extends AppBar {
   MyAppBar({Key key, Text title, Icon icon})
       : super(
-          key: key,
-          title: title,
-          actions: <Widget>[
-            IconButton(icon: icon,onPressed: (){},),
-          ]
-        );
+      key: key,
+      title: title,
+      actions: <Widget>[
+        IconButton(icon: icon,onPressed: (){},),
+      ]
+  );
 }
