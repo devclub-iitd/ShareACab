@@ -25,13 +25,13 @@ class _RegisterState extends State<Register> {
   String sex;
   String error = '';
 
-  List<String> _sex = [
+  final List<String> _sex = [
     'Female',
     'Male',
     'Others',
   ];
 
-  List<String> _hostels = [
+  final List<String> _hostels = [
     'Aravali',
     'Girnar',
     'Himadri',
@@ -207,10 +207,10 @@ class _RegisterState extends State<Register> {
                 ),
                 SizedBox(height: 20.0),
                 RaisedButton(
-                  color: Colors.pink[400],
+                  color: Theme.of(context).errorColor,
                   child: Text(
                     'Register',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
@@ -258,7 +258,7 @@ class _RegisterState extends State<Register> {
                 SizedBox(height: 12.0),
                 Text(
                   error,
-                  style: TextStyle(color: Colors.red, fontSize: 14.0),
+                  style: TextStyle(color: Theme.of(context).errorColor, fontSize: 14.0),
                 ),
               ],
             ),

@@ -85,7 +85,7 @@ class _VerificationCheckState extends State<VerificationCheck> {
                       text:
                           'Verification email has been sent to your ID. Please click on the verification link in your mail.',
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Theme.of(context).accentColor,
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold),
                     )),
@@ -94,14 +94,14 @@ class _VerificationCheckState extends State<VerificationCheck> {
                         text: TextSpan(
                       text:
                           'If you did not recieve it, please click on the button below',
-                      style: TextStyle(color: Colors.black, fontSize: 20.0),
+                      style: TextStyle(color: Theme.of(context).accentColor, fontSize: 20.0),
                     )),
                     //SizedBox(height: 20.0),
                     RaisedButton(
-                      color: Colors.pink[400],
+                      color: Theme.of(context).errorColor,
                       child: Text(
                         'Resend email',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Theme.of(context).primaryColor),
                       ),
                       onPressed: () {
                         try {
@@ -121,7 +121,7 @@ class _VerificationCheckState extends State<VerificationCheck> {
                       text:
                           'You will be auto-redirected to dashboard once you verify your account.',
                       style: TextStyle(
-                          color: Colors.red,
+                          color: Theme.of(context).errorColor,
                           fontSize: 20.0,
                           fontStyle: FontStyle.italic),
                     )),

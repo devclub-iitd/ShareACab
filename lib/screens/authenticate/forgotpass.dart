@@ -46,10 +46,10 @@ class _ForgotPassState extends State<ForgotPass> {
                 ),
                 SizedBox(height: 20.0),
                 RaisedButton(
-                  color: Colors.pink[400],
+                  color: Theme.of(context).errorColor,
                   child: Text(
                     'Send Password Reset Link',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
@@ -89,7 +89,7 @@ class _ForgotPassState extends State<ForgotPass> {
                 ),
                 SizedBox(height: 12.0),
                 RaisedButton(
-                  color: Colors.blue,
+                  color: Theme.of(context).primaryColor,
                   child: Text('Go back to Sign In'),
                   onPressed: () {
                     Navigator.pop(context);
@@ -98,7 +98,7 @@ class _ForgotPassState extends State<ForgotPass> {
                 SizedBox(height: 12.0),
                 Text(
                   message,
-                  style: TextStyle(color: Colors.red, fontSize: 14.0),
+                  style: TextStyle(color: Theme.of(context).errorColor, fontSize: 14.0),
                 ),
               ],
             ),
