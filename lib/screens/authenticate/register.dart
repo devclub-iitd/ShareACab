@@ -219,6 +219,7 @@ class _RegisterState extends State<Register> {
                                     mobilenum: mobileNum,
                                     hostel: hostel,
                                     sex: sex);
+
                                 setState(() {
                                   loading = false;
                                   error =
