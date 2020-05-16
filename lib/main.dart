@@ -7,6 +7,16 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+
+Color isOnline(BuildContext context) =>
+    Colors.green;
+Color sendMessageIcon(BuildContext context) =>
+    Colors.green;
+
+
+
+
 final darkTheme = ThemeData(
   primarySwatch: Colors.grey,
   bottomAppBarColor: Colors.black,
@@ -32,6 +42,7 @@ final lightTheme = ThemeData(
     accentIconTheme: IconThemeData(color: Colors.white),
     dividerColor: Colors.white54,
     scaffoldBackgroundColor: const Color(0xFFE5E5E5),
+
     //scaffoldBackgroundColor: const Color(0xFFFFFF)
     );
 
@@ -91,4 +102,11 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+
+class MyAppBar extends AppBar{
+  MyAppBar({Key key, Widget title, Icon icon}): super(key: key, title: title, actions: <Widget>[
+    IconButton(icon: icon, onPressed: (){})
+  ]);
 }
