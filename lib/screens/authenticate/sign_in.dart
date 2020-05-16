@@ -159,10 +159,10 @@ class _SignInState extends State<SignIn> {
                                         break;
                                       default:
                                         {
-                                          print("undefined error:" +
+                                          print('undefined error:' +
                                               error.toString());
                                           error =
-                                              "An undefined Error happened.";
+                                              'An undefined Error happened.';
                                         }
                                     }
                                     loading = false;

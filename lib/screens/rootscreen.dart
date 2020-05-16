@@ -27,7 +27,7 @@ class _RootScreenState extends State<RootScreen> {
 
   int _selectedPage = 0;
 
-  List<Widget> pagelist = List<Widget>();
+  List<Widget> pagelist = <Widget>[];
 
   @override
   void initState() {
