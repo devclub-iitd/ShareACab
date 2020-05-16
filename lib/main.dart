@@ -9,15 +9,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final darkTheme = ThemeData(
   primarySwatch: Colors.grey,
-  primaryColor: Colors.black,
   bottomAppBarColor: Colors.black,
+  primaryColor: Colors.black,
   brightness: Brightness.dark,
-  //backgroundColor: const Color(0xFF212121),
-  accentColor: Colors.white,
+  backgroundColor: const Color(0xFF212121),
+  accentColor: Color(0xFFff9f34),
   accentIconTheme: IconThemeData(color: Colors.black),
   dividerColor: Colors.black12,
   scaffoldBackgroundColor: const Color(0xFF212121),
-  inputDecorationTheme: const InputDecorationTheme(fillColor: Colors.black),
+  // inputDecorationTheme: const InputDecorationTheme(fillColor: Colors.black),
 );
 
 final lightTheme = ThemeData(
@@ -26,15 +26,14 @@ final lightTheme = ThemeData(
     primaryColor: Colors.grey[600],
     //primaryColor: Colors.white,
     brightness: Brightness.light,
-    //backgroundColor: const Color(0xFFE5E5E5),
-    accentColor: Colors.black,
+    backgroundColor: const Color(0xFFE5E5E5),
+    accentColor: Colors.blueGrey[700],
     //accentColor: Colors.blueGrey[700],
     accentIconTheme: IconThemeData(color: Colors.white),
     dividerColor: Colors.white54,
     scaffoldBackgroundColor: const Color(0xFFE5E5E5),
-    //scaffoldBackgroundColor: const Color(0xFFFFFF),
-    floatingActionButtonTheme:
-        FloatingActionButtonThemeData(backgroundColor: Colors.blueGrey[700]));
+    //scaffoldBackgroundColor: const Color(0xFFFFFF)
+    );
 
 class ThemeNotifier with ChangeNotifier {
   ThemeData _themeData;
@@ -49,6 +48,7 @@ class ThemeNotifier with ChangeNotifier {
 }
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then((prefs) {
     var darkModeOn = prefs.getBool('darkMode') ?? true;
     runApp(

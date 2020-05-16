@@ -7,7 +7,6 @@ import 'notifications.dart';
 import 'myrequests.dart';
 import 'filter.dart';
 import 'settings.dart';
-import 'addroom.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/loading.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -114,19 +113,6 @@ class _RootScreenState extends State<RootScreen> {
                       )
                     ],
             ),
-            floatingActionButton: isHome
-                ? FloatingActionButton(
-                    onPressed: () {
-                      return Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return CreateRoom();
-                      }));
-                    },
-                    child: Icon(
-                      Icons.add,
-                    ),
-                  )
-                : null,
             bottomNavigationBar: CurvedNavigationBar(
               color: Theme.of(context).bottomAppBarColor,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
