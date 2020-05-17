@@ -2,6 +2,7 @@ import 'package:shareacab/screens/chatscreen/chat_models/chat_message.dart';
 import 'package:shareacab/screens/chatscreen/chat_modules/chat_detail_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shareacab/main.dart';
 
 // ignore: must_be_immutable
 class ChatBubble extends StatefulWidget{
@@ -22,7 +23,7 @@ class _ChatBubbleState extends State<ChatBubble> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            color: (widget.chatMessage.type == MessageType.Receiver ? Colors.grey : Colors.grey),
+            color: (widget.chatMessage.type == MessageType.Receiver ? chatBubbleBackgroundColorReceiver : chatBubbleBackgroundColorSender),
 //            HERE, BOTH RECEIVER MESSAGE COLOR AND SENDER MESSAGE COLOR NEEDS TO BE CHANGED
 //            (SUITABLE COLORS FOR DIFFERENT THEMES MUST BE DECIDED)
           ),

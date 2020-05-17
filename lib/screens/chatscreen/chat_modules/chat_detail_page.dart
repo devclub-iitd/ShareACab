@@ -6,6 +6,7 @@ import 'package:shareacab/screens/chatscreen/chat_models/send_menu_items.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+
 enum MessageType{
   Sender,
   Receiver,
@@ -42,11 +43,11 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   ];
 
   List<SendMenuItems> menuItems = [
-    SendMenuItems(text: 'Photos & Videos', icons: Icons.image, color: Colors.amber),
-    SendMenuItems(text: 'Document', icons: Icons.insert_drive_file, color: Colors.blue),
-    SendMenuItems(text: 'Audio', icons: Icons.music_note, color: Colors.orange),
-    SendMenuItems(text: 'Location', icons: Icons.location_on, color: Colors.green),
-    SendMenuItems(text: 'Contact', icons: Icons.person, color: Colors.purple),
+    SendMenuItems(text: 'Photos & Videos', icons: Icons.image, color: getMenuItemColor[0]),
+    SendMenuItems(text: 'Document', icons: Icons.insert_drive_file, color: getMenuItemColor[1]),
+    SendMenuItems(text: 'Audio', icons: Icons.music_note, color: getMenuItemColor[2]),
+    SendMenuItems(text: 'Location', icons: Icons.location_on, color: getMenuItemColor[3]),
+    SendMenuItems(text: 'Contact', icons: Icons.person, color: getMenuItemColor[4]),
   ];
 
   void showModal(){
@@ -55,7 +56,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         builder: (context){
           return Container(
             height: MediaQuery.of(context).size.height/2,
-            color: Color(0xff737373),
             child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
@@ -142,7 +142,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                       height: 40,
                       width: 40,
                       decoration: BoxDecoration(
-                        color: Colors.blueGrey,
+                        color: Theme.of(context).accentColor,
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: Icon(Icons.add,color: Theme.of(context).scaffoldBackgroundColor,size: 21,),

@@ -16,6 +16,16 @@ Color sendMessageIcon(BuildContext context) =>
 
 
 
+List<Color> getMenuItemColor = [
+  Colors.amber,
+  Colors.blue,
+  Colors.orange,
+  Colors.green,
+  Colors.purple,
+];
+
+Color chatBubbleBackgroundColorReceiver = Colors.grey; // Needs to be changed acc to combinations, requires creativity
+Color chatBubbleBackgroundColorSender = Colors.grey; // Needs to be changed acc to combinations, requires creativity
 
 final darkTheme = ThemeData(
   primarySwatch: Colors.grey,
@@ -27,6 +37,7 @@ final darkTheme = ThemeData(
   accentIconTheme: IconThemeData(color: Colors.black),
   dividerColor: Colors.black12,
   scaffoldBackgroundColor: const Color(0xFF212121),
+
   // inputDecorationTheme: const InputDecorationTheme(fillColor: Colors.black),
 );
 
@@ -52,8 +63,8 @@ class ThemeNotifier with ChangeNotifier {
   ThemeNotifier(this._themeData);
   ThemeData getTheme() => _themeData;
 
-  // ignore: always_declare_return_types
-  setTheme(ThemeData themeData) async {
+
+    void setTheme(ThemeData themeData) async {
     _themeData = themeData;
     notifyListeners();
   }
