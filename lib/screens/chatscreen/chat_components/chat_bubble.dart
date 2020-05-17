@@ -28,7 +28,7 @@ class _ChatBubbleState extends State<ChatBubble> {
 //            (SUITABLE COLORS FOR DIFFERENT THEMES MUST BE DECIDED)
           ),
           padding: EdgeInsets.all(16),
-          child: Text(widget.chatMessage.message),
+          child: Text(widget.chatMessage.message, style: TextStyle(color: getChatBubbleTextColor()),),
         ),
       ),
     );

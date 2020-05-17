@@ -8,7 +8,7 @@ class ChatDetailPageAppBar extends StatelessWidget implements PreferredSizeWidge
     return AppBar(
       elevation: 0,
       automaticallyImplyLeading: false,
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       flexibleSpace: SafeArea(
         child: Container(
           padding: EdgeInsets.only(right: 16),
@@ -18,7 +18,7 @@ class ChatDetailPageAppBar extends StatelessWidget implements PreferredSizeWidge
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.arrow_back, color: Theme.of(context).primaryColor,),
+                icon: Icon(Icons.arrow_back, color: Theme.of(context).accentColor,),
               ),
               SizedBox(width: 2,),
               CircleAvatar(
