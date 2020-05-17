@@ -26,13 +26,13 @@ class _RegisterState extends State<Register> {
   String sex;
   String error = '';
 
-  List<String> _sex = [
+  final List<String> _sex = [
     'Female',
     'Male',
     'Others',
   ];
 
-  List<String> _hostels = [
+  final List<String> _hostels = [
     'Aravali',
     'Girnar',
     'Himadri',

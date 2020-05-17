@@ -58,6 +58,7 @@ class _MyProfileState extends State<MyProfile> {
     return loading
         ? Loading()
         : Scaffold(
+      appBar: AppBar(title: Text('My Profile'),),
             body: Container(
               padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: SingleChildScrollView(

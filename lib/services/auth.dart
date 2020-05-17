@@ -37,9 +37,11 @@ class AuthService {
       String mobilenum,
       String hostel,
       String sex}) async {
-    AuthResult result = await _auth.createUserWithEmailAndPassword(
+    // AuthResult
+    var result = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
-    FirebaseUser user = result.user;
+    // FirebaseUser
+    var user = result.user;
 
     // creating a new document for user
     await DatabaseService(uid: user.uid).enterUserData(
@@ -72,20 +74,24 @@ class AuthService {
     await user.reload();
     await user.getIdToken(refresh: true);
     await user.reload();
-    bool flag = await user.isEmailVerified;
+    //bool
+    var flag = await user.isEmailVerified;
     //print(flag);
     return flag;
   }
 
   Future<FirebaseUser> reloadCurrentUser() async {
-    FirebaseUser oldUser = await FirebaseAuth.instance.currentUser();
+    // FirebaseUser
+    var oldUser = await FirebaseAuth.instance.currentUser();
     await oldUser.reload();
-    FirebaseUser newUser = await FirebaseAuth.instance.currentUser();
+    // FirebaseUser
+    var newUser = await FirebaseAuth.instance.currentUser();
     return newUser;
   }
 
   Future<String> getCurrentUID() async {
-    FirebaseUser user = await _auth.currentUser();
+    // FirebaseUser
+    var user = await _auth.currentUser();
     final uid = user.uid;
     //print(uid);
     return uid.toString();

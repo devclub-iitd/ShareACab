@@ -27,7 +27,7 @@ class _RootScreenState extends State<RootScreen> {
 
   int _selectedPage = 0;
 
-  List<Widget> pagelist = List<Widget>();
+  List<Widget> pagelist = <Widget>[];
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _RootScreenState extends State<RootScreen> {
     return loading
         ? Loading()
         : Scaffold(
-            appBar: AppBar(
+            appBar: isHome ? AppBar(
               title: Text(_appBarTitle == '' ? 'Dashboard' : _appBarTitle),
               actions: isHome
                   ? <Widget>[
@@ -112,7 +112,7 @@ class _RootScreenState extends State<RootScreen> {
                         label: Text('Logout'),
                       )
                     ],
-            ),
+            ):null ,
             bottomNavigationBar: CurvedNavigationBar(
               color: Theme.of(context).bottomAppBarColor,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,

@@ -11,7 +11,7 @@ class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      appBar: AppBar(title: Text('My Notifications'),),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
