@@ -54,12 +54,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         context: context,
         builder: (context) {
           return Container(
-            height: MediaQuery.of(context).size.height / 2,
+            height: 1000,
             child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-              ),
               child: Column(
                 children: <Widget>[
                   SizedBox(
