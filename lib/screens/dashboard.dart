@@ -1,5 +1,8 @@
+import '../models/Request_Details.dart';
 import 'package:flutter/material.dart';
-import 'addroom.dart';
+import './addroom.dart';
+import './trips_list.dart';
+
 
 class Dashboard extends StatefulWidget {
   @override
@@ -7,25 +10,66 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+
+  final List<RequestDetails> _allRequests = [];
+
+  void _addNewRequest(
+      String rqDest,
+      String rqFinalDest,
+      DateTime startDate,
+      TimeOfDay startTime,
+      DateTime endDate,
+      TimeOfDay endTime,
+      bool privacy) {
+    final newRq = RequestDetails(
+        name: 'Name',
+        id: DateTime.now().toString(),
+        destination: rqDest,
+        finalDestination: rqFinalDest,
+        startDate: startDate,
+        startTime: startTime,
+        endDate: endDate,
+        endTime: endTime,
+        privacy: privacy
+    );
+    setState(() {
+      _allRequests.add(newRq);
+    });
+  }
+  void _startCreatingRequests(BuildContext ctx){
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))
+      ),
+      context: ctx,
+      builder: (_) {
+
+        return GestureDetector(
+          onTap: () {},
+          child: NewRequest(_addNewRequest),
+          behavior: HitTestBehavior.opaque,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(
-          'Dashboard will be shown here',
-          style: TextStyle(fontSize: 25.0),
-        ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.all(5),
+            height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top)*0.84 ,
+            width: double.infinity,
+            child: TripsList(_allRequests),
+          ),
+        ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          return Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return CreateRoom();
-          }));
-        },
-        backgroundColor: Theme.of(context).accentColor,
-        child: Icon(
-          Icons.add,
-        ),
+          onPressed: () => _startCreatingRequests(context),
+          child: Icon(Icons.add)
       ),
     );
   }
