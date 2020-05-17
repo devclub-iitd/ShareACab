@@ -7,6 +7,26 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+
+Color userIsOnline(BuildContext context) =>
+    Colors.green;
+Color sendMessageIcon(BuildContext context) =>
+    Colors.green;
+
+
+
+List<Color> getMenuItemColor = [
+  Colors.amber,
+  Colors.blue,
+  Colors.orange,
+  Colors.green,
+  Colors.purple,
+];
+
+Color chatBubbleBackgroundColorReceiver = Colors.grey; // Needs to be changed acc to combinations, requires creativity
+Color chatBubbleBackgroundColorSender = Colors.grey; // Needs to be changed acc to combinations, requires creativity
+
 final darkTheme = ThemeData(
   primarySwatch: Colors.grey,
   bottomAppBarColor: Colors.black,
@@ -17,6 +37,7 @@ final darkTheme = ThemeData(
   accentIconTheme: IconThemeData(color: Colors.black),
   dividerColor: Colors.black12,
   scaffoldBackgroundColor: const Color(0xFF212121),
+
   // inputDecorationTheme: const InputDecorationTheme(fillColor: Colors.black),
 );
 
@@ -32,6 +53,7 @@ final lightTheme = ThemeData(
     accentIconTheme: IconThemeData(color: Colors.white),
     dividerColor: Colors.white54,
     scaffoldBackgroundColor: const Color(0xFFE5E5E5),
+
     //scaffoldBackgroundColor: const Color(0xFFFFFF)
     );
 
@@ -39,9 +61,10 @@ class ThemeNotifier with ChangeNotifier {
   ThemeData _themeData;
 
   ThemeNotifier(this._themeData);
-  getTheme() => _themeData;
+  ThemeData getTheme() => _themeData;
 
-  setTheme(ThemeData themeData) async {
+
+    void setTheme(ThemeData themeData) async {
     _themeData = themeData;
     notifyListeners();
   }
@@ -91,4 +114,11 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+
+class MyAppBar extends AppBar{
+  MyAppBar({Key key, Widget title, Icon icon}): super(key: key, title: title, actions: <Widget>[
+    IconButton(icon: icon, onPressed: (){})
+  ]);
 }
