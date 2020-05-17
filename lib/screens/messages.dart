@@ -8,10 +8,15 @@ class Messages extends StatefulWidget {
 }
 
 class _MessagesState extends State<Messages> {
+  bool isSearching = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(title: Text('Messages'),icon: Icon(Icons.search),),
+      appBar: MyAppBar(title: !isSearching ? Text('Messages') : TextField(decoration: InputDecoration(hintText: 'Search'),), iconButton: IconButton(icon: Icon(Icons.search), onPressed: (){
+      setState(() {
+        isSearching = !isSearching;
+      });
+      }),),
 
       body:  ChatPage()
     );

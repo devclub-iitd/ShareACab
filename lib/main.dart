@@ -123,7 +123,7 @@ class MyApp extends StatelessWidget {
 
 
 class MyAppBar extends AppBar{
-  MyAppBar({Key key, Widget title, Icon icon}): super(key: key, title: title, actions: <Widget>[
-    IconButton(icon: icon, onPressed: (){})
+  MyAppBar({Key key, Widget title, IconButton iconButton}): super(key: key, title: title, actions: <Widget>[
+    IconButton(icon: iconButton, onPressed: (){})
   ]);
 }
