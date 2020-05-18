@@ -13,7 +13,7 @@ class _MessagesState extends State<Messages> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: MyAppBar(title:  Text('Messages'), iconButton: IconButton(icon: Icon(Icons.search), onPressed: (){
-          showSearch(context: context, delegate: DataSearch());
+          showSearch(context: context, delegate: DataSearch(), );
         }),),
 
         body:  ChatPage()
@@ -23,6 +23,7 @@ class _MessagesState extends State<Messages> {
 
 class DataSearch extends SearchDelegate{
 
+
   final chats =[
     'Arpit Sir',
     'Vishal Sir',
@@ -30,10 +31,7 @@ class DataSearch extends SearchDelegate{
     'Ishaan',
     'Kshitij'
   ];
-  final recent =[
-    'Shashwat Sir',
-    'Kshitij'
-  ];
+  final recent =[];
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -62,10 +60,14 @@ class DataSearch extends SearchDelegate{
   @override
   Widget buildSuggestions(BuildContext context) {
     final suggestionList = query.isEmpty ? recent : chats;
-    return ListView.builder(itemBuilder: (context, index)=>
-        ListTile(leading: Icon(Icons.person),
-          title: Text(suggestionList[index]),),
-      itemCount: suggestionList.length,
+    return Scaffold(
+      backgroundColor: chatSearchBackgroundColor,
+      body: ListView.builder(itemBuilder: (context, index)=>
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text(suggestionList[index]),),
+        itemCount: suggestionList.length,
+      ),
     );
 
   }

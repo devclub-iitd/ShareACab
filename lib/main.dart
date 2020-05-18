@@ -30,6 +30,7 @@ Color getChatBubbleTextColor() {
 
 Color chatBubbleBackgroundColorReceiver = Colors.lightBlue; // Needs to be changed acc to combinations, requires creativity
 Color chatBubbleBackgroundColorSender = Colors.lightGreen; // Needs to be changed acc to combinations, requires creativity
+Color chatSearchBackgroundColor = Colors.white;
 
 final darkTheme = ThemeData(
   primarySwatch: Colors.grey,
