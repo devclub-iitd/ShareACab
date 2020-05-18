@@ -60,7 +60,7 @@ class _DashboardState extends State<Dashboard> {
         children: <Widget>[
           Container(
             margin: EdgeInsets.all(5),
-            height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top)*0.84 ,
+            height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - MediaQuery.of(context).padding.bottom)*0.84 ,
             width: double.infinity,
             child: TripsList(_allRequests),
           ),

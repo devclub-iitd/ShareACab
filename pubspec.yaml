@@ -21,7 +21,6 @@ dependencies:
   flutter:
     sdk: flutter
   intl: ^0.16.1
-
   firebase_auth: ^0.14.0+5
   cloud_firestore: ^0.13.0+1
   firebase_core: ^0.4.2+1
@@ -35,7 +34,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic: ^1.9.0
+  pedantic: ^1.8.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
