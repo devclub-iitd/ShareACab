@@ -21,8 +21,6 @@ jobs:
       # Disabled for now, causing issues
       # - run: flutter test
       - run: flutter build apk
-<<<<<<< HEAD
-=======
       - name: Create a Release
         if: github.event_name == 'push'
         uses: ncipollo/release-action@v1
@@ -33,7 +31,6 @@ jobs:
           tag: "test"
           commit: "master" 
           allowUpdates: true
->>>>>>> upstream/master
 
   build-xcode:
     runs-on: macos-latest
