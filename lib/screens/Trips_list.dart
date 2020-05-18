@@ -1,4 +1,4 @@
-import '../models/Request_Details.dart';
+import 'package:shareacab/models/Request_Details.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
