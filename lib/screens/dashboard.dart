@@ -1,7 +1,7 @@
 import 'package:shareacab/models/Request_details.dart';
 import 'package:flutter/material.dart';
 import 'package:shareacab/screens/addroom.dart';
-import 'package:shareacab/screens/trips_list.dart';
+import 'package:shareacab/screens/Trips_list.dart';
 
 
 class Dashboard extends StatefulWidget {
