@@ -132,7 +132,7 @@ class _NewRequestState extends State<NewRequest> {
                 value: _destination,
                 onChanged:(val){
                   setState(() {
-                    this._destination = val;
+                    _destination = val;
                   });
                 },
                 hint: Text('Select The Destination'),
