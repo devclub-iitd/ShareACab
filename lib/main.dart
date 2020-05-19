@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shareacab/screens/authenticate/forgotpass.dart';
-import 'package:shareacab/screens/rootscreen.dart';
 import 'package:shareacab/screens/wrapper.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -28,8 +27,32 @@ Color getChatBubbleTextColor() {
   return Colors.black;
 }
 
+ThemeData getSearchAppBarTheme(BuildContext context) {
+  final theme = Theme.of(context);
+  assert(theme != null);
+  if(theme.brightness == Brightness.light) {
+    return theme.copyWith(
+      primaryColor: Colors.white,
+      primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),
+      primaryColorBrightness: Brightness.light,
+      primaryTextTheme: theme.textTheme,
+    );
+  }
+  else {
+    return theme.copyWith(
+      primaryColor: Colors.black,
+      primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.white),
+      primaryColorBrightness: Brightness.dark,
+      primaryTextTheme: theme.textTheme,
+    );
+  }
+}
+
 Color chatBubbleBackgroundColorReceiver = Colors.lightBlue; // Needs to be changed acc to combinations, requires creativity
 Color chatBubbleBackgroundColorSender = Colors.lightGreen; // Needs to be changed acc to combinations, requires creativity
+Color chatSearchBackgroundColor = Colors.white;
+
+Color getActionBarIconColor() { return Colors.white; }
 
 final darkTheme = ThemeData(
   primarySwatch: Colors.grey,
@@ -99,7 +122,6 @@ class MyApp extends StatelessWidget {
         routes: {
           '/wrapper': (context) => Wrapper(),
           '/accounts/forgotpass': (context) => ForgotPass(),
-          '/rootscreen': (context) => RootScreen(),
         },
         title: 'Share A Cab',
         builder: (context, child) {
@@ -115,15 +137,7 @@ class MyApp extends StatelessWidget {
         //   accentColor: Colors.blueGrey[700],
         //   scaffoldBackgroundColor: Color(0xFFF3F5F7),
         // ),
-        home: Wrapper(),
       ),
     );
   }
-}
-
-
-class MyAppBar extends AppBar{
-  MyAppBar({Key key, Widget title, Icon icon}): super(key: key, title: title, actions: <Widget>[
-    IconButton(icon: icon, onPressed: (){})
-  ]);
 }
