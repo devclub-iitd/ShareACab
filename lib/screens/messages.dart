@@ -9,75 +9,75 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> {
   bool isSearching = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MyAppBar(title:  Text('Messages'), iconButton: IconButton(icon: Icon(Icons.search), onPressed: (){
-          showSearch(context: context, delegate: DataSearch(), );
-        }),),
-
-        body:  ChatPage()
-    );
+        appBar: AppBar(
+          title: Text('Messages'),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  showSearch(
+                    context: context,
+                    delegate: DataSearch(),
+                  );
+                })
+          ],
+        ),
+        body: ChatPage());
   }
 }
- class DataSearch extends SearchDelegate{
 
-
-  final chats =[
-    'Arpit Sir',
-    'Vishal Sir',
-    'Shashwat Sir',
-    'Ishaan',
-    'Kshitij'
-  ];
+class DataSearch extends SearchDelegate {
+  final chats = ['Arpit Sir', 'Vishal Sir', 'Shashwat Sir', 'Ishaan', 'Kshitij'];
+  final recent = [];
 
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
-      IconButton(icon: Icon(Icons.clear), onPressed: (){
-        query = '';
-      })
+      IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: () {
+            query = '';
+          })
     ];
-
   }
 
   @override
   Widget buildLeading(BuildContext context) {
-    return IconButton(icon: AnimatedIcon(icon: AnimatedIcons.menu_arrow, progress: transitionAnimation), onPressed: (){
-      close(context, null);
-    });
-
+    return IconButton(
+        icon: AnimatedIcon(icon: AnimatedIcons.menu_arrow, progress: transitionAnimation),
+        onPressed: () {
+          close(context, null);
+        });
   }
 
   @override
   Widget buildResults(BuildContext context) {
-
     throw UnimplementedError();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return
-       ListView.builder(itemBuilder: (context, index)=>
-          ListTile(
-            ),
-      );
-
-
+    final suggestionList = query.isEmpty ? recent : chats;
+    return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body: ListView.builder(
+        itemBuilder: (context, index) => ListTile(
+          leading: Icon(Icons.person),
+          title: Text(suggestionList[index]),
+        ),
+        itemCount: suggestionList.length,
+      ),
+    );
   }
+
   @override
   ThemeData appBarTheme(BuildContext context) {
-
     assert(context != null);
-//     ThemeData
-    final  theme = Theme.of(context);
-    assert(theme != null);
-    return theme.copyWith(
-      primaryColor: Theme.of(context).primaryColor,
-      primaryIconTheme: theme.primaryIconTheme,
-      primaryColorBrightness: Theme.of(context).primaryColorBrightness,
-      primaryTextTheme: Theme.of(context).primaryTextTheme,
-    );
+    return getSearchAppBarTheme(context);
   }
 
 }
