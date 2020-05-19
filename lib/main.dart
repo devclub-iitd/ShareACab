@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shareacab/screens/authenticate/forgotpass.dart';
+import 'package:shareacab/screens/edituserdetails.dart';
+import 'package:shareacab/screens/rootscreen.dart';
 import 'package:shareacab/screens/createtrip.dart';
 import 'package:shareacab/screens/wrapper.dart';
 import 'package:shareacab/services/auth.dart';
@@ -7,20 +9,35 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-Color userIsOnline(BuildContext context) =>
-    Colors.green;
-Color sendMessageIcon(BuildContext context) =>
-    Colors.green;
+Color userIsOnline(BuildContext context) => Colors.green;
+Color sendMessageIcon(BuildContext context) => Colors.green;
 
 Color getMenuItemColor(int i) {
-  switch(i) {
-    case 0: { return Colors.amber; }
-    case 1: { return Colors.blue; }
-    case 2: { return Colors.orange; }
-    case 3: { return Colors.green; }
-    case 4: { return Colors.purple; }
-    default: {return Colors.amber; }
+  switch (i) {
+    case 0:
+      {
+        return Colors.amber;
+      }
+    case 1:
+      {
+        return Colors.blue;
+      }
+    case 2:
+      {
+        return Colors.orange;
+      }
+    case 3:
+      {
+        return Colors.green;
+      }
+    case 4:
+      {
+        return Colors.purple;
+      }
+    default:
+      {
+        return Colors.amber;
+      }
   }
 }
 
@@ -31,15 +48,14 @@ Color getChatBubbleTextColor() {
 ThemeData getSearchAppBarTheme(BuildContext context) {
   final theme = Theme.of(context);
   assert(theme != null);
-  if(theme.brightness == Brightness.light) {
+  if (theme.brightness == Brightness.light) {
     return theme.copyWith(
       primaryColor: Colors.white,
       primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.grey),
       primaryColorBrightness: Brightness.light,
       primaryTextTheme: theme.textTheme,
     );
-  }
-  else {
+  } else {
     return theme.copyWith(
       primaryColor: Colors.black,
       primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.white),
@@ -49,11 +65,15 @@ ThemeData getSearchAppBarTheme(BuildContext context) {
   }
 }
 
-Color chatBubbleBackgroundColorReceiver = Colors.lightBlue; // Needs to be changed acc to combinations, requires creativity
-Color chatBubbleBackgroundColorSender = Colors.lightGreen; // Needs to be changed acc to combinations, requires creativity
+Color chatBubbleBackgroundColorReceiver = Colors
+    .lightBlue; // Needs to be changed acc to combinations, requires creativity
+Color chatBubbleBackgroundColorSender = Colors
+    .lightGreen; // Needs to be changed acc to combinations, requires creativity
 Color chatSearchBackgroundColor = Colors.white;
 
-Color getActionBarIconColor() { return Colors.white; }
+Color getActionBarIconColor() {
+  return Colors.white;
+}
 
 final darkTheme = ThemeData(
   primarySwatch: Colors.grey,
@@ -70,21 +90,21 @@ final darkTheme = ThemeData(
 );
 
 final lightTheme = ThemeData(
-    primarySwatch: Colors.grey,
-    bottomAppBarColor: Colors.white,
-    primaryColor: Colors.grey[600],
-    primaryColorDark: Colors.grey[800],
-    //primaryColor: Colors.white,
-    brightness: Brightness.light,
-    backgroundColor: const Color(0xFFE5E5E5),
-    accentColor: Colors.blueGrey[700],
-    //accentColor: Colors.blueGrey[700],
-    accentIconTheme: IconThemeData(color: Colors.white),
-    dividerColor: Colors.white54,
-    scaffoldBackgroundColor: const Color(0xFFE5E5E5),
+  primarySwatch: Colors.grey,
+  bottomAppBarColor: Colors.white,
+  primaryColor: Colors.grey[600],
+  primaryColorDark: Colors.grey[800],
+  //primaryColor: Colors.white,
+  brightness: Brightness.light,
+  backgroundColor: const Color(0xFFE5E5E5),
+  accentColor: Colors.blueGrey[700],
+  //accentColor: Colors.blueGrey[700],
+  accentIconTheme: IconThemeData(color: Colors.white),
+  dividerColor: Colors.white54,
+  scaffoldBackgroundColor: const Color(0xFFE5E5E5),
 
-    //scaffoldBackgroundColor: const Color(0xFFFFFF)
-    );
+  //scaffoldBackgroundColor: const Color(0xFFFFFF)
+);
 
 class ThemeNotifier with ChangeNotifier {
   ThemeData _themeData;
@@ -92,8 +112,7 @@ class ThemeNotifier with ChangeNotifier {
   ThemeNotifier(this._themeData);
   ThemeData getTheme() => _themeData;
 
-
-    void setTheme(ThemeData themeData) async {
+  void setTheme(ThemeData themeData) async {
     _themeData = themeData;
     notifyListeners();
   }
@@ -123,6 +142,8 @@ class MyApp extends StatelessWidget {
         routes: {
           '/wrapper': (context) => Wrapper(),
           '/accounts/forgotpass': (context) => ForgotPass(),
+          '/rootscreen': (context) => RootScreen(),
+          '/edituserdetails': (context) => EditForm(),
           CreateTrip.routeName : (context) => CreateTrip(),
         },
         title: 'Share A Cab',
@@ -143,3 +164,11 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// class MyAppBar extends AppBar {
+//   MyAppBar({Key key, Widget title, Icon icon})
+//       : super(
+//             key: key,
+//             title: title,
+//             actions: <Widget>[IconButton(icon: icon, onPressed: () {})]);
+// }
