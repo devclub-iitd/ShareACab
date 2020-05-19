@@ -1,5 +1,4 @@
 import 'dart:async' show Future, Timer;
-
 import 'package:flutter/material.dart';
 import 'package:shareacab/screens/rootscreen.dart';
 import 'package:shareacab/services/auth.dart';

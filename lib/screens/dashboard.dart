@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shareacab/screens/createtrip.dart';
+import 'package:shareacab/screens/tripslist.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shareacab/screens/filter.dart';
 import 'package:shareacab/screens/settings.dart';
 import 'package:shareacab/services/auth.dart';
+import 'package:shareacab/models/alltrips.dart';
 import '../main.dart';
-import 'addroom.dart';
 
 class Dashboard extends StatefulWidget {
   final AuthService _auth;
-
   Dashboard(this._auth);
-
   @override
   _DashboardState createState() => _DashboardState();
 }
@@ -19,6 +19,17 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+
+  void _startCreatingTrip(BuildContext ctx) async {
+   await Navigator.of(ctx).pushNamed (
+     CreateTrip.routeName,
+    );
+   setState(() {
+
+   });
+  }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,10 +70,7 @@ class _DashboardState extends State<Dashboard> {
                     TextStyle(color: Theme.of(context).accentColor),
               );
               await pr.show();
-              await Future.delayed(Duration(
-                  seconds:
-                      1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
-
+              await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
               try {
                 await widget._auth.signOut();
                 await pr.hide();
@@ -79,22 +87,23 @@ class _DashboardState extends State<Dashboard> {
           )
         ],
       ),
-      body: Center(
-        child: Text(
-          'Dashboard will be shown here',
-          style: TextStyle(fontSize: 25.0),
-        ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.all(5),
+            height: (MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).padding.top) *
+                0.87,
+            width: double.infinity,
+            child: TripsList(allTrips),
+          ),
+        ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          return Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return CreateRoom();
-          }));
-        },
-        backgroundColor: Theme.of(context).accentColor,
-        child: Icon(
-          Icons.add,
-        ),
+          splashColor: Theme.of(context).primaryColor,
+          onPressed: () => _startCreatingTrip(context),
+          child: Icon(Icons.add),
       ),
     );
   }
