@@ -60,15 +60,14 @@ class DataSearch extends SearchDelegate{
   @override
   Widget buildSuggestions(BuildContext context) {
     final suggestionList = query.isEmpty ? recent : chats;
-    return Scaffold(
-      backgroundColor: chatSearchBackgroundColor,
-      body: ListView.builder(itemBuilder: (context, index)=>
+    return
+       ListView.builder(itemBuilder: (context, index)=>
           ListTile(
             leading: Icon(Icons.person),
             title: Text(suggestionList[index]),),
         itemCount: suggestionList.length,
-      ),
-    );
+      );
+
 
   }
   @override
