@@ -50,108 +50,147 @@ class _EditFormState extends State<EditForm> {
         stream: DatabaseService(uid: user.uid).userData,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      'Update your user details.',
-                      style: TextStyle(
-                          fontSize: 24.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 20.0),
-                    TextFormField(
-                      initialValue: snapshot.data['name'],
-                      decoration:
-                          textInputDecoration.copyWith(hintText: 'Name'),
-                      validator: (val) =>
-                          val.isEmpty ? 'Enter a valid Name' : null,
-                      onChanged: (val) {
-                        setState(() => name = val);
-                      },
-                    ),
-                    SizedBox(height: 20.0),
-                    TextFormField(
-                      initialValue: snapshot.data['mobileNumber'],
-                      decoration: textInputDecoration.copyWith(
-                          hintText: 'Mobile Number'),
-                      validator: (val) => val.length != 10
-                          ? 'Enter a valid mobile number.'
-                          : null,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        WhitelistingTextInputFormatter.digitsOnly
-                      ],
-                      onChanged: (val) {
-                        setState(() => mobileNum = val);
-                      },
-                    ),
-                    SizedBox(height: 20.0),
-                    DropdownButtonFormField(
-                      decoration: textInputDecoration,
-                      hint: Text('Select Hostel'),
-                      value: hostel ?? snapshot.data['hostel'],
-                      onChanged: (newValue) {
-                        setState(() {
-                          hostel = newValue;
-                        });
-                      },
-                      items: _hostels.map((temp) {
-                        return DropdownMenuItem(
-                          child: Text(temp),
-                          value: temp,
-                        );
-                      }).toList(),
-                      validator: (val) =>
-                          val == null ? 'Please select your hostel' : null,
-                    ),
-                    SizedBox(height: 20.0),
-                    DropdownButtonFormField(
-                      decoration: textInputDecoration,
-                      hint: Text('Select Sex'),
-                      value: sex ?? snapshot.data['sex'],
-                      onChanged: (newValue) {
-                        setState(() {
-                          sex = newValue;
-                        });
-                      },
-                      items: _sex.map((temp) {
-                        return DropdownMenuItem(
-                          child: Text(temp),
-                          value: temp,
-                        );
-                      }).toList(),
-                      validator: (val) =>
-                          val == null ? 'Please select your sex' : null,
-                    ),
-                    SizedBox(height: 20.0),
-                    RaisedButton(
-                      color: Theme.of(context).accentColor,
-                      child: Text('Update'),
-                      onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          Navigator.pop(context);
-                          setState(() {
-                            if (name == '') {
-                              name = snapshot.data['name'];
-                            }
-                            if (mobileNum == '') {
-                              mobileNum = snapshot.data['mobileNumber'];
-                            }
-                            hostel ??= snapshot.data['hostel'];
-                            sex ??= snapshot.data['sex'];
-                          });
-                          await DatabaseService(uid: user.uid).updateUserData(
-                            name: name,
-                            mobileNumber: mobileNum,
-                            hostel: hostel,
-                            sex: sex,
-                          );
-                        }
-                      },
-                    ),
+            return GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: Scaffold(
+                appBar: AppBar(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  elevation: 0.0,
+                  title: Text('Edit User Details'),
+                  actions: <Widget>[
+                    FlatButton.icon(
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            Navigator.pop(context);
+                            setState(() {
+                              if (name == '') {
+                                name = snapshot.data['name'];
+                              }
+                              if (mobileNum == '') {
+                                mobileNum = snapshot.data['mobileNumber'];
+                              }
+                              hostel ??= snapshot.data['hostel'];
+                              sex ??= snapshot.data['sex'];
+                            });
+                            await DatabaseService(uid: user.uid).updateUserData(
+                              name: name,
+                              mobileNumber: mobileNum,
+                              hostel: hostel,
+                              sex: sex,
+                            );
+                          }
+                        },
+                        icon: Icon(Icons.done),
+                        label: Text('Done'))
                   ],
+                ),
+                body: Container(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+                  child: Form(
+                    key: _formKey,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 20.0),
+                          TextFormField(
+                            initialValue: snapshot.data['name'],
+                            decoration:
+                                textInputDecoration.copyWith(hintText: 'Name'),
+                            validator: (val) =>
+                                val.isEmpty ? 'Enter a valid Name' : null,
+                            onChanged: (val) {
+                              setState(() => name = val);
+                            },
+                          ),
+                          SizedBox(height: 20.0),
+                          TextFormField(
+                            initialValue: snapshot.data['mobileNumber'],
+                            decoration: textInputDecoration.copyWith(
+                                hintText: 'Mobile Number'),
+                            validator: (val) => val.length != 10
+                                ? 'Enter a valid mobile number.'
+                                : null,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              WhitelistingTextInputFormatter.digitsOnly
+                            ],
+                            onChanged: (val) {
+                              setState(() => mobileNum = val);
+                            },
+                          ),
+                          SizedBox(height: 20.0),
+                          DropdownButtonFormField(
+                            decoration: textInputDecoration,
+                            hint: Text('Select Hostel'),
+                            value: hostel ?? snapshot.data['hostel'],
+                            onChanged: (newValue) {
+                              setState(() {
+                                hostel = newValue;
+                              });
+                            },
+                            items: _hostels.map((temp) {
+                              return DropdownMenuItem(
+                                child: Text(temp),
+                                value: temp,
+                              );
+                            }).toList(),
+                            validator: (val) => val == null
+                                ? 'Please select your hostel'
+                                : null,
+                          ),
+                          SizedBox(height: 20.0),
+                          DropdownButtonFormField(
+                            decoration: textInputDecoration,
+                            hint: Text('Select Sex'),
+                            value: sex ?? snapshot.data['sex'],
+                            onChanged: (newValue) {
+                              setState(() {
+                                sex = newValue;
+                              });
+                            },
+                            items: _sex.map((temp) {
+                              return DropdownMenuItem(
+                                child: Text(temp),
+                                value: temp,
+                              );
+                            }).toList(),
+                            validator: (val) =>
+                                val == null ? 'Please select your sex' : null,
+                          ),
+                          SizedBox(height: 20.0),
+                          // RaisedButton(
+                          //   color: Theme.of(context).accentColor,
+                          //   child: Text('Update'),
+                          //   onPressed: () async {
+                          //     if (_formKey.currentState.validate()) {
+                          //       Navigator.pop(context);
+                          //       setState(() {
+                          //         if (name == '') {
+                          //           name = snapshot.data['name'];
+                          //         }
+                          //         if (mobileNum == '') {
+                          //           mobileNum = snapshot.data['mobileNumber'];
+                          //         }
+                          //         hostel ??= snapshot.data['hostel'];
+                          //         sex ??= snapshot.data['sex'];
+                          //       });
+                          //       await DatabaseService(uid: user.uid)
+                          //           .updateUserData(
+                          //         name: name,
+                          //         mobileNumber: mobileNum,
+                          //         hostel: hostel,
+                          //         sex: sex,
+                          //       );
+                          //     }
+                          //   },
+                          // ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
             );

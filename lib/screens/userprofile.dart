@@ -48,23 +48,22 @@ class _MyProfileState extends State<MyProfile> {
       }
     });
 
-    void _showEditPannel() {
-      showModalBottomSheet(
-          isScrollControlled: true,
-          context: context,
-          builder: (context) {
-            return GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
-                child: EditForm(),
-              ),
-            );
-          });
-    }
-
+    // void _showEditPannel() {
+    //   showModalBottomSheet(
+    //       isScrollControlled: true,
+    //       context: context,
+    //       builder: (context) {
+    //         return GestureDetector(
+    //           onTap: () {
+    //             FocusScope.of(context).unfocus();
+    //           },
+    //           child: Container(
+    //             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+    //             child: EditForm(),
+    //           ),
+    //         );
+    //       });
+    // }
     return loading
         ? Loading()
         : Scaffold(
@@ -73,7 +72,8 @@ class _MyProfileState extends State<MyProfile> {
               actions: <Widget>[
                 FlatButton.icon(
                     onPressed: () {
-                      _showEditPannel();
+                      Navigator.pushNamed(context, '/edituserdetails');
+                      // _showEditPannel();
                     },
                     icon: Icon(Icons.edit),
                     label: Text('Edit'))
