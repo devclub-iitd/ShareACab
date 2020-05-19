@@ -20,8 +20,7 @@ class _MessagesState extends State<Messages> {
     );
   }
 }
-
-class DataSearch extends SearchDelegate{
+ class DataSearch extends SearchDelegate{
 
 
   final chats =[
@@ -31,7 +30,6 @@ class DataSearch extends SearchDelegate{
     'Ishaan',
     'Kshitij'
   ];
-  final recent =[];
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -59,13 +57,10 @@ class DataSearch extends SearchDelegate{
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestionList = query.isEmpty ? recent : chats;
     return
        ListView.builder(itemBuilder: (context, index)=>
           ListTile(
-            leading: Icon(Icons.person),
-            title: Text(suggestionList[index]),),
-        itemCount: suggestionList.length,
+            ),
       );
 
 
