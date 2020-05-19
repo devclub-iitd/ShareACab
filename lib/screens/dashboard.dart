@@ -19,14 +19,11 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-
   void _startCreatingTrip(BuildContext ctx) async {
-   await Navigator.of(ctx).pushNamed (
-     CreateTrip.routeName,
+    await Navigator.of(ctx).pushNamed(
+      CreateTrip.routeName,
     );
-   setState(() {
-
-   });
+    setState(() {});
   }
 
   @override
@@ -69,7 +66,9 @@ class _DashboardState extends State<Dashboard> {
                     TextStyle(color: Theme.of(context).accentColor),
               );
               await pr.show();
-              await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
+              await Future.delayed(Duration(
+                  seconds:
+                      1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
               try {
                 await widget._auth.signOut();
                 await pr.hide();
@@ -86,23 +85,26 @@ class _DashboardState extends State<Dashboard> {
           )
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.all(5),
-            height: (MediaQuery.of(context).size.height -
-                    MediaQuery.of(context).padding.top) *
-                0.87,
-            width: double.infinity,
-            child: TripsList(allTrips),
-          ),
-        ],
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(5),
+              height: (MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.87,
+              width: double.infinity,
+              child: TripsList(allTrips),
+            ),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-          splashColor: Theme.of(context).primaryColor,
-          onPressed: () => _startCreatingTrip(context),
-          child: Icon(Icons.add),
+        splashColor: Theme.of(context).primaryColor,
+        onPressed: () => _startCreatingTrip(context),
+        child: Icon(Icons.add),
       ),
     );
   }
