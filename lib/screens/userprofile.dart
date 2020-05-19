@@ -49,16 +49,37 @@ class _MyProfileState extends State<MyProfile> {
       }
     });
 
-    // users.forEach((user) {
-    //   if (user.uid == currentuser.uid) {
-    //     print(user.name);
-    //   }
-    // });
-
+    // void _showEditPannel() {
+    //   showModalBottomSheet(
+    //       isScrollControlled: true,
+    //       context: context,
+    //       builder: (context) {
+    //         return GestureDetector(
+    //           onTap: () {
+    //             FocusScope.of(context).unfocus();
+    //           },
+    //           child: Container(
+    //             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+    //             child: EditForm(),
+    //           ),
+    //         );
+    //       });
+    // }
     return loading
         ? Loading()
         : Scaffold(
-      appBar: AppBar(title: Text('My Profile'),),
+            appBar: AppBar(
+              title: Text('My Profile'),
+              actions: <Widget>[
+                FlatButton.icon(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/edituserdetails');
+                      // _showEditPannel();
+                    },
+                    icon: Icon(Icons.edit),
+                    label: Text('Edit'))
+              ],
+            ),
             body: Container(
               padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: SingleChildScrollView(
