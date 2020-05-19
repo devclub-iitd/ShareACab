@@ -17,7 +17,9 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
+
   bool passwordHide = false;
+
 
   // text field states
   String email = '';
@@ -25,6 +27,7 @@ class _SignInState extends State<SignIn> {
   String error = '';
 
   @override
+
   void initState() {
     passwordHide = true;
     super.initState();
@@ -38,6 +41,7 @@ class _SignInState extends State<SignIn> {
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
               backgroundColor: Theme.of(context).primaryColor,
+
               elevation: 0.0,
               title: Text('Sign in'),
               actions: <Widget>[
@@ -59,6 +63,7 @@ class _SignInState extends State<SignIn> {
                 ),
               ],
             ),
+
             body: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
@@ -106,6 +111,7 @@ class _SignInState extends State<SignIn> {
                             setState(() => password = val);
                           },
                         ),
+
                         SizedBox(height: 20.0),
                         RaisedButton(
                           color: Colors.pink[400],
@@ -120,6 +126,7 @@ class _SignInState extends State<SignIn> {
                                 setState(() {
                                   email = email.trim();
                                 });
+
                                 var flag =
                                     await _auth.signInWithEmailAndPassword(
                                         email, password);

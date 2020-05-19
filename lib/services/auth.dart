@@ -23,6 +23,7 @@ class AuthService {
     }
   }
 
+
   Future<bool> checkVerification(FirebaseUser user) async {
     return user.isEmailVerified;
   }
@@ -55,6 +56,7 @@ class AuthService {
     await _auth.sendPasswordResetEmail(email: email);
   }
 
+
   // verification mail resend
 
   Future<void> verificationEmail(FirebaseUser user) async {
@@ -65,6 +67,7 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
 
   // is user verified check
   Future<bool> verificationcheck(FirebaseUser user) async {

@@ -21,6 +21,7 @@ class _ForgotPassState extends State<ForgotPass> {
     return loading
         ? Loading()
         : Scaffold(
+
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
               backgroundColor: Theme.of(context).primaryColor,
@@ -48,6 +49,7 @@ class _ForgotPassState extends State<ForgotPass> {
                             setState(() => email = val);
                           },
                         ),
+
                         SizedBox(height: 20.0),
                         RaisedButton(
                           color: Colors.pink[400],

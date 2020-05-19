@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter/services.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/constants.dart';
@@ -61,9 +62,11 @@ class _RegisterState extends State<Register> {
     return loading
         ? Loading()
         : Scaffold(
+
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
               backgroundColor: Theme.of(context).primaryColor,
+
               elevation: 0.0,
               title: Text('Sign up'),
               actions: <Widget>[
@@ -76,6 +79,7 @@ class _RegisterState extends State<Register> {
                 ),
               ],
             ),
+
             body: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
@@ -101,6 +105,7 @@ class _RegisterState extends State<Register> {
                             }
 
                             // uncomment below lines for iitd.ac.in validator
+
 
                             // if (val.endsWith('iitd.ac.in')) {
                             //   return null;
@@ -163,6 +168,7 @@ class _RegisterState extends State<Register> {
                             setState(() => mobileNum = val);
                           },
                         ),
+
                         SizedBox(height: 20.0),
                         DropdownButtonFormField(
                           decoration: textInputDecoration,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shareacab/models/user.dart';
 
+
 class DatabaseService {
   final String uid;
   DatabaseService({this.uid});
@@ -8,6 +9,7 @@ class DatabaseService {
   //collection reference
   final CollectionReference userDetails =
       Firestore.instance.collection('userdetails');
+
 
   Future enterUserData(
       {String name, String mobileNumber, String hostel, String sex}) async {

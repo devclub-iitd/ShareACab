@@ -40,6 +40,7 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return loading
         ? Loading()
         : Scaffold(
