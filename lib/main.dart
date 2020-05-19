@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shareacab/screens/authenticate/forgotpass.dart';
+import 'package:shareacab/screens/createtrip.dart';
 import 'package:shareacab/screens/wrapper.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -122,6 +123,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/wrapper': (context) => Wrapper(),
           '/accounts/forgotpass': (context) => ForgotPass(),
+          CreateTrip.routeName : (context) => CreateTrip(),
         },
         title: 'Share A Cab',
         builder: (context, child) {
