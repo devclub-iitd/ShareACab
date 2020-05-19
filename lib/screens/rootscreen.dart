@@ -5,8 +5,6 @@ import 'messages.dart';
 import 'userprofile.dart';
 import 'notifications.dart';
 import 'myrequests.dart';
-import 'filter.dart';
-import 'settings.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/loading.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -17,11 +15,12 @@ class RootScreen extends StatefulWidget {
 }
 
 class _RootScreenState extends State<RootScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthService _auth = AuthService();
   bool loading = false;
   String error = '';
   Widget choose;
-  String _appBarTitle = '';
+  // String _appBarTitle = '';
   bool justLoggedin = true;
   bool isHome = true;
 
@@ -31,7 +30,7 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   void initState() {
-    pagelist.add(Dashboard());
+    pagelist.add(Dashboard(_auth));
     pagelist.add(MyRequests());
     pagelist.add(Messages());
     pagelist.add(Notifications());
@@ -44,75 +43,7 @@ class _RootScreenState extends State<RootScreen> {
     return loading
         ? Loading()
         : Scaffold(
-            appBar: isHome ? AppBar(
-              title: Text(_appBarTitle == '' ? 'Dashboard' : _appBarTitle),
-              actions: isHome
-                  ? <Widget>[
-                      IconButton(
-                          icon: Icon(Icons.filter_list),
-                          iconSize: 30.0,
-                          color: Theme.of(context).accentColor,
-                          onPressed: () {
-                            return Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return Filter();
-                            }));
-                          }),
-                      IconButton(
-                          icon: Icon(Icons.settings),
-                          color: Theme.of(context).accentColor,
-                          onPressed: () {
-                            return Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return Settings();
-                            }));
-                          }),
-                      FlatButton.icon(
-                        icon: Icon(Icons.person),
-                        onPressed: () async {
-                          setState(() => loading = true);
-                          try {
-                            await _auth.signOut();
-                            setState(() => loading = false);
-                          } catch (e) {
-                            setState(() {
-                              error = e.message;
-                              setState(() => loading = false);
-                            });
-                          }
-                        },
-                        label: Text('Logout'),
-                      )
-                    ]
-                  : <Widget>[
-                      IconButton(
-                          icon: Icon(Icons.settings),
-                          color: Theme.of(context).accentColor,
-                          //color: Colors.black,
-                          onPressed: () {
-                            return Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return Settings();
-                            }));
-                          }),
-                      FlatButton.icon(
-                        icon: Icon(Icons.person),
-                        onPressed: () async {
-                          setState(() => loading = true);
-                          try {
-                            await _auth.signOut();
-                            setState(() => loading = false);
-                          } catch (e) {
-                            setState(() {
-                              error = e.message;
-                              setState(() => loading = false);
-                            });
-                          }
-                        },
-                        label: Text('Logout'),
-                      )
-                    ],
-            ):null ,
+            key: _scaffoldKey,
             bottomNavigationBar: CurvedNavigationBar(
               color: Theme.of(context).bottomAppBarColor,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -150,40 +81,7 @@ class _RootScreenState extends State<RootScreen> {
               animationCurve: Curves.bounceInOut,
               onTap: (index) {
                 setState(() {
-                  justLoggedin = false;
                   _selectedPage = index;
-                  switch (index) {
-                    case 0:
-                      choose = Dashboard();
-                      _appBarTitle = 'Dashboard';
-                      isHome = true;
-                      break;
-                    case 1:
-                      choose = MyRequests();
-                      _appBarTitle = 'My Requests';
-                      isHome = false;
-                      break;
-                    case 2:
-                      choose = Messages();
-                      _appBarTitle = 'Messages';
-                      isHome = false;
-                      break;
-                    case 3:
-                      choose = Notifications();
-                      _appBarTitle = 'Notifications';
-                      isHome = false;
-                      break;
-                    case 4:
-                      choose = MyProfile();
-                      _appBarTitle = 'My Profile';
-                      isHome = false;
-                      break;
-                    // default:
-                    //   0;
-                    // choose = Dashboard();
-                    // _appBarTitle = 'Share A Cab';
-                    // isHome = true;
-                  }
                 });
               },
             ),
@@ -194,11 +92,7 @@ class _RootScreenState extends State<RootScreen> {
             //     : Center(
             //         child: choose,
             //       ),
-            body: justLoggedin
-                ? Center(
-                    child: Dashboard(),
-                  )
-                : IndexedStack(
+            body: IndexedStack(
                     index: _selectedPage,
                     children: pagelist,
                   ),
