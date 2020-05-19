@@ -22,6 +22,16 @@ class DatabaseService {
     });
   }
 
+  Future updateUserData(
+      {String name, String mobileNumber, String hostel, String sex}) async {
+    return await userDetails.document(uid).updateData({
+      'name': name,
+      'mobileNumber': mobileNumber,
+      'hostel': hostel,
+      'sex': sex,
+    });
+  }
+
   // user list from snapshot
   List<Userdetails> _UserListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.documents.map((doc) {
