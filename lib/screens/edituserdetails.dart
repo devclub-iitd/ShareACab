@@ -57,7 +57,8 @@ class _EditFormState extends State<EditForm> {
                   children: <Widget>[
                     Text(
                       'Update your user details.',
-                      style: TextStyle(fontSize: 18.0),
+                      style: TextStyle(
+                          fontSize: 24.0, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
@@ -130,6 +131,7 @@ class _EditFormState extends State<EditForm> {
                       child: Text('Update'),
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
+                          Navigator.pop(context);
                           setState(() {
                             if (name == '') {
                               name = snapshot.data['name'];
@@ -146,7 +148,6 @@ class _EditFormState extends State<EditForm> {
                             hostel: hostel,
                             sex: sex,
                           );
-                          Navigator.pop(context);
                         }
                       },
                     ),

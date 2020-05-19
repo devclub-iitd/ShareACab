@@ -48,12 +48,6 @@ class _MyProfileState extends State<MyProfile> {
       }
     });
 
-    // users.forEach((user) {
-    //   if (user.uid == currentuser.uid) {
-    //     print(user.name);
-    //   }
-    // });
-
     void _showEditPannel() {
       showModalBottomSheet(
           isScrollControlled: true,
