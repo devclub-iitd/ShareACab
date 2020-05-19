@@ -17,8 +17,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -34,35 +32,46 @@ class _DashboardState extends State<Dashboard> {
               onPressed: () {
                 return Navigator.push(context,
                     MaterialPageRoute(builder: (context) {
-                      return Filter();
-                    }));
+                  return Filter();
+                }));
               }),
           IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
                 return Navigator.push(context,
                     MaterialPageRoute(builder: (context) {
-                      return Settings();
-                    }));
+                  return Settings();
+                }));
               }),
           FlatButton.icon(
             textColor: getActionBarIconColor(),
             icon: Icon(FontAwesomeIcons.signOutAlt),
             onPressed: () async {
-
               ProgressDialog pr;
-              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+              pr = ProgressDialog(context,
+                  type: ProgressDialogType.Normal,
+                  isDismissible: false,
+                  showLogs: false);
+              pr.style(
+                message: 'Logging out...',
+                backgroundColor: Theme.of(context).backgroundColor,
+                messageTextStyle:
+                    TextStyle(color: Theme.of(context).accentColor),
+              );
               await pr.show();
-              await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
+              await Future.delayed(Duration(
+                  seconds:
+                      1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
 
               try {
                 await widget._auth.signOut();
                 await pr.hide();
-              } catch(err) {
+              } catch (err) {
                 // show e.message
                 await pr.hide();
                 String errStr = err.message ?? err.toString();
-                final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+                final snackBar = SnackBar(
+                    content: Text(errStr), duration: Duration(seconds: 3));
                 _scaffoldKey.currentState.showSnackBar(snackBar);
               }
             },
