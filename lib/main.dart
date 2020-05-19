@@ -30,6 +30,7 @@ Color getChatBubbleTextColor() {
 
 Color chatBubbleBackgroundColorReceiver = Colors.lightBlue; // Needs to be changed acc to combinations, requires creativity
 Color chatBubbleBackgroundColorSender = Colors.lightGreen; // Needs to be changed acc to combinations, requires creativity
+Color chatSearchBackgroundColor = Colors.white;
 
 final darkTheme = ThemeData(
   primarySwatch: Colors.grey,
@@ -123,7 +124,7 @@ class MyApp extends StatelessWidget {
 
 
 class MyAppBar extends AppBar{
-  MyAppBar({Key key, Widget title, Icon icon}): super(key: key, title: title, actions: <Widget>[
-    IconButton(icon: icon, onPressed: (){})
+  MyAppBar({Key key, Widget title, IconButton iconButton}): super(key: key, title: title, actions: <Widget>[
+    IconButton(icon: iconButton, onPressed: (){})
   ]);
 }
