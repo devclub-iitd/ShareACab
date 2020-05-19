@@ -42,4 +42,9 @@ class DatabaseService {
   Stream<List<Userdetails>> get users {
     return userDetails.snapshots().map(_UserListFromSnapshot);
   }
+
+  // get user doc
+  Stream<DocumentSnapshot> get userData {
+    return userDetails.document(uid).snapshots();
+  }
 }

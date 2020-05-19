@@ -151,7 +151,7 @@ class _RegisterState extends State<Register> {
                         SizedBox(height: 20.0),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(
-                              hintText: 'MobileNumber'),
+                              hintText: 'Mobile Number'),
                           validator: (val) => val.length != 10
                               ? 'Enter a valid mobile number.'
                               : null,

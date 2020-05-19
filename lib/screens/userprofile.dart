@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shareacab/screens/edituserdetails.dart';
 import 'package:shareacab/shared/loading.dart';
 
 class MyProfile extends StatefulWidget {
@@ -53,10 +54,37 @@ class _MyProfileState extends State<MyProfile> {
     //   }
     // });
 
+    void _showEditPannel() {
+      showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (context) {
+            return GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+                child: EditForm(),
+              ),
+            );
+          });
+    }
+
     return loading
         ? Loading()
         : Scaffold(
-      appBar: AppBar(title: Text('My Profile'),),
+            appBar: AppBar(
+              title: Text('My Profile'),
+              actions: <Widget>[
+                FlatButton.icon(
+                    onPressed: () {
+                      _showEditPannel();
+                    },
+                    icon: Icon(Icons.edit),
+                    label: Text('Edit'))
+              ],
+            ),
             body: Container(
               padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: SingleChildScrollView(
