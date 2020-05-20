@@ -62,7 +62,6 @@ class _CreateTripState extends State<CreateTrip> {
       setState(() {
         _selectedEndDate = pickedDate;
         FocusScope.of(context).requestFocus(FocusNode());
-
       });
     });
   }
@@ -134,7 +133,7 @@ class _CreateTripState extends State<CreateTrip> {
             ),
             onPressed: () => DatePicker(),
           ),
-          Text(time == null ? '$point Time' : '${_selectedStartTime.toString().substring(10, 15)}'),
+          Text(time == null ? '$point Time' : '${time.toString().substring(10, 15)}'),
           IconButton(
             icon: Icon(
               Icons.schedule,
