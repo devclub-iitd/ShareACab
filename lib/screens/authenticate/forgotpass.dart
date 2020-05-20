@@ -21,7 +21,6 @@ class _ForgotPassState extends State<ForgotPass> {
     return loading
         ? Loading()
         : Scaffold(
-
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
               backgroundColor: Theme.of(context).primaryColor,
@@ -41,15 +40,12 @@ class _ForgotPassState extends State<ForgotPass> {
                       children: <Widget>[
                         SizedBox(height: 20.0),
                         TextFormField(
-                          decoration:
-                              textInputDecoration.copyWith(hintText: 'Email'),
-                          validator: (val) =>
-                              val.isEmpty ? 'Enter a valid Email' : null,
+                          decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                          validator: (val) => val.isEmpty ? 'Enter a valid Email' : null,
                           onChanged: (val) {
                             setState(() => email = val);
                           },
                         ),
-
                         SizedBox(height: 20.0),
                         RaisedButton(
                           color: Colors.pink[400],
@@ -71,16 +67,13 @@ class _ForgotPassState extends State<ForgotPass> {
                                 setState(() {
                                   switch (e.code) {
                                     case 'ERROR_USER_NOT_FOUND':
-                                      message =
-                                          "User with this email doesn't exist.";
+                                      message = "User with this email doesn't exist.";
                                       break;
                                     case 'ERROR_USER_DISABLED':
-                                      message =
-                                          'User with this email has been disabled.';
+                                      message = 'User with this email has been disabled.';
                                       break;
                                     case 'ERROR_TOO_MANY_REQUESTS':
-                                      message =
-                                          'Too many requests. Try again later.';
+                                      message = 'Too many requests. Try again later.';
                                       break;
                                     default:
                                       message = 'An undefined Error happened.';

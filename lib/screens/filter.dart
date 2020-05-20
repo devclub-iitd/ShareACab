@@ -13,7 +13,10 @@ class _FilterState extends State<Filter> {
         title: Text('Filter'),
       ),
       body: Center(
-        child: Text('Filter screen', style: TextStyle(fontSize: 25.0),),
+        child: Text(
+          'Filter screen',
+          style: TextStyle(fontSize: 25.0),
+        ),
       ),
     );
   }

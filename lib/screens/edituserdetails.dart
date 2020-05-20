@@ -87,8 +87,7 @@ class _EditFormState extends State<EditForm> {
                   ],
                 ),
                 body: Container(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
+                  padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 60.0),
                   child: Form(
                     key: _formKey,
                     child: SingleChildScrollView(
@@ -97,10 +96,8 @@ class _EditFormState extends State<EditForm> {
                           SizedBox(height: 20.0),
                           TextFormField(
                             initialValue: snapshot.data['name'],
-                            decoration:
-                                textInputDecoration.copyWith(hintText: 'Name'),
-                            validator: (val) =>
-                                val.isEmpty ? 'Enter a valid Name' : null,
+                            decoration: textInputDecoration.copyWith(hintText: 'Name'),
+                            validator: (val) => val.isEmpty ? 'Enter a valid Name' : null,
                             onChanged: (val) {
                               setState(() => name = val);
                             },
@@ -108,15 +105,10 @@ class _EditFormState extends State<EditForm> {
                           SizedBox(height: 20.0),
                           TextFormField(
                             initialValue: snapshot.data['mobileNumber'],
-                            decoration: textInputDecoration.copyWith(
-                                hintText: 'Mobile Number'),
-                            validator: (val) => val.length != 10
-                                ? 'Enter a valid mobile number.'
-                                : null,
+                            decoration: textInputDecoration.copyWith(hintText: 'Mobile Number'),
+                            validator: (val) => val.length != 10 ? 'Enter a valid mobile number.' : null,
                             keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              WhitelistingTextInputFormatter.digitsOnly
-                            ],
+                            inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                             onChanged: (val) {
                               setState(() => mobileNum = val);
                             },
@@ -137,9 +129,7 @@ class _EditFormState extends State<EditForm> {
                                 value: temp,
                               );
                             }).toList(),
-                            validator: (val) => val == null
-                                ? 'Please select your hostel'
-                                : null,
+                            validator: (val) => val == null ? 'Please select your hostel' : null,
                           ),
                           SizedBox(height: 20.0),
                           DropdownButtonFormField(
@@ -157,8 +147,7 @@ class _EditFormState extends State<EditForm> {
                                 value: temp,
                               );
                             }).toList(),
-                            validator: (val) =>
-                                val == null ? 'Please select your sex' : null,
+                            validator: (val) => val == null ? 'Please select your sex' : null,
                           ),
                           SizedBox(height: 20.0),
                           // RaisedButton(

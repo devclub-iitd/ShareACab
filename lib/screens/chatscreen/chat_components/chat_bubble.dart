@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:shareacab/main.dart';
 
 // ignore: must_be_immutable
-class ChatBubble extends StatefulWidget{
+class ChatBubble extends StatefulWidget {
   ChatMessage chatMessage;
+
   ChatBubble({@required this.chatMessage});
+
   @override
   _ChatBubbleState createState() => _ChatBubbleState();
 }
@@ -18,8 +20,7 @@ class _ChatBubbleState extends State<ChatBubble> {
     return Container(
       padding: EdgeInsets.only(left: 16, right: 16, top: 10, bottom: 10),
       child: Align(
-        alignment: (widget.chatMessage.type == MessageType.Receiver ? Alignment
-            .topLeft : Alignment.topRight),
+        alignment: (widget.chatMessage.type == MessageType.Receiver ? Alignment.topLeft : Alignment.topRight),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
@@ -28,7 +29,10 @@ class _ChatBubbleState extends State<ChatBubble> {
 //            (SUITABLE COLORS FOR DIFFERENT THEMES MUST BE DECIDED)
           ),
           padding: EdgeInsets.all(16),
-          child: Text(widget.chatMessage.message, style: TextStyle(color: getChatBubbleTextColor()),),
+          child: Text(
+            widget.chatMessage.message,
+            style: TextStyle(color: getChatBubbleTextColor()),
+          ),
         ),
       ),
     );

@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Color userIsOnline(BuildContext context) => Colors.green;
+
 Color sendMessageIcon(BuildContext context) => Colors.green;
 
 Color getMenuItemColor(int i) {
@@ -65,14 +66,20 @@ ThemeData getSearchAppBarTheme(BuildContext context) {
   }
 }
 
-Color chatBubbleBackgroundColorReceiver = Colors
-    .lightBlue; // Needs to be changed acc to combinations, requires creativity
-Color chatBubbleBackgroundColorSender = Colors
-    .lightGreen; // Needs to be changed acc to combinations, requires creativity
+Color chatBubbleBackgroundColorReceiver = Colors.lightBlue; // Needs to be changed acc to combinations, requires creativity
+Color chatBubbleBackgroundColorSender = Colors.lightGreen; // Needs to be changed acc to combinations, requires creativity
 Color chatSearchBackgroundColor = Colors.white;
 
-Color getActionBarIconColor() {
+Color getVisibleColorOnPrimaryColor(BuildContext context) {
   return Colors.white;
+}
+
+Color getVisibleColorOnAccentColor(BuildContext context) {
+  if (Theme.of(context).brightness == Brightness.dark) {
+    return Colors.black;
+  } else {
+    return Colors.white;
+  }
 }
 
 final darkTheme = ThemeData(
@@ -110,6 +117,7 @@ class ThemeNotifier with ChangeNotifier {
   ThemeData _themeData;
 
   ThemeNotifier(this._themeData);
+
   ThemeData getTheme() => _themeData;
 
   void setTheme(ThemeData themeData) async {
@@ -138,13 +146,13 @@ class MyApp extends StatelessWidget {
     return StreamProvider<FirebaseUser>.value(
       value: AuthService().user,
       child: MaterialApp(
-      initialRoute: '/wrapper',
+        initialRoute: '/wrapper',
         routes: {
           '/wrapper': (context) => Wrapper(),
           '/accounts/forgotpass': (context) => ForgotPass(),
           '/rootscreen': (context) => RootScreen(),
           '/edituserdetails': (context) => EditForm(),
-          CreateTrip.routeName : (context) => CreateTrip(),
+          CreateTrip.routeName: (context) => CreateTrip(),
         },
         title: 'Share A Cab',
         builder: (context, child) {
