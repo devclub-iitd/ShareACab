@@ -5,14 +5,14 @@ import 'package:shareacab/models/alltrips.dart';
 
 class Filter extends StatefulWidget {
   final Function filtering;
-  bool _dest;
-  bool _date;
-  bool _time;
-  String _selecteddest;
-  DateTime _SD;
-  TimeOfDay _ST;
-  DateTime _ED;
-  TimeOfDay _ET;
+  final bool _dest;
+  final bool _date;
+  final bool _time;
+  final String _selecteddest;
+  final DateTime _SD;
+  final TimeOfDay _ST;
+  final DateTime _ED;
+  final TimeOfDay _ET;
   Filter(this.filtering, this._dest, this._date, this._time, this._selecteddest, this._SD, this._ST, this._ED, this._ET);
   @override
   _FilterState createState() => _FilterState();
