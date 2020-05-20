@@ -11,7 +11,10 @@ class CreateTrip extends StatefulWidget {
 }
 
 class _CreateTripState extends State<CreateTrip> {
-  List<String> destinations = ['New Delhi Railway Station', 'Indira Gandhi International Airport'];
+  List<String> destinations = [
+    'New Delhi Railway Station',
+    'Indira Gandhi International Airport'
+  ];
 
   String _destination;
   final _finalDestinationController = TextEditingController();
@@ -20,8 +23,6 @@ class _CreateTripState extends State<CreateTrip> {
   DateTime _selectedEndDate;
   TimeOfDay _selectedEndTime;
   bool privacy = false;
-
-
 
   void _addNewRequest() {
     final newRq = RequestDetails(
@@ -33,16 +34,21 @@ class _CreateTripState extends State<CreateTrip> {
         startTime: _selectedStartTime,
         endDate: _selectedEndDate,
         endTime: _selectedEndTime,
-        privacy: privacy
-    );
+        privacy: privacy);
     setState(() {
       allTrips.add(newRq);
     });
   }
-  void _submitData(){
+
+  void _submitData() {
     final enteredDestination = _destination;
     final enteredFinalDestination = _finalDestinationController.text;
-    if(enteredDestination.isEmpty || enteredFinalDestination.isEmpty || _selectedStartDate == null || _selectedStartTime == null || _selectedEndDate == null || _selectedEndTime == null ){
+    if (enteredDestination.isEmpty ||
+        enteredFinalDestination.isEmpty ||
+        _selectedStartDate == null ||
+        _selectedStartTime == null ||
+        _selectedEndDate == null ||
+        _selectedEndTime == null) {
       return; //return stops function execution and thus nothing is called or returned
     }
     setState(() {
@@ -51,16 +57,14 @@ class _CreateTripState extends State<CreateTrip> {
     Navigator.of(context).pop();
   }
 
-
-
-  void _startDatePicker(){
+  void _startDatePicker() {
     showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now().subtract(Duration(days: 1)),
-        lastDate: DateTime.now().add(Duration(days: 30))
-    ).then((pickedDate) {
-      if(pickedDate == null){
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime.now().subtract(Duration(days: 1)),
+            lastDate: DateTime.now().add(Duration(days: 30)))
+        .then((pickedDate) {
+      if (pickedDate == null) {
         return;
       }
       setState(() {
@@ -69,14 +73,14 @@ class _CreateTripState extends State<CreateTrip> {
     });
   }
 
-  void _endDatePicker(){
+  void _endDatePicker() {
     showDatePicker(
-        context: context,
-        initialDate: _selectedStartDate,
-        firstDate: DateTime.parse(_selectedStartDate.toString()),
-        lastDate: DateTime.now().add(Duration(days: 30))
-    ).then((pickedDate) {
-      if(pickedDate == null){
+            context: context,
+            initialDate: _selectedStartDate,
+            firstDate: DateTime.parse(_selectedStartDate.toString()),
+            lastDate: DateTime.now().add(Duration(days: 30)))
+        .then((pickedDate) {
+      if (pickedDate == null) {
         return;
       }
       setState(() {
@@ -90,7 +94,7 @@ class _CreateTripState extends State<CreateTrip> {
       context: context,
       initialTime: TimeOfDay.now(),
     ).then((pickedTime) {
-      if(pickedTime == null){
+      if (pickedTime == null) {
         return;
       }
       setState(() {
@@ -104,7 +108,7 @@ class _CreateTripState extends State<CreateTrip> {
       context: context,
       initialTime: TimeOfDay.now(),
     ).then((pickedTime) {
-      if(pickedTime == null){
+      if (pickedTime == null) {
         return;
       }
       setState(() {
@@ -113,10 +117,10 @@ class _CreateTripState extends State<CreateTrip> {
     });
   }
 
-  Widget buildLabel(String label){
+  Widget buildLabel(String label) {
     return Container(
       margin: EdgeInsets.only(
-        top:40,
+        top: 40,
         left: 40,
       ),
       child: Row(
@@ -134,40 +138,36 @@ class _CreateTripState extends State<CreateTrip> {
     );
   }
 
-  Widget buildContainer(String point, DateTime date, TimeOfDay time, Function DatePicker, Function TimePicker){
+  Widget buildContainer(String point, DateTime date, TimeOfDay time,
+      Function DatePicker, Function TimePicker) {
     return Container(
-      margin: EdgeInsets.only(top: 20, left: 30,right: 30),
+      margin: EdgeInsets.only(top: 20, left: 30, right: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Text(
-              date == null
-                  ? 'Choose $point Date'
-                  : '${DateFormat.yMd().format(date)}'
-          ),
+          Text(date == null
+              ? '$point Date'
+              : '${DateFormat.yMd().format(date)}'),
           IconButton(
             icon: Icon(
               Icons.calendar_today,
               color: Theme.of(context).accentColor,
             ),
-            onPressed:() => DatePicker(),
+            onPressed: () => DatePicker(),
           ),
-          Text(
-              time == null
-                  ? 'Choose $point Time'
-                  : '${_selectedStartTime.toString().substring(10,15)}'
-          ),
+          Text(time == null
+              ? '$point Time'
+              : '${_selectedStartTime.toString().substring(10, 15)}'),
           IconButton(
             icon: Icon(
               Icons.schedule,
               color: Theme.of(context).accentColor,
             ),
-            onPressed:() => TimePicker(),
+            onPressed: () => TimePicker(),
           ),
         ],
       ),
     );
-
   }
 
   @override
@@ -181,116 +181,116 @@ class _CreateTripState extends State<CreateTrip> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('Create Trip',
-            style: TextStyle(
-              color: Theme.of(context).accentColor,
-          )
-          ),
+              style: TextStyle(
+                color: Theme.of(context).accentColor,
+              )),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              buildLabel('Destination'),
-              Row(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 20,
-                      left: 40,
-                    ),
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: DropdownButton<String>(
-                      icon: Icon(
-                        Icons.keyboard_arrow_down,
-                        size: 30,
-                      ),
-                      items: destinations.map((String dropDownStringItem) {
-                        return DropdownMenuItem<String> (
-                          value: dropDownStringItem,
-                          child: Text(dropDownStringItem,
-                            style: TextStyle(
-                              color: Theme.of(context).accentColor,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                      value: _destination,
-                      onChanged:(val){
-                        setState(() {
-                          _destination = val;
-                        });
-                      },
-                      hint: Text('Select The Destination'),
-                    ),
-                  ),
-                ],
-              ),
-              buildLabel('Going To'),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    margin: EdgeInsets.only(
-                        top: 20,
-                        left: 40
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                          hintText: 'Enter Your Final Destination'
-                      ),
-                      controller: _finalDestinationController,
-                      onSubmitted: (_) => _submitData(),
-                      onChanged: (val) {},
-                    ),
-                  ),
-                ],
-              ),
-              buildLabel('Starting'),
-              buildContainer('Start', _selectedStartDate, _selectedStartTime, _startDatePicker, _startTimePicker),
-              buildLabel('Ending'),
-              buildContainer('End', _selectedEndDate, _selectedEndTime, _endDatePicker, _endTimePicker),
-              Container(
-                margin: EdgeInsets.only(
-                  top: 20,
-                  left: 30,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+        body: Container(
+          //padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                buildLabel('Destination'),
+                Row(
                   children: <Widget>[
-                    Checkbox(
-                        value: privacy,
-                        onChanged: (bool value){
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 20,
+                        left: 40,
+                      ),
+                      //width: MediaQuery.of(context).size.width * 0.7,
+                      child: DropdownButton<String>(
+                        icon: Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 30,
+                        ),
+                        items: destinations.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(
+                              dropDownStringItem,
+                              style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        value: _destination,
+                        onChanged: (val) {
                           setState(() {
-                            privacy = value;
+                            _destination = val;
                           });
-                        }
-                    ),
-                    Text('Require Permission To Join Trip',
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                        )
+                        },
+                        hint: Text('Select The Destination'),
+                      ),
                     ),
                   ],
                 ),
-              ),
-              Container(
-                height: 50,
-                width: 150,
-                margin: EdgeInsets.only(
-                  top: 40,
-                  bottom: 30,
-                  right: 20,
+                buildLabel('Going To'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.77,
+                      margin: EdgeInsets.only(top: 20, left: 40),
+                      child: TextField(
+                        decoration: InputDecoration(
+                            hintText: 'Enter Your Final Destination'),
+                        controller: _finalDestinationController,
+                        onSubmitted: (_) => _submitData(),
+                        onChanged: (val) {},
+                      ),
+                    ),
+                  ],
                 ),
-                child: RaisedButton(
-                  textColor: Theme.of(context).primaryColor,
-                  onPressed: () {
-                    SystemChannels.textInput.invokeMethod('Text Input hide');
-                    _submitData();},
-                  color: Theme.of(context).accentColor,
-                  child: Text('Create Trip', style: TextStyle(fontSize: 18)),
+                buildLabel('Starting'),
+                buildContainer('Start', _selectedStartDate, _selectedStartTime,
+                    _startDatePicker, _startTimePicker),
+                buildLabel('Ending'),
+                buildContainer('End', _selectedEndDate, _selectedEndTime,
+                    _endDatePicker, _endTimePicker),
+                Container(
+                  margin: EdgeInsets.only(
+                    top: 20,
+                    left: 30,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Checkbox(
+                          value: privacy,
+                          onChanged: (bool value) {
+                            setState(() {
+                              privacy = value;
+                            });
+                          }),
+                      Text('Require Permission To Join Trip',
+                          style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                          )),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                Container(
+                  height: 50,
+                  width: 150,
+                  margin: EdgeInsets.only(
+                    top: 40,
+                    bottom: 30,
+                    right: 20,
+                  ),
+                  child: RaisedButton(
+                    textColor: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      SystemChannels.textInput.invokeMethod('Text Input hide');
+                      _submitData();
+                    },
+                    color: Theme.of(context).accentColor,
+                    child: Text('Create Trip', style: TextStyle(fontSize: 18)),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
