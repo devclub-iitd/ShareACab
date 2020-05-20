@@ -1,4 +1,3 @@
-
 class Userdetails {
   final String uid;
   final String name;
@@ -9,13 +8,5 @@ class Userdetails {
   final int cancelledrides;
   final int actualrating;
 
-  Userdetails(
-      {this.uid,
-      this.name,
-      this.mobilenum,
-      this.hostel,
-      this.sex,
-      this.totalrides,
-      this.cancelledrides,
-      this.actualrating});
+  Userdetails({this.uid, this.name, this.mobilenum, this.hostel, this.sex, this.totalrides, this.cancelledrides, this.actualrating});
 }

@@ -13,8 +13,7 @@ class AuthService {
   //sign in with email pass
 
   Future<bool> signInWithEmailAndPassword(String email, String password) async {
-    var result = await _auth.signInWithEmailAndPassword(
-        email: email, password: password);
+    var result = await _auth.signInWithEmailAndPassword(email: email, password: password);
     if (result.user.isEmailVerified) {
       return true;
     } else {
@@ -23,29 +22,20 @@ class AuthService {
     }
   }
 
-
   Future<bool> checkVerification(FirebaseUser user) async {
     return user.isEmailVerified;
   }
 
   // sign up with email pass
 
-  Future<void> registerWithEmailAndPassword(
-      {String email,
-      String password,
-      String name,
-      String mobilenum,
-      String hostel,
-      String sex}) async {
+  Future<void> registerWithEmailAndPassword({String email, String password, String name, String mobilenum, String hostel, String sex}) async {
     // AuthResult
-    var result = await _auth.createUserWithEmailAndPassword(
-        email: email, password: password);
+    var result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
     // FirebaseUser
     var user = result.user;
 
     // creating a new document for user
-    await DatabaseService(uid: user.uid).enterUserData(
-        name: name, mobileNumber: mobilenum, hostel: hostel, sex: sex);
+    await DatabaseService(uid: user.uid).enterUserData(name: name, mobileNumber: mobilenum, hostel: hostel, sex: sex);
 
     await result.user.sendEmailVerification();
   }
@@ -55,7 +45,6 @@ class AuthService {
   Future<void> resetPassword(String email) async {
     await _auth.sendPasswordResetEmail(email: email);
   }
-
 
   // verification mail resend
 
@@ -67,7 +56,6 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
   }
-
 
   // is user verified check
   Future<bool> verificationcheck(FirebaseUser user) async {

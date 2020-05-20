@@ -3,18 +3,17 @@ import 'package:flutter/services.dart';
 import 'package:shareacab/models/requestdetails.dart';
 import 'package:intl/intl.dart';
 import 'package:shareacab/models/alltrips.dart';
+import 'package:shareacab/main.dart';
 
 class CreateTrip extends StatefulWidget {
   static const routeName = '/createTrip';
+
   @override
   _CreateTripState createState() => _CreateTripState();
 }
 
 class _CreateTripState extends State<CreateTrip> {
-  List<String> destinations = [
-    'New Delhi Railway Station',
-    'Indira Gandhi International Airport'
-  ];
+  List<String> destinations = ['New Delhi Railway Station', 'Indira Gandhi International Airport'];
 
   String _destination;
   final _finalDestinationController = TextEditingController();
@@ -25,16 +24,7 @@ class _CreateTripState extends State<CreateTrip> {
   bool privacy = false;
 
   void _addNewRequest() {
-    final newRq = RequestDetails(
-        name: 'Name',
-        id: DateTime.now().toString(),
-        destination: _destination,
-        finalDestination: _finalDestinationController.text,
-        startDate: _selectedStartDate,
-        startTime: _selectedStartTime,
-        endDate: _selectedEndDate,
-        endTime: _selectedEndTime,
-        privacy: privacy);
+    final newRq = RequestDetails(name: 'Name', id: DateTime.now().toString(), destination: _destination, finalDestination: _finalDestinationController.text, startDate: _selectedStartDate, startTime: _selectedStartTime, endDate: _selectedEndDate, endTime: _selectedEndTime, privacy: privacy);
     setState(() {
       allTrips.add(newRq);
     });
@@ -43,12 +33,7 @@ class _CreateTripState extends State<CreateTrip> {
   void _submitData() {
     final enteredDestination = _destination;
     final enteredFinalDestination = _finalDestinationController.text;
-    if (enteredDestination.isEmpty ||
-        enteredFinalDestination.isEmpty ||
-        _selectedStartDate == null ||
-        _selectedStartTime == null ||
-        _selectedEndDate == null ||
-        _selectedEndTime == null) {
+    if (enteredDestination.isEmpty || enteredFinalDestination.isEmpty || _selectedStartDate == null || _selectedStartTime == null || _selectedEndDate == null || _selectedEndTime == null) {
       return; //return stops function execution and thus nothing is called or returned
     }
     setState(() {
@@ -58,12 +43,7 @@ class _CreateTripState extends State<CreateTrip> {
   }
 
   void _startDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime.now().subtract(Duration(days: 1)),
-            lastDate: DateTime.now().add(Duration(days: 30)))
-        .then((pickedDate) {
+    showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now().subtract(Duration(days: 1)), lastDate: DateTime.now().add(Duration(days: 30))).then((pickedDate) {
       if (pickedDate == null) {
         return;
       }
@@ -74,12 +54,7 @@ class _CreateTripState extends State<CreateTrip> {
   }
 
   void _endDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: _selectedStartDate,
-            firstDate: DateTime.parse(_selectedStartDate.toString()),
-            lastDate: DateTime.now().add(Duration(days: 30)))
-        .then((pickedDate) {
+    showDatePicker(context: context, initialDate: _selectedStartDate, firstDate: DateTime.parse(_selectedStartDate.toString()), lastDate: DateTime.now().add(Duration(days: 30))).then((pickedDate) {
       if (pickedDate == null) {
         return;
       }
@@ -138,16 +113,13 @@ class _CreateTripState extends State<CreateTrip> {
     );
   }
 
-  Widget buildContainer(String point, DateTime date, TimeOfDay time,
-      Function DatePicker, Function TimePicker) {
+  Widget buildContainer(String point, DateTime date, TimeOfDay time, Function DatePicker, Function TimePicker) {
     return Container(
       margin: EdgeInsets.only(top: 20, left: 30, right: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Text(date == null
-              ? '$point Date'
-              : '${DateFormat.yMd().format(date)}'),
+          Text(date == null ? '$point Date' : '${DateFormat.yMd().format(date)}'),
           IconButton(
             icon: Icon(
               Icons.calendar_today,
@@ -155,9 +127,7 @@ class _CreateTripState extends State<CreateTrip> {
             ),
             onPressed: () => DatePicker(),
           ),
-          Text(time == null
-              ? '$point Time'
-              : '${_selectedStartTime.toString().substring(10, 15)}'),
+          Text(time == null ? '$point Time' : '${_selectedStartTime.toString().substring(10, 15)}'),
           IconButton(
             icon: Icon(
               Icons.schedule,
@@ -180,10 +150,7 @@ class _CreateTripState extends State<CreateTrip> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text('Create Trip',
-              style: TextStyle(
-                color: Theme.of(context).accentColor,
-              )),
+          title: Text('Create Trip'),
         ),
         body: Container(
           //padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
@@ -234,8 +201,7 @@ class _CreateTripState extends State<CreateTrip> {
                       width: MediaQuery.of(context).size.width * 0.77,
                       margin: EdgeInsets.only(top: 20, left: 40),
                       child: TextField(
-                        decoration: InputDecoration(
-                            hintText: 'Enter Your Final Destination'),
+                        decoration: InputDecoration(hintText: 'Enter Your Final Destination'),
                         controller: _finalDestinationController,
                         onSubmitted: (_) => _submitData(),
                         onChanged: (val) {},
@@ -244,11 +210,9 @@ class _CreateTripState extends State<CreateTrip> {
                   ],
                 ),
                 buildLabel('Starting'),
-                buildContainer('Start', _selectedStartDate, _selectedStartTime,
-                    _startDatePicker, _startTimePicker),
+                buildContainer('Start', _selectedStartDate, _selectedStartTime, _startDatePicker, _startTimePicker),
                 buildLabel('Ending'),
-                buildContainer('End', _selectedEndDate, _selectedEndTime,
-                    _endDatePicker, _endTimePicker),
+                buildContainer('End', _selectedEndDate, _selectedEndTime, _endDatePicker, _endTimePicker),
                 Container(
                   margin: EdgeInsets.only(
                     top: 20,
@@ -280,7 +244,7 @@ class _CreateTripState extends State<CreateTrip> {
                     right: 20,
                   ),
                   child: RaisedButton(
-                    textColor: Theme.of(context).primaryColor,
+                    textColor: getVisibleColorOnAccentColor(context),
                     onPressed: () {
                       SystemChannels.textInput.invokeMethod('Text Input hide');
                       _submitData();

@@ -100,18 +100,13 @@ class _VerificationCheckState extends State<VerificationCheck> {
                     SizedBox(height: 20.0),
                     RichText(
                         text: TextSpan(
-                      text:
-                          'Verification email has been sent to your ID. Please click on the verification link in your mail.',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold),
+                      text: 'Verification email has been sent to your ID. Please click on the verification link in your mail.',
+                      style: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.bold),
                     )),
                     SizedBox(height: 40.0),
                     RichText(
                         text: TextSpan(
-                      text:
-                          'If you did not recieve it, please click on the button below',
+                      text: 'If you did not recieve it, please click on the button below',
                       style: TextStyle(color: Colors.black, fontSize: 20.0),
                     )),
                     //SizedBox(height: 20.0),
@@ -136,12 +131,8 @@ class _VerificationCheckState extends State<VerificationCheck> {
                     SizedBox(height: 20.0),
                     RichText(
                         text: TextSpan(
-                      text:
-                          'You will be auto-redirected to dashboard once you verify your account.',
-                      style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 20.0,
-                          fontStyle: FontStyle.italic),
+                      text: 'You will be auto-redirected to dashboard once you verify your account.',
+                      style: TextStyle(color: Colors.red, fontSize: 20.0, fontStyle: FontStyle.italic),
                     )),
 
                     // RaisedButton(

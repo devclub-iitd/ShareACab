@@ -1,18 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shareacab/models/user.dart';
 
-
 class DatabaseService {
   final String uid;
+
   DatabaseService({this.uid});
 
   //collection reference
-  final CollectionReference userDetails =
-      Firestore.instance.collection('userdetails');
+  final CollectionReference userDetails = Firestore.instance.collection('userdetails');
 
-
-  Future enterUserData(
-      {String name, String mobileNumber, String hostel, String sex}) async {
+  Future enterUserData({String name, String mobileNumber, String hostel, String sex}) async {
     return await userDetails.document(uid).setData({
       'name': name,
       'mobileNumber': mobileNumber,
@@ -24,8 +21,7 @@ class DatabaseService {
     });
   }
 
-  Future updateUserData(
-      {String name, String mobileNumber, String hostel, String sex}) async {
+  Future updateUserData({String name, String mobileNumber, String hostel, String sex}) async {
     return await userDetails.document(uid).updateData({
       'name': name,
       'mobileNumber': mobileNumber,

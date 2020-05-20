@@ -4,7 +4,9 @@ import 'package:intl/intl.dart';
 
 class TripsList extends StatelessWidget {
   final List<RequestDetails> trips;
+
   TripsList(this.trips);
+
   @override
   Widget build(BuildContext context) {
     return trips.isEmpty
@@ -14,8 +16,7 @@ class TripsList extends StatelessWidget {
         : ListView.builder(
             itemBuilder: (ctx, index) {
               return Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(25.0))),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
                 elevation: 5,
                 margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                 child: Container(
@@ -33,8 +34,7 @@ class TripsList extends StatelessWidget {
                                   left: 20,
                                   top: 20,
                                 ),
-                                child: trips[index].destination ==
-                                        'New Delhi Railway Station'
+                                child: trips[index].destination == 'New Delhi Railway Station'
                                     ? Icon(
                                         Icons.train,
                                         color: Theme.of(context).accentColor,
@@ -66,8 +66,7 @@ class TripsList extends StatelessWidget {
                             child: Container(
                               child: trips[index].privacy
                                   ? Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 15.0),
+                                      padding: const EdgeInsets.only(right: 15.0),
                                       child: Icon(
                                         Icons.lock,
                                         color: Theme.of(context).accentColor,

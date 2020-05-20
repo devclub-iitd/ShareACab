@@ -79,5 +79,4 @@ class DataSearch extends SearchDelegate {
     assert(context != null);
     return getSearchAppBarTheme(context);
   }
-
 }

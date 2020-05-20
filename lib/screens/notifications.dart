@@ -11,7 +11,9 @@ class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('My Notifications'),),
+      appBar: AppBar(
+        title: Text('My Notifications'),
+      ),
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -25,8 +27,7 @@ class _NotificationsState extends State<Notifications> {
                 style: TextStyle(fontSize: 25.0),
               ),
               TextFormField(
-                decoration: textInputDecoration.copyWith(
-                    hintText: 'Just a blank Field to check state save'),
+                decoration: textInputDecoration.copyWith(hintText: 'Just a blank Field to check state save'),
               ),
             ],
           ),
