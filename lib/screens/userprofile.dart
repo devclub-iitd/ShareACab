@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,6 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
-
   String name = '';
   String hostel = '';
   String mobilenum = '';
@@ -26,11 +24,7 @@ class _MyProfileState extends State<MyProfile> {
     final currentuser = Provider.of<FirebaseUser>(context);
     //print(currentuser.uid);
 
-    Firestore.instance
-        .collection('userdetails')
-        .document(currentuser.uid)
-        .get()
-        .then((value) {
+    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
       if (value.exists) {
         setState(() {
           name = value.data['name'];

@@ -6,6 +6,7 @@ import 'package:shareacab/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
+
   SignIn({this.toggleView});
 
   @override
@@ -17,9 +18,7 @@ class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
-
   bool passwordHide = false;
-
 
   // text field states
   String email = '';
@@ -27,7 +26,6 @@ class _SignInState extends State<SignIn> {
   String error = '';
 
   @override
-
   void initState() {
     passwordHide = true;
     super.initState();
@@ -41,7 +39,6 @@ class _SignInState extends State<SignIn> {
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
               backgroundColor: Theme.of(context).primaryColor,
-
               elevation: 0.0,
               title: Text('Sign in'),
               actions: <Widget>[
@@ -49,8 +46,7 @@ class _SignInState extends State<SignIn> {
                     icon: Icon(Icons.settings),
                     color: Theme.of(context).accentColor,
                     onPressed: () {
-                      return Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
+                      return Navigator.push(context, MaterialPageRoute(builder: (context) {
                         return Settings();
                       }));
                     }),
@@ -63,7 +59,6 @@ class _SignInState extends State<SignIn> {
                 ),
               ],
             ),
-
             body: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
@@ -77,10 +72,8 @@ class _SignInState extends State<SignIn> {
                       children: <Widget>[
                         SizedBox(height: 20.0),
                         TextFormField(
-                          decoration:
-                              textInputDecoration.copyWith(hintText: 'Email'),
-                          validator: (val) =>
-                              val.isEmpty ? 'Enter a valid Email' : null,
+                          decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                          validator: (val) => val.isEmpty ? 'Enter a valid Email' : null,
                           onChanged: (val) {
                             setState(() => email = val);
                           },
@@ -91,9 +84,7 @@ class _SignInState extends State<SignIn> {
                             hintText: 'Password',
                             suffixIcon: IconButton(
                               icon: Icon(
-                                passwordHide
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                                passwordHide ? Icons.visibility_off : Icons.visibility,
                                 color: Theme.of(context).accentColor,
                               ),
                               onPressed: () {
@@ -103,15 +94,12 @@ class _SignInState extends State<SignIn> {
                               },
                             ),
                           ),
-                          validator: (val) => val.length < 6
-                              ? 'Enter a password greater than 6 characters.'
-                              : null,
+                          validator: (val) => val.length < 6 ? 'Enter a password greater than 6 characters.' : null,
                           obscureText: passwordHide,
                           onChanged: (val) {
                             setState(() => password = val);
                           },
                         ),
-
                         SizedBox(height: 20.0),
                         RaisedButton(
                           color: Colors.pink[400],
@@ -127,13 +115,10 @@ class _SignInState extends State<SignIn> {
                                   email = email.trim();
                                 });
 
-                                var flag =
-                                    await _auth.signInWithEmailAndPassword(
-                                        email, password);
+                                var flag = await _auth.signInWithEmailAndPassword(email, password);
                                 if (flag == false) {
                                   setState(() {
-                                    error =
-                                        'ID not verified, verification mail sent again.';
+                                    error = 'ID not verified, verification mail sent again.';
                                   });
                                 }
                                 setState(() => loading = false);
@@ -142,34 +127,27 @@ class _SignInState extends State<SignIn> {
                                   setState(() {
                                     switch (e.code) {
                                       case 'ERROR_INVALID_EMAIL':
-                                        error =
-                                            'Your email address appears to be malformed.';
+                                        error = 'Your email address appears to be malformed.';
                                         break;
                                       case 'ERROR_WRONG_PASSWORD':
                                         error = 'Your password is wrong.';
                                         break;
                                       case 'ERROR_USER_NOT_FOUND':
-                                        error =
-                                            "User with this email doesn't exist.";
+                                        error = "User with this email doesn't exist.";
                                         break;
                                       case 'ERROR_USER_DISABLED':
-                                        error =
-                                            'User with this email has been disabled.';
+                                        error = 'User with this email has been disabled.';
                                         break;
                                       case 'ERROR_TOO_MANY_REQUESTS':
-                                        error =
-                                            'Too many requests. Try again later.';
+                                        error = 'Too many requests. Try again later.';
                                         break;
                                       case 'ERROR_OPERATION_NOT_ALLOWED':
-                                        error =
-                                            'Signing in with Email and Password is not enabled.';
+                                        error = 'Signing in with Email and Password is not enabled.';
                                         break;
                                       default:
                                         {
-                                          print('undefined error:' +
-                                              error.toString());
-                                          error =
-                                              'An undefined Error happened.';
+                                          print('undefined error:' + error.toString());
+                                          error = 'An undefined Error happened.';
                                         }
                                     }
                                     loading = false;
@@ -190,17 +168,13 @@ class _SignInState extends State<SignIn> {
                             style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () {
-                            Navigator.pushNamed(
-                                context, '/accounts/forgotpass');
+                            Navigator.pushNamed(context, '/accounts/forgotpass');
                           },
                         ),
                         SizedBox(height: 20.0),
                         Text(
                           'Tip: Enable Dark mode from settings (icon in the AppBar).',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontStyle: FontStyle.italic,
-                              color: Colors.green),
+                          style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic, color: Colors.green),
                         ),
                         SizedBox(height: 12.0),
                         Text(

@@ -11,18 +11,23 @@ import '../main.dart';
 
 class Dashboard extends StatefulWidget {
   final AuthService _auth;
+
   Dashboard(this._auth);
+
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+
+
   void _startCreatingTrip(BuildContext ctx) async {
-   await Navigator.of(ctx).pushNamed (
-     CreateTrip.routeName,
+    await Navigator.of(ctx).pushNamed(
+      CreateTrip.routeName,
     );
-   setState(() {});
+ setState(() {});
   }
   @override
   Widget build(BuildContext context) {
@@ -35,33 +40,27 @@ class _DashboardState extends State<Dashboard> {
               icon: Icon(Icons.filter_list),
               iconSize: 30.0,
               onPressed: () {
-                return Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
+                return Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return Filter();
                 }));
               }),
           IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
-                return Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
+                return Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return Settings();
                 }));
               }),
           FlatButton.icon(
-            textColor: getActionBarIconColor(),
+            textColor: getVisibleColorOnPrimaryColor(context),
             icon: Icon(FontAwesomeIcons.signOutAlt),
             onPressed: () async {
               ProgressDialog pr;
-              pr = ProgressDialog(context,
-                  type: ProgressDialogType.Normal,
-                  isDismissible: false,
-                  showLogs: false);
+              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
               pr.style(
                 message: 'Logging out...',
                 backgroundColor: Theme.of(context).backgroundColor,
-                messageTextStyle:
-                    TextStyle(color: Theme.of(context).accentColor),
+                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
               );
               await pr.show();
               await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
@@ -72,8 +71,7 @@ class _DashboardState extends State<Dashboard> {
                 // show e.message
                 await pr.hide();
                 String errStr = err.message ?? err.toString();
-                final snackBar = SnackBar(
-                    content: Text(errStr), duration: Duration(seconds: 3));
+                final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
                 _scaffoldKey.currentState.showSnackBar(snackBar);
               }
             },
@@ -81,23 +79,24 @@ class _DashboardState extends State<Dashboard> {
           )
         ],
       ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.all(5),
-            height: (MediaQuery.of(context).size.height -
-                    MediaQuery.of(context).padding.top) *
-                0.87,
-            width: double.infinity,
-            child: TripsList(allTrips),
-          ),
-        ],
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.all(5),
+              height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
+              width: double.infinity,
+              child: TripsList(allTrips),
+            ),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton(
-          splashColor: Theme.of(context).primaryColor,
-          onPressed: () => _startCreatingTrip(context),
-          child: Icon(Icons.add),
+        splashColor: Theme.of(context).primaryColor,
+        onPressed: () => _startCreatingTrip(context),
+        child: Icon(Icons.add),
       ),
     );
   }

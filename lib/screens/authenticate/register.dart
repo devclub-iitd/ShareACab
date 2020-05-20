@@ -7,6 +7,7 @@ import 'package:shareacab/shared/loading.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
+
   Register({this.toggleView});
 
   @override
@@ -62,11 +63,9 @@ class _RegisterState extends State<Register> {
     return loading
         ? Loading()
         : Scaffold(
-
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
               backgroundColor: Theme.of(context).primaryColor,
-
               elevation: 0.0,
               title: Text('Sign up'),
               actions: <Widget>[
@@ -79,7 +78,6 @@ class _RegisterState extends State<Register> {
                 ),
               ],
             ),
-
             body: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
@@ -106,7 +104,6 @@ class _RegisterState extends State<Register> {
 
                             // uncomment below lines for iitd.ac.in validator
 
-
                             // if (val.endsWith('iitd.ac.in')) {
                             //   return null;
                             // } else {
@@ -123,9 +120,7 @@ class _RegisterState extends State<Register> {
                             hintText: 'Password',
                             suffixIcon: IconButton(
                               icon: Icon(
-                                passwordHide
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
+                                passwordHide ? Icons.visibility_off : Icons.visibility,
                                 color: Theme.of(context).accentColor,
                               ),
                               onPressed: () {
@@ -135,9 +130,7 @@ class _RegisterState extends State<Register> {
                               },
                             ),
                           ),
-                          validator: (val) => val.length < 6
-                              ? 'Enter a password greater than 6 characters.'
-                              : null,
+                          validator: (val) => val.length < 6 ? 'Enter a password greater than 6 characters.' : null,
                           obscureText: passwordHide,
                           onChanged: (val) {
                             setState(() => password = val);
@@ -145,30 +138,22 @@ class _RegisterState extends State<Register> {
                         ),
                         SizedBox(height: 20.0),
                         TextFormField(
-                          decoration:
-                              textInputDecoration.copyWith(hintText: 'Name'),
-                          validator: (val) =>
-                              val.isEmpty ? 'Enter a valid Name' : null,
+                          decoration: textInputDecoration.copyWith(hintText: 'Name'),
+                          validator: (val) => val.isEmpty ? 'Enter a valid Name' : null,
                           onChanged: (val) {
                             setState(() => name = val);
                           },
                         ),
                         SizedBox(height: 20.0),
                         TextFormField(
-                          decoration: textInputDecoration.copyWith(
-                              hintText: 'Mobile Number'),
-                          validator: (val) => val.length != 10
-                              ? 'Enter a valid mobile number.'
-                              : null,
+                          decoration: textInputDecoration.copyWith(hintText: 'Mobile Number'),
+                          validator: (val) => val.length != 10 ? 'Enter a valid mobile number.' : null,
                           keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            WhitelistingTextInputFormatter.digitsOnly
-                          ],
+                          inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
                           onChanged: (val) {
                             setState(() => mobileNum = val);
                           },
                         ),
-
                         SizedBox(height: 20.0),
                         DropdownButtonFormField(
                           decoration: textInputDecoration,
@@ -185,8 +170,7 @@ class _RegisterState extends State<Register> {
                               value: temp,
                             );
                           }).toList(),
-                          validator: (val) =>
-                              val == null ? 'Please select your hostel' : null,
+                          validator: (val) => val == null ? 'Please select your hostel' : null,
                         ),
                         SizedBox(height: 20.0),
                         DropdownButtonFormField(
@@ -204,8 +188,7 @@ class _RegisterState extends State<Register> {
                               value: temp,
                             );
                           }).toList(),
-                          validator: (val) =>
-                              val == null ? 'Please select your sex' : null,
+                          validator: (val) => val == null ? 'Please select your sex' : null,
                         ),
                         SizedBox(height: 20.0),
                         RaisedButton(
@@ -218,18 +201,11 @@ class _RegisterState extends State<Register> {
                             if (_formKey.currentState.validate()) {
                               setState(() => loading = true);
                               try {
-                                await _auth.registerWithEmailAndPassword(
-                                    email: email.trim(),
-                                    password: password,
-                                    name: name,
-                                    mobilenum: mobileNum,
-                                    hostel: hostel,
-                                    sex: sex);
+                                await _auth.registerWithEmailAndPassword(email: email.trim(), password: password, name: name, mobilenum: mobileNum, hostel: hostel, sex: sex);
 
                                 setState(() {
                                   loading = false;
-                                  error =
-                                      'Verification link has been sent to mailbox. Please verify and sign in.';
+                                  error = 'Verification link has been sent to mailbox. Please verify and sign in.';
                                 });
                               } catch (e) {
                                 if (mounted) {
@@ -242,8 +218,7 @@ class _RegisterState extends State<Register> {
                                         error = 'Your email is invalid';
                                         break;
                                       case 'ERROR_EMAIL_ALREADY_IN_USE':
-                                        error =
-                                            'Email is already in use on different account';
+                                        error = 'Email is already in use on different account';
                                         break;
                                       default:
                                         error = 'An undefined Error happened.';

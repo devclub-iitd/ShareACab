@@ -20,6 +20,7 @@ class _RootScreenState extends State<RootScreen> {
   bool loading = false;
   String error = '';
   Widget choose;
+
   // String _appBarTitle = '';
   bool justLoggedin = true;
   bool isHome = true;
@@ -40,7 +41,6 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return loading
         ? Loading()
         : Scaffold(
@@ -94,9 +94,9 @@ class _RootScreenState extends State<RootScreen> {
             //         child: choose,
             //       ),
             body: IndexedStack(
-                    index: _selectedPage,
-                    children: pagelist,
-                  ),
+              index: _selectedPage,
+              children: pagelist,
+            ),
           );
   }
 }

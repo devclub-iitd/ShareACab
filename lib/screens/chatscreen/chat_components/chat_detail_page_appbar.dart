@@ -18,28 +18,44 @@ class ChatDetailPageAppBar extends StatelessWidget implements PreferredSizeWidge
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.arrow_back, color: Theme.of(context).accentColor,),
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Theme.of(context).accentColor,
+                ),
               ),
-              SizedBox(width: 2,),
+              SizedBox(
+                width: 2,
+              ),
               CircleAvatar(
                 backgroundImage: AssetImage('images/userImage1.jpeg'),
                 maxRadius: 20,
               ),
-              SizedBox(width: 12,),
+              SizedBox(
+                width: 12,
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('Arpit Sir',
-                      style: TextStyle(fontWeight: FontWeight.w600),),
-                    SizedBox(height: 6,),
-                    Text('Online',
-                      style: TextStyle(color: userIsOnline(context), fontSize: 12),),
+                    Text(
+                      'Arpit Sir',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      height: 6,
+                    ),
+                    Text(
+                      'Online',
+                      style: TextStyle(color: userIsOnline(context), fontSize: 12),
+                    ),
                   ],
                 ),
               ),
-              Icon(Icons.more_vert, color: Theme.of(context).colorScheme.primary,),
+              Icon(
+                Icons.more_vert,
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ],
           ),
         ),
