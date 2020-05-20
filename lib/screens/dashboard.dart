@@ -18,18 +18,12 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-
   void _startCreatingTrip(BuildContext ctx) async {
    await Navigator.of(ctx).pushNamed (
      CreateTrip.routeName,
     );
-   setState(() {
-
-   });
+   setState(() {});
   }
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -12,7 +12,6 @@ class CreateTrip extends StatefulWidget {
 
 class _CreateTripState extends State<CreateTrip> {
   List<String> destinations = ['New Delhi Railway Station', 'Indira Gandhi International Airport'];
-
   String _destination;
   final _finalDestinationController = TextEditingController();
   DateTime _selectedStartDate;
@@ -20,8 +19,6 @@ class _CreateTripState extends State<CreateTrip> {
   DateTime _selectedEndDate;
   TimeOfDay _selectedEndTime;
   bool privacy = false;
-
-
 
   void _addNewRequest() {
     final newRq = RequestDetails(
@@ -51,8 +48,6 @@ class _CreateTripState extends State<CreateTrip> {
     Navigator.of(context).pop();
   }
 
-
-
   void _startDatePicker(){
     showDatePicker(
         context: context,
@@ -65,6 +60,7 @@ class _CreateTripState extends State<CreateTrip> {
       }
       setState(() {
         _selectedStartDate = pickedDate;
+        FocusScope.of(context).requestFocus(FocusNode());
       });
     });
   }
@@ -81,6 +77,8 @@ class _CreateTripState extends State<CreateTrip> {
       }
       setState(() {
         _selectedEndDate = pickedDate;
+        FocusScope.of(context).requestFocus(FocusNode());
+
       });
     });
   }
@@ -95,6 +93,8 @@ class _CreateTripState extends State<CreateTrip> {
       }
       setState(() {
         _selectedStartTime = pickedTime;
+        FocusScope.of(context).requestFocus(FocusNode());
+
       });
     });
   }
@@ -109,6 +109,8 @@ class _CreateTripState extends State<CreateTrip> {
       }
       setState(() {
         _selectedEndTime = pickedTime;
+        FocusScope.of(context).requestFocus(FocusNode());
+
       });
     });
   }
