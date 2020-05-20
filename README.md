@@ -2,15 +2,14 @@
 
 An app for sharing cab with college students
 
-## Getting Started
+## Contribution Rules
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Make sure that pedantic version is `1.9` and run `flutter analyze`
+- Add Screenshots or gif of UI workflow in PR comments
+- **Formatting**  
+  - Make sure to format code before generating PR. 
+  - If on android studio, select all using CTRL + A and then formatting can be done using CTRL+ALT+L.  
+  - Make sure hard wrap is set to 900 while formatting.  
+  - <img width="637" alt="Screenshot 2020-05-20 at 11 02 17 AM" src="https://user-images.githubusercontent.com/31121102/82408535-67bf2a80-9a89-11ea-80d9-361f72c8b8b4.png">
+  - If you are on vs code, check this for changing hard wrapping. https://stackoverflow.com/questions/59456452/how-to-change-vs-code-line-auto-wrap-column-when-formatting-dart-files
+  - Check this for more info about formatting. https://flutter.dev/docs/development/tools/formatting
