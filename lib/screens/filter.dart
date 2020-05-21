@@ -30,7 +30,6 @@ class _FilterState extends State<Filter> {
    bool _dest = false;
    bool _time = false;
    bool _date = false;
-
    @override
    void initState() {
     _dest = widget._dest;
@@ -61,18 +60,18 @@ class _FilterState extends State<Filter> {
       _Trips = _Trips.where((trip){
         var _tripStartTime = double.parse(trip.startTime.hour.toString())  + double.parse(trip.startTime.minute.toString())/60;
         var _tripEndTime = double.parse(trip.endTime.hour.toString())  + double.parse(trip.endTime.minute.toString())/60;
-        return (_tripStartTime < _endTime && _tripEndTime > _startTime);
+        if(trip.endDate.isAfter(trip.startDate)){_tripEndTime = _tripEndTime + 24;}
+        if(_startTime > _endTime){_endTime = _endTime + 24 ;}
+        return (_tripStartTime <= _endTime && _tripEndTime >= _startTime);
       }).toList();
     }
       setState(() {
         widget.filtering(_Trips, _dest, _date, _time, _destination, _selectedStartDate, _selectedStartTime, _selectedEndDate, _selectedEndTime);
       });
     Navigator.of(context).pop();
+   }
 
-  }
-
-
-  void _startDatePicker() {
+   void _startDatePicker() {
     showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now().subtract(Duration(days: 1)), lastDate: DateTime.now().add(Duration(days: 30))).then((pickedDate) {
       if (pickedDate == null) {
         return;
@@ -235,7 +234,7 @@ class _FilterState extends State<Filter> {
                         Icons.schedule,
                         color: Theme.of(context).accentColor,
                       ),
-                      onPressed: () => _startTimePicker(),
+                      onPressed: _time ? () => _startTimePicker() : null,
                     ),
                     Text(_time ? _selectedEndTime == null ? 'End Time' : '${_selectedEndTime.toString().substring(10, 15)}' : 'End Time'),
                     IconButton(
@@ -243,7 +242,7 @@ class _FilterState extends State<Filter> {
                         Icons.schedule,
                         color: Theme.of(context).accentColor,
                       ),
-                      onPressed: () => _endTimePicker(),
+                      onPressed: _time ? () => _endTimePicker() : null,
                     ),
                   ],
                 ),

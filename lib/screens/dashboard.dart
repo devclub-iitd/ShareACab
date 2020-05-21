@@ -21,6 +21,7 @@ class _DashboardState extends State<Dashboard> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<RequestDetails> _listOfTrips = allTrips;
+  List<RequestDetails> filtered = allTrips;
   bool _dest = false;
   bool _date = false;
   bool _time = false;
@@ -42,6 +43,13 @@ class _DashboardState extends State<Dashboard> {
     _listOfTrips = filtered;
     setState(() {
     });
+  }
+
+  @override
+  void initState(){
+    _listOfTrips = filtered;
+
+    super.initState();
   }
 
   void _startFilter (BuildContext ctx){
@@ -66,6 +74,15 @@ class _DashboardState extends State<Dashboard> {
     );
  setState(() {});
   }
+
+  Future<Null> refreshList() async{
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      _listOfTrips = filtered;
+    });
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,7 +139,7 @@ class _DashboardState extends State<Dashboard> {
               margin: EdgeInsets.all(5),
               height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
               width: double.infinity,
-              child: TripsList(_listOfTrips),
+              child: RefreshIndicator(child: TripsList(_listOfTrips), onRefresh: refreshList,),
             ),
           ],
         ),
