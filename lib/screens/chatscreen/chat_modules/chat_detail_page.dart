@@ -6,10 +6,6 @@ import 'package:shareacab/screens/chatscreen/chat_models/send_menu_items.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-enum MessageType {
-  Sender,
-  Receiver,
-}
 
 class ChatDetailPage extends StatefulWidget {
   @override
@@ -18,35 +14,89 @@ class ChatDetailPage extends StatefulWidget {
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
   List<ChatMessage> chatMessages = [
-    ChatMessage(name: 'Vishal', message: 'Hi John', type: MessageType.Receiver),
-    ChatMessage(name: 'Vishal', message: 'Hope you are doin good', type: MessageType.Receiver),
-    ChatMessage(name: 'Vishal', message: "Hello Jane, I'm good what about you", type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: "I'm fine, Working from home", type: MessageType.Receiver),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: '2nd last, Oh! Nice. Same here man', type: MessageType.Sender),
-    ChatMessage(name: 'Vishal', message: 'last, I am God, Oh! Nice. Same here man', type: MessageType.Sender),
+    ChatMessage(name: 'Vishal', message: 'Hi John', sending: false),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'Hope you are doin good',
+        sending: false),
+    ChatMessage(
+        name: 'Vishal',
+        message: "Hello Jane, I'm good what about you",
+        sending: true),
+    ChatMessage(
+        name: 'Vishal',
+        message: "I'm fine, Working from home",
+        sending: false),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'Oh! Nice. Same here man',
+        sending: true),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'Oh! Nice. Same here man',
+        sending: true),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'Oh! Nice. Same here man',
+        sending: true),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'Oh! Nice. Same here man',
+        sending: true),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'Oh! Nice. Same here man',
+        sending: true),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'Oh! Nice. Same here man',
+        sending: true),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'Oh! Nice. Same here man',
+        sending: true),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'Oh! Nice. Same here man',
+        sending: true),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'Oh! Nice. Same here man',
+        sending: true),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'Oh! Nice. Same here man',
+        sending: true),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'Oh! Nice. Same here man',
+        sending: true),
+
+    ChatMessage(
+        name: 'Vishal',
+        message: '2nd last, Oh! Nice. Same here man',
+        sending: true),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'last, I am God, Oh! Nice. Same here man',
+        sending: true),
   ];
 
   List<SendMenuItems> menuItems = [
-    SendMenuItems(text: 'Photos & Videos', icons: Icons.image, color: getMenuItemColor(0)),
-    SendMenuItems(text: 'Document', icons: Icons.insert_drive_file, color: getMenuItemColor(1)),
-    SendMenuItems(text: 'Audio', icons: Icons.music_note, color: getMenuItemColor(2)),
-    SendMenuItems(text: 'Location', icons: Icons.location_on, color: getMenuItemColor(3)),
-    SendMenuItems(text: 'Contact', icons: Icons.person, color: getMenuItemColor(4)),
+    SendMenuItems(
+        text: 'Photos & Videos',
+        icons: Icons.image,
+        color: getMenuItemColor(0)),
+    SendMenuItems(
+        text: 'Document',
+        icons: Icons.insert_drive_file,
+        color: getMenuItemColor(1)),
+    SendMenuItems(
+        text: 'Audio', icons: Icons.music_note, color: getMenuItemColor(2)),
+    SendMenuItems(
+        text: 'Location', icons: Icons.location_on, color: getMenuItemColor(3)),
+    SendMenuItems(
+        text: 'Contact', icons: Icons.person, color: getMenuItemColor(4)),
   ];
 
   void showModal() {
@@ -160,7 +210,11 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 ),
                 Expanded(
                   child: TextField(
-                    decoration: InputDecoration(hintText: 'Type message...', hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary), border: InputBorder.none),
+                    decoration: InputDecoration(
+                        hintText: 'Type message...',
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.primary),
+                        border: InputBorder.none),
                   ),
                 ),
               ],

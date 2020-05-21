@@ -59,7 +59,7 @@ class TripsList extends StatelessWidget {
                           child:
                                FlatButton(
                             onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => Group()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
                             },
                             child: Text('Join Now'),
                           ),

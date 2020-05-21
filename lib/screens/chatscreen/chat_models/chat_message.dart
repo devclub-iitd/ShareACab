@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 class ChatMessage {
   String name;
   String message;
-  MessageType type;
+  bool  sending;
 
-  ChatMessage({@required this.name, @required this.message, @required this.type});
+  ChatMessage({@required this.name, @required this.message, @required this.sending});
 }
