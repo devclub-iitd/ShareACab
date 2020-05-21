@@ -1,4 +1,3 @@
-import 'package:shareacab/screens/chatscreen/chat_modules/chat_detail_page.dart';
 import 'package:flutter/cupertino.dart';
 
 // this is temporary and only for design, actual ChatMessage is different

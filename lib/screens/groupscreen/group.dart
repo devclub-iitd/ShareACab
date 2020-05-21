@@ -5,7 +5,6 @@ import 'package:shareacab/screens/chatscreen/chat_models/send_menu_items.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shareacab/screens/dashboard.dart';
 import 'package:shareacab/screens/rootscreen.dart';
 
 class GroupPage extends StatefulWidget {
