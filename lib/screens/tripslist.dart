@@ -89,7 +89,7 @@ class TripsList extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              'Start : ${DateFormat.yMd().format(trips[index].startDate)} ${trips[index].startTime.toString().substring(10, 15)}',
+                              'Start : ${DateFormat.yMMMd().format(trips[index].startDate)} ${trips[index].startTime.toString().substring(10, 15)}',
                               style: TextStyle(
                                 fontSize: 15,
                               ),
@@ -105,7 +105,7 @@ class TripsList extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              'End : ${DateFormat.yMd().format(trips[index].endDate)} ${trips[index].endTime.toString().substring(10, 15)}',
+                              'End : ${DateFormat.yMMMd().format(trips[index].endDate)} ${trips[index].endTime.toString().substring(10, 15)}',
                               style: TextStyle(
                                 fontSize: 15,
                               ),

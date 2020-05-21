@@ -8,24 +8,79 @@ import 'package:shareacab/screens/settings.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/models/alltrips.dart';
 import '../main.dart';
+import 'package:shareacab/models/requestdetails.dart';
 
 class Dashboard extends StatefulWidget {
   final AuthService _auth;
-
   Dashboard(this._auth);
-
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<RequestDetails> _listOfTrips = allTrips;
+  List<RequestDetails> filtered = allTrips;
+  bool _dest = false;
+  bool _date = false;
+  bool _time = false;
+  String _selecteddest;
+  DateTime _SD;
+  TimeOfDay _ST;
+  DateTime _ED;
+  TimeOfDay _ET;
+
+  void _filteredList(filtered, destination, date, time, dest, sdate, stime, edate, etime){
+    _dest = destination;
+    _date = date;
+    _time = time;
+    _selecteddest = dest;
+    _SD = sdate;
+    _ST = stime;
+    _ED = edate;
+    _ET = etime;
+    _listOfTrips = filtered;
+    setState(() {
+    });
+  }
+
+  @override
+  void initState(){
+    _listOfTrips = filtered;
+
+    super.initState();
+  }
+
+  void _startFilter (BuildContext ctx){
+    showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))
+      ),
+      backgroundColor: Theme.of(context).accentColor,
+      context: ctx,
+      builder: (_) {
+        return GestureDetector (
+          onTap: () {},
+          child: Filter(_filteredList, _dest, _date, _time, _selecteddest, _SD, _ST, _ED, _ET),
+          behavior: HitTestBehavior.opaque,
+        );
+      },);
+  }
 
   void _startCreatingTrip(BuildContext ctx) async {
     await Navigator.of(ctx).pushNamed(
       CreateTrip.routeName,
     );
-    setState(() {});
+ setState(() {});
+  }
+
+  Future<Null> refreshList() async{
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      _listOfTrips = filtered;
+    });
+    return null;
   }
 
   @override
@@ -38,11 +93,9 @@ class _DashboardState extends State<Dashboard> {
           IconButton(
               icon: Icon(Icons.filter_list),
               iconSize: 30.0,
-              onPressed: () {
-                return Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Filter();
-                }));
-              }),
+              onPressed: () {_startFilter(context);}
+              ),
+
           IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
@@ -86,7 +139,7 @@ class _DashboardState extends State<Dashboard> {
               margin: EdgeInsets.all(5),
               height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
               width: double.infinity,
-              child: TripsList(allTrips),
+              child: RefreshIndicator(child: TripsList(_listOfTrips), onRefresh: refreshList,),
             ),
           ],
         ),
