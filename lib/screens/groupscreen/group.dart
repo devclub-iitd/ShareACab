@@ -1,11 +1,12 @@
 import 'package:shareacab/main.dart';
 import 'package:shareacab/screens/chatscreen/chat_components/chat_bubble.dart';
-import 'package:shareacab/screens/chatscreen/chat_components/chat_detail_page_appbar.dart';
 import 'package:shareacab/screens/chatscreen/chat_models/chat_message.dart';
 import 'package:shareacab/screens/chatscreen/chat_models/send_menu_items.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shareacab/screens/dashboard.dart';
+import 'package:shareacab/screens/rootscreen.dart';
 
 class GroupPage extends StatefulWidget {
   @override
@@ -160,13 +161,90 @@ class _GroupPage extends State<GroupPage> {
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
+            actions: <Widget>[
+              FlatButton.icon(
+                textColor: getVisibleColorOnPrimaryColor(context),
+                icon: Icon(FontAwesomeIcons.signOutAlt),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
+                },
+                label: Text('Leave Group'),
+              ),
+            ],
             expandedHeight: 200.0,
             floating: false,
-            pinned: true,
+            pinned: false,
             flexibleSpace: FlexibleSpaceBar(
               title: Text('Demo Group'),
+              background: Card(
+                color: Theme.of(context).backgroundColor,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
+//                elevation: 5,
+                margin: EdgeInsets.symmetric(vertical: 60, horizontal: 5),
+                child: Container(
+                  height: 150,
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Flexible(
+                            fit: FlexFit.tight,
+                            flex: 1,
+                            child: Container(
+                                margin: EdgeInsets.only(
+                                  left: 20,
+                                  top: 20,
+                                ),
+                                child: Icon(
+                                  Icons.train,
+                                  color: Theme.of(context).accentColor,
+                                  size: 30,
+                                )
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          bottom: 5,
+                          top: 10,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Start : May 21,2020 22:26',
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          bottom: 5,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'End : May 21, 2020 22:23',
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
+
           SliverFillRemaining(
             child: Stack(children: <Widget>[
               Container(
@@ -185,7 +263,6 @@ class _GroupPage extends State<GroupPage> {
                       );
                     },
                   ),
-
               ),
               Align(
                 alignment: Alignment.bottomLeft,
@@ -252,3 +329,16 @@ class _GroupPage extends State<GroupPage> {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////
