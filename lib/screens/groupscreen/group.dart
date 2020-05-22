@@ -5,6 +5,7 @@ import 'package:shareacab/screens/chatscreen/chat_models/send_menu_items.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shareacab/screens/groupscreen/sender_bubble.dart';
 import 'package:shareacab/screens/rootscreen.dart';
 
 class GroupPage extends StatefulWidget {
@@ -14,7 +15,10 @@ class GroupPage extends StatefulWidget {
 
 class _GroupPage extends State<GroupPage> {
   List<ChatMessage> chatMessages = [
-    ChatMessage(name: 'Vishal', message: 'Hi John', sending: false),
+    ChatMessage(
+        name: 'Vishal',
+        message: 'Hi John',
+        sending: false),
     ChatMessage(
         name: 'Vishal',
         message: 'Hope you are doin good',
@@ -32,9 +36,9 @@ class _GroupPage extends State<GroupPage> {
         message: 'Oh! Nice. Same here man',
         sending: true),
     ChatMessage(
-        name: 'Vishal',
+        name: 'Arpit',
         message: 'Oh! Nice. Same here man',
-        sending: true),
+        sending: false),
     ChatMessage(
         name: 'Vishal',
         message: 'Oh! Nice. Same here man',
@@ -170,7 +174,7 @@ class _GroupPage extends State<GroupPage> {
                 label: Text('Leave Group'),
               ),
             ],
-            expandedHeight: 200.0,
+            expandedHeight: 300.0,
             floating: false,
             pinned: false,
             flexibleSpace: FlexibleSpaceBar(
@@ -237,6 +241,17 @@ class _GroupPage extends State<GroupPage> {
                           ],
                         ),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[Text('Members')],
+                          ),
+                          Column(
+                            children: <Widget>[Text('Going To')],
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -252,14 +267,20 @@ class _GroupPage extends State<GroupPage> {
                     itemCount: chatMessages.length,
                     shrinkWrap: true,
                     padding: EdgeInsets.only(top: 10, bottom: 10),
-                    physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {},
-                        subtitle: ChatBubble(
-                          chatMessage: chatMessages[index],
-                        ),
-                      );
+
+                         return  Stack(
+                           children: <Widget>[
+                             SenderBubble(
+                               chatMessage: chatMessages[index],
+                             ),
+                             Text('\n'),
+                             ChatBubble(
+                               chatMessage: chatMessages[index],
+                             ),
+
+                           ],
+                         );
                     },
                   ),
               ),
