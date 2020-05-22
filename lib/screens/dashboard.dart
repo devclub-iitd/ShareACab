@@ -139,10 +139,13 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: FloatingActionButton(
-        splashColor: Theme.of(context).primaryColor,
-        onPressed: () => _startCreatingTrip(context),
-        child: Icon(Icons.add),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 20, 0, 60),
+        child: FloatingActionButton(
+          splashColor: Theme.of(context).primaryColor,
+          onPressed: () => _startCreatingTrip(context),
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }
