@@ -61,6 +61,7 @@ class DatabaseService {
 
   // add group details
   Future<void> createTrip(RequestDetails requestDetails) async {
+    var user = await _auth.currentUser();
     final docRef = await requestdetails.add({
       'destination': requestDetails.destination.toString(),
       'startDate': requestDetails.startDate.toString(),
@@ -69,8 +70,23 @@ class DatabaseService {
       'endTime': requestDetails.endTime.toString(),
       'privacy': requestDetails.privacy.toString(),
     });
-    var userUID = await _auth.currentUser();
-    await userDetails.document(userUID.uid).updateData({
+
+    var request = requestdetails.document(docRef.documentID).collection('users');
+    await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) async {
+      if (value.exists) {
+        await request.document(user.uid).setData({
+          'name': value.data['name'],
+          'hostel': value.data['hostel'],
+          'sex': value.data['sex'],
+          'mobilenum': value.data['mobileNumber'],
+          'totalrides': value.data['totalRides'],
+          'actualrating': value.data['actualRating'],
+          'cancelledrides': value.data['cancelledRides'],
+        });
+      }
+    });
+
+    await userDetails.document(user.uid).updateData({
       'currentGroup': docRef.documentID,
     });
   }
