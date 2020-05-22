@@ -13,40 +13,26 @@ class SenderBubble extends StatefulWidget {
 class _SenderBubbleState extends State<SenderBubble> {
   @override
   Widget build(BuildContext context) {
-     return Stack(
-       children:<Widget>[
-         Container(
-         padding: EdgeInsets.only(left: 2, right: 2, top: 2, bottom: 2),
-         child: Align(
-           alignment: (widget.chatMessage.sending == false ? Alignment.topLeft : Alignment.topRight),
-           child: Stack(
-             children: <Widget>[
-               Container(
-                 decoration: BoxDecoration(
-                   borderRadius: BorderRadius.circular(30),
-                   color: (widget.chatMessage.sending == false ? chatBubbleBackgroundColorReceiver : chatBubbleBackgroundColorSender),
-                 ),
-                 padding: EdgeInsets.all(2),
-                 child: Stack(
-                   children: <Widget>[
-                     Text(
-                       widget.chatMessage.name,
-                       style: TextStyle(color: getChatBubbleTextColor()),
-                     ),
-                     Text(
-                       widget.chatMessage.name,
-                       style: TextStyle(color: getChatBubbleTextColor()),
-                     ),
-                   ],
-                 ),
-               ),
-
-             ],
-           ),
-         ),
-       ),
-
-       ]
-     );
+     return Container(
+      padding: EdgeInsets.only(left: 2, right: 2, top: 2, bottom: 2),
+      child: Align(
+        alignment: (widget.chatMessage.sending == false ? Alignment.topLeft : Alignment.topRight),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: (widget.chatMessage.sending == false ? chatBubbleBackgroundColorReceiver : chatBubbleBackgroundColorSender),
+              ),
+              padding: EdgeInsets.all(2),
+              child: Text(
+                widget.chatMessage.name,
+                style: TextStyle(color: getChatBubbleTextColor()),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

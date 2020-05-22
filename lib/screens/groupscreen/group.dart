@@ -15,67 +15,37 @@ class GroupPage extends StatefulWidget {
 
 class _GroupPage extends State<GroupPage> {
   List<ChatMessage> chatMessages = [
+    ChatMessage(name: 'Vishal', message: 'Hi John', sending: false),
     ChatMessage(
-        name: 'Vishal',
-        message: 'Hi John',
-        sending: false),
-    ChatMessage(
-        name: 'Vishal',
-        message: 'Hope you are doin good',
-        sending: false),
+        name: 'Vishal', message: 'Hope you are doin good', sending: false),
     ChatMessage(
         name: 'Vishal',
         message: "Hello Jane, I'm good what about you",
         sending: true),
     ChatMessage(
-        name: 'Vishal',
-        message: "I'm fine, Working from home",
-        sending: false),
+        name: 'Vishal', message: "I'm fine, Working from home", sending: false),
     ChatMessage(
-        name: 'Vishal',
-        message: 'Oh! Nice. Same here man',
-        sending: true),
+        name: 'Vishal', message: 'Oh! Nice. Same here man', sending: true),
     ChatMessage(
-        name: 'Arpit',
-        message: 'Oh! Nice. Same here man',
-        sending: false),
+        name: 'Vishal', message: 'Oh! Nice. Same here man', sending: true),
     ChatMessage(
-        name: 'Vishal',
-        message: 'Oh! Nice. Same here man',
-        sending: true),
+        name: 'Vishal', message: 'Oh! Nice. Same here man', sending: true),
     ChatMessage(
-        name: 'Vishal',
-        message: 'Oh! Nice. Same here man',
-        sending: true),
+        name: 'Vishal', message: 'Oh! Nice. Same here man', sending: true),
     ChatMessage(
-        name: 'Vishal',
-        message: 'Oh! Nice. Same here man',
-        sending: true),
+        name: 'Vishal', message: 'Oh! Nice. Same here man', sending: true),
     ChatMessage(
-        name: 'Vishal',
-        message: 'Oh! Nice. Same here man',
-        sending: true),
+        name: 'Vishal', message: 'Oh! Nice. Same here man', sending: true),
     ChatMessage(
-        name: 'Vishal',
-        message: 'Oh! Nice. Same here man',
-        sending: true),
+        name: 'Vishal', message: 'Oh! Nice. Same here man', sending: true),
     ChatMessage(
-        name: 'Vishal',
-        message: 'Oh! Nice. Same here man',
-        sending: true),
+        name: 'Vishal', message: 'Oh! Nice. Same here man', sending: true),
     ChatMessage(
-        name: 'Vishal',
-        message: 'Oh! Nice. Same here man',
-        sending: true),
+        name: 'Vishal', message: 'Oh! Nice. Same here man', sending: true),
     ChatMessage(
-        name: 'Vishal',
-        message: 'Oh! Nice. Same here man',
-        sending: true),
+        name: 'Vishal', message: 'Oh! Nice. Same here man', sending: true),
     ChatMessage(
-        name: 'Vishal',
-        message: 'Oh! Nice. Same here man',
-        sending: true),
-
+        name: 'Vishal', message: 'Oh! Nice. Same here man', sending: true),
     ChatMessage(
         name: 'Vishal',
         message: '2nd last, Oh! Nice. Same here man',
@@ -161,204 +131,178 @@ class _GroupPage extends State<GroupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            actions: <Widget>[
-              FlatButton.icon(
-                textColor: getVisibleColorOnPrimaryColor(context),
-                icon: Icon(FontAwesomeIcons.signOutAlt),
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
-                },
-                label: Text('Leave Group'),
-              ),
-            ],
-            expandedHeight: 300.0,
-            floating: false,
-            pinned: false,
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text('Demo Group'),
-              background: Card(
-                color: Theme.of(context).backgroundColor,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
+        body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                actions: <Widget>[
+                  FlatButton.icon(
+                    textColor: getVisibleColorOnPrimaryColor(context),
+                    icon: Icon(FontAwesomeIcons.signOutAlt),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => RootScreen()));
+                    },
+                    label: Text('Leave Group'),
+                  ),
+                ],
+                expandedHeight: 200.0,
+                floating: false,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Text('Demo Group'),
+                  background: Card(
+                    color: Theme.of(context).backgroundColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(25.0))),
 //                elevation: 5,
-                margin: EdgeInsets.symmetric(vertical: 60, horizontal: 5),
-                child: Container(
-                  height: 150,
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    margin: EdgeInsets.symmetric(vertical: 60, horizontal: 5),
+                    child: Container(
+                      height: 150,
+                      child: Column(
                         children: <Widget>[
-                          Flexible(
-                            fit: FlexFit.tight,
-                            flex: 1,
-                            child: Container(
-                                margin: EdgeInsets.only(
-                                  left: 20,
-                                  top: 20,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Flexible(
+                                fit: FlexFit.tight,
+                                flex: 1,
+                                child: Container(
+                                    margin: EdgeInsets.only(
+                                      left: 20,
+                                      top: 20,
+                                    ),
+                                    child: Icon(
+                                      Icons.train,
+                                      color: Theme.of(context).accentColor,
+                                      size: 30,
+                                    )),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: 5,
+                              top: 10,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'Start : May 21,2020 22:26',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),
                                 ),
-                                child: Icon(
-                                  Icons.train,
-                                  color: Theme.of(context).accentColor,
-                                  size: 30,
-                                )
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: 5,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  'End : May 21, 2020 22:23',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          bottom: 5,
-                          top: 10,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              'Start : May 21,2020 22:26',
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          bottom: 5,
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              'End : May 21, 2020 22:23',
-                              style: TextStyle(
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Column(
-                            children: <Widget>[Text('Members')],
-                          ),
-                          Column(
-                            children: <Widget>[Text('Going To')],
-                          )
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
                 ),
+              ),
+            ];
+          },body: Stack(children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 80),
+
+            child: ListView.builder(
+              itemCount: chatMessages.length,
+              shrinkWrap: true,
+              padding: EdgeInsets.only(top: 10, bottom: 10),
+              physics: NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return Stack(
+                  children: <Widget>[
+                    SenderBubble(
+                      chatMessage: chatMessages[index],
+                    ),
+                    Text('\n'),
+                    ChatBubble(
+                      chatMessage: chatMessages[index],
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Container(
+              padding: EdgeInsets.only(left: 16, bottom: 10),
+              height: 80,
+              width: double.infinity,
+              color: Theme.of(context).primaryColor,
+              child: Row(
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      showModal();
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Icon(
+                        Icons.add,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        size: 21,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Expanded(
+                    child: TextField(
+                      decoration: InputDecoration(
+                          hintText: 'Type message...',
+                          hintStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.primary),
+                          border: InputBorder.none),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-
-          SliverFillRemaining(
-            child: Stack(children: <Widget>[
-              Container(
-                margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 80),
-                  child: ListView.builder(
-                    itemCount: chatMessages.length,
-                    shrinkWrap: true,
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
-                    itemBuilder: (context, index) {
-
-                         return  Stack(
-                           children: <Widget>[
-                             SenderBubble(
-                               chatMessage: chatMessages[index],
-                             ),
-                             Text('\n'),
-                             ChatBubble(
-                               chatMessage: chatMessages[index],
-                             ),
-
-                           ],
-                         );
-                    },
-                  ),
-              ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Container(
-                  padding: EdgeInsets.only(left: 16, bottom: 10),
-                  height: 80,
-                  width: double.infinity,
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Container(
+              padding: EdgeInsets.only(right: 30, bottom: 50),
+              child: FloatingActionButton(
+                onPressed: () {},
+                child: Icon(
+                  Icons.send,
                   color: Theme.of(context).primaryColor,
-                  child: Row(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          showModal();
-                        },
-                        child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: Icon(
-                            Icons.add,
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            size: 21,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 16,
-                      ),
-                      Expanded(
-                        child: TextField(
-                          decoration: InputDecoration(
-                              hintText: 'Type message...',
-                              hintStyle: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary),
-                              border: InputBorder.none),
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
+                backgroundColor: sendMessageIcon(context),
+                elevation: 0,
               ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  padding: EdgeInsets.only(right: 30, bottom: 50),
-                  child: FloatingActionButton(
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.send,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    backgroundColor: sendMessageIcon(context),
-                    elevation: 0,
-                  ),
-                ),
-              )
-            ]),
+            ),
           )
-        ],
-      ),
-    );
+        ]),
+        ));
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-//////////////

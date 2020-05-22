@@ -20,13 +20,13 @@ class _ChatBubbleState extends State<ChatBubble> {
       margin:  const EdgeInsets.only(top: 13.0),
       padding: EdgeInsets.only(left: 1, right: 1, top: 10, bottom: 10),
       child: Align(
-        alignment: (widget.chatMessage.sending == false ? Alignment.topLeft : Alignment.topRight),
+        alignment: (!widget.chatMessage.sending ? Alignment.topLeft : Alignment.topRight),
         child: Stack(
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
-                color: (widget.chatMessage.sending == false ? chatBubbleBackgroundColorReceiver : chatBubbleBackgroundColorSender),
+                color: (!widget.chatMessage.sending ? chatBubbleBackgroundColorReceiver : chatBubbleBackgroundColorSender),
               ),
               padding: EdgeInsets.all(16),
               child: Text(
