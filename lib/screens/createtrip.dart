@@ -4,7 +4,6 @@ import 'package:shareacab/models/requestdetails.dart';
 import 'package:intl/intl.dart';
 import 'package:shareacab/models/alltrips.dart';
 import 'package:shareacab/main.dart';
-import 'package:shareacab/services/database.dart';
 import 'package:shareacab/services/trips.dart';
 
 class CreateTrip extends StatefulWidget {
