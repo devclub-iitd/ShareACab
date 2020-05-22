@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shareacab/models/requestdetails.dart';
 import 'package:shareacab/models/user.dart';
 
 class DatabaseService {
   final String uid;
-
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   DatabaseService({this.uid});
 
   //collection reference
@@ -59,14 +60,18 @@ class DatabaseService {
   }
 
   // add group details
-  Future createTrip(RequestDetails requestDetails) async {
-    return await requestdetails.add({
+  Future<void> createTrip(RequestDetails requestDetails) async {
+    final docRef = await requestdetails.add({
       'destination': requestDetails.destination.toString(),
       'startDate': requestDetails.startDate.toString(),
       'startTime': requestDetails.startTime.toString(),
       'endDate': requestDetails.endDate.toString(),
       'endTime': requestDetails.endTime.toString(),
       'privacy': requestDetails.privacy.toString(),
+    });
+    var userUID = await _auth.currentUser();
+    await userDetails.document(userUID.uid).updateData({
+      'currentGroup': docRef.documentID,
     });
   }
 }
