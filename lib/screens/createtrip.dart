@@ -25,6 +25,9 @@ class _CreateTripState extends State<CreateTrip> {
 
   void _addNewRequest() {
     final newRq = RequestDetails(name: 'Name', id: DateTime.now().toString(), destination: _destination, finalDestination: _finalDestinationController.text, startDate: _selectedStartDate, startTime: _selectedStartTime, endDate: _selectedEndDate, endTime: _selectedEndTime, privacy: privacy);
+    print(_selectedEndDate);
+    print(_selectedEndTime.hour);
+    print(_selectedEndTime.minute);
     setState(() {
       allTrips.add(newRq);
     });
