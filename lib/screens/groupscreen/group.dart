@@ -135,7 +135,17 @@ class _GroupPage extends State<GroupPage> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
+                elevation: 5.0,
                 actions: <Widget>[
+                  FlatButton.icon(
+                    textColor: getVisibleColorOnPrimaryColor(context),
+                    icon: Icon(Icons.close,),
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => RootScreen()));
+                    },
+                    label: Text('Close Group', style: TextStyle(fontSize: 8.0),),
+                  ),
                   FlatButton.icon(
                     textColor: getVisibleColorOnPrimaryColor(context),
                     icon: Icon(FontAwesomeIcons.signOutAlt),
@@ -143,19 +153,18 @@ class _GroupPage extends State<GroupPage> {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => RootScreen()));
                     },
-                    label: Text('Leave Group'),
+                    label: Text('Leave Group', style: TextStyle(fontSize: 8.0),),
                   ),
                 ],
-                expandedHeight: 200.0,
+                expandedHeight: 400.0,
                 floating: false,
-                pinned: true,
+                pinned: false,
                 flexibleSpace: FlexibleSpaceBar(
                   title: Text('Demo Group'),
                   background: Card(
                     color: Theme.of(context).backgroundColor,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(25.0))),
-//                elevation: 5,
                     margin: EdgeInsets.symmetric(vertical: 60, horizontal: 5),
                     child: Container(
                       height: 150,
@@ -189,6 +198,23 @@ class _GroupPage extends State<GroupPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
+                                  'New Delhi Railway Station',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              bottom: 5,
+                              top: 10,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
                                   'Start : May 21,2020 22:26',
                                   style: TextStyle(
                                     fontSize: 15,
@@ -212,6 +238,33 @@ class _GroupPage extends State<GroupPage> {
                                 ),
                               ],
                             ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              Column(
+                                children: <Widget>[
+                                  Text('Members'),
+                                Text('Arpit'),
+                                Text('Vishal'),
+                                Text('Ishaan'),
+                                Text('Kshitij'),
+                                Text('Deepanshu'),
+                                Text('Shashwat'),
+                                ],
+                              ),
+                              Column(
+                                children: <Widget>[
+                                  Text('Going To'),
+                                  Text('Location 1'),
+                                  Text('Location 2'),
+                                  Text('Location 3'),
+                                  Text('Location 4'),
+                                  Text('Location 5'),
+                                  Text('Location 6'),
+                                ],
+                              )
+                            ],
                           ),
                         ],
                       ),

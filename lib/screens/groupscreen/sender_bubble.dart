@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shareacab/main.dart';
 import 'package:shareacab/screens/chatscreen/chat_models/chat_message.dart';
 
+// ignore: must_be_immutable
 class SenderBubble extends StatefulWidget {
   ChatMessage chatMessage;
 
@@ -17,6 +17,6 @@ class _SenderBubbleState extends State<SenderBubble> {
        margin:  const EdgeInsets.only(left: 10.0, ),
               child: Text(
                 widget.chatMessage.name,
-    ):Container();
+    )):Container();
   }
 }
