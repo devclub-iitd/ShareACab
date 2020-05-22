@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/shared/loading.dart';
 
+import '../main.dart';
+
 class MyProfile extends StatefulWidget {
   @override
   _MyProfileState createState() => _MyProfileState();
@@ -66,6 +68,7 @@ class _MyProfileState extends State<MyProfile> {
               title: Text('My Profile'),
               actions: <Widget>[
                 FlatButton.icon(
+                    textColor: getVisibleColorOnAccentColor(context),
                     onPressed: () {
                       Navigator.pushNamed(context, '/edituserdetails');
                       // _showEditPannel();

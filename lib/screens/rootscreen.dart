@@ -48,7 +48,7 @@ class _RootScreenState extends State<RootScreen> {
             bottomNavigationBar: CurvedNavigationBar(
               color: Theme.of(context).bottomAppBarColor,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              height: 50.0,
+              height: 60.0,
               items: <Widget>[
                 Icon(
                   Icons.home,
