@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shareacab/models/requestdetails.dart';
 import 'package:shareacab/models/user.dart';
 
 class DatabaseService {
@@ -8,6 +9,7 @@ class DatabaseService {
 
   //collection reference
   final CollectionReference userDetails = Firestore.instance.collection('userdetails');
+  final CollectionReference requestdetails = Firestore.instance.collection('requestdetails');
 
   Future enterUserData({String name, String mobileNumber, String hostel, String sex}) async {
     return await userDetails.document(uid).setData({
@@ -54,5 +56,17 @@ class DatabaseService {
   // get user doc
   Stream<DocumentSnapshot> get userData {
     return userDetails.document(uid).snapshots();
+  }
+
+  // add group details
+  Future createTrip(RequestDetails requestDetails) async {
+    return await requestdetails.add({
+      'destination': requestDetails.destination.toString(),
+      'startDate': requestDetails.startDate.toString(),
+      'startTime': requestDetails.startTime.toString(),
+      'endDate': requestDetails.endDate.toString(),
+      'endTime': requestDetails.endTime.toString(),
+      'privacy': requestDetails.privacy.toString(),
+    });
   }
 }

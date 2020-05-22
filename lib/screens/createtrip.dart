@@ -4,6 +4,8 @@ import 'package:shareacab/models/requestdetails.dart';
 import 'package:intl/intl.dart';
 import 'package:shareacab/models/alltrips.dart';
 import 'package:shareacab/main.dart';
+import 'package:shareacab/services/database.dart';
+import 'package:shareacab/services/trips.dart';
 
 class CreateTrip extends StatefulWidget {
   static const routeName = '/createTrip';
@@ -21,12 +23,15 @@ class _CreateTripState extends State<CreateTrip> {
   DateTime _selectedEndDate;
   TimeOfDay _selectedEndTime;
   bool privacy = false;
+  final RequestService _request = RequestService();
 
-  void _addNewRequest() {
+  void _addNewRequest() async {
     final newRq = RequestDetails(name: 'Name', id: DateTime.now().toString(), destination: _destination, finalDestination: _finalDestinationController.text, startDate: _selectedStartDate, startTime: _selectedStartTime, endDate: _selectedEndDate, endTime: _selectedEndTime, privacy: privacy);
-    print(_selectedEndDate);
-    print(_selectedEndTime.hour);
-    print(_selectedEndTime.minute);
+    try {
+      await _request.createTrip(newRq);
+    } catch (e) {
+      print(e.toString());
+    }
     setState(() {
       allTrips.add(newRq);
     });
@@ -43,7 +48,6 @@ class _CreateTripState extends State<CreateTrip> {
     });
     Navigator.of(context).pop();
   }
-
 
   void _startDatePicker() {
     showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now().subtract(Duration(days: 1)), lastDate: DateTime.now().add(Duration(days: 30))).then((pickedDate) {
@@ -80,7 +84,6 @@ class _CreateTripState extends State<CreateTrip> {
       setState(() {
         _selectedStartTime = pickedTime;
         FocusScope.of(context).requestFocus(FocusNode());
-
       });
     });
   }
@@ -96,7 +99,6 @@ class _CreateTripState extends State<CreateTrip> {
       setState(() {
         _selectedEndTime = pickedTime;
         FocusScope.of(context).requestFocus(FocusNode());
-
       });
     });
   }
