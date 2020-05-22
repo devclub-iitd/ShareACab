@@ -232,8 +232,8 @@ class _GroupPage extends State<GroupPage> {
               itemBuilder: (context, index) {
                 return Stack(
                   children: <Widget>[
-                    SenderBubble(
-                      chatMessage: chatMessages[index],
+                     SenderBubble(
+                      chatMessage:  chatMessages[index],
                     ),
                     Text('\n'),
                     ChatBubble(
