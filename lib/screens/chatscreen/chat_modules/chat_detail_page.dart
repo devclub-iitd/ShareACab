@@ -157,6 +157,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: ChatDetailPageAppBar(),
       body: Stack(children: <Widget>[
         Container(
