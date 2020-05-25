@@ -234,5 +234,3 @@ class _SenderBubbleState extends State<SenderBubble> {
         )):Container();
   }
 }
-
-

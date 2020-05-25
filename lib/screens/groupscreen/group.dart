@@ -10,8 +10,7 @@ class GroupPage extends StatefulWidget {
 }
 
 class _GroupPageState extends State<GroupPage> {
-  int i = 0;
-  int numberOfMessages = 6969;
+  int i = 0, numberOfMessages=6969;
   List<Members> members = [
     Members(
       name: 'Shashwat',
@@ -174,6 +173,7 @@ class _GroupPageState extends State<GroupPage> {
           ),
         ),
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => GroupChatPage()));
@@ -204,3 +204,4 @@ class Members {
 
   Members({@required this.name, @required this.isAdmin, @required this.hostel});
 }
+
