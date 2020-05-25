@@ -10,7 +10,7 @@ class GroupPage extends StatefulWidget {
 }
 
 class _GroupPageState extends State<GroupPage> {
-  int i = 0, numberOfMessages=6969;
+  int i = 0, numberOfMessages=696;
   List<Members> members = [
     Members(
       name: 'Shashwat',
@@ -173,7 +173,6 @@ class _GroupPageState extends State<GroupPage> {
           ),
         ),
       ),
-
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => GroupChatPage()));
@@ -187,7 +186,7 @@ class _GroupPageState extends State<GroupPage> {
               radius: 10.0,
               child: Text(
                 numberOfMessages.toString(),
-                style: TextStyle(color: Colors.white, fontSize: numberOfMessages.toString().length <3 ? 14 : 8),
+                style: TextStyle(color: Colors.white, fontSize: numberOfMessages.toString().length <3 ?14 : 8),
               ),
             )
           ],
@@ -204,4 +203,3 @@ class Members {
 
   Members({@required this.name, @required this.isAdmin, @required this.hostel});
 }
-
