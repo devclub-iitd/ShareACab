@@ -12,7 +12,11 @@ class GroupPage extends StatefulWidget {
 class _GroupPageState extends State<GroupPage> {
   int i = 0;
   List<Members> members = [
-    Members(name: 'Shashwat', isAdmin: true, hostel: 'Girnar',),
+    Members(
+      name: 'Shashwat',
+      isAdmin: true,
+      hostel: 'Girnar',
+    ),
     Members(name: 'Vishal', isAdmin: false, hostel: 'Aravali'),
     Members(name: 'Arpit', isAdmin: false, hostel: 'Vindy'),
     Members(name: 'Deepanshu', isAdmin: false, hostel: 'Udaigiri'),
@@ -20,6 +24,7 @@ class _GroupPageState extends State<GroupPage> {
     Members(name: 'Kshitij', isAdmin: false, hostel: 'Jwala'),
     Members(name: 'Kshitij', isAdmin: false, hostel: 'Jwala'),
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,8 +35,7 @@ class _GroupPageState extends State<GroupPage> {
             textColor: getVisibleColorOnPrimaryColor(context),
             icon: Icon(FontAwesomeIcons.signOutAlt),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => RootScreen()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
             },
             label: Text('Leave Group'),
           )
@@ -141,41 +145,37 @@ class _GroupPageState extends State<GroupPage> {
                   ],
                 ),
               ),
-                SingleChildScrollView(
-                    child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                  itemCount: members.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return ListView(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      children: <Widget>[
-                        Card(
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                          child: ListTile(
-                            title: Text(members[index].name),
-                            subtitle: Text(
-                                'Hostel: ${members[index].hostel}\n Start : Start : May 21,2020 22:26\n  End : May 24,2020 22:26\n Any other info that we might add in future'),
-                            trailing: members[index].isAdmin
-                                ? FaIcon(FontAwesomeIcons.crown)
-                                : null,
-                            isThreeLine: true,
-                          ),
+              SingleChildScrollView(
+                  child: ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: members.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return ListView(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: <Widget>[
+                      Card(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: ListTile(
+                          title: Text(members[index].name),
+                          subtitle: Text('Hostel: ${members[index].hostel}\n Start : Start : May 21,2020 22:26\n  End : May 24,2020 22:26\n Any other info that we might add in future'),
+                          trailing: members[index].isAdmin ? FaIcon(FontAwesomeIcons.crown) : null,
+                          isThreeLine: true,
+                          onTap: () {},
                         ),
-                      ],
-                    );
-                  },
-                )),
-
+                      ),
+                    ],
+                  );
+                },
+              )),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => GroupChatPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => GroupChatPage()));
         },
         child: Stack(
           alignment: Alignment(-10, -10),
@@ -200,5 +200,6 @@ class Members {
   String name;
   bool isAdmin;
   String hostel;
+
   Members({@required this.name, @required this.isAdmin, @required this.hostel});
 }
