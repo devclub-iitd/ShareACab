@@ -1,17 +1,16 @@
 import 'package:shareacab/main.dart';
 import 'package:shareacab/screens/chatscreen/chat_components/chat_bubble.dart';
-import 'package:shareacab/screens/chatscreen/chat_components/chat_detail_page_appbar.dart';
 import 'package:shareacab/screens/chatscreen/chat_models/chat_message.dart';
 import 'package:shareacab/screens/chatscreen/chat_models/send_menu_items.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ChatDetailPage extends StatefulWidget {
+class GroupChatPage extends StatefulWidget {
   @override
-  _ChatDetailPageState createState() => _ChatDetailPageState();
+  _GroupChatPage createState() => _GroupChatPage();
 }
 
-class _ChatDetailPageState extends State<ChatDetailPage> {
+class _GroupChatPage extends State<GroupChatPage> {
   List<ChatMessage> chatMessages = [
     ChatMessage(name: 'Vishal', message: 'Hi John', sending: false),
     ChatMessage(
@@ -46,12 +45,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         name: 'Vishal', message: 'Oh! Nice. Same here man', sending: true),
     ChatMessage(
         name: 'Vishal',
-        message: '2nd last, Oh! Nice. Same here man',
-        sending: true),
+        message: '2nd last, Oh! Nice. Same here man', sending: true),
     ChatMessage(
-        name: 'Vishal',
-        message: 'last, I am God, Oh! Nice. Same here man',
-        sending: true),
+        name: 'Vishal', message: 'last, I am God, Oh! Nice. Same here man', sending: true),
   ];
 
   List<SendMenuItems> menuItems = [
@@ -129,25 +125,30 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ChatDetailPageAppBar(),
+      appBar: AppBar(
+        title: Text('Demo Group'),
+      ),
       body: Stack(children: <Widget>[
         Container(
           margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 80),
-          child: SingleChildScrollView(
-            child: ListView.builder(
-              itemCount: chatMessages.length,
-              shrinkWrap: true,
-              padding: EdgeInsets.only(top: 10, bottom: 10),
-              physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return ListTile(
-                  onTap: () {},
-                  subtitle: ChatBubble(
+          child: ListView.builder(
+            itemCount: chatMessages.length,
+            shrinkWrap: true,
+            padding: EdgeInsets.only(top: 10, bottom: 10),
+            physics: BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              return Stack(
+                children: <Widget>[
+                  SenderBubble(
                     chatMessage: chatMessages[index],
                   ),
-                );
-              },
-            ),
+                  Text('\n'),
+                  ChatBubble(
+                    chatMessage: chatMessages[index],
+                  ),
+                ],
+              );
+            },
           ),
         ),
         Align(
@@ -212,3 +213,26 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     );
   }
 }
+
+
+// ignore: must_be_immutable
+class SenderBubble extends StatefulWidget {
+  ChatMessage chatMessage;
+
+  SenderBubble({@required this.chatMessage});
+  @override
+  _SenderBubbleState createState() => _SenderBubbleState();
+}
+
+class _SenderBubbleState extends State<SenderBubble> {
+  @override
+  Widget build(BuildContext context) {
+    return !widget.chatMessage.sending ?Container(
+        margin:  const EdgeInsets.only(left: 10.0, ),
+        child: Text(
+          widget.chatMessage.name,
+        )):Container();
+  }
+}
+
+
