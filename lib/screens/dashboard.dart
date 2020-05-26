@@ -54,17 +54,9 @@ class _DashboardState extends State<Dashboard> {
 
   void _startFilter (BuildContext ctx){
     showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))
-      ),
-      backgroundColor: Theme.of(context).accentColor,
       context: ctx,
       builder: (_) {
-        return GestureDetector (
-          onTap: () {},
-          child: Filter(_filteredList, _dest, _date, _time, _selecteddest, _SD, _ST, _ED, _ET),
-          behavior: HitTestBehavior.opaque,
-        );
+        return Filter(_filteredList, _dest, _date, _time, _selecteddest, _SD, _ST, _ED, _ET);
       },);
   }
 
