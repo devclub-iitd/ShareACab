@@ -10,7 +10,7 @@ class GroupPage extends StatefulWidget {
 }
 
 class _GroupPageState extends State<GroupPage> {
-  int i = 0;
+  int i = 0, numberOfMessages=696;
   List<Members> members = [
     Members(
       name: 'Shashwat',
@@ -147,28 +147,28 @@ class _GroupPageState extends State<GroupPage> {
               ),
               SingleChildScrollView(
                   child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: members.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return ListView(
-                    shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    children: <Widget>[
-                      Card(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        child: ListTile(
-                          title: Text(members[index].name),
-                          subtitle: Text('Hostel: ${members[index].hostel}\n Start : Start : May 21,2020 22:26\n  End : May 24,2020 22:26\n Any other info that we might add in future'),
-                          trailing: members[index].isAdmin ? FaIcon(FontAwesomeIcons.crown) : null,
-                          isThreeLine: true,
-                          onTap: () {},
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              )),
+                    itemCount: members.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return ListView(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        children: <Widget>[
+                          Card(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            child: ListTile(
+                              title: Text(members[index].name),
+                              subtitle: Text('Hostel: ${members[index].hostel}\n Start : Start : May 21,2020 22:26\n  End : May 24,2020 22:26\n Any other info that we might add in future'),
+                              trailing: members[index].isAdmin ? FaIcon(FontAwesomeIcons.crown) : null,
+                              isThreeLine: true,
+                              onTap: () {},
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  )),
             ],
           ),
         ),
@@ -185,8 +185,8 @@ class _GroupPageState extends State<GroupPage> {
               backgroundColor: Colors.red,
               radius: 10.0,
               child: Text(
-                '0',
-                style: TextStyle(color: Colors.white),
+                numberOfMessages.toString(),
+                style: TextStyle(color: Colors.white, fontSize: numberOfMessages.toString().length <3 ?14 : 8),
               ),
             )
           ],
