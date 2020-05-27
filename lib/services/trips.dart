@@ -9,4 +9,8 @@ class RequestService {
   Future<void> exitGroup() async {
     await DatabaseService().exitGroup();
   }
+
+  Future<void> joinGroup(String listuid) async {
+    await DatabaseService().joinGroup(listuid);
+  }
 }

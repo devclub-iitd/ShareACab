@@ -145,4 +145,15 @@ class DatabaseService {
       'currentReq': null,
     });
   }
+
+  // join a group from dashboard
+  Future<void> joinGroup(String listuid) async {
+    var user = await _auth.currentUser();
+    await userDetails.document(user.uid).updateData({
+      'currentGroup': listuid,
+    });
+    await groupdetails.document(listuid).updateData({
+      'users': FieldValue.arrayUnion([user.uid.toString()]),
+    });
+  }
 }

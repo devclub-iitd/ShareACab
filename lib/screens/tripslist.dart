@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:shareacab/screens/groupscreen/group.dart';
+import 'package:shareacab/services/trips.dart';
 
 class TripsList extends StatefulWidget {
   //final List<RequestDetails> trips;
@@ -11,14 +14,29 @@ class TripsList extends StatefulWidget {
 }
 
 class _TripsListState extends State<TripsList> {
+  final RequestService _request = RequestService();
   Future getTrips() async {
     var firestore = Firestore.instance;
     var qn = await firestore.collection('group').getDocuments();
     return qn.documents;
   }
 
+  bool inGroup = false;
+
   @override
   Widget build(BuildContext context) {
+    final currentuser = Provider.of<FirebaseUser>(context);
+    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
+      if (value.data['currentGroup'] != null) {
+        setState(() {
+          inGroup = true;
+        });
+      } else {
+        setState(() {
+          inGroup = false;
+        });
+      }
+    });
     return Container(
       child: FutureBuilder(
         future: getTrips(),
@@ -89,10 +107,24 @@ class _TripsListState extends State<TripsList> {
                                             color: Theme.of(context).accentColor,
                                           ),
                                         )
-                                      : FlatButton(
-                                          onPressed: null,
-                                          child: Text('Join Now'),
-                                        ),
+                                      : !inGroup
+                                          ? FlatButton(
+                                              onPressed: () async {
+                                                try {
+                                                  DocumentSnapshot temp = snapshot.data[index];
+                                                  await _request.joinGroup(temp.documentID);
+                                                  //print(temp.documentID);
+                                                  await Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
+                                                } catch (e) {
+                                                  print(e.toString());
+                                                }
+                                              },
+                                              child: Text('Join Now'),
+                                            )
+                                          : FlatButton(
+                                              onPressed: null,
+                                              child: Text('Already in group'),
+                                            ),
                                 ),
                               )
                             ],
