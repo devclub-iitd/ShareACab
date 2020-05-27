@@ -8,7 +8,7 @@ import 'package:shareacab/services/trips.dart';
 
 class CreateTrip extends StatefulWidget {
   static const routeName = '/createTrip';
-
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   _CreateTripState createState() => _CreateTripState();
 }
@@ -30,6 +30,10 @@ class _CreateTripState extends State<CreateTrip> {
       await _request.createTrip(newRq);
     } catch (e) {
       print(e.toString());
+
+      //String errStr = e.message ?? e.toString();
+      //final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+      //_scaffoldKey.currentState.showSnackBar(snackBar);
     }
     setState(() {
       allTrips.add(newRq);
@@ -158,6 +162,7 @@ class _CreateTripState extends State<CreateTrip> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
+        //key: scaffoldKey,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('Create Trip'),

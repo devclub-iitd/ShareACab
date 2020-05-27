@@ -18,7 +18,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   // List<RequestDetails> _listOfTrips = allTrips;
   List<RequestDetails> filtered = allTrips;
   bool _dest = false;
@@ -77,7 +77,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
+      key: scaffoldKey,
       appBar: AppBar(
         title: Text('Dashboard'),
         actions: <Widget>[
@@ -115,7 +115,7 @@ class _DashboardState extends State<Dashboard> {
                 await pr.hide();
                 String errStr = err.message ?? err.toString();
                 final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
-                _scaffoldKey.currentState.showSnackBar(snackBar);
+                scaffoldKey.currentState.showSnackBar(snackBar);
               }
             },
             label: Text('Logout'),

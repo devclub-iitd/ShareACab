@@ -10,7 +10,8 @@ class DatabaseService {
 
   //collection reference
   final CollectionReference userDetails = Firestore.instance.collection('userdetails');
-  final CollectionReference requestdetails = Firestore.instance.collection('requestdetails');
+  final CollectionReference groupdetails = Firestore.instance.collection('group');
+  final CollectionReference requests = Firestore.instance.collection('requests');
 
   Future enterUserData({String name, String mobileNumber, String hostel, String sex}) async {
     return await userDetails.document(uid).setData({
@@ -59,35 +60,70 @@ class DatabaseService {
     return userDetails.document(uid).snapshots();
   }
 
+  // add request details from user (will use in future versions)
+  Future<void> addRequest(RequestDetails requestDetails) async {
+    var user = await _auth.currentUser();
+    await requests.add({
+      'user': user.uid.toString(),
+      'destination': requestDetails.destination.toString(),
+      'startDate': requestDetails.startDate.toString(),
+      'startTime': requestDetails.startTime.toString(),
+      'endDate': requestDetails.endDate.toString(),
+      'endTime': requestDetails.endTime.toString(),
+      'finaldestination': requestDetails.finalDestination.toString(),
+      'maxpoolers': 0,
+      'joiningtime': null,
+    });
+  }
+
   // add group details
   Future<void> createTrip(RequestDetails requestDetails) async {
     var user = await _auth.currentUser();
-    final docRef = await requestdetails.add({
+
+    final reqRef = await requests.add({
+      'user': user.uid.toString(),
+      'destination': requestDetails.destination.toString(),
+      'startDate': requestDetails.startDate.toString(),
+      'startTime': requestDetails.startTime.toString(),
+      'endDate': requestDetails.endDate.toString(),
+      'endTime': requestDetails.endTime.toString(),
+      'finaldestination': requestDetails.finalDestination.toString(),
+      'maxpoolers': 0,
+      'joiningtime': null,
+    });
+
+    final docRef = await groupdetails.add({
+      'owner': user.uid.toString(),
+      'users': FieldValue.arrayUnion([reqRef.documentID.toString()]),
       'destination': requestDetails.destination.toString(),
       'startDate': requestDetails.startDate.toString(),
       'startTime': requestDetails.startTime.toString(),
       'endDate': requestDetails.endDate.toString(),
       'endTime': requestDetails.endTime.toString(),
       'privacy': requestDetails.privacy.toString(),
-    });
-
-    var request = requestdetails.document(docRef.documentID).collection('users');
-    await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) async {
-      if (value.exists) {
-        await request.document(user.uid).setData({
-          'name': value.data['name'],
-          'hostel': value.data['hostel'],
-          'sex': value.data['sex'],
-          'mobilenum': value.data['mobileNumber'],
-          'totalrides': value.data['totalRides'],
-          'actualrating': value.data['actualRating'],
-          'cancelledrides': value.data['cancelledRides'],
-        });
-      }
+      'maxpoolers': 0,
+      'threshold': null,
     });
 
     await userDetails.document(user.uid).updateData({
       'currentGroup': docRef.documentID,
     });
+
+    // dont remove these comments yet, need to think about this later.
+
+    // var request = groupdetails.document(docRef.documentID).collection('users');
+    // await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) async {
+    //   if (value.exists) {
+    //     await request.document(user.uid).setData({
+    //       'name': value.data['name'],
+    //       'hostel': value.data['hostel'],
+    //       'sex': value.data['sex'],
+    //       'mobilenum': value.data['mobileNumber'],
+    //       'totalrides': value.data['totalRides'],
+    //       'actualrating': value.data['actualRating'],
+    //       'cancelledrides': value.data['cancelledRides'],
+    //     });
+    //   }
+    // });
   }
 }
