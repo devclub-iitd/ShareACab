@@ -3,6 +3,7 @@ import 'package:shareacab/screens/groupscreen/groupchat.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/screens/rootscreen.dart';
+import 'package:shareacab/services/trips.dart';
 
 class GroupPage extends StatefulWidget {
   @override
@@ -10,7 +11,9 @@ class GroupPage extends StatefulWidget {
 }
 
 class _GroupPageState extends State<GroupPage> {
-  int i = 0, numberOfMessages=696;
+  final RequestService _request = RequestService();
+
+  int i = 0, numberOfMessages = 696;
   List<Members> members = [
     Members(
       name: 'Shashwat',
@@ -34,8 +37,14 @@ class _GroupPageState extends State<GroupPage> {
           FlatButton.icon(
             textColor: getVisibleColorOnPrimaryColor(context),
             icon: Icon(FontAwesomeIcons.signOutAlt),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
+            onPressed: () async {
+              //Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
+              try {
+                await _request.exitGroup();
+                Navigator.pop(context);
+              } catch (e) {
+                print(e.toString());
+              }
             },
             label: Text('Leave Group'),
           )
@@ -147,28 +156,28 @@ class _GroupPageState extends State<GroupPage> {
               ),
               SingleChildScrollView(
                   child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: members.length,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: members.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return ListView(
                     shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return ListView(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        children: <Widget>[
-                          Card(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            child: ListTile(
-                              title: Text(members[index].name),
-                              subtitle: Text('Hostel: ${members[index].hostel}\n Start : Start : May 21,2020 22:26\n  End : May 24,2020 22:26\n Any other info that we might add in future'),
-                              trailing: members[index].isAdmin ? FaIcon(FontAwesomeIcons.crown) : null,
-                              isThreeLine: true,
-                              onTap: () {},
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  )),
+                    physics: NeverScrollableScrollPhysics(),
+                    children: <Widget>[
+                      Card(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: ListTile(
+                          title: Text(members[index].name),
+                          subtitle: Text('Hostel: ${members[index].hostel}\n Start : Start : May 21,2020 22:26\n  End : May 24,2020 22:26\n Any other info that we might add in future'),
+                          trailing: members[index].isAdmin ? FaIcon(FontAwesomeIcons.crown) : null,
+                          isThreeLine: true,
+                          onTap: () {},
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              )),
             ],
           ),
         ),
@@ -186,7 +195,7 @@ class _GroupPageState extends State<GroupPage> {
               radius: 10.0,
               child: Text(
                 numberOfMessages.toString(),
-                style: TextStyle(color: Colors.white, fontSize: numberOfMessages.toString().length <3 ?14 : 8),
+                style: TextStyle(color: Colors.white, fontSize: numberOfMessages.toString().length < 3 ? 14 : 8),
               ),
             )
           ],

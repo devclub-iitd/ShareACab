@@ -126,4 +126,12 @@ class DatabaseService {
     //   }
     // });
   }
+
+  // exit a group
+  Future<void> exitGroup() async {
+    var user = await _auth.currentUser();
+    await userDetails.document(user.uid).updateData({
+      'currentGroup': null,
+    });
+  }
 }

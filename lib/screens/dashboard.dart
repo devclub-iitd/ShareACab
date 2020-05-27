@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:shareacab/screens/createtrip.dart';
+import 'package:shareacab/screens/groupscreen/group.dart';
 import 'package:shareacab/screens/tripslist.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shareacab/screens/filter.dart';
@@ -29,6 +33,9 @@ class _DashboardState extends State<Dashboard> {
   TimeOfDay _ST;
   DateTime _ED;
   TimeOfDay _ET;
+
+  //String groupID = null;
+  bool inGroup = false;
 
   void _filteredList(filtered, destination, date, time, dest, sdate, stime, edate, etime) {
     _dest = destination;
@@ -76,6 +83,18 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final currentuser = Provider.of<FirebaseUser>(context);
+    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
+      if (value.data['currentGroup'] != null) {
+        setState(() {
+          inGroup = true;
+        });
+      } else {
+        setState(() {
+          inGroup = false;
+        });
+      }
+    });
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -126,6 +145,13 @@ class _DashboardState extends State<Dashboard> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            inGroup
+                ? Container(
+                    margin: EdgeInsets.all(5),
+                    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                    child: Text('Already in group. Press the button below.'),
+                  )
+                : Container(),
             Container(
               margin: EdgeInsets.all(5),
               height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
@@ -139,14 +165,25 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 20, 0, 60),
-        child: FloatingActionButton(
-          splashColor: Theme.of(context).primaryColor,
-          onPressed: () => _startCreatingTrip(context),
-          child: Icon(Icons.add),
-        ),
-      ),
+      floatingActionButton: !inGroup
+          ? Padding(
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 60),
+              child: FloatingActionButton(
+                splashColor: Theme.of(context).primaryColor,
+                onPressed: () => _startCreatingTrip(context),
+                child: Icon(Icons.add),
+              ),
+            )
+          : Padding(
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 60),
+              child: FloatingActionButton(
+                splashColor: Theme.of(context).primaryColor,
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
+                },
+                child: Icon(Icons.group),
+              ),
+            ),
     );
   }
 }

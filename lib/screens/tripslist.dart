@@ -23,7 +23,8 @@ class _TripsListState extends State<TripsList> {
       child: FutureBuilder(
         future: getTrips(),
         builder: (_, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          // will fix this later, it should have ConnectionState.waiting, but it was having issues.
+          if (snapshot.connectionState == null) {
             return Center(
               child: Text('Loading..'),
             );
