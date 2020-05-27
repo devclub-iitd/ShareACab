@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shareacab/screens/groupscreen/group.dart';
 
 class TripsList extends StatefulWidget {
   //final List<RequestDetails> trips;
@@ -12,7 +13,7 @@ class TripsList extends StatefulWidget {
 class _TripsListState extends State<TripsList> {
   Future getTrips() async {
     var firestore = Firestore.instance;
-    var qn = await firestore.collection('requestdetails').getDocuments();
+    var qn = await firestore.collection('group').getDocuments();
     return qn.documents;
   }
 
