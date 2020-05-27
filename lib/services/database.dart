@@ -107,6 +107,7 @@ class DatabaseService {
 
     await userDetails.document(user.uid).updateData({
       'currentGroup': docRef.documentID,
+      'currentReq': reqRef.documentID,
     });
 
     // dont remove these comments yet, need to think about this later.
@@ -130,8 +131,18 @@ class DatabaseService {
   // exit a group
   Future<void> exitGroup() async {
     var user = await _auth.currentUser();
+    var currentGrp;
+    var currentReq;
+    await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) {
+      currentGrp = value.data['currentGroup'];
+      currentReq = value.data['currentReq'];
+    });
+    await groupdetails.document(currentGrp).updateData({
+      'users': FieldValue.arrayRemove([currentReq.toString()]),
+    });
     await userDetails.document(user.uid).updateData({
       'currentGroup': null,
+      'currentReq': null,
     });
   }
 }
