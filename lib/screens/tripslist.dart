@@ -48,7 +48,7 @@ class _TripsListState extends State<TripsList> {
             );
           } else {
             return ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data == null ? 0 : snapshot.data.length,
                 itemBuilder: (ctx, index) {
                   return Card(
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),

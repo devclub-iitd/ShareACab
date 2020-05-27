@@ -112,20 +112,20 @@ class DatabaseService {
 
     // dont remove these comments yet, need to think about this later.
 
-    // var request = groupdetails.document(docRef.documentID).collection('users');
-    // await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) async {
-    //   if (value.exists) {
-    //     await request.document(user.uid).setData({
-    //       'name': value.data['name'],
-    //       'hostel': value.data['hostel'],
-    //       'sex': value.data['sex'],
-    //       'mobilenum': value.data['mobileNumber'],
-    //       'totalrides': value.data['totalRides'],
-    //       'actualrating': value.data['actualRating'],
-    //       'cancelledrides': value.data['cancelledRides'],
-    //     });
-    //   }
-    // });
+    var request = groupdetails.document(docRef.documentID).collection('users');
+    await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) async {
+      if (value.exists) {
+        await request.document(user.uid).setData({
+          'name': value.data['name'],
+          'hostel': value.data['hostel'],
+          'sex': value.data['sex'],
+          'mobilenum': value.data['mobileNumber'],
+          'totalrides': value.data['totalRides'],
+          'actualrating': value.data['actualRating'],
+          'cancelledrides': value.data['cancelledRides'],
+        });
+      }
+    });
   }
 
   // exit a group
@@ -140,6 +140,7 @@ class DatabaseService {
     await groupdetails.document(currentGrp).updateData({
       'users': FieldValue.arrayRemove([currentReq.toString()]),
     });
+    await groupdetails.document(currentGrp).collection('users').document(user.uid).delete();
     await userDetails.document(user.uid).updateData({
       'currentGroup': null,
       'currentReq': null,
@@ -154,6 +155,21 @@ class DatabaseService {
     });
     await groupdetails.document(listuid).updateData({
       'users': FieldValue.arrayUnion([user.uid.toString()]),
+    });
+
+    var request = groupdetails.document(listuid).collection('users');
+    await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) async {
+      if (value.exists) {
+        await request.document(user.uid).setData({
+          'name': value.data['name'],
+          'hostel': value.data['hostel'],
+          'sex': value.data['sex'],
+          'mobilenum': value.data['mobileNumber'],
+          'totalrides': value.data['totalRides'],
+          'actualrating': value.data['actualRating'],
+          'cancelledrides': value.data['cancelledRides'],
+        });
+      }
     });
   }
 }
