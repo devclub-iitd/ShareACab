@@ -12,13 +12,14 @@ import 'package:shareacab/models/requestdetails.dart';
 
 class Dashboard extends StatefulWidget {
   final AuthService _auth;
+
   Dashboard(this._auth);
+
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
-
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<RequestDetails> _listOfTrips = allTrips;
   List<RequestDetails> filtered = allTrips;
@@ -31,7 +32,7 @@ class _DashboardState extends State<Dashboard> {
   DateTime _ED;
   TimeOfDay _ET;
 
-  void _filteredList(filtered, destination, date, time, dest, sdate, stime, edate, etime){
+  void _filteredList(filtered, destination, date, time, dest, sdate, stime, edate, etime) {
     _dest = destination;
     _date = date;
     _time = time;
@@ -41,33 +42,33 @@ class _DashboardState extends State<Dashboard> {
     _ED = edate;
     _ET = etime;
     _listOfTrips = filtered;
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
-  void initState(){
+  void initState() {
     _listOfTrips = filtered;
 
     super.initState();
   }
 
-  void _startFilter (BuildContext ctx){
+  void _startFilter(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
       builder: (_) {
         return Filter(_filteredList, _dest, _date, _time, _selecteddest, _SD, _ST, _ED, _ET);
-      },);
+      },
+    );
   }
 
   void _startCreatingTrip(BuildContext ctx) async {
     await Navigator.of(ctx).pushNamed(
       CreateTrip.routeName,
     );
- setState(() {});
+    setState(() {});
   }
 
-  Future<Null> refreshList() async{
+  Future<Null> refreshList() async {
     await Future.delayed(Duration(seconds: 2));
     setState(() {
       _listOfTrips = filtered;
@@ -85,9 +86,9 @@ class _DashboardState extends State<Dashboard> {
           IconButton(
               icon: Icon(Icons.filter_list),
               iconSize: 30.0,
-              onPressed: () {_startFilter(context);}
-              ),
-
+              onPressed: () {
+                _startFilter(context);
+              }),
           IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
@@ -131,7 +132,10 @@ class _DashboardState extends State<Dashboard> {
               margin: EdgeInsets.all(5),
               height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
               width: double.infinity,
-              child: RefreshIndicator(child: TripsList(_listOfTrips), onRefresh: refreshList,),
+              child: RefreshIndicator(
+                child: TripsList(_listOfTrips),
+                onRefresh: refreshList,
+              ),
             ),
           ],
         ),
