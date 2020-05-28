@@ -77,7 +77,6 @@ class _CreateTripState extends State<CreateTrip> {
       setState(() {
         _selectedStartTime = pickedTime;
         FocusScope.of(context).requestFocus(FocusNode());
-
       });
     });
   }
