@@ -45,6 +45,7 @@ class _RootScreenState extends State<RootScreen> {
         ? Loading()
         : Scaffold(
             key: _scaffoldKey,
+            extendBody: true,
             bottomNavigationBar: CurvedNavigationBar(
               color: Theme.of(context).bottomAppBarColor,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
