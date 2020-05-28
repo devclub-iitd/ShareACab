@@ -4,7 +4,7 @@ import 'package:shareacab/screens/dashboard.dart';
 import 'messages.dart';
 import 'userprofile.dart';
 import 'notifications.dart';
-import 'myrequests.dart';
+import 'requests/myrequests.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/loading.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -45,6 +45,7 @@ class _RootScreenState extends State<RootScreen> {
         ? Loading()
         : Scaffold(
             key: _scaffoldKey,
+            extendBody: true,
             bottomNavigationBar: CurvedNavigationBar(
               color: Theme.of(context).bottomAppBarColor,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
