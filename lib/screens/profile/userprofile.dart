@@ -12,16 +12,16 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
-  String userId = '';
+  String userId = 'DEV CLUB';
   String name = '';
   String kerberosEmailID = 'randomemail@iitd.ac.in';
   String password = '';
-  String mobileNumber = '6969696969';
+  String mobilenum = '6969696969';
   String hostel = '';
-  int sex = 1;
-  int cancelledRides = 0;
-  int actualRating = 0;
-  int totalRides = 0;
+  String sex = 'Male';
+  int cancelledrides = 0;
+  int actualrating = 0;
+  int totalrides = 0;
 
   bool loading = true;
 
@@ -37,15 +37,13 @@ class _MyProfileState extends State<MyProfile> {
         .then((value) {
       if (value.exists) {
         setState(() {
-          name = value.data['name'] ?? 'DEV CLUB';
-          hostel = value.data['hostel'] ?? 'GIRNAR';
+          name = value.data['name'];
+          hostel = value.data['hostel'];
           sex = value.data['sex'];
-          mobileNumber = value.data['mobileNumber'];
-          totalRides = value.data['totalRides'];
-          actualRating = value.data['actualRating'];
-          cancelledRides = value.data['cancelledRides'];
-          kerberosEmailID = value.data['kerberosEmailID'];
-
+          mobilenum = value.data['mobileNumber'];
+          totalrides = value.data['totalRides'];
+          actualrating = value.data['actualRating'];
+          cancelledrides = value.data['cancelledRides'];
           loading = false;
         });
       } else {
@@ -56,8 +54,8 @@ class _MyProfileState extends State<MyProfile> {
     });
 
     return
-//      loading
-//        ? Loading() :
+      loading
+        ? Loading() :
          Scaffold(
             appBar: AppBar(
               title: Text('My Profile', style: TextStyle(fontSize: 30),),
@@ -129,7 +127,7 @@ class _MyProfileState extends State<MyProfile> {
                                 fontWeight: FontWeight.w700, fontSize: 20),
                           ),
                           Text(
-                            '${sex}',
+                            sex,
                             style: TextStyle(fontSize: 15),
                           )
                         ],
@@ -150,7 +148,7 @@ class _MyProfileState extends State<MyProfile> {
                                 fontWeight: FontWeight.w700, fontSize: 18),
                           ),
                           Text(
-                            '${totalRides}',
+                            '${totalrides}',
                             style: TextStyle(fontSize: 15),
                           )
                         ],
@@ -163,7 +161,7 @@ class _MyProfileState extends State<MyProfile> {
                                 fontWeight: FontWeight.w700, fontSize: 18),
                           ),
                           Text(
-                            '${cancelledRides}',
+                            '${cancelledrides}',
                             style: TextStyle(fontSize: 15),
                           )
                         ],
@@ -184,7 +182,7 @@ class _MyProfileState extends State<MyProfile> {
                                 fontWeight: FontWeight.w700, fontSize: 18),
                           ),
                           Text(
-                            mobileNumber,
+                            mobilenum,
                             style: TextStyle(fontSize: 15),
                           )
                         ],
@@ -197,7 +195,7 @@ class _MyProfileState extends State<MyProfile> {
                                 fontWeight: FontWeight.w700, fontSize: 18),
                           ),
                           Text(
-                            '${actualRating}',
+                            '${actualrating}',
                             style: TextStyle(fontSize: 15),
                           )
                         ],
