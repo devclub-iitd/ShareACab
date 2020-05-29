@@ -52,12 +52,7 @@ class _NotificationsState extends State<Notifications> {
         appBar: AppBar(
           title: Text('My Notifications'),
           actions: <Widget>[
-            FlatButton.icon(
-              textColor: getVisibleColorOnPrimaryColor(context),
-              icon: Icon(Icons.clear_all),
-              onPressed: () {},
-              label: Text('Clear All'),
-            )
+
           ],
         ),
         body: notifications.isEmpty
