@@ -24,6 +24,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
   String startDate = '';
   String endDate = '';
   String grpOwner = '';
+  String presentNum = '';
   bool loading = true;
 
   String start = '';
@@ -62,6 +63,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
           start = '${DateFormat.yMMMd().format(DateTime.parse(startDate))} ${startTime.substring(10, 15)}';
           end = '${DateFormat.yMMMd().format(DateTime.parse(endDate))} ${endTime.substring(10, 15)}';
           grpOwner = value.data['owner'];
+          presentNum = value.data['numberOfMembers'].toString();
           loading = false;
         });
       }
@@ -161,6 +163,22 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                           Text(
                             'End: $end',
                             //'End : ${DateFormat.yMMMd().format(DateTime.parse(endDate))} ${endTime.substring(10, 15)}',
+                            style: TextStyle(
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        bottom: 5,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'Number of members in group: ${presentNum}',
                             style: TextStyle(
                               fontSize: 15,
                             ),

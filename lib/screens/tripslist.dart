@@ -21,6 +21,13 @@ class _TripsListState extends State<TripsList> {
     return qn.documents;
   }
 
+  // MIGHT USE THIS CODE IN FUTURE, SO SAVING IT HERE
+  // Future number(String docid) async {
+  //   var mydoc = await Firestore.instance.collection('group').document(docid).collection('users').getDocuments();
+  //   var mydoccount = mydoc.documents;
+  //   return mydoccount.length;
+  // }
+
   bool inGroup = false;
 
   @override
@@ -166,11 +173,8 @@ class _TripsListState extends State<TripsList> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: <Widget>[
                               Column(
-                                children: <Widget>[Text('Members')],
+                                children: <Widget>[Text('Number of members in group: ${snapshot.data[index].data['numberOfMembers'].toString()}')],
                               ),
-                              Column(
-                                children: <Widget>[Text('Going To')],
-                              )
                             ],
                           ),
                         ],
