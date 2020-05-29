@@ -13,6 +13,15 @@ Color userIsOnline(BuildContext context) => Colors.green;
 
 Color sendMessageIcon(BuildContext context) => Colors.green;
 
+
+Color requestAccepted(BuildContext context) => Colors.green;
+Color requestRejected(BuildContext context) => Colors.red;
+Color requestPending(BuildContext context) => Colors.yellow;
+
+
+Color warning(BuildContext context) => Colors.yellow;
+Color warningHeading(BuildContext context) => Colors.red;
+
 Color getMenuItemColor(int i) {
   switch (i) {
     case 0:
