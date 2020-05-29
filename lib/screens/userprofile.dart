@@ -52,7 +52,7 @@ class _MyProfileState extends State<MyProfile> {
               title: Text('My Profile'),
               actions: <Widget>[
                 FlatButton.icon(
-                    textColor: getVisibleColorOnAccentColor(context),
+                    textColor: getVisibleColorOnPrimaryColor(context),
                     onPressed: () {
                       Navigator.pushNamed(context, '/edituserdetails');
                       // _showEditPannel();
