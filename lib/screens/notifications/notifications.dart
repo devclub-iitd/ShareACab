@@ -88,7 +88,7 @@ class _NotificationsState extends State<Notifications> {
                                 style: TextStyle(
                                     color: notifications[index].type == 'Warning'
                                         ? warningHeading(context)
-                                        : getVisibleColorOnPrimaryColor(context),
+                                        : null,
                                     fontSize: 25.0,
                                     fontWeight: FontWeight.bold),
                               ),
