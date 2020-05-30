@@ -102,6 +102,7 @@ class DatabaseService {
       'endTime': requestDetails.endTime.toString(),
       'privacy': requestDetails.privacy.toString(),
       'maxpoolers': 0,
+      'numberOfMembers': 1,
       'threshold': null,
     });
 
@@ -133,12 +134,17 @@ class DatabaseService {
     var user = await _auth.currentUser();
     var currentGrp;
     var currentReq;
+    var presentNum;
     await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) {
       currentGrp = value.data['currentGroup'];
       currentReq = value.data['currentReq'];
     });
+    await groupdetails.document(currentGrp).get().then((value) {
+      presentNum = value.data['numberOfMembers'];
+    });
     await groupdetails.document(currentGrp).updateData({
       'users': FieldValue.arrayRemove([currentReq.toString()]),
+      'numberOfMembers': presentNum - 1,
     });
     await groupdetails.document(currentGrp).collection('users').document(user.uid).delete();
     await userDetails.document(user.uid).updateData({
@@ -150,11 +156,17 @@ class DatabaseService {
   // join a group from dashboard
   Future<void> joinGroup(String listuid) async {
     var user = await _auth.currentUser();
+    var presentNum;
     await userDetails.document(user.uid).updateData({
       'currentGroup': listuid,
     });
+    await groupdetails.document(listuid).get().then((value) {
+      presentNum = value.data['numberOfMembers'];
+    });
     await groupdetails.document(listuid).updateData({
+      // presently storing user.uid in users, need to change this later to the requestID when we start taking input of requests. (IMPORTANT)
       'users': FieldValue.arrayUnion([user.uid.toString()]),
+      'numberOfMembers': presentNum + 1,
     });
 
     var request = groupdetails.document(listuid).collection('users');
