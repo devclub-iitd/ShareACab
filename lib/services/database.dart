@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shareacab/models/requestdetails.dart';
 import 'package:shareacab/models/user.dart';
+import 'package:shareacab/screens/chatscreen/chat_database/chatservices.dart';
 
 class DatabaseService {
   final String uid;
@@ -79,7 +80,6 @@ class DatabaseService {
   // add group details
   Future<void> createTrip(RequestDetails requestDetails) async {
     var user = await _auth.currentUser();
-
     final reqRef = await requests.add({
       'user': user.uid.toString(),
       'destination': requestDetails.destination.toString(),
@@ -91,7 +91,6 @@ class DatabaseService {
       'maxpoolers': 0,
       'joiningtime': null,
     });
-
     final docRef = await groupdetails.add({
       'owner': user.uid.toString(),
       'users': FieldValue.arrayUnion([reqRef.documentID.toString()]),
@@ -104,6 +103,8 @@ class DatabaseService {
       'maxpoolers': 0,
       'threshold': null,
     });
+
+    await ChatService().createChatRoom(docRef.documentID, user.uid.toString(), requestDetails.destination.toString());
 
     await userDetails.document(user.uid).updateData({
       'currentGroup': docRef.documentID,
@@ -145,6 +146,7 @@ class DatabaseService {
       'currentGroup': null,
       'currentReq': null,
     });
+    await ChatService().exitChatRoom(currentGrp);
   }
 
   // join a group from dashboard

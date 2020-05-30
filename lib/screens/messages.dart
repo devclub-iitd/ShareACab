@@ -1,32 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:shareacab/main.dart';
-import 'package:shareacab/screens/chatscreen/chat_modules/chat_page.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shareacab/screens/chatscreen/chat_database/chatservices.dart';
+import 'package:intl/intl.dart';
+import 'package:shareacab/screens/chatscreen/chat_screen.dart';
+import 'package:shareacab/screens/chatscreen/chat_widgets/chat_users_list.dart';
 class Messages extends StatefulWidget {
   @override
   _MessagesState createState() => _MessagesState();
 }
 
 class _MessagesState extends State<Messages> {
+
   bool isSearching = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Messages'),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  showSearch(
-                    context: context,
-                    delegate: DataSearch(),
-                  );
-                })
+      appBar: AppBar(
+        title: Text('Messages'),
+      ),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: ChatUsersList(),
+            ),
           ],
         ),
-        body: ChatPage());
+      ),
+    );
   }
 }
 
