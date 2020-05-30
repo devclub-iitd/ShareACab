@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:shareacab/screens/dashboard.dart';
 import 'messages.dart';
 import 'userprofile.dart';
-import 'notifications.dart';
+import 'notifications/notifications.dart';
 import 'requests/myrequests.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/loading.dart';
