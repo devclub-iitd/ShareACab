@@ -16,23 +16,6 @@ class ChatDatabase{
     var chat = chatLists.document(docId).collection('chats');
   }
 
-  Future<bool> checkGroup(String docId) async {
-    var user = await _auth.currentUser();
-    var flag = 0;
-    final groupDetails = await group.document(docId).get();
-    for(var i = 0; i < await groupDetails['users'].length ; i++) {
-      if(user.uid == groupDetails['users'][i]){
-        flag = 1;
-      }
-    }
-    if(flag == 1){
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-
   Future<void> exitChatRoom(String docId) async{
     var user = await _auth.currentUser();
     await chatLists.document(docId).updateData({

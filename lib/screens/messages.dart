@@ -17,7 +17,14 @@ class _MessagesState extends State<Messages> {
       appBar: AppBar(
         title: Text('Messages'),
         actions: <Widget>[
-
+          IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: DataSearch(),
+                );
+              })
         ],
       ),
       body: Container(
