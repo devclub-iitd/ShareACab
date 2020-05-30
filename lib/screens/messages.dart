@@ -16,6 +16,9 @@ class _MessagesState extends State<Messages> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Messages'),
+        actions: <Widget>[
+
+        ],
       ),
       body: Container(
         child: Column(

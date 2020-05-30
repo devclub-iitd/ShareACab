@@ -120,6 +120,7 @@ final lightTheme = ThemeData(
   dividerColor: Colors.white54,
   scaffoldBackgroundColor: const Color(0xFFE5E5E5),
 
+
   //scaffoldBackgroundColor: const Color(0xFFFFFF)
 );
 

@@ -17,14 +17,9 @@ class MessageScreen extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
+        print(docId);
         return StreamBuilder(
-            stream: Firestore.instance
-                .collection('chatRoom').document(docId).collection('chats')
-                .orderBy(
-              'createdAt',
-              descending: true,
-            )
-                .snapshots(),
+            stream: Firestore.instance.collection('chatroom').document(docId).collection('chats').orderBy('createdAt',descending: true,).snapshots(),
             builder: (ctx, chatSnapshot) {
               if (chatSnapshot.connectionState == ConnectionState.waiting) {
                 return Center(
@@ -32,6 +27,8 @@ class MessageScreen extends StatelessWidget {
                 );
               }
               final chatDocs = chatSnapshot.data.documents;
+              print('bye');
+              print(chatDocs.length);
               return ListView.builder(
                 reverse: true,
                 itemCount: chatDocs.length,

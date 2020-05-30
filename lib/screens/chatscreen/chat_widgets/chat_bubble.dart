@@ -16,17 +16,18 @@ class MessageBubble extends StatelessWidget {
         children: <Widget>[
           Container(
             decoration: BoxDecoration(
-              color: isMe ? Colors.grey[300] : Theme.of(context).accentColor,
+              color: isMe ? Colors.grey : Theme.of(context).accentColor,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
                 bottomLeft: !isMe ? Radius.circular(0) : Radius.circular(12),
                 bottomRight: isMe ? Radius.circular(0) : Radius.circular(12),
               ),
+
             ),
             width: 160,
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-            margin: EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
             child: Column(
               crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: <Widget>[
@@ -48,12 +49,6 @@ class MessageBubble extends StatelessWidget {
             ),
           ),
         ],
-      ),
-      Positioned(
-        left: isMe ?null :140,
-        right: isMe ? 140 : null,
-        child: CircleAvatar(
-        ),
       ),
     ],
       overflow: Overflow.visible,
