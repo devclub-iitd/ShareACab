@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shareacab/main.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shareacab/screens/chatscreen/chat_database/chatservices.dart';
-import 'package:intl/intl.dart';
-import 'package:shareacab/screens/chatscreen/chat_screen.dart';
 import 'package:shareacab/screens/chatscreen/chat_widgets/chat_users_list.dart';
+
 class Messages extends StatefulWidget {
   @override
   _MessagesState createState() => _MessagesState();

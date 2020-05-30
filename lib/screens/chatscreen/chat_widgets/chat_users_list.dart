@@ -33,7 +33,7 @@ class ChatUsersList extends StatelessWidget {
               );
             }
             final chatRoomDocs = chatListSnapshots.data.documents;
-            return ListView.builder (
+            return ListView.builder(
               itemCount: chatRoomDocs.length,
               itemBuilder: (context, index) {
                 print('chatRoomDocs');
@@ -45,7 +45,7 @@ class ChatUsersList extends StatelessWidget {
 //                    }
 //                    obtainVal();
                 destination = chatListSnapshots.data[index].data['destination'];
-                if(chatListSnapshots.data[index].data['users'].containes(user.uid.toString())){
+                if(chatListSnapshots.data[index].data['users'].contains(user.uid.toString())){
                   return ListTile(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(docId)));
