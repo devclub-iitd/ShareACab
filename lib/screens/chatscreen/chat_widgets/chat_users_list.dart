@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import './chat_tile.dart';
 
 class ChatUsersList extends StatelessWidget {
-  var user;
+  static FirebaseUser user;
 
   Future getChatDetails() async {
     final _auth = await FirebaseAuth.instance;

@@ -8,12 +8,12 @@ class ChatDatabase {
   final CollectionReference group = Firestore.instance.collection('group');
 
   Future<void> createChatRoom(String docId, String uid, String destination) async {
-    final chatList = await chatLists.document(docId).setData({
+    await chatLists.document(docId).setData({
       'lastMessage': Timestamp.now(),
       'destination': destination,
       'users': FieldValue.arrayUnion([uid]),
     });
-    var chat = chatLists.document(docId).collection('chats');
+    chatLists.document(docId).collection('chats');
   }
 
   Future<void> exitChatRoom(String docId) async {
