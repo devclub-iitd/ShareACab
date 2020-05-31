@@ -30,11 +30,7 @@ class _MyProfileState extends State<MyProfile> {
     final currentuser = Provider.of<FirebaseUser>(context);
     //print(currentuser.uid);
 
-    Firestore.instance
-        .collection('userdetails')
-        .document(currentuser.uid)
-        .get()
-        .then((value) {
+    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
       if (value.exists) {
         setState(() {
           name = value.data['name'];
@@ -53,24 +49,28 @@ class _MyProfileState extends State<MyProfile> {
       }
     });
 
-    return
-      loading
-        ? Loading() :
-         Scaffold(
+    return loading
+        ? Loading()
+        : Scaffold(
             appBar: AppBar(
-              title: Text('My Profile', style: TextStyle(fontSize: 30),),
+              title: Text(
+                'My Profile',
+                style: TextStyle(fontSize: 30),
+              ),
               elevation: 0,
               centerTitle: true,
               actions: <Widget>[
                 FlatButton.icon(
-                  textColor: getVisibleColorOnPrimaryColor(context),
-                  icon: Icon(Icons.edit),
-                  onPressed: () {},
-                  label: Text('Edit'),
-                )
+                    textColor: getVisibleColorOnPrimaryColor(context),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/edituserdetails');
+                      // _showEditPannel();
+                    },
+                    icon: Icon(Icons.edit),
+                    label: Text('Edit'))
               ],
             ),
-            body: Column(
+            body: ListView(
               children: <Widget>[
                 Stack(
                   overflow: Overflow.visible,
@@ -95,42 +95,51 @@ class _MyProfileState extends State<MyProfile> {
                   ],
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 100,bottom: 20),
-                        child: Text(
-                          name,
-                          style: TextStyle(fontSize: 30),
-                        )
-                    ),
+                    margin: EdgeInsets.only(top: 50, bottom: 20),
+                    child: Center(
+                      child: SelectableText(
+                        name,
+                        style: TextStyle(fontSize: 30),
+                      ),
+                    )),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 40,vertical: 20),
+                  margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            'HOSTEL',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 20),
+                      Expanded(
+                        child: ListTile(
+                          onTap: () {},
+                          title: Center(
+                            child: Text(
+                              'HOSTEL',
+                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                            ),
                           ),
-                          Text(
-                            hostel,
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
+                          subtitle: Center(
+                            child: Text(
+                              hostel,
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
                       ),
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            'Gender',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 20),
+                      Expanded(
+                        child: ListTile(
+                          onTap: () {},
+                          title: Center(
+                            child: Text(
+                              'Gender',
+                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                            ),
                           ),
-                          Text(
-                            sex,
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
+                          subtitle: Center(
+                            child: Text(
+                              sex,
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -140,32 +149,38 @@ class _MyProfileState extends State<MyProfile> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            'TOTAL RIDES',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 18),
+                      Expanded(
+                        child: ListTile(
+                          onTap: () {},
+                          title: Center(
+                            child: Text(
+                              'TOTAL RIDES',
+                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                            ),
                           ),
-                          Text(
-                            '${totalrides}',
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            'CANCELLED TRIPS',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 18),
+                          subtitle: Center(
+                            child: Text(
+                              '${totalrides}',
+                              style: TextStyle(fontSize: 15),
+                            ),
                           ),
-                          Text(
-                            '${cancelledrides}',
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
+                        ),
                       ),
+                      Expanded(
+                          child: ListTile(
+                              onTap: () {},
+                              title: Center(
+                                child: Text(
+                                  'CANCELLED TRIPS',
+                                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                                ),
+                              ),
+                              subtitle: Center(
+                                child: Text(
+                                  '${cancelledrides}',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ))),
                     ],
                   ),
                 ),
@@ -174,31 +189,37 @@ class _MyProfileState extends State<MyProfile> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            'MOBILE NUMBER',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 18),
-                          ),
-                          Text(
-                            mobilenum,
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
+                      Expanded(
+                        child: ListTile(
+                            onTap: () {},
+                            title: Center(
+                              child: Text(
+                                'MOBILE NUMBER',
+                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                              ),
+                            ),
+                            subtitle: Center(
+                              child: Text(
+                                mobilenum,
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            )),
                       ),
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            'USER RATING',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 18),
-                          ),
-                          Text(
-                            '${actualrating}',
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
+                      Expanded(
+                        child: ListTile(
+                            onTap: () {},
+                            title: Center(
+                              child: Text(
+                                'USER RATING',
+                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                              ),
+                            ),
+                            subtitle: Center(
+                              child: Text(
+                                '${actualrating}',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            )),
                       ),
                     ],
                   ),
@@ -208,18 +229,21 @@ class _MyProfileState extends State<MyProfile> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Text(
-                            'EMAIL ID',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 18),
-                          ),
-                          Text(
-                            kerberosEmailID,
-                            style: TextStyle(fontSize: 15),
-                          )
-                        ],
+                      Expanded(
+                        child: ListTile(
+                            onTap: () {},
+                            title: Center(
+                              child: Text(
+                                'EMAIL ID',
+                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                              ),
+                            ),
+                            subtitle: Center(
+                              child: Text(
+                                kerberosEmailID,
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            )),
                       ),
                     ],
                   ),
