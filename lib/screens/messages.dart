@@ -8,7 +8,6 @@ class Messages extends StatefulWidget {
 }
 
 class _MessagesState extends State<Messages> {
-
   bool isSearching = false;
 
   @override

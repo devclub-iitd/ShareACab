@@ -5,7 +5,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 class ChatScreen extends StatefulWidget {
   final String docId;
+
   ChatScreen(this.docId);
+
   static const routeName = '/chatScreen';
 
   @override
@@ -13,9 +15,8 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-
   @override
-  void initState(){
+  void initState() {
     final fbm = FirebaseMessaging();
     fbm.requestNotificationPermissions();
     fbm.configure();

@@ -5,6 +5,7 @@ import 'package:shareacab/screens/chatscreen/chat_widgets/chat_bubble.dart';
 
 class MessageScreen extends StatelessWidget {
   final String docId;
+
   MessageScreen(this.docId);
 
   @override
@@ -19,7 +20,15 @@ class MessageScreen extends StatelessWidget {
         }
         print(docId);
         return StreamBuilder(
-            stream: Firestore.instance.collection('chatroom').document(docId).collection('chats').orderBy('createdAt',descending: true,).snapshots(),
+            stream: Firestore.instance
+                .collection('chatroom')
+                .document(docId)
+                .collection('chats')
+                .orderBy(
+                  'createdAt',
+                  descending: true,
+                )
+                .snapshots(),
             builder: (ctx, chatSnapshot) {
               if (chatSnapshot.connectionState == ConnectionState.waiting) {
                 return Center(

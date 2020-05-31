@@ -7,7 +7,9 @@ class ChatTile extends StatefulWidget {
   final Timestamp lastMessageAt;
   final String docId;
   final String destination;
+
   ChatTile(this.docId, this.destination, this.lastMessageAt);
+
   @override
   _ChatTileState createState() => _ChatTileState();
 }
@@ -16,10 +18,11 @@ class _ChatTileState extends State<ChatTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical : 15),
+      padding: EdgeInsets.symmetric(vertical: 15),
       decoration: BoxDecoration(
-        border: Border(bottom : BorderSide(width: 0.15 , color: Theme.of(context).accentColor), )
-      ),
+          border: Border(
+        bottom: BorderSide(width: 0.15, color: Theme.of(context).accentColor),
+      )),
       child: ListTile(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(widget.docId)));
@@ -32,7 +35,8 @@ class _ChatTileState extends State<ChatTile> {
             child: widget.destination == 'New Delhi Railway Station' ? Icon(Icons.train) : Icon(Icons.flight_takeoff),
           ),
         ),
-        title: Text(widget.destination,
+        title: Text(
+          widget.destination,
           style: Theme.of(context).textTheme.bodyText1,
         ),
         trailing: Text(DateFormat.yMMMd().format(widget.lastMessageAt.toDate())),
