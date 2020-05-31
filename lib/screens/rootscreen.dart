@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shareacab/screens/dashboard.dart';
 import 'messages.dart';
-import 'userprofile.dart';
+import 'profile/userprofile.dart';
 import 'notifications/notifications.dart';
 import 'requests/myrequests.dart';
 import 'package:shareacab/services/auth.dart';
