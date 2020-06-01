@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shareacab/screens/chatscreen/chat_screen.dart';
-import 'package:shareacab/screens/groupdetailscreen/groupdetails.dart';
 
 Color userIsOnline(BuildContext context) => Colors.green;
 
