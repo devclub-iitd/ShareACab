@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shareacab/screens/chatscreen/chat_screen.dart';
+import 'package:shareacab/screens/groupdetailscreen/groupdetails.dart';
 
 Color userIsOnline(BuildContext context) => Colors.green;
 
@@ -165,6 +166,7 @@ class MyApp extends StatelessWidget {
           '/edituserdetails': (context) => EditForm(),
           CreateTrip.routeName: (context) => CreateTrip(),
           ChatScreen.routeName: (context) => ChatScreen(' '),
+//          GroupDetails.routeName : (context) => GroupDetails(' '),
         },
         title: 'Share A Cab',
         builder: (context, child) {
