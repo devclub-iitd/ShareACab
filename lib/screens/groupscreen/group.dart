@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:shareacab/shared/loading.dart';
+import 'package:intl/intl.dart';
 
 class GroupPage extends StatefulWidget {
   @override
@@ -55,8 +56,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
       if (value.exists) {
         setState(() {
           destination = value.data['destination'];
-          start = value.data['start'].toDate().toString();
-          end = value.data['end'].toDate().toString();
+          start = DateFormat('dd.MM.yyyy - kk:mm a').format(value.data['start'].toDate());
+          end = DateFormat('dd.MM.yyyy - kk:mm a').format(value.data['end'].toDate());
           grpOwner = value.data['owner'];
           presentNum = value.data['numberOfMembers'].toString();
           loading = false;

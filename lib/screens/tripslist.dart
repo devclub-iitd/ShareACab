@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shareacab/screens/groupscreen/group.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:shareacab/screens/groupdetailscreen/groupdetails.dart';
+import 'package:intl/intl.dart';
 
 class TripsList extends StatefulWidget {
   //final List<RequestDetails> trips;
@@ -159,7 +160,7 @@ class _TripsListState extends State<TripsList> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    'Start : ${snapshot.data[index].data['start'].toDate()}',
+                                    'Start : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data[index].data['start'].toDate())}',
                                     style: TextStyle(
                                       fontSize: 15,
                                     ),
@@ -175,7 +176,7 @@ class _TripsListState extends State<TripsList> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    'End : ${snapshot.data[index].data['end'].toDate()}',
+                                    'End : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data[index].data['end'].toDate())}',
                                     style: TextStyle(
                                       fontSize: 15,
                                     ),
