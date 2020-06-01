@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/screens/groupscreen/group.dart';
 import 'package:shareacab/services/trips.dart';
+import 'package:shareacab/screens/groupdetailscreen/groupdetails.dart';
 
 class TripsList extends StatefulWidget {
   //final List<RequestDetails> trips;
@@ -15,6 +16,7 @@ class TripsList extends StatefulWidget {
 
 class _TripsListState extends State<TripsList> {
   final RequestService _request = RequestService();
+
   Future getTrips() async {
     var firestore = Firestore.instance;
     var qn = await firestore.collection('group').orderBy('created', descending: true).getDocuments();
@@ -33,7 +35,11 @@ class _TripsListState extends State<TripsList> {
   @override
   Widget build(BuildContext context) {
     final currentuser = Provider.of<FirebaseUser>(context);
-    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
+    Firestore.instance
+        .collection('userdetails')
+        .document(currentuser.uid)
+        .get()
+        .then((value) {
       if (value.data['currentGroup'] != null) {
         setState(() {
           inGroup = true;
@@ -57,127 +63,158 @@ class _TripsListState extends State<TripsList> {
             return ListView.builder(
                 itemCount: snapshot.data == null ? 0 : snapshot.data.length,
                 itemBuilder: (ctx, index) {
-                  return Card(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
-                    elevation: 5,
-                    margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
-                    child: Container(
-                      height: 150,
-                      child: Column(
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Flexible(
-                                fit: FlexFit.tight,
-                                flex: 1,
-                                child: Container(
-                                    margin: EdgeInsets.only(
-                                      left: 20,
-                                      top: 20,
-                                    ),
-                                    child: snapshot.data[index].data['destination'] == 'New Delhi Railway Station'
-                                        ? Icon(
-                                            Icons.train,
-                                            color: Theme.of(context).accentColor,
-                                            size: 30,
-                                          )
-                                        : Icon(
-                                            Icons.airplanemode_active,
-                                            color: Theme.of(context).accentColor,
-                                            size: 30,
-                                          )),
-                              ),
-                              Flexible(
-                                fit: FlexFit.tight,
-                                flex: 4,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 10.0),
-                                  child: Text(
-                                    '${snapshot.data[index].data['destination']}',
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
-                              Flexible(
-                                flex: 2,
-                                child: Container(
-                                  child: snapshot.data[index].data['privacy'] == 'true'
-                                      ? Padding(
-                                          padding: const EdgeInsets.only(right: 15.0),
-                                          child: Icon(
-                                            Icons.lock,
-                                            color: Theme.of(context).accentColor,
-                                          ),
-                                        )
-                                      : !inGroup
-                                          ? FlatButton(
-                                              onPressed: () async {
-                                                try {
-                                                  DocumentSnapshot temp = snapshot.data[index];
-                                                  await _request.joinGroup(temp.documentID);
-                                                  //print(temp.documentID);
-                                                  await Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
-                                                } catch (e) {
-                                                  print(e.toString());
-                                                }
-                                              },
-                                              child: Text('Join Now'),
+                  return InkWell(
+                    onTap: () {
+                      final destination = snapshot.data[index].data['destination'];
+                      final startDate = DateTime.parse(snapshot.data[index].data['startDate']);
+                      final startTime = snapshot.data[index].data['startTime'];
+                      final endDate = DateTime.parse(snapshot.data[index].data['endDate']);
+                      final endTime = snapshot.data[index].data['endTime'];
+                      final docId = snapshot.data[index].documentID;
+                      final privacy = snapshot.data[index].data['privacy'];
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => GroupDetails(destination, startDate,startTime,endDate, endTime, docId,privacy)));
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(25.0))),
+                      elevation: 5,
+                      margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
+                      child: Container(
+                        height: 150,
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Flexible(
+                                  fit: FlexFit.tight,
+                                  flex: 1,
+                                  child: Container(
+                                      margin: EdgeInsets.only(
+                                        left: 20,
+                                        top: 20,
+                                      ),
+                                      child: snapshot.data[index]
+                                                  .data['destination'] ==
+                                              'New Delhi Railway Station'
+                                          ? Icon(
+                                              Icons.train,
+                                              color:
+                                                  Theme.of(context).accentColor,
+                                              size: 30,
                                             )
-                                          : FlatButton(
-                                              onPressed: null,
-                                              child: Text('Already in group'),
+                                          : Icon(
+                                              Icons.airplanemode_active,
+                                              color:
+                                                  Theme.of(context).accentColor,
+                                              size: 30,
+                                            )),
+                                ),
+                                Flexible(
+                                  fit: FlexFit.tight,
+                                  flex: 4,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 10.0),
+                                    child: Text(
+                                      '${snapshot.data[index].data['destination']}',
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                                Flexible(
+                                  flex: 2,
+                                  child: Container(
+                                    child: snapshot
+                                                .data[index].data['privacy'] ==
+                                            'true'
+                                        ? Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 15.0),
+                                            child: Icon(
+                                              Icons.lock,
+                                              color:
+                                                  Theme.of(context).accentColor,
                                             ),
-                                ),
-                              )
-                            ],
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: 5,
-                              top: 10,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  'Start : ${DateFormat.yMMMd().format(DateTime.parse(snapshot.data[index].data['startDate']))} ${snapshot.data[index].data['startTime'].substring(10, 15)}',
-                                  style: TextStyle(
-                                    fontSize: 15,
+                                          )
+                                        : !inGroup
+                                            ? FlatButton(
+                                                onPressed: () async {
+                                                  try {
+                                                    DocumentSnapshot temp =
+                                                        snapshot.data[index];
+                                                    await _request.joinGroup(
+                                                        temp.documentID);
+                                                    //print(temp.documentID);
+                                                    await Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                GroupPage()));
+                                                  } catch (e) {
+                                                    print(e.toString());
+                                                  }
+                                                },
+                                                child: Text('Join Now'),
+                                              )
+                                            : FlatButton(
+                                                onPressed: null,
+                                                child: Text('Already in group'),
+                                              ),
                                   ),
-                                ),
+                                )
                               ],
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                              bottom: 5,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Text(
-                                  'End : ${DateFormat.yMMMd().format(DateTime.parse(snapshot.data[index].data['endDate']))} ${snapshot.data[index].data['endTime'].substring(10, 15)}',
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              Column(
-                                children: <Widget>[Text('Number of members in group: ${snapshot.data[index].data['numberOfMembers'].toString()}')],
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: 5,
+                                top: 10,
                               ),
-                            ],
-                          ),
-                        ],
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'Start : ${DateFormat.yMMMd().format(DateTime.parse(snapshot.data[index].data['startDate']))} ${snapshot.data[index].data['startTime'].substring(10, 15)}',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: 5,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'End : ${DateFormat.yMMMd().format(DateTime.parse(snapshot.data[index].data['endDate']))} ${snapshot.data[index].data['endTime'].substring(10, 15)}',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    Text(
+                                        'Number of members in group: ${snapshot.data[index].data['numberOfMembers'].toString()}')
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );

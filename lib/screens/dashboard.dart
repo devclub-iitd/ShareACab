@@ -16,12 +16,15 @@ import 'package:shareacab/models/requestdetails.dart';
 
 class Dashboard extends StatefulWidget {
   final AuthService _auth;
+
   Dashboard(this._auth);
+
   @override
   _DashboardState createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
+
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   // List<RequestDetails> _listOfTrips = allTrips;
   List<RequestDetails> filtered = allTrips;
@@ -46,12 +49,13 @@ class _DashboardState extends State<Dashboard> {
     _ST = stime;
     _ED = edate;
     _ET = etime;
-    // _listOfTrips = filtered;
+ // _listOfTrips = filtered;
     setState(() {});
   }
 
   @override
   void initState() {
+
     // _listOfTrips = filtered;
 
     super.initState();
@@ -157,6 +161,7 @@ class _DashboardState extends State<Dashboard> {
               height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
               width: double.infinity,
               child: RefreshIndicator(
+
                 child: TripsList(),
                 onRefresh: refreshList,
               ),
