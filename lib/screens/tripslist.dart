@@ -70,10 +70,9 @@ class _TripsListState extends State<TripsList> {
                       final startTime = snapshot.data[index].data['startTime'];
                       final endDate = DateTime.parse(snapshot.data[index].data['endDate']);
                       final endTime = snapshot.data[index].data['endTime'];
-                      final users = snapshot.data[index].data['users'];
-                      print(startTime);
-
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => GroupDetails(destination, startDate,startTime,endDate, endTime, users)));
+                      final docId = snapshot.data[index].documentID;
+                      final privacy = snapshot.data[index].data['privacy'];
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => GroupDetails(destination, startDate,startTime,endDate, endTime, docId,privacy)));
                     },
                     child: Card(
                       shape: RoundedRectangleBorder(
