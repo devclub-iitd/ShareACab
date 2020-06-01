@@ -18,7 +18,7 @@ class _TripsListState extends State<TripsList> {
 
   Future getTrips() async {
     var firestore = Firestore.instance;
-    var qn = await firestore.collection('group').getDocuments();
+    var qn = await firestore.collection('group').orderBy('created', descending: true).getDocuments();
     return qn.documents;
   }
 

@@ -73,7 +73,7 @@ class DatabaseService {
       'endTime': requestDetails.endTime.toString(),
       'finaldestination': requestDetails.finalDestination.toString(),
       'maxpoolers': 0,
-      'joiningtime': null,
+      'created': Timestamp.now(),
     });
   }
 
@@ -89,7 +89,7 @@ class DatabaseService {
       'endTime': requestDetails.endTime.toString(),
       'finaldestination': requestDetails.finalDestination.toString(),
       'maxpoolers': 0,
-      'joiningtime': null,
+      'created': Timestamp.now(),
     });
     final docRef = await groupdetails.add({
       'owner': user.uid.toString(),
@@ -103,6 +103,7 @@ class DatabaseService {
       'maxpoolers': 0,
       'numberOfMembers': 1,
       'threshold': null,
+      'created': Timestamp.now(),
     });
 
     await ChatService().createChatRoom(docRef.documentID, user.uid.toString(), requestDetails.destination.toString());
