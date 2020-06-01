@@ -28,9 +28,9 @@ class _CreateTripState extends State<CreateTrip> {
     final newRq = RequestDetails(name: 'Name', id: DateTime.now().toString(), destination: _destination, finalDestination: _finalDestinationController.text, startDate: _selectedStartDate, startTime: _selectedStartTime, endDate: _selectedEndDate, endTime: _selectedEndTime, privacy: privacy);
     try {
       await _request.createTrip(newRq);
+
     } catch (e) {
       print(e.toString());
-
       //String errStr = e.message ?? e.toString();
       //final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
       //_scaffoldKey.currentState.showSnackBar(snackBar);
