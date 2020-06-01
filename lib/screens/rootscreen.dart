@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shareacab/screens/dashboard.dart';
 import 'messages.dart';
 import 'profile/userprofile.dart';
@@ -46,13 +47,14 @@ class _RootScreenState extends State<RootScreen> {
         : Scaffold(
             key: _scaffoldKey,
             extendBody: true,
-            bottomNavigationBar: CurvedNavigationBar(
+            bottomNavigationBar:
+            CurvedNavigationBar(
               color: Theme.of(context).bottomAppBarColor,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               height: 60.0,
               items: <Widget>[
                 Icon(
-                  Icons.home,
+                  FontAwesomeIcons.home,
                   size: 20.0,
                   color: Theme.of(context).accentColor,
                   //color: Colors.black,
@@ -63,17 +65,20 @@ class _RootScreenState extends State<RootScreen> {
                   color: Theme.of(context).accentColor,
                 ),
                 Icon(
-                  Icons.chat_bubble_outline,
+                  _selectedPage ==2 ?
+                  Icons.chat_bubble : Icons.chat_bubble_outline,
                   size: 20.0,
                   color: Theme.of(context).accentColor,
                 ),
                 Icon(
-                  Icons.notifications_none,
+                  _selectedPage ==3 ?
+                  Icons.notifications : Icons.notifications_none ,
                   size: 20.0,
                   color: Theme.of(context).accentColor,
                 ),
                 Icon(
-                  Icons.person,
+                  _selectedPage ==4 ?
+                  Icons.person : Icons.person_outline ,
                   size: 20.0,
                   color: Theme.of(context).accentColor,
                 ),
@@ -87,6 +92,7 @@ class _RootScreenState extends State<RootScreen> {
                 });
               },
             ),
+
             // body: justLoggedin
             //     ? Center(
             //         child: Dashboard(),
