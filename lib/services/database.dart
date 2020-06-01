@@ -80,13 +80,25 @@ class DatabaseService {
   // add group details
   Future<void> createTrip(RequestDetails requestDetails) async {
     var user = await _auth.currentUser();
+
+    // CODE FOR CONVERTING DATE TIME TO TIMESTAMP
+
+    var temp = requestDetails.startTime;
+    var starting = DateTime(requestDetails.startDate.year, requestDetails.startDate.month, requestDetails.startDate.day, temp.hour, temp.minute);
+    var temp2 = requestDetails.endTime;
+    var ending = DateTime(requestDetails.endDate.year, requestDetails.endDate.month, requestDetails.endDate.day, temp2.hour, temp2.minute);
+
+    //var timeStamp = Timestamp.fromDate(temp2);
+
     final reqRef = await requests.add({
       'user': user.uid.toString(),
       'destination': requestDetails.destination.toString(),
-      'startDate': requestDetails.startDate.toString(),
-      'startTime': requestDetails.startTime.toString(),
-      'endDate': requestDetails.endDate.toString(),
-      'endTime': requestDetails.endTime.toString(),
+      //'startDate': requestDetails.startDate.toString(),
+      //'startTime': requestDetails.startTime.toString(),
+      //'endDate': requestDetails.endDate.toString(),
+      //'endTime': requestDetails.endTime.toString(),
+      'start': starting,
+      'end': ending,
       'finaldestination': requestDetails.finalDestination.toString(),
       'maxpoolers': 0,
       'created': Timestamp.now(),
@@ -95,10 +107,12 @@ class DatabaseService {
       'owner': user.uid.toString(),
       'users': FieldValue.arrayUnion([reqRef.documentID.toString()]),
       'destination': requestDetails.destination.toString(),
-      'startDate': requestDetails.startDate.toString(),
-      'startTime': requestDetails.startTime.toString(),
-      'endDate': requestDetails.endDate.toString(),
-      'endTime': requestDetails.endTime.toString(),
+      //'startDate': requestDetails.startDate.toString(),
+      //'startTime': requestDetails.startTime.toString(),
+      //'endDate': requestDetails.endDate.toString(),
+      //'endTime': requestDetails.endTime.toString(),
+      'start': starting,
+      'end': ending,
       'privacy': requestDetails.privacy.toString(),
       'maxpoolers': 0,
       'numberOfMembers': 1,

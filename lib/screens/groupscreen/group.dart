@@ -6,7 +6,6 @@ import 'package:shareacab/screens/chatscreen/chat_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/services/trips.dart';
-import 'package:intl/intl.dart';
 import 'package:shareacab/shared/loading.dart';
 
 class GroupPage extends StatefulWidget {
@@ -56,12 +55,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
       if (value.exists) {
         setState(() {
           destination = value.data['destination'];
-          startTime = value.data['startTime'];
-          endTime = value.data['endTime'];
-          startDate = value.data['startDate'];
-          endDate = value.data['endDate'];
-          start = '${DateFormat.yMMMd().format(DateTime.parse(startDate))} ${startTime.substring(10, 15)}';
-          end = '${DateFormat.yMMMd().format(DateTime.parse(endDate))} ${endTime.substring(10, 15)}';
+          start = value.data['start'].toDate().toString();
+          end = value.data['end'].toDate().toString();
           grpOwner = value.data['owner'];
           presentNum = value.data['numberOfMembers'].toString();
           loading = false;
