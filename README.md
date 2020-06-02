@@ -10,6 +10,25 @@ An app for sharing cab with college students
 ## Description
 Usually, after exams or when the mid-sem break begins, there is a large surge of people going back to their respective hometown by air/railways. This journey involves an initial travel where the person takes a cab to the IGI Airport or the New Delhi Railway station. A lot of times, people are forced to travel solo, if there isn't anyone he/she knows traveling at a similar time. Also, this leads to shortage of cabs nearby and increase in waiting time. Had there been a student of IIT-D with whom the cab could have been shared, the fares would also be split and the waiting time will also reduce. Another thing is that girls prefer not to travel alone in Cabs in Delhi, so that problem will also be solved by this app.  
 
+## Directory Layout
+```go
+ ShareACab
+   +--- README, LICENSE // basic information
+   +--- assets  // contains all assets like images for project
+   |
+   +--- lib
+        +--- models
+        +--- screens
+        +--- services
+        +--- shared
+        +--- main.dart
+   |
+   +--- functions  // Firebase Functions Folder: automatically run backend code in response to events 
+   |               // triggered by Firebase features and HTTPS requests
+   |
+   +--- etc
+```
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
