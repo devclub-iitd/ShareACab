@@ -21,7 +21,8 @@ class _MyProfileState extends State<MyProfile> {
 
   void _loadCurrentUser() {
     FirebaseAuth.instance.currentUser().then((FirebaseUser user) {
-      setState(() { // call setState to rebuild the view
+      setState(() {
+        // call setState to rebuild the view
         currentUser = user;
       });
     });
@@ -53,7 +54,11 @@ class _MyProfileState extends State<MyProfile> {
     final currentuser = Provider.of<FirebaseUser>(context);
     //print(currentuser.uid);
 
-    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
+    Firestore.instance
+        .collection('userdetails')
+        .document(currentuser.uid)
+        .get()
+        .then((value) {
       if (value.exists) {
         setState(() {
           name = value.data['name'];
@@ -71,209 +76,217 @@ class _MyProfileState extends State<MyProfile> {
         });
       }
     });
-    var namefirst = name.substring(0,1);
+    var namefirst = name.substring(0, 1);
     return loading
         ? Loading()
         : Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'My Profile',
-          style: TextStyle(fontSize: 30),
-        ),
-        elevation: 0,
-        centerTitle: true,
-        actions: <Widget>[
-          FlatButton.icon(
-              textColor: getVisibleColorOnPrimaryColor(context),
-              onPressed: () {
-                Navigator.pushNamed(context, '/edituserdetails');
-                // _showEditPannel();
-              },
-              icon: Icon(Icons.edit),
-              label: Text('Edit'))
-        ],
-      ),
-      body: ListView(
-        children: <Widget>[
-          Stack(
-            overflow: Overflow.visible,
-            alignment: Alignment.center,
-            children: <Widget>[
-              Container(
-                height: MediaQuery.of(context).size.height / 6,
-                width: MediaQuery.of(context).size.width,
-                color: Theme.of(context).primaryColor,
+            appBar: AppBar(
+              title: Text(
+                'My Profile',
+                style: TextStyle(fontSize: 30),
               ),
-              Positioned(
-                top: MediaQuery.of(context).size.height / 6 - 74,
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Theme.of(context).accentColor,
-                  child: Text(
-                    namefirst,
-                    style: TextStyle(fontSize: 40),
-                  ),
-                ),
-              )
-            ],
-          ),
-          Container(
-              margin: EdgeInsets.only(top: 50, bottom: 20),
-              child: Center(
-                child: SelectableText(
-                  name,
-                  style: TextStyle(fontSize: 30),
-                ),
-              )),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: ListTile(
-                    onTap: () {},
-                    title: Center(
-                      child: Text(
-                        'HOSTEL',
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-                      ),
-                    ),
-                    subtitle: Center(
-                      child: Text(
-                        hostel,
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: ListTile(
-                    onTap: () {},
-                    title: Center(
-                      child: Text(
-                        'Gender',
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-                      ),
-                    ),
-                    subtitle: Center(
-                      child: Text(
-                        sex,
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ),
-                  ),
-                ),
+              elevation: 0,
+              centerTitle: true,
+              actions: <Widget>[
+                FlatButton.icon(
+                    textColor: getVisibleColorOnPrimaryColor(context),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/edituserdetails');
+                      // _showEditPannel();
+                    },
+                    icon: Icon(Icons.edit),
+                    label: Text('Edit'))
               ],
             ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            body: ListView(
               children: <Widget>[
-                Expanded(
-                  child: ListTile(
-                    onTap: () {},
-                    title: Center(
-                      child: Text(
-                        'TOTAL RIDES',
-                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
-                      ),
+                Stack(
+                  overflow: Overflow.visible,
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Container(
+                      height: MediaQuery.of(context).size.height / 6,
+                      width: MediaQuery.of(context).size.width,
+                      color: Theme.of(context).primaryColor,
                     ),
-                    subtitle: Center(
-                      child: Text(
-                        '${totalrides}',
-                        style: TextStyle(fontSize: 15),
+                    Positioned(
+                      top: MediaQuery.of(context).size.height / 6 - 74,
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Theme.of(context).accentColor,
+                        child: Text(
+                          namefirst,
+                          style: TextStyle(fontSize: 40),
+                        ),
                       ),
-                    ),
-                  ),
+                    )
+                  ],
                 ),
-                Expanded(
-                    child: ListTile(
-                        onTap: () {},
-                        title: Center(
-                          child: Text(
-                            'CANCELLED TRIPS',
-                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                Container(
+                    margin: EdgeInsets.only(top: 50, bottom: 20),
+                    child: Center(
+                      child: SelectableText(
+                        name,
+                        style: TextStyle(fontSize: 30),
+                      ),
+                    )),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: ListTile(
+                          onTap: () {},
+                          title: Center(
+                            child: Text(
+                              'HOSTEL',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 20),
+                            ),
+                          ),
+                          subtitle: Center(
+                            child: Text(
+                              hostel,
+                              style: TextStyle(fontSize: 15),
+                            ),
                           ),
                         ),
-                        subtitle: Center(
-                          child: Text(
-                            '${cancelledrides}',
-                            style: TextStyle(fontSize: 15),
+                      ),
+                      Expanded(
+                        child: ListTile(
+                          onTap: () {},
+                          title: Center(
+                            child: Text(
+                              'Gender',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 20),
+                            ),
                           ),
-                        ))),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child: ListTile(
-                      onTap: () {},
-                      title: Center(
-                        child: Text(
-                          'MOBILE NUMBER',
-                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                          subtitle: Center(
+                            child: Text(
+                              sex,
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ),
                         ),
                       ),
-                      subtitle: Center(
-                        child: Text(
-                          mobilenum,
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      )),
+                    ],
+                  ),
                 ),
-                Expanded(
-                  child: ListTile(
-                      onTap: () {},
-                      title: Center(
-                        child: Text(
-                          'USER RATING',
-                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: ListTile(
+                          onTap: () {},
+                          title: Center(
+                            child: Text(
+                              'TOTAL RIDES',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 18),
+                            ),
+                          ),
+                          subtitle: Center(
+                            child: Text(
+                              '${totalrides}',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ),
                         ),
                       ),
-                      subtitle: Center(
-                        child: Text(
-                          '${actualrating}',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      )),
+                      Expanded(
+                          child: ListTile(
+                              onTap: () {},
+                              title: Center(
+                                child: Text(
+                                  'CANCELLED TRIPS',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18),
+                                ),
+                              ),
+                              subtitle: Center(
+                                child: Text(
+                                  '${cancelledrides}',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                              ))),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: ListTile(
-                      onTap: () {},
-                      title: Center(
-                        child: Text(
-                          'EMAIL ID',
-                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
-                        ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        child: ListTile(
+                            onTap: () {},
+                            title: Center(
+                              child: Text(
+                                'MOBILE NUMBER',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700, fontSize: 18),
+                              ),
+                            ),
+                            subtitle: Center(
+                              child: Text(
+                                mobilenum,
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            )),
                       ),
-                      subtitle: Center(
-                        child: Text(
-                          _email(),
-                          style: TextStyle(fontSize: 15),
-                        ),
-                      )),
+                      Expanded(
+                        child: ListTile(
+                            onTap: () {},
+                            title: Center(
+                              child: Text(
+                                'USER RATING',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700, fontSize: 18),
+                              ),
+                            ),
+                            subtitle: Center(
+                              child: Text(
+                                '${actualrating}',
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
                 ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: ListTile(
+                            onTap: () {},
+                            title: Center(
+                              child: Text(
+                                'EMAIL ID',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700, fontSize: 18),
+                              ),
+                            ),
+                            subtitle: Center(
+                              child: Text(
+                                _email(),
+                                style: TextStyle(fontSize: 15),
+                              ),
+                            )),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
-          )
-        ],
-      ),
-    );
+          );
   }
 }
 
