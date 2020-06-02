@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shareacab/models/requestdetails.dart';
 import 'package:shareacab/models/user.dart';
+import 'package:shareacab/screens/chatscreen/chat_database/chatservices.dart';
 
 class DatabaseService {
   final String uid;
@@ -63,13 +64,19 @@ class DatabaseService {
   // add request details from user (will use in future versions)
   Future<void> addRequest(RequestDetails requestDetails) async {
     var user = await _auth.currentUser();
+
+    // CODE FOR CONVERTING DATE TIME TO TIMESTAMP
+
+    var temp = requestDetails.startTime;
+    var starting = DateTime(requestDetails.startDate.year, requestDetails.startDate.month, requestDetails.startDate.day, temp.hour, temp.minute);
+    var temp2 = requestDetails.endTime;
+    var ending = DateTime(requestDetails.endDate.year, requestDetails.endDate.month, requestDetails.endDate.day, temp2.hour, temp2.minute);
+
     await requests.add({
       'user': user.uid.toString(),
       'destination': requestDetails.destination.toString(),
-      'startDate': requestDetails.startDate.toString(),
-      'startTime': requestDetails.startTime.toString(),
-      'endDate': requestDetails.endDate.toString(),
-      'endTime': requestDetails.endTime.toString(),
+      'start': starting,
+      'end': ending,
       'finaldestination': requestDetails.finalDestination.toString(),
       'maxpoolers': 0,
       'created': Timestamp.now(),
@@ -80,32 +87,38 @@ class DatabaseService {
   Future<void> createTrip(RequestDetails requestDetails) async {
     var user = await _auth.currentUser();
 
+    // CODE FOR CONVERTING DATE TIME TO TIMESTAMP
+
+    var temp = requestDetails.startTime;
+    var starting = DateTime(requestDetails.startDate.year, requestDetails.startDate.month, requestDetails.startDate.day, temp.hour, temp.minute);
+    var temp2 = requestDetails.endTime;
+    var ending = DateTime(requestDetails.endDate.year, requestDetails.endDate.month, requestDetails.endDate.day, temp2.hour, temp2.minute);
+
+    //var timeStamp = Timestamp.fromDate(temp2);
+
     final reqRef = await requests.add({
       'user': user.uid.toString(),
       'destination': requestDetails.destination.toString(),
-      'startDate': requestDetails.startDate.toString(),
-      'startTime': requestDetails.startTime.toString(),
-      'endDate': requestDetails.endDate.toString(),
-      'endTime': requestDetails.endTime.toString(),
+      'start': starting,
+      'end': ending,
       'finaldestination': requestDetails.finalDestination.toString(),
       'maxpoolers': 0,
       'created': Timestamp.now(),
     });
-
     final docRef = await groupdetails.add({
       'owner': user.uid.toString(),
       'users': FieldValue.arrayUnion([reqRef.documentID.toString()]),
       'destination': requestDetails.destination.toString(),
-      'startDate': requestDetails.startDate.toString(),
-      'startTime': requestDetails.startTime.toString(),
-      'endDate': requestDetails.endDate.toString(),
-      'endTime': requestDetails.endTime.toString(),
+      'start': starting,
+      'end': ending,
       'privacy': requestDetails.privacy.toString(),
       'maxpoolers': 0,
       'numberOfMembers': 1,
       'threshold': null,
       'created': Timestamp.now(),
     });
+
+    await ChatService().createChatRoom(docRef.documentID, user.uid.toString(), requestDetails.destination.toString());
 
     await userDetails.document(user.uid).updateData({
       'currentGroup': docRef.documentID,
@@ -152,6 +165,7 @@ class DatabaseService {
       'currentGroup': null,
       'currentReq': null,
     });
+    await ChatService().exitChatRoom(currentGrp);
   }
 
   // join a group from dashboard
