@@ -11,13 +11,13 @@ class _NotificationsState extends State<Notifications> {
     Notification(
         heading: 'Demo -1',
         message:
-        'This is one of the demo notifications and the message can be a very long text extending upto many lines and the card would adjust the size accordingly',
+            'This is one of the demo notifications and the message can be a very long text extending upto many lines and the card would adjust the size accordingly',
         type: 'Normal',
         dateTime: '20/05/2020'),
     Notification(
         heading: 'Warning',
         message:
-        'It has come to our notice that you are spamming different groups and disturbing the normal working of the app. We are thus giving you a warning. Any such behavior in future from your side may force us to ban you from using this app',
+            'It has come to our notice that you are spamming different groups and disturbing the normal working of the app. We are thus giving you a warning. Any such behavior in future from your side may force us to ban you from using this app',
         type: 'Warning',
         dateTime: '20/05/2020'),
     Notification(
@@ -51,56 +51,56 @@ class _NotificationsState extends State<Notifications> {
     return Scaffold(
         appBar: AppBar(
           title: Text('My Notifications'),
-          actions: <Widget>[
-
-          ],
+          actions: <Widget>[],
         ),
         body: notifications.isEmpty
             ? Center(
-          child: Text(
-            'No Notifications to show',
-            style: TextStyle(fontSize: 25.0),
-          ),
-        )
-            : ListView.builder(
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (ctx, index) {
-              return Card(
-                margin: EdgeInsets.only(bottom: 15),
-                color: Theme.of(context).scaffoldBackgroundColor,
-                child: ListTile(
-                  leading: notifications[index].type == 'Warning'
-                      ? Icon(
-                    Icons.warning,
-                    color: warning(context),
-                  )
-                      : Icon(Icons.notifications),
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        '${notifications[index].heading}',
-                        style: TextStyle(
-                            color: notifications[index].type == 'Warning'
-                                ? warningHeading(context)
-                                : null,
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text('${notifications[index].dateTime}', textAlign: TextAlign.right,),
-                    ],
-                  ),
-                  subtitle: Text(
-                    '${notifications[index].message}',
-                    style: TextStyle(fontSize: 15),
-                  ),
-                  isThreeLine: true,
+                child: Text(
+                  'No Notifications to show',
+                  style: TextStyle(fontSize: 25.0),
                 ),
-
-
-              );
-            },
-            itemCount: notifications.length));
+              )
+            : ListView.builder(
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (ctx, index) {
+                  return Card(
+                    margin: EdgeInsets.only(bottom: 15),
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    child: ListTile(
+                      onTap: () {},
+                      leading: notifications[index].type == 'Warning'
+                          ? Icon(
+                              Icons.warning,
+                              color: warning(context),
+                            )
+                          : Icon(Icons.notifications),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            '${notifications[index].heading}',
+                            style: TextStyle(
+                                color: notifications[index].type == 'Warning'
+                                    ? warningHeading(context)
+                                    : null,
+                                fontSize: 25.0,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '${notifications[index].dateTime}',
+                            textAlign: TextAlign.right,
+                          ),
+                        ],
+                      ),
+                      subtitle: Text(
+                        '${notifications[index].message}',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      isThreeLine: true,
+                    ),
+                  );
+                },
+                itemCount: notifications.length));
   }
 }
 
