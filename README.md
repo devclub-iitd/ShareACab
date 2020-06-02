@@ -18,12 +18,59 @@ Usually, after exams or when the mid-sem break begins, there is a large surge of
    |
    +--- lib
         +--- models
+          +--- alltrips.dart // (WILL BE REMOVED LATER)
+          +--- requestdetails.dart // Request Model
+          +--- user.dart // User Model
         +--- screens
+          +--- authenticate
+            +--- authenticate.dart // for toggling between sign in and register
+            +--- forgotpass.dart // forgot password screen
+            +--- register.dart // register user screen
+            +--- sign_in.dart // sign in screen
+            +--- verified_email_check.dart // check if user verified screen
+          +--- chatscreen // handles the chating section
+            +--- chat_database
+              +--- chatservices.dart
+              +--- database.dart
+            +--- chat_widgets
+              +--- chat_bubbles.dart
+              +--- chat_tile.dart
+              +--- chat_users_list.dart
+              +--- message.dart
+              +--- new_message.dart
+            +--- chat_screen.dart
+          +--- groupdetailscreen // handles the screen when user clicks on a card on dashboard
+            +--- appbar.dart // group details page appbar
+            +--- groupdetails.dart // group details page
+          +--- groupscreen // handles the screen when user is in a cab/group
+            +--- group.dart // shows the current group details
+          +--- notifications // handles notification screen
+            +--- notifications.dart
+          +--- profile
+            +--- userprofile.dart // handles user profile screen
+          +--- requests // handles the requests of users screen
+            +--- createrequests.dart
+            +--- myrequests.dart
+            +--- requestslist.dart
+          +--- createtrip.dart // the screen for creating a new group
+          +--- dashboard.dart // handles dashboard
+          +--- edituserdetails.dart // handles edit user details page
+          +--- filter.dart // handles filter service
+          +--- messages.dart // messages screen
+          +--- rootscreen.dart // handles navigation services
+          +--- settings.dart // settings page to set dark mode
+          +--- tripslist.dart // displays the list of trips on dashboard
+          +--- wrapper.dart // handles the routing when a user is logged in
         +--- services
+          +--- auth.dart // handles all authentication related services
+          +--- database.dart // the PRIMARY database service which handles everything
+          +--- trips.dart // for calling a function purposes
         +--- shared
+          +--- constants.dart // the constant files
+          +--- loading.dart // the loading screen
         +--- main.dart
    |
-   +--- functions  // Firebase Functions Folder: automatically run backend code in response to events 
+   +--- functions  // Firebase Functions Folder: automatically run backend code in response to events
    |               // triggered by Firebase features and HTTPS requests
    |
    +--- etc
