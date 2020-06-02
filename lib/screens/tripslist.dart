@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/screens/groupscreen/group.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:shareacab/screens/groupdetailscreen/groupdetails.dart';
+import 'package:intl/intl.dart';
 
 class TripsList extends StatefulWidget {
   //final List<RequestDetails> trips;
@@ -35,11 +35,7 @@ class _TripsListState extends State<TripsList> {
   @override
   Widget build(BuildContext context) {
     final currentuser = Provider.of<FirebaseUser>(context);
-    Firestore.instance
-        .collection('userdetails')
-        .document(currentuser.uid)
-        .get()
-        .then((value) {
+    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
       if (value.data['currentGroup'] != null) {
         setState(() {
           inGroup = true;
@@ -66,18 +62,18 @@ class _TripsListState extends State<TripsList> {
                   return InkWell(
                     onTap: () {
                       final destination = snapshot.data[index].data['destination'];
-                      final startDate = DateTime.parse(snapshot.data[index].data['startDate']);
-                      final startTime = snapshot.data[index].data['startTime'];
-                      final endDate = DateTime.parse(snapshot.data[index].data['endDate']);
-                      final endTime = snapshot.data[index].data['endTime'];
+                      //final startDate = DateTime.parse(snapshot.data[index].data['startDate']);
+                      //final startTime = snapshot.data[index].data['startTime'];
+                      //final endDate = DateTime.parse(snapshot.data[index].data['endDate']);
+                      //final endTime = snapshot.data[index].data['endTime'];
+                      final start = snapshot.data[index].data['start'].toDate();
+                      final end = snapshot.data[index].data['end'].toDate();
                       final docId = snapshot.data[index].documentID;
                       final privacy = snapshot.data[index].data['privacy'];
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => GroupDetails(destination, startDate,startTime,endDate, endTime, docId,privacy)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => GroupDetails(destination, start, end, docId, privacy)));
                     },
                     child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(25.0))),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
                       elevation: 5,
                       margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                       child: Container(
@@ -95,19 +91,15 @@ class _TripsListState extends State<TripsList> {
                                         left: 20,
                                         top: 20,
                                       ),
-                                      child: snapshot.data[index]
-                                                  .data['destination'] ==
-                                              'New Delhi Railway Station'
+                                      child: snapshot.data[index].data['destination'] == 'New Delhi Railway Station'
                                           ? Icon(
                                               Icons.train,
-                                              color:
-                                                  Theme.of(context).accentColor,
+                                              color: Theme.of(context).accentColor,
                                               size: 30,
                                             )
                                           : Icon(
                                               Icons.airplanemode_active,
-                                              color:
-                                                  Theme.of(context).accentColor,
+                                              color: Theme.of(context).accentColor,
                                               size: 30,
                                             )),
                                 ),
@@ -129,32 +121,22 @@ class _TripsListState extends State<TripsList> {
                                 Flexible(
                                   flex: 2,
                                   child: Container(
-                                    child: snapshot
-                                                .data[index].data['privacy'] ==
-                                            'true'
+                                    child: snapshot.data[index].data['privacy'] == 'true'
                                         ? Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 15.0),
+                                            padding: const EdgeInsets.only(right: 15.0),
                                             child: Icon(
                                               Icons.lock,
-                                              color:
-                                                  Theme.of(context).accentColor,
+                                              color: Theme.of(context).accentColor,
                                             ),
                                           )
                                         : !inGroup
                                             ? FlatButton(
                                                 onPressed: () async {
                                                   try {
-                                                    DocumentSnapshot temp =
-                                                        snapshot.data[index];
-                                                    await _request.joinGroup(
-                                                        temp.documentID);
+                                                    DocumentSnapshot temp = snapshot.data[index];
+                                                    await _request.joinGroup(temp.documentID);
                                                     //print(temp.documentID);
-                                                    await Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                GroupPage()));
+                                                    await Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
                                                   } catch (e) {
                                                     print(e.toString());
                                                   }
@@ -178,7 +160,7 @@ class _TripsListState extends State<TripsList> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    'Start : ${DateFormat.yMMMd().format(DateTime.parse(snapshot.data[index].data['startDate']))} ${snapshot.data[index].data['startTime'].substring(10, 15)}',
+                                    'Start : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data[index].data['start'].toDate())}',
                                     style: TextStyle(
                                       fontSize: 15,
                                     ),
@@ -194,7 +176,7 @@ class _TripsListState extends State<TripsList> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    'End : ${DateFormat.yMMMd().format(DateTime.parse(snapshot.data[index].data['endDate']))} ${snapshot.data[index].data['endTime'].substring(10, 15)}',
+                                    'End : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data[index].data['end'].toDate())}',
                                     style: TextStyle(
                                       fontSize: 15,
                                     ),
@@ -206,10 +188,7 @@ class _TripsListState extends State<TripsList> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 Column(
-                                  children: <Widget>[
-                                    Text(
-                                        'Number of members in group: ${snapshot.data[index].data['numberOfMembers'].toString()}')
-                                  ],
+                                  children: <Widget>[Text('Number of members in group: ${snapshot.data[index].data['numberOfMembers'].toString()}')],
                                 ),
                               ],
                             ),

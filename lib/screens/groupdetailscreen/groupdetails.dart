@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import './appbar.dart';
-import 'package:intl/intl.dart';
+//import './appbar.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 class GroupDetails extends StatelessWidget {
 //  static const routeName = '/groupDetails';
 
   final String destination;
-  final DateTime startDate;
-  final DateTime endDate;
-  final startTime;
-  final endTime;
   final docId;
   final privacy;
+  final start;
+  final end;
 
-  GroupDetails(this.destination, this.startDate, this.startTime, this.endDate, this.endTime, this.docId, this.privacy);
+  GroupDetails(this.destination, this.start, this.end, this.docId, this.privacy);
 
   final RequestService _request = RequestService();
 
@@ -52,13 +50,16 @@ class GroupDetails extends StatelessWidget {
                 SliverAppBar(
                   pinned: true,
                   floating: false,
-                  expandedHeight: 210,
+                  //expandedHeight: 210,
+                  expandedHeight: 120,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: Image.asset(
-                      destination == 'New Delhi Railway Station' ? 'assets/images/train.jpg' : 'assets/images/plane.jpg',
-                      fit: BoxFit.cover,
-                    ),
-                    title: AppBarTitle(destination),
+                    // background: Image.asset(
+                    //   destination == 'New Delhi Railway Station' ? 'assets/images/train.jpg' : 'assets/images/plane.jpg',
+                    //   fit: BoxFit.cover,
+                    // ),
+                    //title: AppBarTitle(destination),
+                    // THE ABOVE WAS THROWING AN ERROR, WILL CHECK LATER
+                    title: Text(destination),
                   ),
                 ),
                 SliverList(
@@ -98,35 +99,12 @@ class GroupDetails extends StatelessWidget {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          'Start Date',
+                                          'Start:',
                                           style: TextStyle(letterSpacing: 2),
                                         ),
                                       ),
                                       Text(
-                                        DateFormat.yMd().format(startDate),
-                                        style: TextStyle(letterSpacing: 2),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(
-                                    top: 10,
-                                    bottom: 10,
-                                    left: 50,
-                                    right: 10,
-                                  ),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'End Date',
-                                          style: TextStyle(letterSpacing: 2),
-                                        ),
-                                      ),
-                                      Text(
-                                        DateFormat.yMd().format(endDate),
+                                        DateFormat('dd.MM.yyyy - kk:mm a').format(start),
                                         style: TextStyle(letterSpacing: 2),
                                       ),
                                     ],
@@ -167,38 +145,15 @@ class GroupDetails extends StatelessWidget {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          'Start Time',
+                                          'End:',
                                           style: TextStyle(letterSpacing: 2),
                                         ),
                                       ),
                                       Text(
-                                        '${startTime.substring(10, 15)}',
+                                        DateFormat('dd.MM.yyyy - kk:mm a').format(end),
                                         style: TextStyle(
                                           letterSpacing: 2,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(
-                                    top: 10,
-                                    bottom: 10,
-                                    left: 50,
-                                    right: 10,
-                                  ),
-                                  child: Column(
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          'End Time',
-                                          style: TextStyle(letterSpacing: 2),
-                                        ),
-                                      ),
-                                      Text(
-                                        '${endTime.substring(10, 15)}',
-                                        style: TextStyle(letterSpacing: 2),
                                       ),
                                     ],
                                   ),
