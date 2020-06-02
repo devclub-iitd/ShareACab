@@ -55,7 +55,6 @@ class _MyRequestsState extends State<MyRequests> {
                     child: ListTile(
                       onTap: () {},
                       title: Container(
-                        height: 250,
                         child: Column(
                           children: <Widget>[
                             Row(
