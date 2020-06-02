@@ -54,11 +54,7 @@ class _MyProfileState extends State<MyProfile> {
     final currentuser = Provider.of<FirebaseUser>(context);
     //print(currentuser.uid);
 
-    Firestore.instance
-        .collection('userdetails')
-        .document(currentuser.uid)
-        .get()
-        .then((value) {
+    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
       if (value.exists) {
         setState(() {
           name = value.data['name'];
@@ -141,8 +137,7 @@ class _MyProfileState extends State<MyProfile> {
                           title: Center(
                             child: Text(
                               'HOSTEL',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700, fontSize: 20),
+                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
                             ),
                           ),
                           subtitle: Center(
@@ -159,8 +154,7 @@ class _MyProfileState extends State<MyProfile> {
                           title: Center(
                             child: Text(
                               'Gender',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700, fontSize: 20),
+                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
                             ),
                           ),
                           subtitle: Center(
@@ -185,8 +179,7 @@ class _MyProfileState extends State<MyProfile> {
                           title: Center(
                             child: Text(
                               'TOTAL RIDES',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700, fontSize: 18),
+                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                             ),
                           ),
                           subtitle: Center(
@@ -203,9 +196,7 @@ class _MyProfileState extends State<MyProfile> {
                               title: Center(
                                 child: Text(
                                   'CANCELLED TRIPS',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18),
+                                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                                 ),
                               ),
                               subtitle: Center(
@@ -228,8 +219,7 @@ class _MyProfileState extends State<MyProfile> {
                             title: Center(
                               child: Text(
                                 'MOBILE NUMBER',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700, fontSize: 18),
+                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                               ),
                             ),
                             subtitle: Center(
@@ -245,8 +235,7 @@ class _MyProfileState extends State<MyProfile> {
                             title: Center(
                               child: Text(
                                 'USER RATING',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700, fontSize: 18),
+                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                               ),
                             ),
                             subtitle: Center(
@@ -270,8 +259,7 @@ class _MyProfileState extends State<MyProfile> {
                             title: Center(
                               child: Text(
                                 'EMAIL ID',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w700, fontSize: 18),
+                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                               ),
                             ),
                             subtitle: Center(
