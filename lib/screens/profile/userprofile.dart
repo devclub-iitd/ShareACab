@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/shared/loading.dart';
-
 import '../../main.dart';
 
 class MyProfile extends StatefulWidget {
@@ -12,9 +11,34 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
+  FirebaseUser currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCurrentUser();
+  }
+
+  void _loadCurrentUser() {
+    FirebaseAuth.instance.currentUser().then((FirebaseUser user) {
+      setState(() {
+        // call setState to rebuild the view
+        currentUser = user;
+      });
+    });
+  }
+
+  String _email() {
+    if (currentUser != null) {
+      return currentUser.email;
+    } else {
+      return 'no current user';
+    }
+  }
+
   String userId = 'DEV CLUB';
   String name = '';
-  String kerberosEmailID = 'randomemail@iitd.ac.in';
+  String kerberosEmailID = 'random@gmail.com';
   String password = '';
   String mobilenum = '6969696969';
   String hostel = '';
@@ -48,7 +72,7 @@ class _MyProfileState extends State<MyProfile> {
         });
       }
     });
-
+    var namefirst = name.substring(0, 1);
     return loading
         ? Loading()
         : Scaffold(
@@ -87,7 +111,7 @@ class _MyProfileState extends State<MyProfile> {
                         radius: 50,
                         backgroundColor: Theme.of(context).accentColor,
                         child: Text(
-                          'D',
+                          namefirst,
                           style: TextStyle(fontSize: 40),
                         ),
                       ),
@@ -240,7 +264,7 @@ class _MyProfileState extends State<MyProfile> {
                             ),
                             subtitle: Center(
                               child: Text(
-                                kerberosEmailID,
+                                _email(),
                                 style: TextStyle(fontSize: 15),
                               ),
                             )),
