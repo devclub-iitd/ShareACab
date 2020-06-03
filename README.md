@@ -76,6 +76,62 @@ Usually, after exams or when the mid-sem break begins, there is a large surge of
    +--- etc
 ```
 
+## What's working (In order of implementation):
+
+* Authentication
+  
+  * Sign up/Sign in using email and   password. The user also needs to verify their email ID before logging in. Also given an option to reset password.
+  * Frontend/Backend by @kshitijalwadhi
+  
+* Curved Navbar
+  
+  * Curved Navbar to navigate between various screens
+  * UI and dummy screens implemented by @Deepanshu-Rohilla
+  * Logic by @kshitijalwadhi
+
+* Dashboard
+
+  * Displaying the list of ongoing cabs/groups here. If the user taps on a card, the user is navigated to a screen which shows an overview of the group. Whereas, if the person clicks on join now, he's added to that group and is navigated to a screen where the details of the group are shown. There is also a floating action button which can be used in two ways, if the person is currently not in a group, by clicking the button he can create a new one, whereas if the user is already in a group, the button navigates him/her to the group details page. There is also an option to leave the group in the group details page.
+  * UI by @Ishaan21
+  * Backend/Logic by @kshitijalwadhi
+  
+* Requests
+  
+  * Housing the requests by the user in this screen. *Dummy for now*
+  * UI by @Deepanshu-Rohilla
+
+* Settings
+  
+  * Currently only has ability to switch to dark mode.
+  * Implemented by @kshitijalwadhi
+
+* Chatting Functionality
+  
+  * Whenever a group is created, a chatbox is also created where the members of that group can chat amongst each other.
+  * UI by @Ishaan21 and @Deepanshu-Rohilla
+  * Backend/logic by @Ishaan21
+
+* Profile Page
+  
+  * Displaying the user details on this page and also an option to edit them on the navbar.
+  * UI by @Deepanshu-Rohilla and @kshitijalwadhi
+  * Backend/Logic by @kshitijalwadhi
+
+## Whats not working (WIP):
+
+* Filtering groups on Dashboard
+* Requests page (Houses dummy data for now)
+* Notifications
+
+## Upcoming features:
+
+* Taking a request (his/her preferences) from user when the user tries to join a group. (These will be shown on requests page as well)
+* A dialer icon beside user name in group details which on pressed redirects to dialer app in phone with phone number entered.
+* Implement request-only access to groups.
+
+## Screenshots:
+
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
