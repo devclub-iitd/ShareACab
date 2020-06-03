@@ -134,7 +134,7 @@ Usually, after exams or when the mid-sem break begins, there is a large surge of
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-Check [CONTRIBUTION.md](https://github.com/devclub-iitd/ShareACab/blob/master/CONTRIBUTING.md) for contribution rules
+Check [CONTRIBUTING.md](https://github.com/devclub-iitd/ShareACab/blob/master/CONTRIBUTING.md) for contribution rules
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
