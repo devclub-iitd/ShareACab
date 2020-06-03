@@ -226,7 +226,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                 color: Theme.of(context).scaffoldBackgroundColor,
                                 child: ListTile(
                                   title: Text(snapshots.data[index].data['name']),
-                                  subtitle: Text('Hostel: ${snapshots.data[index].data['hostel']}\n Mobile Number: ${snapshots.data[index].data['mobilenum']}'),
+                                  subtitle: Text('Hostel: ${snapshots.data[index].data['hostel']}\n Mobile Number: ${snapshots.data[index].data['mobilenum']}\n User Rating: ${2.5 + snapshots.data[index].data['actualrating'] / 2}'),
                                   trailing: grpOwner == snapshots.data[index].documentID ? FaIcon(FontAwesomeIcons.crown) : null,
                                   isThreeLine: true,
                                   onTap: () {},
