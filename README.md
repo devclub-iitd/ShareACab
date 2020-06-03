@@ -78,40 +78,40 @@ Usually, after exams or when the mid-sem break begins, there is a large surge of
 
 ## What's working (In order of implementation):
 
-* Authentication
+* [x] Authentication
   
   * Sign up/Sign in using email and   password. The user also needs to verify their email ID before logging in. Also given an option to reset password.
   * Frontend/Backend by @kshitijalwadhi
   
-* Curved Navbar
+* [x] Curved Navbar
   
   * Curved Navbar to navigate between various screens
   * UI and dummy screens implemented by @Deepanshu-Rohilla
   * Logic by @kshitijalwadhi
 
-* Dashboard
+* [x] Dashboard
 
   * Displaying the list of ongoing cabs/groups here. If the user taps on a card, the user is navigated to a screen which shows an overview of the group. Whereas, if the person clicks on join now, he's added to that group and is navigated to a screen where the details of the group are shown. There is also a floating action button which can be used in two ways, if the person is currently not in a group, by clicking the button he can create a new one, whereas if the user is already in a group, the button navigates him/her to the group details page. There is also an option to leave the group in the group details page.
   * UI by @Ishaan21
   * Backend/Logic by @kshitijalwadhi
   
-* Requests
+* [x] Requests
   
   * Housing the requests by the user in this screen. *Dummy for now*
   * UI by @Deepanshu-Rohilla
 
-* Settings
+* [x] Settings
   
   * Currently only has ability to switch to dark mode.
   * Implemented by @kshitijalwadhi
 
-* Chatting Functionality
+* [x] Chatting Functionality
   
   * Whenever a group is created, a chatbox is also created where the members of that group can chat amongst each other.
   * UI by @Ishaan21 and @Deepanshu-Rohilla
   * Backend/logic by @Ishaan21
 
-* Profile Page
+* [x] Profile Page
   
   * Displaying the user details on this page and also an option to edit them on the navbar.
   * UI by @Deepanshu-Rohilla and @kshitijalwadhi
@@ -119,34 +119,22 @@ Usually, after exams or when the mid-sem break begins, there is a large surge of
 
 ## Whats not working (WIP):
 
-* Filtering groups on Dashboard
-* Requests page (Houses dummy data for now)
-* Notifications
+* [ ] Filtering groups on Dashboard
+* [ ] Requests page (Houses dummy data for now)
+* [ ] Notifications
 
 ## Upcoming features:
 
 * Taking a request (his/her preferences) from user when the user tries to join a group. (These will be shown on requests page as well)
+* Phone authentication also required
 * A dialer icon beside user name in group details which on pressed redirects to dialer app in phone with phone number entered.
 * Implement request-only access to groups.
 
 ## Screenshots:
 
-
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-
-- Make sure that pedantic version is `1.9` and run `flutter analyze`
-- Add Screenshots or gif of UI workflow in PR comments
-- **Formatting**  
-  - Make sure to format code before generating PR. 
-  - If on android studio, select all using CTRL + A and then formatting can be done using CTRL+ALT+L.  
-  - Make sure hard wrap is set to 900 while formatting.  
-  - <img width="637" alt="Screenshot 2020-05-20 at 11 02 17 AM" src="https://user-images.githubusercontent.com/31121102/82408535-67bf2a80-9a89-11ea-80d9-361f72c8b8b4.png">
-  - If you are on vs code, check this for changing hard wrapping. https://stackoverflow.com/questions/59456452/how-to-change-vs-code-line-auto-wrap-column-when-formatting-dart-files
-  - Check this for more info about formatting. https://flutter.dev/docs/development/tools/formatting
+Check [CONTRIBUTION.md](https://github.com/devclub-iitd/ShareACab/blob/master/CONTRIBUTING.md) for contribution rules
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
