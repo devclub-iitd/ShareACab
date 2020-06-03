@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 //import './appbar.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GroupDetails extends StatelessWidget {
 //  static const routeName = '/groupDetails';
@@ -85,16 +87,7 @@ class GroupDetails extends StatelessWidget {
                                     left: 10,
                                     right: 50,
                                   ),
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                        color: Theme.of(context).accentColor,
-                                        width: 0.25,
-                                      ),
-                                    ),
-                                  ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -131,16 +124,7 @@ class GroupDetails extends StatelessWidget {
                                     left: 10,
                                     right: 50,
                                   ),
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      right: BorderSide(
-                                        color: Theme.of(context).accentColor,
-                                        width: 0.25,
-                                      ),
-                                    ),
-                                  ),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -186,7 +170,11 @@ class GroupDetails extends StatelessWidget {
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.all(8.0),
-                                              child: IconButton(onPressed: () {}, icon: Icon(Icons.phone)),
+                                              child: IconButton(
+                                                  onPressed: () async {
+                                                    await launch('tel//${futureSnapshot.data[index].data['mobilenum'].toString()}');
+                                                  },
+                                                  icon: Icon(Icons.phone)),
                                             ),
                                           ],
                                         ),
