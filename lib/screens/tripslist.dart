@@ -67,11 +67,6 @@ class _TripsListState extends State<TripsList> {
                   return InkWell(
                     onTap: () {
                       final destination = snapshot.data[index].data['destination'];
-
-                      //final startDate = DateTime.parse(snapshot.data[index].data['startDate']);
-                      //final startTime = snapshot.data[index].data['startTime'];
-                      //final endDate = DateTime.parse(snapshot.data[index].data['endDate']);
-                      //final endTime = snapshot.data[index].data['endTime'];
                       final start = snapshot.data[index].data['start'].toDate();
                       final end = snapshot.data[index].data['end'].toDate();
                       final docId = snapshot.data[index].documentID;
@@ -106,7 +101,6 @@ class _TripsListState extends State<TripsList> {
                                             )
                                           : Icon(
                                               Icons.airplanemode_active,
-
                                               color: Theme.of(context).accentColor,
                                               size: 30,
                                             )),

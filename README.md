@@ -28,17 +28,17 @@ Usually, after exams or when the mid-sem break begins, there is a large surge of
             +--- register.dart // register user screen
             +--- sign_in.dart // sign in screen
             +--- verified_email_check.dart // check if user verified screen
-          +--- chatscreen // handles the chating section
+          +--- chatscreen // handles the chatting section
             +--- chat_database
-              +--- chatservices.dart
-              +--- database.dart
+              +--- chatservices.dart//interacting with ./database.dart
+              +--- database.dart //updating,creating and deleting data in firebase-database
             +--- chat_widgets
-              +--- chat_bubbles.dart
-              +--- chat_tile.dart
-              +--- chat_users_list.dart
+              +--- chat_bubbles.dart //ui of each chat message
+              +--- chat_tile.dart //ui of each chat tile
+              +--- chat_users_list.dart//list of chat tiles
               +--- message.dart
-              +--- new_message.dart
-            +--- chat_screen.dart
+              +--- new_message.dart//textfield for adding new message
+            +--- chat_screen.dart//chatting screen of a group
           +--- groupdetailscreen // handles the screen when user clicks on a card on dashboard
             +--- appbar.dart // group details page appbar
             +--- groupdetails.dart // group details page
