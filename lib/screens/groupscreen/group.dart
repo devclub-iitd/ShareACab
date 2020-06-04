@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shareacab/screens/chatscreen/chat_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shareacab/main.dart';
+import 'package:shareacab/screens/groupscreen/editgroup.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:shareacab/shared/loading.dart';
 import 'package:intl/intl.dart';
@@ -131,6 +132,45 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                         ),
                       ],
                     ),
+                    grpOwner == currentuser.uid
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                              top: 10,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Text('Press here to edit the details: '),
+                                FlatButton.icon(
+                                    onPressed: () {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => EditGroup(groupUID: groupUID)));
+                                    },
+                                    icon: Icon(
+                                      FontAwesomeIcons.pen,
+                                      size: 16.0,
+                                      color: Theme.of(context).accentColor,
+                                    ),
+                                    label: Text(
+                                      'Edit',
+                                      style: TextStyle(color: Theme.of(context).accentColor),
+                                    )),
+                              ],
+                            ),
+                          )
+                        : Padding(
+                            padding: EdgeInsets.only(
+                              top: 10,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  '*Contact group creator to edit timings.',
+                                  style: TextStyle(color: Theme.of(context).accentColor),
+                                ),
+                              ],
+                            ),
+                          ),
                     Padding(
                       padding: EdgeInsets.only(
                         bottom: 5,
@@ -249,14 +289,17 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                 alignment: Alignment(-10, -10),
                 children: <Widget>[
                   Icon(Icons.chat),
-                  CircleAvatar(
-                    backgroundColor: Colors.red,
-                    radius: 10.0,
-                    child: Text(
-                      numberOfMessages.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: numberOfMessages.toString().length < 3 ? 14 : 8),
-                    ),
-                  )
+
+                  // COMMENTING OUT THE CODE FOR NUMBER OF MESSAGES FOR NOW
+
+                  // CircleAvatar(
+                  //   backgroundColor: Colors.red,
+                  //   radius: 10.0,
+                  //   child: Text(
+                  //     numberOfMessages.toString(),
+                  //     style: TextStyle(color: Colors.white, fontSize: numberOfMessages.toString().length < 3 ? 14 : 8),
+                  //   ),
+                  // )
                 ],
               ),
             ),
