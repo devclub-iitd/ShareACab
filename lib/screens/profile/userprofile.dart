@@ -13,7 +13,7 @@ class MyProfile extends StatefulWidget {
 
 class _MyProfileState extends State<MyProfile> {
   FirebaseUser currentUser;
-
+  var namefirst = 'P';
   @override
   void initState() {
     super.initState();
@@ -66,6 +66,7 @@ class _MyProfileState extends State<MyProfile> {
           actualrating = value.data['actualRating'];
           cancelledrides = value.data['cancelledRides'];
           loading = false;
+          namefirst = name.substring(0, 1);
         });
       } else {
         setState(() {
@@ -73,7 +74,7 @@ class _MyProfileState extends State<MyProfile> {
         });
       }
     });
-    var namefirst = name.substring(0, 1);
+    
     return loading
         ? Loading()
         : Scaffold(
