@@ -118,6 +118,7 @@ class DatabaseService {
       'created': Timestamp.now(),
     });
 
+    //adding user to group chat
     await ChatService().createChatRoom(docRef.documentID, user.uid.toString(), requestDetails.destination.toString());
 
     await userDetails.document(user.uid).updateData({
@@ -165,6 +166,7 @@ class DatabaseService {
       'currentGroup': null,
       'currentReq': null,
     });
+    //deleting user from chat group
     await ChatService().exitChatRoom(currentGrp);
   }
 
@@ -198,6 +200,8 @@ class DatabaseService {
         });
       }
     });
+    //calling chat service to add the user to chatgroup also
+    await ChatService().joinGroup(listuid);
   }
 
   Future<void> setToken(String token) async {

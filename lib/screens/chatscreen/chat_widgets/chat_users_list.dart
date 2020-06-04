@@ -3,12 +3,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import './chat_tile.dart';
 
-class ChatUsersList extends StatelessWidget {
+class ChatUsersList extends StatefulWidget {
   static FirebaseUser user;
 
+  @override
+  _ChatUsersListState createState() => _ChatUsersListState();
+}
+
+class _ChatUsersListState extends State<ChatUsersList> {
   Future getChatDetails() async {
     final _auth = await FirebaseAuth.instance;
-    user = await _auth.currentUser();
+    ChatUsersList.user = await _auth.currentUser();
     final chatDocuments = await Firestore.instance.collection('chatroom').getDocuments();
     return chatDocuments.documents;
   }
@@ -43,8 +48,8 @@ class ChatUsersList extends StatelessWidget {
                 final List users = futureSnapshot.data[index].data['users'];
                 print('Hello');
                 print(lastMessage.toString());
-                if (users.contains(user.uid.toString())) {
-                  print('Hello');
+                if (users.contains(ChatUsersList.user.uid.toString())) {
+                  print('user found');
                   return ChatTile(docId, destination, lastMessage);
                 }
                 return SizedBox(
