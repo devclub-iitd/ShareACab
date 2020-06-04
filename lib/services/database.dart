@@ -206,7 +206,7 @@ class DatabaseService {
 
   Future<void> setToken(String token) async {
     var user = await _auth.currentUser();
-    await userDetails.document(user.uid).setData({
+    await userDetails.document(user.uid).updateData({
       'device_token' : token
     });
   }

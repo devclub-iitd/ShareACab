@@ -19,29 +19,29 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
 
   //Set device token for current user
-  // final RequestService _request = RequestService();
-  // final FirebaseMessaging _fbm = FirebaseMessaging();
-  // Future<void> _getToken() async {
-  //  await _fbm.getToken().then((token) => {
-  //     _request.setDeviceToken(token)
-  //   });
-  // }
+  final RequestService _request = RequestService();
+  final FirebaseMessaging _fbm = FirebaseMessaging();
+  Future<void> _getToken() async {
+   await _fbm.getToken().then((token) => {
+      _request.setDeviceToken(token)
+    });
+  }
 
   @override
   void initState() {
-    // final fbm = FirebaseMessaging();
-    // fbm.requestNotificationPermissions();
-    // fbm.configure(onMessage: (msg) {
-    //   print(msg);
-    //   return;
-    // }, onLaunch: (msg) {
-    //   print(msg);
-    //   return ;
-    // }, onResume: (msg) {
-    //   print(msg);
-    //   return ;
-    // });
-    // _getToken();
+    final fbm = FirebaseMessaging();
+    fbm.requestNotificationPermissions();
+    fbm.configure(onMessage: (msg) {
+      print(msg);
+      return;
+    }, onLaunch: (msg) {
+      print(msg);
+      return ;
+    }, onResume: (msg) {
+      print(msg);
+      return ;
+    });
+    _getToken();
     super.initState();
   }
  
