@@ -23,6 +23,7 @@ class DatabaseService {
       'totalRides': 0,
       'cancelledRides': 0,
       'actualRating': 0,
+      'numberOfRatings': 0,
     });
   }
 
@@ -47,6 +48,7 @@ class DatabaseService {
         totalrides: doc.data['totalRides'] ?? 0,
         cancelledrides: doc.data['cancelledRides'] ?? 0,
         actualrating: doc.data['actualRating'] ?? 0,
+        numberofratings: doc.data['numberOfRatings'] ?? 0,
       );
     }).toList();
   }
@@ -130,15 +132,7 @@ class DatabaseService {
     var request = groupdetails.document(docRef.documentID).collection('users');
     await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) async {
       if (value.exists) {
-        await request.document(user.uid).setData({
-          'name': value.data['name'],
-          'hostel': value.data['hostel'],
-          'sex': value.data['sex'],
-          'mobilenum': value.data['mobileNumber'],
-          'totalrides': value.data['totalRides'],
-          'actualrating': value.data['actualRating'],
-          'cancelledrides': value.data['cancelledRides'],
-        });
+        await request.document(user.uid).setData({'name': value.data['name'], 'hostel': value.data['hostel'], 'sex': value.data['sex'], 'mobilenum': value.data['mobileNumber'], 'totalrides': value.data['totalRides'], 'cancelledrides': value.data['cancelledRides'], 'actualrating': value.data['actualRating'], 'numberofratings': value.data['numberOfRatings']});
       }
     });
   }
@@ -195,6 +189,7 @@ class DatabaseService {
           'totalrides': value.data['totalRides'],
           'actualrating': value.data['actualRating'],
           'cancelledrides': value.data['cancelledRides'],
+          'numberofratings': value.data['numberOfRatings'],
         });
       }
     });
