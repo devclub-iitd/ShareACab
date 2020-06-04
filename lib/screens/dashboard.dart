@@ -24,7 +24,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   // List<RequestDetails> _listOfTrips = allTrips;
   List<RequestDetails> filtered = allTrips;
@@ -40,7 +39,8 @@ class _DashboardState extends State<Dashboard> {
   //String groupID = null;
   bool inGroup = false;
 
-  void _filteredList(filtered, destination, date, time, dest, sdate, stime, edate, etime) {
+  void _filteredList(
+      filtered, destination, date, time, dest, sdate, stime, edate, etime) {
     _dest = destination;
     _date = date;
     _time = time;
@@ -49,13 +49,12 @@ class _DashboardState extends State<Dashboard> {
     _ST = stime;
     _ED = edate;
     _ET = etime;
- // _listOfTrips = filtered;
+    // _listOfTrips = filtered;
     setState(() {});
   }
 
   @override
   void initState() {
-
     // _listOfTrips = filtered;
 
     super.initState();
@@ -65,7 +64,8 @@ class _DashboardState extends State<Dashboard> {
     showModalBottomSheet(
       context: ctx,
       builder: (_) {
-        return Filter(_filteredList, _dest, _date, _time, _selecteddest, _SD, _ST, _ED, _ET);
+        return Filter(_filteredList, _dest, _date, _time, _selecteddest, _SD,
+            _ST, _ED, _ET);
       },
     );
   }
@@ -88,7 +88,11 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     final currentuser = Provider.of<FirebaseUser>(context);
-    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
+    Firestore.instance
+        .collection('userdetails')
+        .document(currentuser.uid)
+        .get()
+        .then((value) {
       if (value.data['currentGroup'] != null) {
         setState(() {
           inGroup = true;
@@ -113,7 +117,8 @@ class _DashboardState extends State<Dashboard> {
           IconButton(
               icon: Icon(Icons.settings),
               onPressed: () {
-                return Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
                   return Settings();
                 }));
               }),
@@ -122,14 +127,20 @@ class _DashboardState extends State<Dashboard> {
             icon: Icon(FontAwesomeIcons.signOutAlt),
             onPressed: () async {
               ProgressDialog pr;
-              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+              pr = ProgressDialog(context,
+                  type: ProgressDialogType.Normal,
+                  isDismissible: false,
+                  showLogs: false);
               pr.style(
                 message: 'Logging out...',
                 backgroundColor: Theme.of(context).backgroundColor,
-                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                messageTextStyle:
+                    TextStyle(color: Theme.of(context).accentColor),
               );
               await pr.show();
-              await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
+              await Future.delayed(Duration(
+                  seconds:
+                      1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
               try {
                 await widget._auth.signOut();
                 await pr.hide();
@@ -137,7 +148,8 @@ class _DashboardState extends State<Dashboard> {
                 // show e.message
                 await pr.hide();
                 String errStr = err.message ?? err.toString();
-                final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+                final snackBar = SnackBar(
+                    content: Text(errStr), duration: Duration(seconds: 3));
                 scaffoldKey.currentState.showSnackBar(snackBar);
               }
             },
@@ -152,16 +164,18 @@ class _DashboardState extends State<Dashboard> {
             inGroup
                 ? Container(
                     margin: EdgeInsets.all(5),
-                    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
                     child: Text('Already in group. Press the button below.'),
                   )
                 : Container(),
             Container(
               margin: EdgeInsets.all(5),
-              height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
+              height: (MediaQuery.of(context).size.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.87,
               width: double.infinity,
               child: RefreshIndicator(
-
                 child: TripsList(),
                 onRefresh: refreshList,
               ),
@@ -184,7 +198,8 @@ class _DashboardState extends State<Dashboard> {
               child: FloatingActionButton(
                 splashColor: Theme.of(context).primaryColor,
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => GroupPage()));
                 },
                 child: Icon(Icons.group),
               ),
