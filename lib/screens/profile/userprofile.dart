@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/shared/loading.dart';
 import '../../main.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:clipboard_manager/clipboard_manager.dart';
 
 class MyProfile extends StatefulWidget {
   @override
@@ -231,8 +231,8 @@ class _MyProfileState extends State<MyProfile> {
                               try {
                                 await launch('tel://${mobilenum}');
                               } catch (e) {
-                                await ClipboardManager.copyToClipBoard(
-                                        '${mobilenum}')
+                                await Clipboard.setData(ClipboardData(
+                                        text: '${mobilenum}'))
                                     .then((result) {
                                   final snackBar = SnackBar(
                                     backgroundColor:

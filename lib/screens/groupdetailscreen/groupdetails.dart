@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 
 //import './appbar.dart';
 import 'package:shareacab/services/trips.dart';
@@ -7,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:clipboard_manager/clipboard_manager.dart';
 
 class GroupDetails extends StatelessWidget {
 //  static const routeName = '/groupDetails';
@@ -197,7 +197,7 @@ class GroupDetails extends StatelessWidget {
                                                       await launch(
                                                         'tel://${futureSnapshot.data[index].data['mobilenum'].toString()}');
                                                     } catch(e) {
-                                                      await ClipboardManager.copyToClipBoard('${futureSnapshot.data[index].data['mobilenum'].toString()}').then((result) {
+                                                      await Clipboard.setData(ClipboardData(text : '${futureSnapshot.data[index].data['mobilenum'].toString()}')).then((result) {
                                                       final snackBar = SnackBar(
                                                         backgroundColor: Theme.of(context).primaryColor,
                                                         content: Text('Copied to Clipboard', style: TextStyle(color: Theme.of(context).accentColor),),
