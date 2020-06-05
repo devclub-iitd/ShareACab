@@ -46,7 +46,7 @@ class _EditGroupState extends State<EditGroup> {
   }
 
   void _startDatePicker() {
-    showDatePicker(context: context, initialDate: _selectedStartDate, firstDate: DateTime.now().subtract(Duration(days: 1)), lastDate: DateTime.now().add(Duration(days: 30))).then((pickedDate) {
+    showDatePicker(context: context, initialDate: _selectedStartDate, firstDate: DateTime.parse(_selectedStartDate.toString()), lastDate: DateTime.now().add(Duration(days: 30))).then((pickedDate) {
       if (pickedDate == null) {
         return;
       }
@@ -58,7 +58,7 @@ class _EditGroupState extends State<EditGroup> {
   }
 
   void _endDatePicker() {
-    showDatePicker(context: context, initialDate: _selectedEndDate, firstDate: DateTime.parse(_selectedStartDate.toString()), lastDate: DateTime.now().add(Duration(days: 30))).then((pickedDate) {
+    showDatePicker(context: context, initialDate: _selectedEndDate, firstDate: DateTime.parse(_selectedEndDate.toString()), lastDate: DateTime.now().add(Duration(days: 30))).then((pickedDate) {
       if (pickedDate == null) {
         return;
       }
