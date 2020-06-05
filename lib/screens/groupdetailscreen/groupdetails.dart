@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:clipboard_manager/clipboard_manager.dart';
 
 class GroupDetails extends StatelessWidget {
 //  static const routeName = '/groupDetails';
@@ -192,10 +193,22 @@ class GroupDetails extends StatelessWidget {
                                                   const EdgeInsets.all(8.0),
                                               child: IconButton(
                                                   onPressed: () async {
-                                                    await launch(
+                                                   try {
+                                                      await launch(
                                                         'tel://${futureSnapshot.data[index].data['mobilenum'].toString()}');
+                                                    } catch(e) {
+                                                      await ClipboardManager.copyToClipBoard('${futureSnapshot.data[index].data['mobilenum'].toString()}').then((result) {
+                                                      final snackBar = SnackBar(
+                                                        backgroundColor: Theme.of(context).primaryColor,
+                                                        content: Text('Copied to Clipboard', style: TextStyle(color: Theme.of(context).accentColor),),
+                                                        duration: Duration(seconds: 1),
+                                                      );
+                                                      Scaffold.of(ctx).hideCurrentSnackBar();
+                                                      Scaffold.of(ctx).showSnackBar(snackBar);
+                                                    });
+                                                    }
                                                   },
-                                                  icon: Icon(Icons.phone)),
+                                                  icon: Icon(Icons.phone, color: Theme.of(context).accentColor,)),
                                             ),
                                           ],
                                         ),

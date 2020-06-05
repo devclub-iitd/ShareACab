@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shareacab/shared/loading.dart';
 import '../../main.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:clipboard_manager/clipboard_manager.dart';
 
 class MyProfile extends StatefulWidget {
   @override
@@ -55,7 +56,11 @@ class _MyProfileState extends State<MyProfile> {
     final currentuser = Provider.of<FirebaseUser>(context);
     //print(currentuser.uid);
 
-    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
+    Firestore.instance
+        .collection('userdetails')
+        .document(currentuser.uid)
+        .get()
+        .then((value) {
       if (value.exists) {
         setState(() {
           name = value.data['name'];
@@ -74,7 +79,7 @@ class _MyProfileState extends State<MyProfile> {
         });
       }
     });
-    
+
     return loading
         ? Loading()
         : Scaffold(
@@ -139,7 +144,8 @@ class _MyProfileState extends State<MyProfile> {
                           title: Center(
                             child: Text(
                               'HOSTEL',
-                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 20),
                             ),
                           ),
                           subtitle: Center(
@@ -156,7 +162,8 @@ class _MyProfileState extends State<MyProfile> {
                           title: Center(
                             child: Text(
                               'Gender',
-                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 20),
                             ),
                           ),
                           subtitle: Center(
@@ -181,7 +188,8 @@ class _MyProfileState extends State<MyProfile> {
                           title: Center(
                             child: Text(
                               'TOTAL RIDES',
-                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 18),
                             ),
                           ),
                           subtitle: Center(
@@ -198,7 +206,9 @@ class _MyProfileState extends State<MyProfile> {
                               title: Center(
                                 child: Text(
                                   'CANCELLED TRIPS',
-                                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18),
                                 ),
                               ),
                               subtitle: Center(
@@ -218,12 +228,32 @@ class _MyProfileState extends State<MyProfile> {
                       Expanded(
                         child: ListTile(
                             onTap: () async {
-                              await launch('tel://${mobilenum}');
+                              try {
+                                await launch('tel://${mobilenum}');
+                              } catch (e) {
+                                await ClipboardManager.copyToClipBoard(
+                                        '${mobilenum}')
+                                    .then((result) {
+                                  final snackBar = SnackBar(
+                                    backgroundColor:
+                                        Theme.of(context).primaryColor,
+                                    content: Text(
+                                      'Copied to Clipboard',
+                                      style: TextStyle(
+                                          color: Theme.of(context).accentColor),
+                                    ),
+                                    duration: Duration(seconds: 1),
+                                  );
+                                  Scaffold.of(context).hideCurrentSnackBar();
+                                  Scaffold.of(context).showSnackBar(snackBar);
+                                });
+                              }
                             },
                             title: Center(
                               child: Text(
                                 'MOBILE NUMBER',
-                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700, fontSize: 18),
                               ),
                             ),
                             subtitle: Center(
@@ -239,7 +269,8 @@ class _MyProfileState extends State<MyProfile> {
                             title: Center(
                               child: Text(
                                 'USER RATING',
-                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700, fontSize: 18),
                               ),
                             ),
                             subtitle: Center(
@@ -263,7 +294,8 @@ class _MyProfileState extends State<MyProfile> {
                             title: Center(
                               child: Text(
                                 'EMAIL ID',
-                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w700, fontSize: 18),
                               ),
                             ),
                             subtitle: Center(
