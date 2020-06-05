@@ -32,7 +32,7 @@ class ChatUsersList extends StatelessWidget {
               );
             }
             final chatRoomDocs = chatListSnapshots.data.documents;
-            print(chatRoomDocs.length);
+            //print(chatRoomDocs.length);
             return ListView.builder(
               itemCount: chatRoomDocs.length,
               itemBuilder: (context, index) {
@@ -40,7 +40,7 @@ class ChatUsersList extends StatelessWidget {
                 final destination = futureSnapshot.data[index].data['destination'];
                 final lastMessage = futureSnapshot.data[index].data['lastMessage'];
                 final List users = futureSnapshot.data[index].data['users'];
-                print(lastMessage.toString());
+                //print(lastMessage.toString());
                 if (users.contains(user.uid.toString())) {
                   return ChatTile(docId, destination, lastMessage);
                 }
