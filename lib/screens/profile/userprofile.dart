@@ -49,6 +49,7 @@ class _MyProfileState extends State<MyProfile> {
   int cancelledrides = 0;
   int actualrating = 0;
   int totalrides = 0;
+  int numberofratings = 0;
 
   bool loading = true;
 
@@ -67,6 +68,7 @@ class _MyProfileState extends State<MyProfile> {
           totalrides = value.data['totalRides'];
           actualrating = value.data['actualRating'];
           cancelledrides = value.data['cancelledRides'];
+          numberofratings = value.data['numberOfRatings'];
           loading = false;
           namefirst = name.substring(0, 1);
         });
@@ -276,7 +278,7 @@ class _MyProfileState extends State<MyProfile> {
                             ),
                             subtitle: Center(
                               child: Text(
-                                '${actualrating}',
+                                '${2.5 + actualrating / 2}',
                                 style: TextStyle(fontSize: 15),
                               ),
                             )),

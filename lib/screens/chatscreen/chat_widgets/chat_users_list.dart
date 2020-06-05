@@ -37,11 +37,10 @@ class _ChatUsersListState extends State<ChatUsersList> {
               );
             }
             final chatRoomDocs = chatListSnapshots.data.documents;
-            print(chatRoomDocs.length);
+            //print(chatRoomDocs.length);
             return ListView.builder(
               itemCount: chatRoomDocs.length,
               itemBuilder: (context, index) {
-                print('Hello');
                 final docId = futureSnapshot.data[index].documentID;
                 final destination = futureSnapshot.data[index].data['destination'];
                 final lastMessage = futureSnapshot.data[index].data['lastMessage'];
@@ -49,6 +48,7 @@ class _ChatUsersListState extends State<ChatUsersList> {
                 print(lastMessage.toString());
                 if (users.contains(ChatUsersList.user.uid.toString())) {
                   print('user found');
+
                   return ChatTile(docId, destination, lastMessage);
                 }
                 return SizedBox(

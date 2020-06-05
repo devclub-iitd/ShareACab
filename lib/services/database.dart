@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:shareacab/models/requestdetails.dart';
 import 'package:shareacab/models/user.dart';
 import 'package:shareacab/screens/chatscreen/chat_database/chatservices.dart';
@@ -23,6 +24,7 @@ class DatabaseService {
       'totalRides': 0,
       'cancelledRides': 0,
       'actualRating': 0,
+      'numberOfRatings': 0,
     });
   }
 
@@ -47,6 +49,7 @@ class DatabaseService {
         totalrides: doc.data['totalRides'] ?? 0,
         cancelledrides: doc.data['cancelledRides'] ?? 0,
         actualrating: doc.data['actualRating'] ?? 0,
+        numberofratings: doc.data['numberOfRatings'] ?? 0,
       );
     }).toList();
   }
@@ -130,17 +133,20 @@ class DatabaseService {
     var request = groupdetails.document(docRef.documentID).collection('users');
     await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) async {
       if (value.exists) {
-        await request.document(user.uid).setData({
-          'name': value.data['name'],
-          'hostel': value.data['hostel'],
-          'sex': value.data['sex'],
-          'mobilenum': value.data['mobileNumber'],
-          'totalrides': value.data['totalRides'],
-          'actualrating': value.data['actualRating'],
-          'cancelledrides': value.data['cancelledRides'],
-        });
+        await request.document(user.uid).setData({'name': value.data['name'], 'hostel': value.data['hostel'], 'sex': value.data['sex'], 'mobilenum': value.data['mobileNumber'], 'totalrides': value.data['totalRides'], 'cancelledrides': value.data['cancelledRides'], 'actualrating': value.data['actualRating'], 'numberofratings': value.data['numberOfRatings']});
       }
     });
+  }
+
+  // to update group details
+  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET) async {
+    var starting = DateTime(SD.year, SD.month, SD.day, ST.hour, ST.minute);
+    var ending = DateTime(ED.year, ED.month, ED.day, ET.hour, ET.minute);
+
+    await groupdetails.document(groupUID).setData({
+      'start': starting,
+      'end': ending,
+    }, merge: true);
   }
 
   // exit a group
@@ -195,6 +201,7 @@ class DatabaseService {
           'totalrides': value.data['totalRides'],
           'actualrating': value.data['actualRating'],
           'cancelledrides': value.data['cancelledRides'],
+          'numberofratings': value.data['numberOfRatings'],
         });
       }
     });

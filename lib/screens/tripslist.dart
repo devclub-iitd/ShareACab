@@ -77,7 +77,6 @@ class _TripsListState extends State<TripsList> {
                       elevation: 5,
                       margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                       child: Container(
-                        height: 150,
                         child: Column(
                           children: <Widget>[
                             Row(
@@ -184,14 +183,18 @@ class _TripsListState extends State<TripsList> {
                                 ],
                               ),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[Text('Number of members in group: ${snapshot.data[index].data['numberOfMembers'].toString()}')],
-                                ),
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Column(
+                                    children: <Widget>[Text('Number of members in group: ${snapshot.data[index].data['numberOfMembers'].toString()}')],
+                                  ),
+                                ],
+                              ),
                             ),
+
                           ],
                         ),
                       ),
