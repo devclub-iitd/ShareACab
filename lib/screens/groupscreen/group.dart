@@ -103,17 +103,23 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                 left: 20,
                                 top: 20,
                               ),
-                              child: destination == 'New Delhi Railway Station'
+                              child: destination == 'New Delhi Railway Station' || destination == 'Hazrat Nizamuddin Railway Station'
                                   ? Icon(
                                       Icons.train,
                                       color: Theme.of(context).accentColor,
                                       size: 30,
                                     )
-                                  : Icon(
-                                      Icons.airplanemode_active,
-                                      color: Theme.of(context).accentColor,
-                                      size: 30,
-                                    )),
+                                  : destination == 'Indira Gandhi International Airport'
+                                      ? Icon(
+                                          Icons.airplanemode_active,
+                                          color: Theme.of(context).accentColor,
+                                          size: 30,
+                                        )
+                                      : Icon(
+                                          Icons.directions_bus,
+                                          color: Theme.of(context).accentColor,
+                                          size: 30,
+                                        )),
                         ),
                         Flexible(
                           fit: FlexFit.tight,

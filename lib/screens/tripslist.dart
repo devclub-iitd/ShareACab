@@ -86,17 +86,23 @@ class _TripsListState extends State<TripsList> {
                                         left: 20,
                                         top: 20,
                                       ),
-                                      child: snapshot.data[index].data['destination'] == 'New Delhi Railway Station'
+                                      child: snapshot.data[index].data['destination'] == 'New Delhi Railway Station' || snapshot.data[index].data['destination'] == 'Hazrat Nizamuddin Railway Station'
                                           ? Icon(
                                               Icons.train,
                                               color: Theme.of(context).accentColor,
                                               size: 30,
                                             )
-                                          : Icon(
-                                              Icons.airplanemode_active,
-                                              color: Theme.of(context).accentColor,
-                                              size: 30,
-                                            )),
+                                          : snapshot.data[index].data['destination'] == 'Indira Gandhi International Airport'
+                                              ? Icon(
+                                                  Icons.airplanemode_active,
+                                                  color: Theme.of(context).accentColor,
+                                                  size: 30,
+                                                )
+                                              : Icon(
+                                                  Icons.directions_bus,
+                                                  color: Theme.of(context).accentColor,
+                                                  size: 30,
+                                                )),
                                 ),
                                 Flexible(
                                   fit: FlexFit.tight,
