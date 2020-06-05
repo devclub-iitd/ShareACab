@@ -8,19 +8,19 @@ exports.myFunction = functions.firestore.document('chatroom/{chatroomid}/chats/{
     var docId;
     var tokens = [];
     var usersChat = [];
-    console.log(usersChat);
+    // console.log(usersChat);
     docId = context.params.chatroomid;
-    console.log(docId);
+    // console.log(docId);
     var roomDetails = await admin.firestore().collection('chatroom').doc(docId).get();
-    console.log(roomDetails);
+    // console.log(roomDetails);
     usersChat = roomDetails.data().users;
-    console.log(usersChat);
+    // console.log(usersChat);
     var i = 0;
     while (i < usersChat.length) {
         var userDetails = await admin.firestore().collection('userdetails').doc(usersChat[i]).get();
         tokens.push(userDetails.data().device_token);
-        console.log('hello');
-        console.log(usersChat.length);
+        // console.log('hello');
+        // console.log(usersChat.length);
         i++;
     };
     console.log(tokens);
