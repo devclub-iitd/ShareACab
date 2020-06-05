@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-
+import 'dart:io';
 //import './appbar.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:provider/provider.dart';
@@ -18,17 +18,12 @@ class GroupDetails extends StatelessWidget {
   final start;
   final end;
 
-  GroupDetails(
-      this.destination, this.start, this.end, this.docId, this.privacy);
+  GroupDetails(this.destination, this.start, this.end, this.docId, this.privacy);
 
   final RequestService _request = RequestService();
 
   Future getUserDetails() async {
-    final userDetails = await Firestore.instance
-        .collection('group')
-        .document(docId)
-        .collection('users')
-        .getDocuments();
+    final userDetails = await Firestore.instance.collection('group').document(docId).collection('users').getDocuments();
     return userDetails.documents;
   }
 
@@ -37,11 +32,7 @@ class GroupDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentuser = Provider.of<FirebaseUser>(context);
-    Firestore.instance
-        .collection('userdetails')
-        .document(currentuser.uid)
-        .get()
-        .then((value) {
+    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
       if (value.data['currentGroup'] != null) {
         inGroup = true;
       } else {
@@ -80,8 +71,7 @@ class GroupDetails extends StatelessWidget {
                       Column(
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical: 13, horizontal: 10),
+                            margin: EdgeInsets.symmetric(vertical: 13, horizontal: 10),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Theme.of(context).accentColor,
@@ -108,8 +98,7 @@ class GroupDetails extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        DateFormat('dd.MM.yyyy - kk:mm a')
-                                            .format(start),
+                                        DateFormat('dd.MM.yyyy - kk:mm a').format(start),
                                         style: TextStyle(letterSpacing: 2),
                                       ),
                                     ],
@@ -119,8 +108,7 @@ class GroupDetails extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 10),
+                            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                   color: Theme.of(context).accentColor,
@@ -147,8 +135,7 @@ class GroupDetails extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        DateFormat('dd.MM.yyyy - kk:mm a')
-                                            .format(end),
+                                        DateFormat('dd.MM.yyyy - kk:mm a').format(end),
                                         style: TextStyle(
                                           letterSpacing: 2,
                                         ),
@@ -167,48 +154,61 @@ class GroupDetails extends StatelessWidget {
                                   itemCount: futureSnapshot.data.length,
                                   itemBuilder: (ctx, index) {
                                     return Container(
-                                      margin: EdgeInsets.symmetric(
-                                          vertical: 2, horizontal: 10),
+                                      margin: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
                                       width: double.infinity,
                                       child: Card(
                                         elevation: 4,
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                                           children: <Widget>[
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(futureSnapshot
-                                                  .data[index].data['name']),
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text(futureSnapshot.data[index].data['name']),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(futureSnapshot
-                                                  .data[index].data['hostel']),
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text(futureSnapshot.data[index].data['hostel']),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: const EdgeInsets.all(8.0),
                                               child: IconButton(
                                                   onPressed: () async {
-                                                   try {
-                                                      await launch(
-                                                        'tel://${futureSnapshot.data[index].data['mobilenum'].toString()}');
-                                                    } catch(e) {
-                                                      await Clipboard.setData(ClipboardData(text : '${futureSnapshot.data[index].data['mobilenum'].toString()}')).then((result) {
-                                                      final snackBar = SnackBar(
-                                                        backgroundColor: Theme.of(context).primaryColor,
-                                                        content: Text('Copied to Clipboard', style: TextStyle(color: Theme.of(context).accentColor),),
-                                                        duration: Duration(seconds: 1),
-                                                      );
-                                                      Scaffold.of(ctx).hideCurrentSnackBar();
-                                                      Scaffold.of(ctx).showSnackBar(snackBar);
-                                                    });
+                                                    try {
+                                                      if (Platform.isIOS) {
+                                                        await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data[index].data['mobilenum'].toString()}')).then((result) {
+                                                          final snackBar = SnackBar(
+                                                            backgroundColor: Theme.of(context).primaryColor,
+                                                            content: Text(
+                                                              'Copied to Clipboard',
+                                                              style: TextStyle(color: Theme.of(context).accentColor),
+                                                            ),
+                                                            duration: Duration(seconds: 1),
+                                                          );
+                                                          Scaffold.of(ctx).hideCurrentSnackBar();
+                                                          Scaffold.of(ctx).showSnackBar(snackBar);
+                                                        });
+                                                      } else {
+                                                        await launch('tel://${futureSnapshot.data[index].data['mobilenum'].toString()}');
+                                                      }
+                                                    } catch (e) {
+                                                      await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data[index].data['mobilenum'].toString()}')).then((result) {
+                                                        final snackBar = SnackBar(
+                                                          backgroundColor: Theme.of(context).primaryColor,
+                                                          content: Text(
+                                                            'Copied to Clipboard',
+                                                            style: TextStyle(color: Theme.of(context).accentColor),
+                                                          ),
+                                                          duration: Duration(seconds: 1),
+                                                        );
+                                                        Scaffold.of(ctx).hideCurrentSnackBar();
+                                                        Scaffold.of(ctx).showSnackBar(snackBar);
+                                                      });
                                                     }
                                                   },
-                                                  icon: Icon(Icons.phone, color: Theme.of(context).accentColor,)),
+                                                  icon: Icon(
+                                                    Icons.phone,
+                                                    color: Theme.of(context).accentColor,
+                                                  )),
                                             ),
                                           ],
                                         ),
