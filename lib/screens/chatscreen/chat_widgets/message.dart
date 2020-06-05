@@ -18,7 +18,7 @@ class MessageScreen extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        print(docId);
+        //print(docId);
         return StreamBuilder(
             stream: Firestore.instance
                 .collection('chatroom')
@@ -36,8 +36,7 @@ class MessageScreen extends StatelessWidget {
                 );
               }
               final chatDocs = chatSnapshot.data.documents;
-              print('bye');
-              print(chatDocs.length);
+              //print(chatDocs.length);
               return ListView.builder(
                 reverse: true,
                 itemCount: chatDocs.length,
