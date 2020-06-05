@@ -16,14 +16,17 @@ exports.myFunction = functions.firestore.document('chatroom/{chatroomid}/chats/{
     usersChat = roomDetails.data().users;
     // console.log(usersChat);
     var i = 0;
+    // console.log(snapshot.data().userId);
     while (i < usersChat.length) {
-        var userDetails = await admin.firestore().collection('userdetails').doc(usersChat[i]).get();
-        tokens.push(userDetails.data().device_token);
+        if(usersChat[i] != snapshot.data().userId){
+            var userDetails = await admin.firestore().collection('userdetails').doc(usersChat[i]).get();
+            tokens.push(userDetails.data().device_token);
+        }
         // console.log('hello');
         // console.log(usersChat.length);
         i++;
     };
-    console.log(tokens);
+    // console.log(tokens);
     var payload = {
         notification: {
             title: snapshot.data().name,
@@ -31,13 +34,13 @@ exports.myFunction = functions.firestore.document('chatroom/{chatroomid}/chats/{
             clickAction: 'FLUTTER_NOTIFICATION_CLICK'
         }
     }
-    // try {
-    //     const response = await admin.messaging().sendToDevice(tokens, payload);
-    //     console.log('Notfication sent successfully');
-    // } catch (err) {
-    //     console.log('Error sending Notification');
-    // }
-    return admin.messaging().sendToDevice(tokens, payload);
+    try {
+        // console.log('Notfication sent successfully');
+        return admin.messaging().sendToDevice(tokens, payload);
+    } catch (err) {
+        console.log('Error sending Notification');
+    }
+    // return admin.messaging().sendToDevice(tokens, payload);
 
 });
 
