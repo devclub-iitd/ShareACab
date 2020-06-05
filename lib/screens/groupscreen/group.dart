@@ -288,7 +288,11 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
               child: Stack(
                 alignment: Alignment(-10, -10),
                 children: <Widget>[
-                  Icon(Icons.chat),
+                  Tooltip(
+                    message: 'Messages',
+                    verticalOffset: 30,
+                    child: Icon(Icons.chat),
+                  ),
 
                   // COMMENTING OUT THE CODE FOR NUMBER OF MESSAGES FOR NOW
 

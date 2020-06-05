@@ -43,6 +43,7 @@ class _SignInState extends State<SignIn> {
               title: Text('Sign in'),
               actions: <Widget>[
                 IconButton(
+                    tooltip: 'Settings',
                     icon: Icon(Icons.settings),
                     color: Theme.of(context).accentColor,
                     onPressed: () {
