@@ -10,7 +10,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class GroupDetails extends StatelessWidget {
 //  static const routeName = '/groupDetails';
 
@@ -20,7 +19,7 @@ class GroupDetails extends StatelessWidget {
   final privacy;
   final start;
   final end;
-  
+
   GroupDetails(this.destination, this.start, this.end, this.docId, this.privacy);
 
   final RequestService _request = RequestService();
@@ -59,16 +58,16 @@ class GroupDetails extends StatelessWidget {
                   //expandedHeight: 210,
                   expandedHeight: 120,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: Image.asset(
-                      destination == 'New Delhi Railway Station' ? 'assets/images/train.jpg' : 'assets/images/plane.jpg',
-                      fit: BoxFit.cover,
-                    ),
-                    title: AppBarTitle(destination),
+                    // background: Image.asset(
+                    //   destination == 'New Delhi Railway Station' ? 'assets/images/train.jpg' : 'assets/images/plane.jpg',
+                    //   fit: BoxFit.cover,
+                    // ),
+                    // title: AppBarTitle(destination),
                     // THE ABOVE WAS THROWING AN ERROR, WILL CHECK LATER
-                    // title: Text(destination),
+                    title: Text(destination),
                   ),
                 ),
-                SliverList( 
+                SliverList(
                   delegate: SliverChildListDelegate(
                     [
                       Column(
@@ -96,13 +95,11 @@ class GroupDetails extends StatelessWidget {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-
                                           'Start:',
                                           style: TextStyle(letterSpacing: 2),
                                         ),
                                       ),
                                       Text(
-
                                         DateFormat('dd.MM.yyyy - kk:mm a').format(start),
                                         style: TextStyle(letterSpacing: 2),
                                       ),
@@ -135,13 +132,11 @@ class GroupDetails extends StatelessWidget {
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-
                                           'End:',
                                           style: TextStyle(letterSpacing: 2),
                                         ),
                                       ),
                                       Text(
-
                                         DateFormat('dd.MM.yyyy - kk:mm a').format(end),
                                         style: TextStyle(
                                           letterSpacing: 2,
@@ -150,7 +145,6 @@ class GroupDetails extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-
                               ],
                             ),
                           ),

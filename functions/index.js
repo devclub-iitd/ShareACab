@@ -35,8 +35,8 @@ exports.myFunction = functions.firestore.document('chatroom/{chatroomid}/chats/{
         }
     }
     try {
-        // console.log('Notfication sent successfully');
         return admin.messaging().sendToDevice(tokens, payload);
+        // console.log('Notfication sent successfully');
     } catch (err) {
         console.log('Error sending Notification');
     }
