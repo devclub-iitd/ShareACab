@@ -192,8 +192,6 @@ class DatabaseService {
       'numberOfMembers': presentNum + 1,
     });
 
-    await ChatService().joinGroup(listuid);
-
     var request = groupdetails.document(listuid).collection('users');
     await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) async {
       if (value.exists) {
@@ -214,7 +212,7 @@ class DatabaseService {
   }
 
   Future<void> setToken(String token) async {
-    var user = await _auth.currentUser();
+    final user = await _auth.currentUser();
     await userDetails.document(user.uid).updateData({
       'device_token' : token
     });
