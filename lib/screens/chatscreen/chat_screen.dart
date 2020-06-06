@@ -22,8 +22,8 @@ class _ChatScreenState extends State<ChatScreen> {
   final RequestService _request = RequestService();
   final FirebaseMessaging _fbm = FirebaseMessaging();
   Future<void> _getToken() async {
-   await _fbm.getToken().then((token) => {
-      _request.setDeviceToken(token)
+   await _fbm.getToken().then((token) {
+      _request.setDeviceToken(token);
     });
   }
 
