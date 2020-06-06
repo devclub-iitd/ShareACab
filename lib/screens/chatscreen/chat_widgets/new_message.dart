@@ -19,6 +19,9 @@ class _NewMessageState extends State<NewMessage> {
     FocusScope.of(context).unfocus();
     final user = await FirebaseAuth.instance.currentUser();
     final userData = await Firestore.instance.collection('userdetails').document(user.uid).get();
+    await Firestore.instance.collection('chatroom').document(widget.docId).updateData({
+      'lastMessage' : Timestamp.now(),
+    });
     await Firestore.instance.collection('chatroom').document(widget.docId).collection('chats').add({
       'text': _enteredMessage,
       'createdAt': Timestamp.now(),
