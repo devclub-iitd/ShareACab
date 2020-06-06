@@ -78,10 +78,10 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                         textColor: getVisibleColorOnPrimaryColor(context),
                         icon: Icon(FontAwesomeIcons.signOutAlt),
                         onPressed: () async {
-                          setState(() {
-                            buttonEnabled = false;
-                          });
                           try {
+                            setState(() {
+                              buttonEnabled = false;
+                            });
                             await _request.exitGroup();
                             Navigator.pop(context);
                           } catch (e) {
