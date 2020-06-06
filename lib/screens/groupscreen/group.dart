@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shareacab/screens/chatscreen/chat_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shareacab/main.dart';
+import 'package:shareacab/screens/groupscreen/editgroup.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:shareacab/shared/loading.dart';
 import 'package:intl/intl.dart';
@@ -36,6 +37,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
     var qp = await Firestore.instance.collection('group').document(docid).collection('users').getDocuments();
     return qp.documents;
   }
+
+  bool buttonEnabled = true;
 
   @override
   bool get wantKeepAlive => true;
@@ -70,20 +73,29 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
             appBar: AppBar(
               title: Text('Group Details'),
               actions: <Widget>[
-                FlatButton.icon(
-                  textColor: getVisibleColorOnPrimaryColor(context),
-                  icon: Icon(FontAwesomeIcons.signOutAlt),
-                  onPressed: () async {
-                    //Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
-                    try {
-                      await _request.exitGroup();
-                      Navigator.pop(context);
-                    } catch (e) {
-                      print(e.toString());
-                    }
-                  },
-                  label: Text('Leave Group'),
-                )
+                buttonEnabled
+                    ? FlatButton.icon(
+                        textColor: getVisibleColorOnPrimaryColor(context),
+                        icon: Icon(FontAwesomeIcons.signOutAlt),
+                        onPressed: () async {
+                          try {
+                            setState(() {
+                              buttonEnabled = false;
+                            });
+                            await _request.exitGroup();
+                            Navigator.pop(context);
+                          } catch (e) {
+                            print(e.toString());
+                          }
+                        },
+                        label: Text('Leave Group'),
+                      )
+                    : FlatButton.icon(
+                        textColor: getVisibleColorOnPrimaryColor(context),
+                        icon: Icon(FontAwesomeIcons.signOutAlt),
+                        onPressed: null,
+                        label: Text('Leave Group'),
+                      )
               ],
             ),
             body: Container(
@@ -102,17 +114,23 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                 left: 20,
                                 top: 20,
                               ),
-                              child: destination == 'New Delhi Railway Station'
+                              child: destination == 'New Delhi Railway Station' || destination == 'Hazrat Nizamuddin Railway Station'
                                   ? Icon(
                                       Icons.train,
                                       color: Theme.of(context).accentColor,
                                       size: 30,
                                     )
-                                  : Icon(
-                                      Icons.airplanemode_active,
-                                      color: Theme.of(context).accentColor,
-                                      size: 30,
-                                    )),
+                                  : destination == 'Indira Gandhi International Airport'
+                                      ? Icon(
+                                          Icons.airplanemode_active,
+                                          color: Theme.of(context).accentColor,
+                                          size: 30,
+                                        )
+                                      : Icon(
+                                          Icons.directions_bus,
+                                          color: Theme.of(context).accentColor,
+                                          size: 30,
+                                        )),
                         ),
                         Flexible(
                           fit: FlexFit.tight,
@@ -131,6 +149,45 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                         ),
                       ],
                     ),
+                    grpOwner == currentuser.uid
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                              top: 10,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Text('Press here to edit the details: '),
+                                FlatButton.icon(
+                                    onPressed: () {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => EditGroup(groupUID: groupUID)));
+                                    },
+                                    icon: Icon(
+                                      FontAwesomeIcons.pen,
+                                      size: 16.0,
+                                      color: Theme.of(context).accentColor,
+                                    ),
+                                    label: Text(
+                                      'Edit',
+                                      style: TextStyle(color: Theme.of(context).accentColor),
+                                    )),
+                              ],
+                            ),
+                          )
+                        : Padding(
+                            padding: EdgeInsets.only(
+                              top: 10,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  '*Contact group creator to edit timings.',
+                                  style: TextStyle(color: Theme.of(context).accentColor),
+                                ),
+                              ],
+                            ),
+                          ),
                     Padding(
                       padding: EdgeInsets.only(
                         bottom: 5,
@@ -226,7 +283,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                 color: Theme.of(context).scaffoldBackgroundColor,
                                 child: ListTile(
                                   title: Text(snapshots.data[index].data['name']),
-                                  subtitle: Text('Hostel: ${snapshots.data[index].data['hostel']}\n Mobile Number: ${snapshots.data[index].data['mobilenum']}'),
+                                  subtitle: Text('Hostel: ${snapshots.data[index].data['hostel']}\n Mobile Number: ${snapshots.data[index].data['mobilenum']}\n User Rating: ${2.5 + snapshots.data[index].data['actualrating'] / 2}'),
                                   trailing: grpOwner == snapshots.data[index].documentID ? FaIcon(FontAwesomeIcons.crown) : null,
                                   isThreeLine: true,
                                   onTap: () {},
@@ -248,15 +305,22 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
               child: Stack(
                 alignment: Alignment(-10, -10),
                 children: <Widget>[
-                  Icon(Icons.chat),
-                  CircleAvatar(
-                    backgroundColor: Colors.red,
-                    radius: 10.0,
-                    child: Text(
-                      numberOfMessages.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: numberOfMessages.toString().length < 3 ? 14 : 8),
-                    ),
-                  )
+                  Tooltip(
+                    message: 'Messages',
+                    verticalOffset: 30,
+                    child: Icon(Icons.chat),
+                  ),
+
+                  // COMMENTING OUT THE CODE FOR NUMBER OF MESSAGES FOR NOW
+
+                  // CircleAvatar(
+                  //   backgroundColor: Colors.red,
+                  //   radius: 10.0,
+                  //   child: Text(
+                  //     numberOfMessages.toString(),
+                  //     style: TextStyle(color: Colors.white, fontSize: numberOfMessages.toString().length < 3 ? 14 : 8),
+                  //   ),
+                  // )
                 ],
               ),
             ),

@@ -7,6 +7,7 @@ class Userdetails {
   final int totalrides;
   final int cancelledrides;
   final int actualrating;
+  final int numberofratings;
 
-  Userdetails({this.uid, this.name, this.mobilenum, this.hostel, this.sex, this.totalrides, this.cancelledrides, this.actualrating});
+  Userdetails({this.uid, this.name, this.mobilenum, this.hostel, this.sex, this.totalrides, this.cancelledrides, this.actualrating, this.numberofratings});
 }

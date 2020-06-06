@@ -110,12 +110,14 @@ class _DashboardState extends State<Dashboard> {
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.filter_list),
+              tooltip: 'Filter',
               iconSize: 30.0,
               onPressed: () {
                 _startFilter(context);
               }),
           IconButton(
               icon: Icon(Icons.settings),
+              tooltip: 'Settings',
               onPressed: () {
                 return Navigator.push(context,
                     MaterialPageRoute(builder: (context) {
@@ -190,7 +192,11 @@ class _DashboardState extends State<Dashboard> {
               child: FloatingActionButton(
                 splashColor: Theme.of(context).primaryColor,
                 onPressed: () => _startCreatingTrip(context),
-                child: Icon(Icons.add),
+                child: Tooltip(
+                  message: 'Create Group',
+                  verticalOffset: -60,
+                  child: Icon(Icons.add),
+                ),
               ),
             )
           : Padding(
@@ -201,7 +207,11 @@ class _DashboardState extends State<Dashboard> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => GroupPage()));
                 },
-                child: Icon(Icons.group),
+                child: Tooltip(
+                  message: 'Group Details',
+                  verticalOffset: -60,
+                  child: Icon(Icons.group),
+                ),
               ),
             ),
     );

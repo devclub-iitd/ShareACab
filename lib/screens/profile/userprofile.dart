@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/shared/loading.dart';
 import '../../main.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:io';
 
 class MyProfile extends StatefulWidget {
   @override
@@ -48,6 +51,7 @@ class _MyProfileState extends State<MyProfile> {
   int cancelledrides = 0;
   int actualrating = 0;
   int totalrides = 0;
+  int numberofratings = 0;
 
   bool loading = true;
 
@@ -67,9 +71,10 @@ class _MyProfileState extends State<MyProfile> {
           totalrides = value.data['totalRides'];
           actualrating = value.data['actualRating'];
           cancelledrides = value.data['cancelledRides'];
+          numberofratings = value.data['numberOfRatings'];
           loading = false;
-          namefirst = name.substring(0,1);
 
+          namefirst = name.substring(0, 1);
         });
       } else {
         setState(() {
@@ -77,7 +82,7 @@ class _MyProfileState extends State<MyProfile> {
         });
       }
     });
-    
+
     return loading
         ? Loading()
         : Scaffold(
@@ -220,7 +225,39 @@ class _MyProfileState extends State<MyProfile> {
                     children: <Widget>[
                       Expanded(
                         child: ListTile(
-                            onTap: () {},
+                            onTap: () async {
+                              try {
+                                if (Platform.isIOS) {
+                                  await Clipboard.setData(ClipboardData(text: '${mobilenum}')).then((result) {
+                                    final snackBar = SnackBar(
+                                      backgroundColor: Theme.of(context).primaryColor,
+                                      content: Text(
+                                        'Copied to Clipboard',
+                                        style: TextStyle(color: Theme.of(context).accentColor),
+                                      ),
+                                      duration: Duration(seconds: 1),
+                                    );
+                                    Scaffold.of(context).hideCurrentSnackBar();
+                                    Scaffold.of(context).showSnackBar(snackBar);
+                                  });
+                                } else {
+                                  await launch('tel://${mobilenum}');
+                                }
+                              } catch (e) {
+                                await Clipboard.setData(ClipboardData(text: '${mobilenum}')).then((result) {
+                                  final snackBar = SnackBar(
+                                    backgroundColor: Theme.of(context).primaryColor,
+                                    content: Text(
+                                      'Copied to Clipboard',
+                                      style: TextStyle(color: Theme.of(context).accentColor),
+                                    ),
+                                    duration: Duration(seconds: 1),
+                                  );
+                                  Scaffold.of(context).hideCurrentSnackBar();
+                                  Scaffold.of(context).showSnackBar(snackBar);
+                                });
+                              }
+                            },
                             title: Center(
                               child: Text(
                                 'MOBILE NUMBER',
@@ -245,7 +282,7 @@ class _MyProfileState extends State<MyProfile> {
                             ),
                             subtitle: Center(
                               child: Text(
-                                '${actualrating}',
+                                '${2.5 + actualrating / 2}',
                                 style: TextStyle(fontSize: 15),
                               ),
                             )),

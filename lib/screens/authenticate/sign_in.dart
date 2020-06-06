@@ -43,6 +43,7 @@ class _SignInState extends State<SignIn> {
               title: Text('Sign in'),
               actions: <Widget>[
                 IconButton(
+                    tooltip: 'Settings',
                     icon: Icon(Icons.settings),
                     color: Theme.of(context).accentColor,
                     onPressed: () {
@@ -102,7 +103,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         SizedBox(height: 20.0),
                         RaisedButton(
-                          color: Colors.pink[400],
+                          color: Theme.of(context).accentColor,
                           child: Text(
                             'Sign in',
                             style: TextStyle(color: Colors.white),
@@ -162,7 +163,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         SizedBox(height: 10.0),
                         RaisedButton(
-                          color: Colors.blue,
+                          color: Theme.of(context).accentColor,
                           child: Text(
                             'Forgot Password',
                             style: TextStyle(color: Colors.white),
