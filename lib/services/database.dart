@@ -190,6 +190,8 @@ class DatabaseService {
       'numberOfMembers': presentNum + 1,
     });
 
+    await ChatService().joinGroup(listuid);
+
     var request = groupdetails.document(listuid).collection('users');
     await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) async {
       if (value.exists) {
