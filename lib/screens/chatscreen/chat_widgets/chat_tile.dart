@@ -32,7 +32,7 @@ class _ChatTileState extends State<ChatTile> {
           radius: 30,
           child: Padding(
             padding: EdgeInsets.all(6),
-            child: widget.destination == 'New Delhi Railway Station' ? Icon(Icons.train) : Icon(Icons.flight_takeoff),
+            child: widget.destination == 'New Delhi Railway Station' || widget.destination == 'Hazrat Nizamuddin Railway Station' ? Icon(Icons.train) : widget.destination == 'Indira Gandhi International Airport' ? Icon(Icons.flight_takeoff) : Icon(Icons.directions_bus),
           ),
         ),
         title: Text(

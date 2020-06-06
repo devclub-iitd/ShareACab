@@ -62,10 +62,6 @@ class _TripsListState extends State<TripsList> {
                   return InkWell(
                     onTap: () {
                       final destination = snapshot.data[index].data['destination'];
-                      //final startDate = DateTime.parse(snapshot.data[index].data['startDate']);
-                      //final startTime = snapshot.data[index].data['startTime'];
-                      //final endDate = DateTime.parse(snapshot.data[index].data['endDate']);
-                      //final endTime = snapshot.data[index].data['endTime'];
                       final start = snapshot.data[index].data['start'].toDate();
                       final end = snapshot.data[index].data['end'].toDate();
                       final docId = snapshot.data[index].documentID;
@@ -90,17 +86,23 @@ class _TripsListState extends State<TripsList> {
                                         left: 20,
                                         top: 20,
                                       ),
-                                      child: snapshot.data[index].data['destination'] == 'New Delhi Railway Station'
+                                      child: snapshot.data[index].data['destination'] == 'New Delhi Railway Station' || snapshot.data[index].data['destination'] == 'Hazrat Nizamuddin Railway Station'
                                           ? Icon(
                                               Icons.train,
                                               color: Theme.of(context).accentColor,
                                               size: 30,
                                             )
-                                          : Icon(
-                                              Icons.airplanemode_active,
-                                              color: Theme.of(context).accentColor,
-                                              size: 30,
-                                            )),
+                                          : snapshot.data[index].data['destination'] == 'Indira Gandhi International Airport'
+                                              ? Icon(
+                                                  Icons.airplanemode_active,
+                                                  color: Theme.of(context).accentColor,
+                                                  size: 30,
+                                                )
+                                              : Icon(
+                                                  Icons.directions_bus,
+                                                  color: Theme.of(context).accentColor,
+                                                  size: 30,
+                                                )),
                                 ),
                                 Flexible(
                                   fit: FlexFit.tight,
@@ -194,7 +196,6 @@ class _TripsListState extends State<TripsList> {
                                 ],
                               ),
                             ),
-
                           ],
                         ),
                       ),

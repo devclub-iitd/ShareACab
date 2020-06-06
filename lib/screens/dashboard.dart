@@ -24,7 +24,6 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   // List<RequestDetails> _listOfTrips = allTrips;
   List<RequestDetails> filtered = allTrips;
@@ -49,13 +48,12 @@ class _DashboardState extends State<Dashboard> {
     _ST = stime;
     _ED = edate;
     _ET = etime;
- // _listOfTrips = filtered;
+    // _listOfTrips = filtered;
     setState(() {});
   }
 
   @override
   void initState() {
-
     // _listOfTrips = filtered;
 
     super.initState();
@@ -106,12 +104,14 @@ class _DashboardState extends State<Dashboard> {
         actions: <Widget>[
           IconButton(
               icon: Icon(Icons.filter_list),
+              tooltip: 'Filter',
               iconSize: 30.0,
               onPressed: () {
                 _startFilter(context);
               }),
           IconButton(
               icon: Icon(Icons.settings),
+              tooltip: 'Settings',
               onPressed: () {
                 return Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return Settings();
@@ -161,7 +161,6 @@ class _DashboardState extends State<Dashboard> {
               height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
               width: double.infinity,
               child: RefreshIndicator(
-
                 child: TripsList(),
                 onRefresh: refreshList,
               ),
@@ -176,7 +175,11 @@ class _DashboardState extends State<Dashboard> {
               child: FloatingActionButton(
                 splashColor: Theme.of(context).primaryColor,
                 onPressed: () => _startCreatingTrip(context),
-                child: Icon(Icons.add),
+                child: Tooltip(
+                  message: 'Create Group',
+                  verticalOffset: -60,
+                  child: Icon(Icons.add),
+                ),
               ),
             )
           : Padding(
@@ -186,7 +189,11 @@ class _DashboardState extends State<Dashboard> {
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
                 },
-                child: Icon(Icons.group),
+                child: Tooltip(
+                  message: 'Group Details',
+                  verticalOffset: -60,
+                  child: Icon(Icons.group),
+                ),
               ),
             ),
     );

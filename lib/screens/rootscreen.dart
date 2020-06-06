@@ -47,40 +47,51 @@ class _RootScreenState extends State<RootScreen> {
         : Scaffold(
             key: _scaffoldKey,
             extendBody: true,
-            bottomNavigationBar:
-            CurvedNavigationBar(
+            bottomNavigationBar: CurvedNavigationBar(
               color: Theme.of(context).bottomAppBarColor,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               height: 60.0,
               items: <Widget>[
-                Icon(
-                  FontAwesomeIcons.home,
-                  size: 20.0,
-                  color: Theme.of(context).accentColor,
-                  //color: Colors.black,
+                Tooltip(
+                  message: 'Dashboard',
+                  child: Icon(
+                    FontAwesomeIcons.home,
+                    size: 20.0,
+                    color: Theme.of(context).accentColor,
+                    //color: Colors.black,
+                  ),
                 ),
-                Icon(
-                  Icons.format_list_bulleted,
-                  size: 20.0,
-                  color: Theme.of(context).accentColor,
+                Tooltip(
+                  message: 'My Requests',
+                  child: Icon(
+                    Icons.format_list_bulleted,
+                    size: 20.0,
+                    color: Theme.of(context).accentColor,
+                  ),
                 ),
-                Icon(
-                  _selectedPage ==2 ?
-                  Icons.chat_bubble : Icons.chat_bubble_outline,
-                  size: 20.0,
-                  color: Theme.of(context).accentColor,
+                Tooltip(
+                  message: 'Messages',
+                  child: Icon(
+                    _selectedPage == 2 ? Icons.chat_bubble : Icons.chat_bubble_outline,
+                    size: 20.0,
+                    color: Theme.of(context).accentColor,
+                  ),
                 ),
-                Icon(
-                  _selectedPage ==3 ?
-                  Icons.notifications : Icons.notifications_none ,
-                  size: 20.0,
-                  color: Theme.of(context).accentColor,
+                Tooltip(
+                  message: 'Notifications',
+                  child: Icon(
+                    _selectedPage == 3 ? Icons.notifications : Icons.notifications_none,
+                    size: 20.0,
+                    color: Theme.of(context).accentColor,
+                  ),
                 ),
-                Icon(
-                  _selectedPage ==4 ?
-                  Icons.person : Icons.person_outline ,
-                  size: 20.0,
-                  color: Theme.of(context).accentColor,
+                Tooltip(
+                  message: 'Profile',
+                  child: Icon(
+                    _selectedPage == 4 ? Icons.person : Icons.person_outline,
+                    size: 20.0,
+                    color: Theme.of(context).accentColor,
+                  ),
                 ),
               ],
               animationDuration: Duration(milliseconds: 200),

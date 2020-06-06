@@ -192,7 +192,7 @@ class _RegisterState extends State<Register> {
                         ),
                         SizedBox(height: 20.0),
                         RaisedButton(
-                          color: Colors.pink[400],
+                          color: Theme.of(context).accentColor,
                           child: Text(
                             'Register',
                             style: TextStyle(color: Colors.white),

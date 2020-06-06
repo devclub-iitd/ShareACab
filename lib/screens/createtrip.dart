@@ -14,7 +14,7 @@ class CreateTrip extends StatefulWidget {
 }
 
 class _CreateTripState extends State<CreateTrip> {
-  List<String> destinations = ['New Delhi Railway Station', 'Indira Gandhi International Airport'];
+  List<String> destinations = ['New Delhi Railway Station', 'Indira Gandhi International Airport', 'Anand Vihar ISBT', 'Hazrat Nizamuddin Railway Station'];
   String _destination;
   final _finalDestinationController = TextEditingController();
   DateTime _selectedStartDate;
@@ -28,7 +28,6 @@ class _CreateTripState extends State<CreateTrip> {
     final newRq = RequestDetails(name: 'Name', id: DateTime.now().toString(), destination: _destination, finalDestination: _finalDestinationController.text, startDate: _selectedStartDate, startTime: _selectedStartTime, endDate: _selectedEndDate, endTime: _selectedEndTime, privacy: privacy);
     try {
       await _request.createTrip(newRq);
-
     } catch (e) {
       print(e.toString());
       //String errStr = e.message ?? e.toString();
@@ -152,6 +151,13 @@ class _CreateTripState extends State<CreateTrip> {
         ],
       ),
     );
+  }
+
+  // SORTING THE LIST IN ALPHABETICAL FOR DESTINATIONS
+  @override
+  void initState() {
+    destinations.sort();
+    super.initState();
   }
 
   @override

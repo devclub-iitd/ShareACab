@@ -38,6 +38,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
     return qp.documents;
   }
 
+  bool buttonEnabled = true;
+
   @override
   bool get wantKeepAlive => true;
 
@@ -71,20 +73,29 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
             appBar: AppBar(
               title: Text('Group Details'),
               actions: <Widget>[
-                FlatButton.icon(
-                  textColor: getVisibleColorOnPrimaryColor(context),
-                  icon: Icon(FontAwesomeIcons.signOutAlt),
-                  onPressed: () async {
-                    //Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
-                    try {
-                      await _request.exitGroup();
-                      Navigator.pop(context);
-                    } catch (e) {
-                      print(e.toString());
-                    }
-                  },
-                  label: Text('Leave Group'),
-                )
+                buttonEnabled
+                    ? FlatButton.icon(
+                        textColor: getVisibleColorOnPrimaryColor(context),
+                        icon: Icon(FontAwesomeIcons.signOutAlt),
+                        onPressed: () async {
+                          try {
+                            setState(() {
+                              buttonEnabled = false;
+                            });
+                            await _request.exitGroup();
+                            Navigator.pop(context);
+                          } catch (e) {
+                            print(e.toString());
+                          }
+                        },
+                        label: Text('Leave Group'),
+                      )
+                    : FlatButton.icon(
+                        textColor: getVisibleColorOnPrimaryColor(context),
+                        icon: Icon(FontAwesomeIcons.signOutAlt),
+                        onPressed: null,
+                        label: Text('Leave Group'),
+                      )
               ],
             ),
             body: Container(
@@ -103,17 +114,23 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                 left: 20,
                                 top: 20,
                               ),
-                              child: destination == 'New Delhi Railway Station'
+                              child: destination == 'New Delhi Railway Station' || destination == 'Hazrat Nizamuddin Railway Station'
                                   ? Icon(
                                       Icons.train,
                                       color: Theme.of(context).accentColor,
                                       size: 30,
                                     )
-                                  : Icon(
-                                      Icons.airplanemode_active,
-                                      color: Theme.of(context).accentColor,
-                                      size: 30,
-                                    )),
+                                  : destination == 'Indira Gandhi International Airport'
+                                      ? Icon(
+                                          Icons.airplanemode_active,
+                                          color: Theme.of(context).accentColor,
+                                          size: 30,
+                                        )
+                                      : Icon(
+                                          Icons.directions_bus,
+                                          color: Theme.of(context).accentColor,
+                                          size: 30,
+                                        )),
                         ),
                         Flexible(
                           fit: FlexFit.tight,
@@ -288,7 +305,11 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
               child: Stack(
                 alignment: Alignment(-10, -10),
                 children: <Widget>[
-                  Icon(Icons.chat),
+                  Tooltip(
+                    message: 'Messages',
+                    verticalOffset: 30,
+                    child: Icon(Icons.chat),
+                  ),
 
                   // COMMENTING OUT THE CODE FOR NUMBER OF MESSAGES FOR NOW
 
