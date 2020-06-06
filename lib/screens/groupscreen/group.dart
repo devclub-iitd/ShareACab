@@ -38,6 +38,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
     return qp.documents;
   }
 
+  bool buttonEnabled = true;
+
   @override
   bool get wantKeepAlive => true;
 
@@ -71,20 +73,29 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
             appBar: AppBar(
               title: Text('Group Details'),
               actions: <Widget>[
-                FlatButton.icon(
-                  textColor: getVisibleColorOnPrimaryColor(context),
-                  icon: Icon(FontAwesomeIcons.signOutAlt),
-                  onPressed: () async {
-                    //Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
-                    try {
-                      await _request.exitGroup();
-                      Navigator.pop(context);
-                    } catch (e) {
-                      print(e.toString());
-                    }
-                  },
-                  label: Text('Leave Group'),
-                )
+                buttonEnabled
+                    ? FlatButton.icon(
+                        textColor: getVisibleColorOnPrimaryColor(context),
+                        icon: Icon(FontAwesomeIcons.signOutAlt),
+                        onPressed: () async {
+                          setState(() {
+                            buttonEnabled = false;
+                          });
+                          try {
+                            await _request.exitGroup();
+                            Navigator.pop(context);
+                          } catch (e) {
+                            print(e.toString());
+                          }
+                        },
+                        label: Text('Leave Group'),
+                      )
+                    : FlatButton.icon(
+                        textColor: getVisibleColorOnPrimaryColor(context),
+                        icon: Icon(FontAwesomeIcons.signOutAlt),
+                        onPressed: null,
+                        label: Text('Leave Group'),
+                      )
               ],
             ),
             body: Container(
