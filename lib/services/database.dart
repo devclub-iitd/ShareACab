@@ -121,6 +121,7 @@ class DatabaseService {
       'created': Timestamp.now(),
     });
 
+    //adding user to group chat
     await ChatService().createChatRoom(docRef.documentID, user.uid.toString(), requestDetails.destination.toString());
 
     await userDetails.document(user.uid).updateData({
@@ -171,6 +172,7 @@ class DatabaseService {
       'currentGroup': null,
       'currentReq': null,
     });
+    //deleting user from chat group
     await ChatService().exitChatRoom(currentGrp);
   }
 
@@ -190,8 +192,6 @@ class DatabaseService {
       'numberOfMembers': presentNum + 1,
     });
 
-    await ChatService().joinGroup(listuid);
-
     var request = groupdetails.document(listuid).collection('users');
     await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) async {
       if (value.exists) {
@@ -206,6 +206,15 @@ class DatabaseService {
           'numberofratings': value.data['numberOfRatings'],
         });
       }
+    });
+    //calling chat service to add the user to chatgroup also
+    await ChatService().joinGroup(listuid);
+  }
+
+  Future<void> setToken(String token) async {
+    final user = await _auth.currentUser();
+    await userDetails.document(user.uid).updateData({
+      'device_token' : token
     });
   }
 }

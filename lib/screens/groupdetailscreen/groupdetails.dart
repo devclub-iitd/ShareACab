@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/services.dart';
 import 'dart:io';
 //import './appbar.dart';
@@ -13,6 +14,7 @@ class GroupDetails extends StatelessWidget {
 //  static const routeName = '/groupDetails';
 
   final String destination;
+
   final docId;
   final privacy;
   final start;
@@ -60,7 +62,7 @@ class GroupDetails extends StatelessWidget {
                     //   destination == 'New Delhi Railway Station' ? 'assets/images/train.jpg' : 'assets/images/plane.jpg',
                     //   fit: BoxFit.cover,
                     // ),
-                    //title: AppBarTitle(destination),
+                    // title: AppBarTitle(destination),
                     // THE ABOVE WAS THROWING AN ERROR, WILL CHECK LATER
                     title: Text(destination),
                   ),
