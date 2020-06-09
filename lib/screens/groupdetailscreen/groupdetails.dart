@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shareacab/main.dart';
 import 'package:flutter/scheduler.dart';
+
 class GroupDetails extends StatelessWidget {
 //  static const routeName = '/groupDetails';
 
