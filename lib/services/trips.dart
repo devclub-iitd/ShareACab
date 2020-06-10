@@ -18,4 +18,8 @@ class RequestService {
   Future<void> joinGroup(String listuid) async {
     await DatabaseService().joinGroup(listuid);
   }
+
+  Future<void> setDeviceToken(String token) async {
+    await DatabaseService().setToken(token);
+  }
 }

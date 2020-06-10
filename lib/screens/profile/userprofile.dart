@@ -16,9 +16,11 @@ class MyProfile extends StatefulWidget {
 class _MyProfileState extends State<MyProfile> {
   FirebaseUser currentUser;
   var namefirst = 'P';
+
   @override
   void initState() {
     super.initState();
+
     _loadCurrentUser();
   }
 
@@ -56,6 +58,7 @@ class _MyProfileState extends State<MyProfile> {
   @override
   Widget build(BuildContext context) {
     final currentuser = Provider.of<FirebaseUser>(context);
+
     //print(currentuser.uid);
 
     Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
@@ -70,6 +73,7 @@ class _MyProfileState extends State<MyProfile> {
           cancelledrides = value.data['cancelledRides'];
           numberofratings = value.data['numberOfRatings'];
           loading = false;
+
           namefirst = name.substring(0, 1);
         });
       } else {
