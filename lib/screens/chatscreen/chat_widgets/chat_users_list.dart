@@ -6,7 +6,7 @@ import './chat_tile.dart';
 
 class ChatUsersList extends StatelessWidget {
   static FirebaseUser user;
-
+  
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<FirebaseUser>(context);
