@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/services.dart';
 import 'dart:io';
+
 //import './appbar.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:provider/provider.dart';
@@ -53,7 +53,7 @@ class GroupDetails extends StatelessWidget {
         inGroup = false;
       }
     });
-    timeDilation = 2.0;
+    timeDilation = 1.0;
     return NestedScrollView(
         controller: ScrollController(keepScrollOffset: true),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
