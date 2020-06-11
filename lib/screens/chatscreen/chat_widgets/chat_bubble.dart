@@ -26,9 +26,12 @@ class MessageBubble extends StatelessWidget {
                   bottomRight: isMe ? Radius.circular(0) : Radius.circular(12),
                 ),
               ),
-              width: 160,
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width*0.6,
+                minWidth: MediaQuery.of(context).size.width*0.3,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
