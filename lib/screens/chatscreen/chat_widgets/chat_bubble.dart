@@ -26,11 +26,14 @@ class MessageBubble extends StatelessWidget {
                   bottomRight: isMe ? Radius.circular(0) : Radius.circular(12),
                 ),
               ),
-              width: 160,
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
               margin: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width*0.6,
+                minWidth: MediaQuery.of(context).size.width*0.3,
+              ),
               child: Column(
-                crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     username,
@@ -44,7 +47,7 @@ class MessageBubble extends StatelessWidget {
                     style: TextStyle(
                       color: isMe ? Colors.black : Theme.of(context).accentTextTheme.subtitle1.color,
                     ),
-                    textAlign: isMe ? TextAlign.end : TextAlign.start,
+                    textAlign: TextAlign.start,
                   ),
                 ],
               ),
