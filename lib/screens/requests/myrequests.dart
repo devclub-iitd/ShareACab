@@ -149,9 +149,9 @@ class _MyRequestsState extends State<MyRequests> {
                                                         child: Text(
                                                             'View Message',
                                                             style: TextStyle(
-                                                                color:
-                                                                    getVisibleColorOnPrimaryColor(
-                                                                        context),
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColorDark,
                                                                 fontSize: 11.8,
                                                                 fontWeight:
                                                                     FontWeight

@@ -79,6 +79,7 @@ class _TripsListState extends State<TripsList> {
                     tag: docId,
                     child: Card(
                       color: Theme.of(context).scaffoldBackgroundColor,
+                      elevation: 0.0,
                       child: InkWell(
                         onTap: () {
                           Navigator.push(

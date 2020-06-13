@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shareacab/main.dart';
 import 'package:shareacab/screens/settings.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/constants.dart';
@@ -45,15 +46,22 @@ class _SignInState extends State<SignIn> {
                 IconButton(
                     tooltip: 'Settings',
                     icon: Icon(Icons.settings),
-                    color: Theme.of(context).accentColor,
                     onPressed: () {
-                      return Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
                         return Settings();
                       }));
                     }),
                 FlatButton.icon(
-                  icon: Icon(Icons.person_add),
-                  label: Text('Register'),
+                  icon: Icon(
+                    Icons.person_add,
+                    color: getVisibleColorOnPrimaryColor(context),
+                  ),
+                  label: Text(
+                    'Register',
+                    style: TextStyle(
+                        color: getVisibleColorOnPrimaryColor(context)),
+                  ),
                   onPressed: () {
                     widget.toggleView();
                   },
@@ -73,8 +81,10 @@ class _SignInState extends State<SignIn> {
                       children: <Widget>[
                         SizedBox(height: 20.0),
                         TextFormField(
-                          decoration: textInputDecoration.copyWith(hintText: 'Email'),
-                          validator: (val) => val.isEmpty ? 'Enter a valid Email' : null,
+                          decoration:
+                              textInputDecoration.copyWith(hintText: 'Email'),
+                          validator: (val) =>
+                              val.isEmpty ? 'Enter a valid Email' : null,
                           onChanged: (val) {
                             setState(() => email = val);
                           },
@@ -85,7 +95,9 @@ class _SignInState extends State<SignIn> {
                             hintText: 'Password',
                             suffixIcon: IconButton(
                               icon: Icon(
-                                passwordHide ? Icons.visibility_off : Icons.visibility,
+                                passwordHide
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 color: Theme.of(context).accentColor,
                               ),
                               onPressed: () {
@@ -95,7 +107,9 @@ class _SignInState extends State<SignIn> {
                               },
                             ),
                           ),
-                          validator: (val) => val.length < 6 ? 'Enter a password greater than 6 characters.' : null,
+                          validator: (val) => val.length < 6
+                              ? 'Enter a password greater than 6 characters.'
+                              : null,
                           obscureText: passwordHide,
                           onChanged: (val) {
                             setState(() => password = val);
@@ -116,10 +130,13 @@ class _SignInState extends State<SignIn> {
                                   email = email.trim();
                                 });
 
-                                var flag = await _auth.signInWithEmailAndPassword(email, password);
+                                var flag =
+                                    await _auth.signInWithEmailAndPassword(
+                                        email, password);
                                 if (flag == false) {
                                   setState(() {
-                                    error = 'ID not verified, verification mail sent again.';
+                                    error =
+                                        'ID not verified, verification mail sent again.';
                                   });
                                 }
                                 setState(() => loading = false);
@@ -128,27 +145,34 @@ class _SignInState extends State<SignIn> {
                                   setState(() {
                                     switch (e.code) {
                                       case 'ERROR_INVALID_EMAIL':
-                                        error = 'Your email address appears to be malformed.';
+                                        error =
+                                            'Your email address appears to be malformed.';
                                         break;
                                       case 'ERROR_WRONG_PASSWORD':
                                         error = 'Your password is wrong.';
                                         break;
                                       case 'ERROR_USER_NOT_FOUND':
-                                        error = "User with this email doesn't exist.";
+                                        error =
+                                            "User with this email doesn't exist.";
                                         break;
                                       case 'ERROR_USER_DISABLED':
-                                        error = 'User with this email has been disabled.';
+                                        error =
+                                            'User with this email has been disabled.';
                                         break;
                                       case 'ERROR_TOO_MANY_REQUESTS':
-                                        error = 'Too many requests. Try again later.';
+                                        error =
+                                            'Too many requests. Try again later.';
                                         break;
                                       case 'ERROR_OPERATION_NOT_ALLOWED':
-                                        error = 'Signing in with Email and Password is not enabled.';
+                                        error =
+                                            'Signing in with Email and Password is not enabled.';
                                         break;
                                       default:
                                         {
-                                          print('undefined error:' + error.toString());
-                                          error = 'An undefined Error happened.';
+                                          print('undefined error:' +
+                                              error.toString());
+                                          error =
+                                              'An undefined Error happened.';
                                         }
                                     }
                                     loading = false;
@@ -169,13 +193,17 @@ class _SignInState extends State<SignIn> {
                             style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () {
-                            Navigator.pushNamed(context, '/accounts/forgotpass');
+                            Navigator.pushNamed(
+                                context, '/accounts/forgotpass');
                           },
                         ),
                         SizedBox(height: 20.0),
                         Text(
                           'Tip: Enable Dark mode from settings (icon in the AppBar).',
-                          style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic, color: Colors.green),
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.green),
                         ),
                         SizedBox(height: 12.0),
                         Text(
