@@ -36,9 +36,6 @@ class _CreateTripState extends State<CreateTrip> {
       //final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
       //_scaffoldKey.currentState.showSnackBar(snackBar);
     }
-    setState(() {
-      allTrips.add(newRq);
-    });
   }
 
   void _submitData() {
@@ -240,7 +237,7 @@ class _CreateTripState extends State<CreateTrip> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      width: 50,
+                      width: 45,
                       margin: EdgeInsets.only(top: 20, left: 40),
                       child: DropdownButton<int>(
                         icon: Icon(
@@ -266,10 +263,13 @@ class _CreateTripState extends State<CreateTrip> {
                         },
                       ),
                     ),
-                    Text('No of poolers with you',
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                        )),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Text('No of poolers with you',
+                          style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                          )),
+                    ),
                   ],
                 ),
                 Container(
