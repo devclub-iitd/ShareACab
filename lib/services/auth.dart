@@ -84,4 +84,11 @@ class AuthService {
     //print(uid);
     return uid.toString();
   }
+
+  // to update email
+  Future<void> changeEmail(String newEmail) async {
+    var user = await _auth.currentUser();
+    await user.updateEmail(newEmail);
+    //await _auth.signOut();
+  }
 }

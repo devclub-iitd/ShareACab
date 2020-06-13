@@ -1,5 +1,6 @@
 import 'dart:async' show Future, Timer;
 import 'package:flutter/material.dart';
+import 'package:shareacab/screens/authenticate/change_email.dart';
 import 'package:shareacab/screens/rootscreen.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,7 @@ class _VerificationCheckState extends State<VerificationCheck> {
   bool loading = false;
   String error = '';
   bool verified = false;
+  String email = '';
 
   // void _checkIfVerified() async {
   //   await FirebaseAuth.instance.currentUser()
@@ -63,6 +65,9 @@ class _VerificationCheckState extends State<VerificationCheck> {
   @override
   Widget build(BuildContext context) {
     var currentuser = Provider.of<FirebaseUser>(context);
+    setState(() {
+      email = currentuser.email;
+    });
     currentuser.reload();
     return verified
         ? RootScreen()
@@ -101,32 +106,50 @@ class _VerificationCheckState extends State<VerificationCheck> {
                     RichText(
                         text: TextSpan(
                       text: 'Verification email has been sent to your ID. Please click on the verification link in your mail.',
-                      style: TextStyle(color: Colors.black, fontSize: 20.0, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                     )),
-                    SizedBox(height: 40.0),
+                    SizedBox(height: 30.0),
                     RichText(
-                        text: TextSpan(
-                      text: 'If you did not recieve it, please click on the button below',
-                      style: TextStyle(color: Colors.black, fontSize: 20.0),
-                    )),
-                    //SizedBox(height: 20.0),
-                    RaisedButton(
-                      color: Colors.pink[400],
-                      child: Text(
-                        'Resend email',
-                        style: TextStyle(color: Colors.white),
+                      text: TextSpan(
+                        text: 'The registered email id is: ${email}',
+                        style: TextStyle(fontSize: 17.0),
                       ),
-                      onPressed: () {
-                        try {
-                          _auth.verificationEmail(currentuser);
-                        } catch (e) {
-                          print(e.toString());
-                          //need to show error in snackbar.
-                          setState(() {
-                            error = e.toString();
-                          });
-                        }
-                      },
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        RaisedButton(
+                          color: Theme.of(context).accentColor,
+                          child: Text(
+                            'Resend email',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () {
+                            try {
+                              _auth.verificationEmail(currentuser);
+                            } catch (e) {
+                              print(e.toString());
+                              //need to show error in snackbar.
+                              setState(() {
+                                error = e.toString();
+                              });
+                            }
+                          },
+                        ),
+                        RaisedButton(
+                          color: Theme.of(context).accentColor,
+                          child: Text(
+                            'Change email',
+                            style: TextStyle(),
+                          ),
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeEmail()));
+                          },
+                        ),
+                      ],
                     ),
                     SizedBox(height: 20.0),
                     RichText(
@@ -134,22 +157,6 @@ class _VerificationCheckState extends State<VerificationCheck> {
                       text: 'You will be auto-redirected to dashboard once you verify your account.',
                       style: TextStyle(color: Colors.red, fontSize: 20.0, fontStyle: FontStyle.italic),
                     )),
-
-                    // RaisedButton(
-                    //   color: Colors.blue[400],
-                    //   child: Text(
-                    //     'Retry',
-                    //     style: TextStyle(color: Colors.white),
-                    //   ),
-                    //   onPressed: () {
-                    //     if (currentuser.isEmailVerified) {
-                    //       setState(() {
-                    //         verified = true;
-                    //       });
-                    //     }
-                    //   },
-                    // ),
-
                     SizedBox(height: 20.0),
                   ],
                 ),
