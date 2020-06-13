@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shareacab/models/requestdetails.dart';
 import 'package:intl/intl.dart';
-import 'package:shareacab/models/alltrips.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/services/trips.dart';
 
@@ -15,7 +14,9 @@ class CreateTrip extends StatefulWidget {
 
 class _CreateTripState extends State<CreateTrip> {
   List<String> destinations = ['New Delhi Railway Station', 'Indira Gandhi International Airport', 'Anand Vihar ISBT', 'Hazrat Nizamuddin Railway Station'];
+  List<int> maxpoolers = [1, 2, 3, 4, 5, 6];
   String _destination;
+  int _maxPoolers;
   final _finalDestinationController = TextEditingController();
   DateTime _selectedStartDate;
   TimeOfDay _selectedStartTime;
@@ -25,7 +26,7 @@ class _CreateTripState extends State<CreateTrip> {
   final RequestService _request = RequestService();
 
   void _addNewRequest() async {
-    final newRq = RequestDetails(name: 'Name', id: DateTime.now().toString(), destination: _destination, finalDestination: _finalDestinationController.text, startDate: _selectedStartDate, startTime: _selectedStartTime, endDate: _selectedEndDate, endTime: _selectedEndTime, privacy: privacy);
+    final newRq = RequestDetails(name: 'Name', id: DateTime.now().toString(), destination: _destination, finalDestination: _finalDestinationController.text, startDate: _selectedStartDate, startTime: _selectedStartTime, endDate: _selectedEndDate, endTime: _selectedEndTime, privacy: privacy, maxPoolers: _maxPoolers);
     try {
       await _request.createTrip(newRq);
     } catch (e) {
@@ -34,15 +35,12 @@ class _CreateTripState extends State<CreateTrip> {
       //final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
       //_scaffoldKey.currentState.showSnackBar(snackBar);
     }
-    setState(() {
-      allTrips.add(newRq);
-    });
   }
 
   void _submitData() {
     final enteredDestination = _destination;
     final enteredFinalDestination = _finalDestinationController.text;
-    if (enteredDestination.isEmpty || enteredFinalDestination.isEmpty || _selectedStartDate == null || _selectedStartTime == null || _selectedEndDate == null || _selectedEndTime == null) {
+    if (enteredDestination.isEmpty || enteredFinalDestination.isEmpty || _selectedStartDate == null || _selectedStartTime == null || _selectedEndDate == null || _selectedEndTime == null || _maxPoolers == null) {
       return; //return stops function execution and thus nothing is called or returned
     }
     setState(() {
@@ -234,6 +232,45 @@ class _CreateTripState extends State<CreateTrip> {
                 buildContainer('Start', _selectedStartDate, _selectedStartTime, _startDatePicker, _startTimePicker),
                 buildLabel('Ending'),
                 buildContainer('End', _selectedEndDate, _selectedEndTime, _endDatePicker, _endTimePicker),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: 45,
+                      margin: EdgeInsets.only(top: 20, left: 40),
+                      child: DropdownButton<int>(
+                        icon: Icon(
+                          Icons.keyboard_arrow_down,
+                          size: 30,
+                        ),
+                        items: maxpoolers.map((int dropDownIntItem) {
+                          return DropdownMenuItem<int>(
+                            value: dropDownIntItem,
+                            child: Text(
+                              dropDownIntItem.toString(),
+                              style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        value: _maxPoolers,
+                        onChanged: (val) {
+                          setState(() {
+                            _maxPoolers = val;
+                          });
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: Text('No of poolers with you',
+                          style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                          )),
+                    ),
+                  ],
+                ),
                 Container(
                   margin: EdgeInsets.only(
                     top: 20,

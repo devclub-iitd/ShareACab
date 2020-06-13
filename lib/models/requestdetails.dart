@@ -20,6 +20,8 @@ class RequestDetails {
   final TimeOfDay endTime;
   @required
   final bool privacy;
+  @required
+  final int maxPoolers;
 
-  RequestDetails({this.name, this.id, this.destination, this.finalDestination, this.startDate, this.startTime, this.endDate, this.endTime, this.privacy});
+  RequestDetails({this.name, this.id, this.destination, this.finalDestination, this.startDate, this.startTime, this.endDate, this.endTime, this.privacy, this.maxPoolers});
 }
