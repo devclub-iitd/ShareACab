@@ -124,7 +124,8 @@ class _SignInState extends State<SignIn> {
                           color: Theme.of(context).accentColor,
                           child: Text(
                             'Sign in',
-                            style: TextStyle(color: getVisibleColorOnAccentColor(context)),
+                            style: TextStyle(
+                                color: getVisibleColorOnAccentColor(context)),
                           ),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
@@ -194,7 +195,8 @@ class _SignInState extends State<SignIn> {
                           color: Theme.of(context).accentColor,
                           child: Text(
                             'Forgot Password',
-                            style: TextStyle(color: getVisibleColorOnAccentColor(context)),
+                            style: TextStyle(
+                                color: getVisibleColorOnAccentColor(context)),
                           ),
                           onPressed: () {
                             Navigator.pushNamed(
@@ -202,14 +204,15 @@ class _SignInState extends State<SignIn> {
                           },
                         ),
                         SizedBox(height: 20.0),
-                        !_darkTheme ?
-                        Text(
-                          'Tip: Enable Dark mode from settings (icon in the AppBar).',
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontStyle: FontStyle.italic,
-                              color: Colors.green),
-                        ):Text(''),
+                        !_darkTheme
+                            ? Text(
+                                'Tip: Enable Dark mode from settings (icon in the AppBar).',
+                                style: TextStyle(
+                                    fontSize: 20.0,
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.green),
+                              )
+                            : Text(''),
                         SizedBox(height: 12.0),
                         Text(
                           error,
