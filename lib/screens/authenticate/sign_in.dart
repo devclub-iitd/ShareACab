@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/screens/settings.dart';
 import 'package:shareacab/services/auth.dart';
@@ -15,6 +16,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  var _darkTheme = true;
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
@@ -34,6 +36,8 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+    _darkTheme = (themeNotifier.getTheme() == darkTheme);
     return loading
         ? Loading()
         : Scaffold(
@@ -120,7 +124,7 @@ class _SignInState extends State<SignIn> {
                           color: Theme.of(context).accentColor,
                           child: Text(
                             'Sign in',
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: getVisibleColorOnAccentColor(context)),
                           ),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
@@ -190,7 +194,7 @@ class _SignInState extends State<SignIn> {
                           color: Theme.of(context).accentColor,
                           child: Text(
                             'Forgot Password',
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: getVisibleColorOnAccentColor(context)),
                           ),
                           onPressed: () {
                             Navigator.pushNamed(
@@ -198,13 +202,14 @@ class _SignInState extends State<SignIn> {
                           },
                         ),
                         SizedBox(height: 20.0),
+                        !_darkTheme ?
                         Text(
                           'Tip: Enable Dark mode from settings (icon in the AppBar).',
                           style: TextStyle(
                               fontSize: 20.0,
                               fontStyle: FontStyle.italic,
                               color: Colors.green),
-                        ),
+                        ):Text(''),
                         SizedBox(height: 12.0),
                         Text(
                           error,
