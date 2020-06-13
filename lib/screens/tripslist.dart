@@ -21,6 +21,7 @@ class _TripsListState extends State<TripsList> {
     var firestore = Firestore.instance;
     var qn = await firestore.collection('group').orderBy('created', descending: true).getDocuments();
     return qn.documents;
+    //.where((doc) => doc['maxPoolers'] + 1 > doc['users'].length)
   }
 
   // MIGHT USE THIS CODE IN FUTURE, SO SAVING IT HERE
