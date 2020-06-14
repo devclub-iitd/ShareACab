@@ -28,9 +28,7 @@ class _SettingsState extends State<Settings> {
                 style: TextStyle(fontSize: 28.0),
               ),
               contentPadding: EdgeInsets.all(26.0),
-              subtitle: _darkTheme
-                  ? Text('Swipe to disable dark mode')
-                  : Text('Swipe to enable dark mode'),
+              subtitle: _darkTheme ? Text('Swipe to disable dark mode') : Text('Swipe to enable dark mode'),
               trailing: Transform.scale(
                 scale: 1.6,
                 child: Switch(
@@ -49,9 +47,7 @@ class _SettingsState extends State<Settings> {
   }
 
   void onThemeChanged(bool value, ThemeNotifier themeNotifier) async {
-    (value)
-        ? themeNotifier.setTheme(darkTheme)
-        : themeNotifier.setTheme(lightTheme);
+    (value) ? themeNotifier.setTheme(darkTheme) : themeNotifier.setTheme(lightTheme);
     var prefs = await SharedPreferences.getInstance();
     await prefs.setBool('darkMode', value);
   }

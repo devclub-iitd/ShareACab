@@ -8,21 +8,9 @@ class MyRequests extends StatefulWidget {
 
 class _MyRequestsState extends State<MyRequests> {
   List<Requests> requests = [
-    Requests(
-        name: 'Demo Request Trip-1',
-        destination: 'New Delhi Railway Station',
-        id: '1',
-        status: 'Pending'),
-    Requests(
-        name: 'Demo Request Trip-2',
-        destination: 'IGI Airport',
-        id: '1',
-        status: 'Accepted'),
-    Requests(
-        name: 'Demo Request Trip-3',
-        destination: 'New Delhi Railway Station',
-        id: '1',
-        status: 'Rejected'),
+    Requests(name: 'Demo Request Trip-1', destination: 'New Delhi Railway Station', id: '1', status: 'Pending'),
+    Requests(name: 'Demo Request Trip-2', destination: 'IGI Airport', id: '1', status: 'Accepted'),
+    Requests(name: 'Demo Request Trip-3', destination: 'New Delhi Railway Station', id: '1', status: 'Rejected'),
   ];
   @override
   Widget build(BuildContext context) {
@@ -48,8 +36,7 @@ class _MyRequestsState extends State<MyRequests> {
             : ListView.builder(
                 itemBuilder: (ctx, index) {
                   return Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(25.0))),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
                     elevation: 5,
                     margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                     child: ListTile(
@@ -68,18 +55,15 @@ class _MyRequestsState extends State<MyRequests> {
                                         left: 20,
                                         top: 20,
                                       ),
-                                      child: requests[index].destination ==
-                                              'New Delhi Railway Station'
+                                      child: requests[index].destination == 'New Delhi Railway Station'
                                           ? Icon(
                                               Icons.train,
-                                              color:
-                                                  Theme.of(context).accentColor,
+                                              color: Theme.of(context).accentColor,
                                               size: 30,
                                             )
                                           : Icon(
                                               Icons.airplanemode_active,
-                                              color:
-                                                  Theme.of(context).accentColor,
+                                              color: Theme.of(context).accentColor,
                                               size: 30,
                                             )),
                                 ),
@@ -101,58 +85,29 @@ class _MyRequestsState extends State<MyRequests> {
                                 Flexible(
                                     flex: 2,
                                     child: Container(
-                                        child: requests[index].status ==
-                                                'Accepted'
+                                        child: requests[index].status == 'Accepted'
                                             ? Column(
                                                 children: <Widget>[
                                                   FlatButton(
                                                     onPressed: null,
-                                                    child: Text('Accepted',
-                                                        style: TextStyle(
-                                                            color:
-                                                                requestAccepted(
-                                                                    context),
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700)),
+                                                    child: Text('Accepted', style: TextStyle(color: requestAccepted(context), fontWeight: FontWeight.w700)),
                                                   ),
                                                   FlatButton(
                                                     onPressed: null,
-                                                    child: Text('Join Now',
-                                                        style: TextStyle(
-                                                            color:
-                                                                requestAccepted(
-                                                                    context),
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w700)),
+                                                    child: Text('Join Now', style: TextStyle(color: requestAccepted(context), fontWeight: FontWeight.w700)),
                                                   )
                                                 ],
                                               )
-                                            : requests[index].status ==
-                                                    'Rejected'
+                                            : requests[index].status == 'Rejected'
                                                 ? Column(
                                                     children: <Widget>[
                                                       FlatButton(
                                                         onPressed: null,
-                                                        child: Text('Rejected',
-                                                            style: TextStyle(
-                                                                color:
-                                                                    requestRejected(
-                                                                        context),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700)),
+                                                        child: Text('Rejected', style: TextStyle(color: requestRejected(context), fontWeight: FontWeight.w700)),
                                                       ),
                                                       FlatButton(
                                                         onPressed: null,
-                                                        child: Text(
-                                                            'View Message',
-                                                            style: TextStyle(
-                                                                fontSize: 11.8,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700)),
+                                                        child: Text('View Message', style: TextStyle(fontSize: 11.8, fontWeight: FontWeight.w700)),
                                                       )
                                                     ],
                                                   )
@@ -160,24 +115,13 @@ class _MyRequestsState extends State<MyRequests> {
                                                     children: <Widget>[
                                                       FlatButton(
                                                         onPressed: null,
-                                                        child: Text('Pending',
-                                                            style: TextStyle(
-                                                                color:
-                                                                    requestPending(
-                                                                        context),
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700)),
+                                                        child: Text('Pending', style: TextStyle(color: requestPending(context), fontWeight: FontWeight.w700)),
                                                       ),
                                                       FlatButton(
                                                         onPressed: null,
                                                         child: Text(
                                                           'View Message',
-                                                          style: TextStyle(
-                                                              fontSize: 11.8,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700),
+                                                          style: TextStyle(fontSize: 11.8, fontWeight: FontWeight.w700),
                                                         ),
                                                       )
                                                     ],
