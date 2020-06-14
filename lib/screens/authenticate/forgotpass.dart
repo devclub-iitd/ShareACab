@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shareacab/main.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/constants.dart';
 import 'package:shareacab/shared/loading.dart';
@@ -51,7 +52,7 @@ class _ForgotPassState extends State<ForgotPass> {
                           color: Theme.of(context).accentColor,
                           child: Text(
                             'Send Password Reset Link',
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: getVisibleColorOnAccentColor(context)),
                           ),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
@@ -89,7 +90,10 @@ class _ForgotPassState extends State<ForgotPass> {
                         SizedBox(height: 12.0),
                         RaisedButton(
                           color: Theme.of(context).accentColor,
-                          child: Text('Go back to Sign In'),
+                          child: Text(
+                            'Go back to Sign In',
+                            style: TextStyle(color: getVisibleColorOnAccentColor(context)),
+                          ),
                           onPressed: () {
                             Navigator.pop(context);
                           },

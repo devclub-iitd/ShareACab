@@ -19,10 +19,7 @@ class _TripsListState extends State<TripsList> {
 
   Future getTrips() async {
     var firestore = Firestore.instance;
-    var qn = await firestore
-        .collection('group')
-        .orderBy('created', descending: true)
-        .getDocuments();
+    var qn = await firestore.collection('group').orderBy('created', descending: true).getDocuments();
     return qn.documents;
     //.where((doc) => doc['maxPoolers'] + 1 > doc['users'].length)
   }
@@ -39,11 +36,7 @@ class _TripsListState extends State<TripsList> {
   @override
   Widget build(BuildContext context) {
     final currentuser = Provider.of<FirebaseUser>(context);
-    Firestore.instance
-        .collection('userdetails')
-        .document(currentuser.uid)
-        .get()
-        .then((value) {
+    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
       if (value.data['currentGroup'] != null) {
         setState(() {
           inGroup = true;
@@ -73,40 +66,26 @@ class _TripsListState extends State<TripsList> {
                   final end = snapshot.data[index].data['end'].toDate();
                   final docId = snapshot.data[index].documentID;
                   final privacy = snapshot.data[index].data['p  rivacy'];
-                  final numberOfMembers =
-                      snapshot.data[index].data['numberOfMembers'];
+                  final numberOfMembers = snapshot.data[index].data['numberOfMembers'];
                   final data = snapshot.data[index];
                   return Hero(
                     tag: docId,
                     child: Card(
                       color: Theme.of(context).scaffoldBackgroundColor,
+                      elevation: 0.0,
                       child: InkWell(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => GroupDetails(
-                                      destination,
-                                      docId,
-                                      privacy,
-                                      start,
-                                      end,
-                                      numberOfMembers,
-                                      data)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => GroupDetails(destination, docId, privacy, start, end, numberOfMembers, data)));
                         },
                         child: Card(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25.0))),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
                           elevation: 5,
-                          margin:
-                              EdgeInsets.symmetric(vertical: 6, horizontal: 5),
+                          margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                           child: Container(
                             child: Column(
                               children: <Widget>[
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Flexible(
                                       fit: FlexFit.tight,
@@ -116,31 +95,21 @@ class _TripsListState extends State<TripsList> {
                                             left: 20,
                                             top: 20,
                                           ),
-                                          child: snapshot.data[index].data[
-                                                          'destination'] ==
-                                                      'New Delhi Railway Station' ||
-                                                  snapshot.data[index].data[
-                                                          'destination'] ==
-                                                      'Hazrat Nizamuddin Railway Station'
+                                          child: snapshot.data[index].data['destination'] == 'New Delhi Railway Station' || snapshot.data[index].data['destination'] == 'Hazrat Nizamuddin Railway Station'
                                               ? Icon(
                                                   Icons.train,
-                                                  color: Theme.of(context)
-                                                      .accentColor,
+                                                  color: Theme.of(context).accentColor,
                                                   size: 30,
                                                 )
-                                              : snapshot.data[index].data[
-                                                          'destination'] ==
-                                                      'Indira Gandhi International Airport'
+                                              : snapshot.data[index].data['destination'] == 'Indira Gandhi International Airport'
                                                   ? Icon(
                                                       Icons.airplanemode_active,
-                                                      color: Theme.of(context)
-                                                          .accentColor,
+                                                      color: Theme.of(context).accentColor,
                                                       size: 30,
                                                     )
                                                   : Icon(
                                                       Icons.directions_bus,
-                                                      color: Theme.of(context)
-                                                          .accentColor,
+                                                      color: Theme.of(context).accentColor,
                                                       size: 30,
                                                     )),
                                     ),
@@ -148,8 +117,7 @@ class _TripsListState extends State<TripsList> {
                                       fit: FlexFit.tight,
                                       flex: 4,
                                       child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 10.0),
+                                        padding: const EdgeInsets.only(top: 10.0),
                                         child: Text(
                                           '${snapshot.data[index].data['destination']}',
                                           style: TextStyle(
@@ -163,35 +131,22 @@ class _TripsListState extends State<TripsList> {
                                     Flexible(
                                       flex: 2,
                                       child: Container(
-                                        child: snapshot.data[index]
-                                                    .data['privacy'] ==
-                                                'true'
+                                        child: snapshot.data[index].data['privacy'] == 'true'
                                             ? Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 15.0),
+                                                padding: const EdgeInsets.only(right: 15.0),
                                                 child: Icon(
                                                   Icons.lock,
-                                                  color: Theme.of(context)
-                                                      .accentColor,
+                                                  color: Theme.of(context).accentColor,
                                                 ),
                                               )
                                             : !inGroup
                                                 ? FlatButton(
                                                     onPressed: () async {
                                                       try {
-                                                        DocumentSnapshot temp =
-                                                            snapshot
-                                                                .data[index];
-                                                        await _request
-                                                            .joinGroup(temp
-                                                                .documentID);
+                                                        DocumentSnapshot temp = snapshot.data[index];
+                                                        await _request.joinGroup(temp.documentID);
                                                         //print(temp.documentID);
-                                                        await Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        GroupPage()));
+                                                        await Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
                                                       } catch (e) {
                                                         print(e.toString());
                                                       }
@@ -200,8 +155,7 @@ class _TripsListState extends State<TripsList> {
                                                   )
                                                 : FlatButton(
                                                     onPressed: null,
-                                                    child: Text(
-                                                        'Already in group'),
+                                                    child: Text('Already in group'),
                                                   ),
                                       ),
                                     )
@@ -243,14 +197,10 @@ class _TripsListState extends State<TripsList> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: <Widget>[
                                       Column(
-                                        children: <Widget>[
-                                          Text(
-                                              'Number of members in group: ${snapshot.data[index].data['numberOfMembers'].toString()}')
-                                        ],
+                                        children: <Widget>[Text('Number of members in group: ${snapshot.data[index].data['numberOfMembers'].toString()}')],
                                       ),
                                     ],
                                   ),
