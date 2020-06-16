@@ -11,6 +11,7 @@ import 'package:shareacab/models/alltrips.dart';
 import 'package:shareacab/models/requestdetails.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/services/auth.dart';
+
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
@@ -98,7 +99,10 @@ class _DashboardState extends State<Dashboard> {
         actions: <Widget>[
           FlatButton.icon(
             textColor: getVisibleColorOnPrimaryColor(context),
-            icon: Icon(Icons.filter_list, size: 30.0,),
+            icon: Icon(
+              Icons.filter_list,
+              size: 30.0,
+            ),
             onPressed: () async {
               _startFilter(context);
             },

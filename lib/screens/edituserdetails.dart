@@ -83,8 +83,14 @@ class _EditFormState extends State<EditForm> {
                             );
                           }
                         },
-                        icon: Icon(Icons.done, color: getVisibleColorOnPrimaryColor(context),),
-                        label: Text('Done', style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),))
+                        icon: Icon(
+                          Icons.done,
+                          color: getVisibleColorOnPrimaryColor(context),
+                        ),
+                        label: Text(
+                          'Done',
+                          style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
+                        ))
                   ],
                 ),
                 body: Container(

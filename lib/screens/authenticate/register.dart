@@ -71,8 +71,14 @@ class _RegisterState extends State<Register> {
               title: Text('Sign up'),
               actions: <Widget>[
                 FlatButton.icon(
-                  icon: Icon(Icons.person, color: getVisibleColorOnPrimaryColor(context),),
-                  label: Text('Sign in', style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),),
+                  icon: Icon(
+                    Icons.person,
+                    color: getVisibleColorOnPrimaryColor(context),
+                  ),
+                  label: Text(
+                    'Sign in',
+                    style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
+                  ),
                   onPressed: () {
                     widget.toggleView();
                   },
