@@ -61,10 +61,8 @@ class _NotificationsState extends State<Notifications> {
                 ),
               )
             : ListView.builder(
-                physics: BouncingScrollPhysics(),
                 itemBuilder: (ctx, index) {
                   return Card(
-                    margin: EdgeInsets.only(bottom: 15),
                     color: Theme.of(context).scaffoldBackgroundColor,
                     child: ListTile(
                       onTap: () {},

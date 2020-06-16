@@ -94,7 +94,7 @@ class GroupDetails extends StatelessWidget {
                       elevation: 5,
                       margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                       child: Container(
-                        height: 150,
+                        height: 120,
                         child: Column(
                           children: <Widget>[
                             Row(
@@ -106,7 +106,6 @@ class GroupDetails extends StatelessWidget {
                                   child: Container(
                                       margin: EdgeInsets.only(
                                         left: 20,
-                                        top: 20,
                                       ),
                                       child: destination ==
                                               'New Delhi Railway Station'
@@ -128,7 +127,6 @@ class GroupDetails extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.only(
                                 bottom: 5,
-                                top: 10,
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

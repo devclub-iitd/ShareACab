@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shareacab/main.dart';
 import 'package:shareacab/services/database.dart';
 import 'package:shareacab/shared/constants.dart';
 import 'package:shareacab/shared/loading.dart';
@@ -82,8 +83,8 @@ class _EditFormState extends State<EditForm> {
                             );
                           }
                         },
-                        icon: Icon(Icons.done),
-                        label: Text('Done'))
+                        icon: Icon(Icons.done, color: getVisibleColorOnPrimaryColor(context),),
+                        label: Text('Done', style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),))
                   ],
                 ),
                 body: Container(
