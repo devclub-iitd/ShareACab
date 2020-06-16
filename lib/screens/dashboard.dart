@@ -118,13 +118,6 @@ class _DashboardState extends State<Dashboard> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            inGroup
-                ? Container(
-                    margin: EdgeInsets.all(5),
-                    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
-                    child: Text('Already in group. Press the button below.'),
-                  )
-                : Container(),
             Container(
               margin: EdgeInsets.all(5),
               height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,

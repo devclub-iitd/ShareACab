@@ -91,8 +91,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                         label: Text('Leave Group'),
                       )
                     : FlatButton.icon(
-                        textColor: getVisibleColorOnPrimaryColor(context),
-                        icon: Icon(FontAwesomeIcons.signOutAlt),
+                        textColor: getDisableColor(context),
+                        icon: Icon(FontAwesomeIcons.signOutAlt, color: getDisableColor(context),),
                         onPressed: null,
                         label: Text('Leave Group'),
                       )
