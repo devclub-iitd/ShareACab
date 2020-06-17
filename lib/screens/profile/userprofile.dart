@@ -163,7 +163,7 @@ class _MyProfileState extends State<MyProfile> {
                           onTap: () {},
                           title: Center(
                             child: Text(
-                              'Gender',
+                              'GENDER',
                               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
                             ),
                           ),
@@ -189,6 +189,7 @@ class _MyProfileState extends State<MyProfile> {
                           title: Center(
                             child: Text(
                               'TOTAL RIDES',
+                              textAlign: TextAlign.center,
                               style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                             ),
                           ),
@@ -206,6 +207,7 @@ class _MyProfileState extends State<MyProfile> {
                               title: Center(
                                 child: Text(
                                   'CANCELLED TRIPS',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                                 ),
                               ),
@@ -261,6 +263,7 @@ class _MyProfileState extends State<MyProfile> {
                             title: Center(
                               child: Text(
                                 'MOBILE NUMBER',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                               ),
                             ),
@@ -277,6 +280,7 @@ class _MyProfileState extends State<MyProfile> {
                             title: Center(
                               child: Text(
                                 'USER RATING',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                               ),
                             ),
