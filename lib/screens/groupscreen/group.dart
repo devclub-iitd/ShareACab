@@ -9,6 +9,7 @@ import 'package:shareacab/screens/groupscreen/editgroup.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:shareacab/shared/loading.dart';
 import 'package:intl/intl.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class GroupPage extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class GroupPage extends StatefulWidget {
 
 class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixin<GroupPage> {
   final RequestService _request = RequestService();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   String groupUID = '';
   String destination = '';
@@ -73,32 +75,37 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
             appBar: AppBar(
               title: Text('Group Details'),
               actions: <Widget>[
-                buttonEnabled
-                    ? FlatButton.icon(
-                        textColor: getVisibleColorOnPrimaryColor(context),
-                        icon: Icon(FontAwesomeIcons.signOutAlt),
-                        onPressed: () async {
-                          try {
-                            setState(() {
-                              buttonEnabled = false;
-                            });
-                            await _request.exitGroup();
-                            Navigator.pop(context);
-                          } catch (e) {
-                            print(e.toString());
-                          }
-                        },
-                        label: Text('Leave Group'),
-                      )
-                    : FlatButton.icon(
-                        textColor: getDisableColor(context),
-                        icon: Icon(
-                          FontAwesomeIcons.signOutAlt,
-                          color: getDisableColor(context),
-                        ),
-                        onPressed: null,
-                        label: Text('Leave Group'),
-                      )
+                FlatButton.icon(
+                  textColor: getVisibleColorOnPrimaryColor(context),
+                  icon: Icon(FontAwesomeIcons.signOutAlt),
+                  onPressed: () async {
+                    ProgressDialog pr;
+                    pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                    pr.style(
+                      message: 'Leaving Group...',
+                      backgroundColor: Theme.of(context).backgroundColor,
+                      messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+
+                    );
+                    await pr.show();
+                    await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
+                    try {
+                      setState(() {
+                        buttonEnabled = false;
+                      });
+                      await _request.exitGroup();
+                      Navigator.pop(context);
+                      await pr.hide();
+                    } catch (err) {
+                      // show e.message
+                      await pr.hide();
+                      String errStr = err.message ?? err.toString();
+                      final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+                      scaffoldKey.currentState.showSnackBar(snackBar);
+                    }
+                  },
+                  label: Text('Leave Group'),
+                )
               ],
             ),
             body: Container(
