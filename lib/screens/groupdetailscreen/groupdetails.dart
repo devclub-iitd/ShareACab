@@ -266,8 +266,40 @@ class _GroupDetailsState extends State<GroupDetails> {
                 if (widget.privacy == true || GroupDetails.inGroup) {
                   null;
                 } else {
-                  await _request.joinGroup(widget.docId);
-                  GroupDetails.inGroup = true;
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext ctx) {
+                        return AlertDialog(
+                          title: Text('Join Group'),
+                          content: Text('Are you sure you want to join this group?'),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('Join', style: TextStyle(color: Theme.of(context).accentColor)),
+                              onPressed: () async {
+                                await _request.joinGroup(widget.docId);
+                                GroupDetails.inGroup = true;
+                                await Navigator.of(context).pop();
+                                // final snackBar = SnackBar(
+                                //   backgroundColor: Theme.of(context).primaryColor,
+                                //   content: Text(
+                                //     'Yayyy!! You joined the trip.',
+                                //     style: TextStyle(color: Theme.of(context).accentColor),
+                                //   ),
+                                //   duration: Duration(seconds: 1),
+                                // );
+                                // Scaffold.of(ctx).hideCurrentSnackBar();
+                                // Scaffold.of(ctx).showSnackBar(snackBar);
+                              },
+                            ),
+                            FlatButton(
+                              child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      });
                 }
               } catch (e) {
                 print(e.toString());
