@@ -19,7 +19,7 @@ class _TripsListState extends State<TripsList> {
 
   Future getTrips() async {
     var firestore = Firestore.instance;
-    var qn = await firestore.collection('group').orderBy('created', descending: true).getDocuments();
+    var qn = await firestore.collection('group').where('end', isGreaterThan: Timestamp.now()).orderBy('end', descending: true).getDocuments();
     return qn.documents;
     //.where((doc) => doc['maxPoolers'] + 1 > doc['users'].length)
   }
@@ -51,8 +51,7 @@ class _TripsListState extends State<TripsList> {
       child: FutureBuilder(
         future: getTrips(),
         builder: (_, snapshot) {
-          // will fix this later, it should have ConnectionState.waiting, but it was having issues.
-          if (snapshot.connectionState == null) {
+          if (!snapshot.hasData) {
             return Center(
               child: Text('Loading..'),
             );
