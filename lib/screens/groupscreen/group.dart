@@ -39,6 +39,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
   }
 
   bool buttonEnabled = true;
+  Timestamp endTimeStamp = Timestamp.now();
+  bool timestampFlag = false;
 
   @override
   bool get wantKeepAlive => true;
@@ -63,10 +65,17 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
           end = DateFormat('dd.MM.yyyy - kk:mm a').format(value.data['end'].toDate());
           grpOwner = value.data['owner'];
           presentNum = value.data['numberOfMembers'].toString();
+          endTimeStamp = value.data['end'];
           loading = false;
         });
+        if (endTimeStamp.compareTo(Timestamp.now()) < 0) {
+          setState(() {
+            timestampFlag = true;
+          });
+        }
       }
     });
+
     return loading
         ? Loading()
         : Scaffold(
@@ -74,28 +83,52 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
               title: Text('Group Details'),
               actions: <Widget>[
                 buttonEnabled
-                    ? FlatButton.icon(
-                        textColor: getVisibleColorOnPrimaryColor(context),
-                        icon: Icon(FontAwesomeIcons.signOutAlt),
-                        onPressed: () async {
-                          try {
-                            setState(() {
-                              buttonEnabled = false;
-                            });
-                            await _request.exitGroup();
-                            Navigator.pop(context);
-                          } catch (e) {
-                            print(e.toString());
-                          }
-                        },
-                        label: Text('Leave Group'),
-                      )
-                    : FlatButton.icon(
-                        textColor: getVisibleColorOnPrimaryColor(context),
-                        icon: Icon(FontAwesomeIcons.signOutAlt),
-                        onPressed: null,
-                        label: Text('Leave Group'),
-                      )
+                    ? timestampFlag
+                        ? FlatButton.icon(
+                            textColor: getVisibleColorOnPrimaryColor(context),
+                            icon: Icon(FontAwesomeIcons.signOutAlt),
+                            onPressed: () async {
+                              try {
+                                setState(() {
+                                  buttonEnabled = false;
+                                });
+                                await _request.exitGroup();
+                                Navigator.pop(context);
+                              } catch (e) {
+                                print(e.toString());
+                              }
+                            },
+                            label: Text('End Trip'),
+                          )
+                        : FlatButton.icon(
+                            textColor: getVisibleColorOnPrimaryColor(context),
+                            icon: Icon(FontAwesomeIcons.signOutAlt),
+                            onPressed: () async {
+                              try {
+                                setState(() {
+                                  buttonEnabled = false;
+                                });
+                                await _request.exitGroup();
+                                Navigator.pop(context);
+                              } catch (e) {
+                                print(e.toString());
+                              }
+                            },
+                            label: Text('Leave Group'),
+                          )
+                    : timestampFlag
+                        ? FlatButton.icon(
+                            textColor: getVisibleColorOnPrimaryColor(context),
+                            icon: Icon(FontAwesomeIcons.signOutAlt),
+                            onPressed: null,
+                            label: Text('End Trip'),
+                          )
+                        : FlatButton.icon(
+                            textColor: getVisibleColorOnPrimaryColor(context),
+                            icon: Icon(FontAwesomeIcons.signOutAlt),
+                            onPressed: null,
+                            label: Text('Leave Group'),
+                          )
               ],
             ),
             body: Container(
