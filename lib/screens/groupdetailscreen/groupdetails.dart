@@ -195,7 +195,7 @@ class GroupDetails extends StatelessWidget {
                                                       backgroundColor: Theme.of(context).primaryColor,
                                                       content: Text(
                                                         'Copied to Clipboard',
-                                                        style: TextStyle(color: Theme.of(context).accentColor),
+                                                        style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
                                                       ),
                                                       duration: Duration(seconds: 1),
                                                     );
@@ -211,7 +211,7 @@ class GroupDetails extends StatelessWidget {
                                                     backgroundColor: Theme.of(context).primaryColor,
                                                     content: Text(
                                                       'Copied to Clipboard',
-                                                      style: TextStyle(color: Theme.of(context).accentColor),
+                                                      style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
                                                     ),
                                                     duration: Duration(seconds: 1),
                                                   );
