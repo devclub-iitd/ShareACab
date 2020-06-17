@@ -105,7 +105,7 @@ class DatabaseService {
       'start': starting,
       'end': ending,
       'finaldestination': requestDetails.finalDestination.toString(),
-      'maxpoolers': 0,
+      'maxpoolers': requestDetails.maxPoolers,
       'created': Timestamp.now(),
     });
     final docRef = await groupdetails.add({
@@ -115,7 +115,7 @@ class DatabaseService {
       'start': starting,
       'end': ending,
       'privacy': requestDetails.privacy.toString(),
-      'maxpoolers': 0,
+      'maxpoolers': requestDetails.maxPoolers,
       'numberOfMembers': 1,
       'threshold': null,
       'created': Timestamp.now(),
