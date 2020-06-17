@@ -156,12 +156,14 @@ class DatabaseService {
     var currentGrp;
     var currentReq;
     var presentNum;
+    var startTimeStamp;
     await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) {
       currentGrp = value.data['currentGroup'];
       currentReq = value.data['currentReq'];
     });
     await groupdetails.document(currentGrp).get().then((value) {
       presentNum = value.data['numberOfMembers'];
+      startTimeStamp = value.data['start'];
     });
     await groupdetails.document(currentGrp).updateData({
       'users': FieldValue.arrayRemove([currentReq.toString()]),
@@ -172,6 +174,11 @@ class DatabaseService {
       'currentGroup': null,
       'currentReq': null,
     });
+
+    // delete group if last member and startTime is greater than present time.
+    if (presentNum == 1 && startTimeStamp.compareTo(Timestamp.now()) > 0) {
+      await groupdetails.document(currentGrp).delete();
+    }
     //deleting user from chat group
     await ChatService().exitChatRoom(currentGrp);
   }
@@ -213,8 +220,6 @@ class DatabaseService {
 
   Future<void> setToken(String token) async {
     final user = await _auth.currentUser();
-    await userDetails.document(user.uid).updateData({
-      'device_token' : token
-    });
+    await userDetails.document(user.uid).updateData({'device_token': token});
   }
 }
