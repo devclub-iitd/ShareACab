@@ -33,6 +33,7 @@ class _NotificationsState extends State<Notifications> {
             : ListView.builder(
                 itemBuilder: (ctx, index) {
                   return Card(
+                    margin: EdgeInsets.all(0.0),
                     color: Theme.of(context).scaffoldBackgroundColor,
                     child: ListTile(
                       onTap: () {},

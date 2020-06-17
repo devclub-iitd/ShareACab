@@ -85,7 +85,6 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                       message: 'Leaving Group...',
                       backgroundColor: Theme.of(context).backgroundColor,
                       messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
-
                     );
                     await pr.show();
                     await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p

@@ -14,8 +14,6 @@ Color userIsOnline(BuildContext context) => Colors.green;
 
 Color sendMessageIcon(BuildContext context) => Colors.green;
 
-Color getDisableColor(BuildContext context) => Colors.grey;
-
 Color requestAccepted(BuildContext context) => Colors.green;
 Color requestRejected(BuildContext context) => Colors.red;
 Color requestPending(BuildContext context) => Colors.yellow;
