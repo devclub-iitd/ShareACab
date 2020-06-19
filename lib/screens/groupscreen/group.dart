@@ -90,14 +90,27 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                             textColor: getVisibleColorOnPrimaryColor(context),
                             icon: Icon(FontAwesomeIcons.signOutAlt),
                             onPressed: () async {
+                              ProgressDialog pr;
+                              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                              pr.style(
+                                message: 'Ending Trip...',
+                                backgroundColor: Theme.of(context).backgroundColor,
+                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                              );
+                              await pr.show();
+                              await Future.delayed(Duration(seconds: 1));
                               try {
                                 setState(() {
                                   buttonEnabled = false;
                                 });
                                 await _request.exitGroup();
                                 Navigator.pop(context);
+                                await pr.hide();
                               } catch (e) {
-                                print(e.toString());
+                                await pr.hide();
+                                String errStr = e.message ?? e.toString();
+                                final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+                                scaffoldKey.currentState.showSnackBar(snackBar);
                               }
                             },
                             label: Text('End Trip'),
@@ -106,14 +119,27 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                             textColor: getVisibleColorOnPrimaryColor(context),
                             icon: Icon(FontAwesomeIcons.signOutAlt),
                             onPressed: () async {
+                              ProgressDialog pr;
+                              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                              pr.style(
+                                message: 'Leaving Group...',
+                                backgroundColor: Theme.of(context).backgroundColor,
+                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                              );
+                              await pr.show();
+                              await Future.delayed(Duration(seconds: 1));
                               try {
                                 setState(() {
                                   buttonEnabled = false;
                                 });
                                 await _request.exitGroup();
                                 Navigator.pop(context);
+                                await pr.hide();
                               } catch (e) {
-                                print(e.toString());
+                                await pr.hide();
+                                String errStr = e.message ?? e.toString();
+                                final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+                                scaffoldKey.currentState.showSnackBar(snackBar);
                               }
                             },
                             label: Text('Leave Group'),
