@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
+import 'package:shareacab/main.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/constants.dart';
 import 'package:shareacab/shared/loading.dart';
@@ -67,11 +68,20 @@ class _RegisterState extends State<Register> {
             appBar: AppBar(
               backgroundColor: Theme.of(context).primaryColor,
               elevation: 0.0,
-              title: Text('Sign up'),
+              title: Text(
+                'Sign up',
+                style: TextStyle(color: Theme.of(context).accentColor),
+              ),
               actions: <Widget>[
                 FlatButton.icon(
-                  icon: Icon(Icons.person),
-                  label: Text('Sign in'),
+                  icon: Icon(
+                    Icons.person,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  label: Text(
+                    'Sign in',
+                    style: TextStyle(color: Theme.of(context).accentColor, fontSize: 18),
+                  ),
                   onPressed: () {
                     widget.toggleView();
                   },
@@ -88,8 +98,9 @@ class _RegisterState extends State<Register> {
                   key: _formKey,
                   child: SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 50.0),
                         TextFormField(
                           decoration:
                               // use this inputdecoration of IITD email
@@ -193,9 +204,18 @@ class _RegisterState extends State<Register> {
                         SizedBox(height: 20.0),
                         RaisedButton(
                           color: Theme.of(context).accentColor,
-                          child: Text(
-                            'Register',
-                            style: TextStyle(color: Colors.white),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 17.0),
+                            child: Text(
+                              'REGISTER',
+                              style: TextStyle(
+                                fontFamily: 'Poiret',
+                                letterSpacing: 3.0,
+                                fontWeight: FontWeight.bold,
+                                color: Provider.of<ThemeNotifier>(context).getTheme() == darkTheme ? Colors.black : Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
                           ),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {

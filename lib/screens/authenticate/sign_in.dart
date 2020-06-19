@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/main.dart';
@@ -45,10 +46,16 @@ class _SignInState extends State<SignIn> {
             appBar: AppBar(
               backgroundColor: Theme.of(context).primaryColor,
               elevation: 0.0,
-              title: Text('Sign in'),
+              title: Text(
+                'Sign in',
+                style: TextStyle(
+                  color: Theme.of(context).accentColor,
+                ),
+              ),
               actions: <Widget>[
                 IconButton(
                     tooltip: 'Settings',
+                    color: Theme.of(context).accentColor,
                     icon: Icon(Icons.settings),
                     onPressed: () {
                       return Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -58,11 +65,11 @@ class _SignInState extends State<SignIn> {
                 FlatButton.icon(
                   icon: Icon(
                     Icons.person_add,
-                    color: getVisibleColorOnPrimaryColor(context),
+                    color: Theme.of(context).accentColor,
                   ),
                   label: Text(
                     'Register',
-                    style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
+                    style: TextStyle(color: Theme.of(context).accentColor, fontSize: 18),
                   ),
                   onPressed: () {
                     widget.toggleView();
@@ -80,10 +87,33 @@ class _SignInState extends State<SignIn> {
                   key: _formKey,
                   child: SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
+                        SizedBox(height: 80.0),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              'ShareACab ',
+                              style: TextStyle(
+                                fontFamily: 'Poiret',
+                                fontSize: 47,
+                                color: Theme.of(context).accentColor,
+                                fontWeight: FontWeight.bold,
+                                textBaseline: TextBaseline.alphabetic,
+                              ),
+                            ),
+                            Icon(
+                              CupertinoIcons.car_detailed,
+                              size: 40,
+                              color: Theme.of(context).accentColor,
+                            ),
+                          ],
+                        ),
                         SizedBox(height: 20.0),
                         TextFormField(
-                          decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                          decoration: textInputDecoration.copyWith(
+                            hintText: 'Email',
+                          ),
                           validator: (val) => val.isEmpty ? 'Enter a valid Email' : null,
                           onChanged: (val) {
                             setState(() => email = val);
@@ -114,9 +144,18 @@ class _SignInState extends State<SignIn> {
                         SizedBox(height: 20.0),
                         RaisedButton(
                           color: Theme.of(context).accentColor,
-                          child: Text(
-                            'Sign in',
-                            style: TextStyle(color: getVisibleColorOnAccentColor(context)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 17),
+                            child: Text(
+                              'SIGN IN',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: _darkTheme ? Colors.black : Colors.white,
+                                fontFamily: 'Poiret',
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 3,
+                              ),
+                            ),
                           ),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
@@ -171,12 +210,21 @@ class _SignInState extends State<SignIn> {
                             }
                           },
                         ),
-                        SizedBox(height: 10.0),
+                        SizedBox(height: 20.0),
                         RaisedButton(
                           color: Theme.of(context).accentColor,
-                          child: Text(
-                            'Forgot Password',
-                            style: TextStyle(color: getVisibleColorOnAccentColor(context)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 17),
+                            child: Text(
+                              'FORGOT PASSWORD',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: _darkTheme ? Colors.black : Colors.white,
+                                fontFamily: 'Poiret',
+                                letterSpacing: 2,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ),
                           onPressed: () {
                             Navigator.pushNamed(context, '/accounts/forgotpass');
