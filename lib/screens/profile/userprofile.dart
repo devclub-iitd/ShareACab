@@ -7,8 +7,13 @@ import 'package:shareacab/shared/loading.dart';
 import '../../main.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:shareacab/services/auth.dart';
 
 class MyProfile extends StatefulWidget {
+  final AuthService _auth;
+  MyProfile(this._auth);
   @override
   _MyProfileState createState() => _MyProfileState();
 }
@@ -16,6 +21,7 @@ class MyProfile extends StatefulWidget {
 class _MyProfileState extends State<MyProfile> {
   FirebaseUser currentUser;
   var namefirst = 'P';
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -89,10 +95,9 @@ class _MyProfileState extends State<MyProfile> {
             appBar: AppBar(
               title: Text(
                 'My Profile',
-                style: TextStyle(fontSize: 30),
+                style: TextStyle(fontSize: 25),
               ),
               elevation: 0,
-              centerTitle: true,
               actions: <Widget>[
                 FlatButton.icon(
                     textColor: getVisibleColorOnPrimaryColor(context),
@@ -101,7 +106,33 @@ class _MyProfileState extends State<MyProfile> {
                       // _showEditPannel();
                     },
                     icon: Icon(Icons.edit),
-                    label: Text('Edit'))
+                    label: Text('Edit')),
+                FlatButton.icon(
+                  textColor: getVisibleColorOnPrimaryColor(context),
+                  icon: Icon(FontAwesomeIcons.signOutAlt),
+                  onPressed: () async {
+                    ProgressDialog pr;
+                    pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                    pr.style(
+                      message: 'Logging out...',
+                      backgroundColor: Theme.of(context).backgroundColor,
+                      messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                    );
+                    await pr.show();
+                    await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
+                    try {
+                      await widget._auth.signOut();
+                      await pr.hide();
+                    } catch (err) {
+                      // show e.message
+                      await pr.hide();
+                      String errStr = err.message ?? err.toString();
+                      final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+                      scaffoldKey.currentState.showSnackBar(snackBar);
+                    }
+                  },
+                  label: Text('Logout'),
+                )
               ],
             ),
             body: ListView(

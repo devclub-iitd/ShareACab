@@ -23,17 +23,12 @@ class GroupDetails extends StatelessWidget {
   final numberOfMembers;
   final data;
 
-  GroupDetails(this.destination, this.docId, this.privacy, this.start, this.end,
-      this.numberOfMembers, this.data);
+  GroupDetails(this.destination, this.docId, this.privacy, this.start, this.end, this.numberOfMembers, this.data);
 
   final RequestService _request = RequestService();
 
   Future getUserDetails() async {
-    final userDetails = await Firestore.instance
-        .collection('group')
-        .document(docId)
-        .collection('users')
-        .getDocuments();
+    final userDetails = await Firestore.instance.collection('group').document(docId).collection('users').getDocuments();
     return userDetails.documents;
   }
 
@@ -42,11 +37,7 @@ class GroupDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentuser = Provider.of<FirebaseUser>(context);
-    Firestore.instance
-        .collection('userdetails')
-        .document(currentuser.uid)
-        .get()
-        .then((value) {
+    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
       if (value.data['currentGroup'] != null) {
         inGroup = true;
       } else {
@@ -77,8 +68,7 @@ class GroupDetails extends StatelessWidget {
         body: Scaffold(
           body: NestedScrollView(
             controller: ScrollController(keepScrollOffset: true),
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
+            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[];
             },
             body: SingleChildScrollView(
@@ -88,13 +78,11 @@ class GroupDetails extends StatelessWidget {
                     tag: docId,
                     child: Card(
                       color: Theme.of(context).accentColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(25.0))),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
                       elevation: 5,
                       margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                       child: Container(
-                        height: 150,
+                        height: 120,
                         child: Column(
                           children: <Widget>[
                             Row(
@@ -106,20 +94,16 @@ class GroupDetails extends StatelessWidget {
                                   child: Container(
                                       margin: EdgeInsets.only(
                                         left: 20,
-                                        top: 20,
                                       ),
-                                      child: destination ==
-                                              'New Delhi Railway Station'
+                                      child: destination == 'New Delhi Railway Station'
                                           ? Icon(
                                               Icons.train,
-                                              color:
-                                                  Theme.of(context).accentColor,
+                                              color: Theme.of(context).accentColor,
                                               size: 30,
                                             )
                                           : Icon(
                                               Icons.airplanemode_active,
-                                              color:
-                                                  Theme.of(context).accentColor,
+                                              color: Theme.of(context).accentColor,
                                               size: 30,
                                             )),
                                 ),
@@ -128,17 +112,11 @@ class GroupDetails extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.only(
                                 bottom: 5,
-                                top: 10,
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text(
-                                      'Start : ${DateFormat('dd.MM.yyyy - kk:mm a').format(start)}',
-                                      style: TextStyle(
-                                          fontSize: 15.0,
-                                          color: getVisibleColorOnAccentColor(
-                                              context))),
+                                  Text('Start : ${DateFormat('dd.MM.yyyy - kk:mm a').format(start)}', style: TextStyle(fontSize: 15.0, color: getVisibleColorOnAccentColor(context))),
                                 ],
                               ),
                             ),
@@ -151,10 +129,7 @@ class GroupDetails extends StatelessWidget {
                                 children: <Widget>[
                                   Text(
                                     'End : ${DateFormat('dd.MM.yyyy - kk:mm a').format(end)}',
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: getVisibleColorOnAccentColor(
-                                            context)),
+                                    style: TextStyle(fontSize: 15, color: getVisibleColorOnAccentColor(context)),
                                   ),
                                 ],
                               ),
@@ -167,9 +142,7 @@ class GroupDetails extends StatelessWidget {
                                     Text(
                                       'Number of members in group: '
                                       '${numberOfMembers}',
-                                      style: TextStyle(
-                                          color: getVisibleColorOnAccentColor(
-                                              context)),
+                                      style: TextStyle(color: getVisibleColorOnAccentColor(context)),
                                     )
                                   ],
                                 ),
@@ -186,8 +159,7 @@ class GroupDetails extends StatelessWidget {
                     child: FutureBuilder(
                       future: getUserDetails(),
                       builder: (ctx, futureSnapshot) {
-                        if (futureSnapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (futureSnapshot.connectionState == ConnectionState.waiting) {
                           return Center(
                             child: CircularProgressIndicator(),
                           );
@@ -197,24 +169,20 @@ class GroupDetails extends StatelessWidget {
                             itemCount: futureSnapshot.data.length,
                             itemBuilder: (ctx, index) {
                               return Container(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 2, horizontal: 10),
+                                margin: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
                                 width: double.infinity,
                                 child: Card(
                                   elevation: 4,
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(futureSnapshot
-                                            .data[index].data['name']),
+                                        child: Text(futureSnapshot.data[index].data['name']),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(futureSnapshot
-                                            .data[index].data['hostel']),
+                                        child: Text(futureSnapshot.data[index].data['hostel']),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -222,65 +190,39 @@ class GroupDetails extends StatelessWidget {
                                             onPressed: () async {
                                               try {
                                                 if (Platform.isIOS) {
-                                                  await Clipboard.setData(
-                                                          ClipboardData(
-                                                              text:
-                                                                  '${futureSnapshot.data[index].data['mobilenum'].toString()}'))
-                                                      .then((result) {
+                                                  await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data[index].data['mobilenum'].toString()}')).then((result) {
                                                     final snackBar = SnackBar(
-                                                      backgroundColor:
-                                                          Theme.of(context)
-                                                              .primaryColor,
+                                                      backgroundColor: Theme.of(context).primaryColor,
                                                       content: Text(
                                                         'Copied to Clipboard',
-                                                        style: TextStyle(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .accentColor),
+                                                        style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
                                                       ),
-                                                      duration:
-                                                          Duration(seconds: 1),
+                                                      duration: Duration(seconds: 1),
                                                     );
-                                                    Scaffold.of(ctx)
-                                                        .hideCurrentSnackBar();
-                                                    Scaffold.of(ctx)
-                                                        .showSnackBar(snackBar);
+                                                    Scaffold.of(ctx).hideCurrentSnackBar();
+                                                    Scaffold.of(ctx).showSnackBar(snackBar);
                                                   });
                                                 } else {
-                                                  await launch(
-                                                      'tel://${futureSnapshot.data[index].data['mobilenum'].toString()}');
+                                                  await launch('tel://${futureSnapshot.data[index].data['mobilenum'].toString()}');
                                                 }
                                               } catch (e) {
-                                                await Clipboard.setData(
-                                                        ClipboardData(
-                                                            text:
-                                                                '${futureSnapshot.data[index].data['mobilenum'].toString()}'))
-                                                    .then((result) {
+                                                await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data[index].data['mobilenum'].toString()}')).then((result) {
                                                   final snackBar = SnackBar(
-                                                    backgroundColor:
-                                                        Theme.of(context)
-                                                            .primaryColor,
+                                                    backgroundColor: Theme.of(context).primaryColor,
                                                     content: Text(
                                                       'Copied to Clipboard',
-                                                      style: TextStyle(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .accentColor),
+                                                      style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
                                                     ),
-                                                    duration:
-                                                        Duration(seconds: 1),
+                                                    duration: Duration(seconds: 1),
                                                   );
-                                                  Scaffold.of(ctx)
-                                                      .hideCurrentSnackBar();
-                                                  Scaffold.of(ctx)
-                                                      .showSnackBar(snackBar);
+                                                  Scaffold.of(ctx).hideCurrentSnackBar();
+                                                  Scaffold.of(ctx).showSnackBar(snackBar);
                                                 });
                                               }
                                             },
                                             icon: Icon(
                                               Icons.phone,
-                                              color:
-                                                  Theme.of(context).accentColor,
+                                              color: Theme.of(context).accentColor,
                                             )),
                                       ),
                                     ],

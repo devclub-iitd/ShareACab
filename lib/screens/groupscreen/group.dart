@@ -9,6 +9,7 @@ import 'package:shareacab/screens/groupscreen/editgroup.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:shareacab/shared/loading.dart';
 import 'package:intl/intl.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 
 class GroupPage extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class GroupPage extends StatefulWidget {
 
 class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixin<GroupPage> {
   final RequestService _request = RequestService();
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   String groupUID = '';
   String destination = '';
