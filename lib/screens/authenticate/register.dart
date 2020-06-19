@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
+import 'package:shareacab/main.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/constants.dart';
 import 'package:shareacab/shared/loading.dart';
@@ -70,8 +71,14 @@ class _RegisterState extends State<Register> {
               title: Text('Sign up'),
               actions: <Widget>[
                 FlatButton.icon(
-                  icon: Icon(Icons.person),
-                  label: Text('Sign in'),
+                  icon: Icon(
+                    Icons.person,
+                    color: getVisibleColorOnPrimaryColor(context),
+                  ),
+                  label: Text(
+                    'Sign in',
+                    style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
+                  ),
                   onPressed: () {
                     widget.toggleView();
                   },

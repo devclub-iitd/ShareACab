@@ -25,7 +25,6 @@ class GroupDetails extends StatefulWidget {
   final data;
 
   GroupDetails(this.destination, this.docId, this.privacy, this.start, this.end, this.numberOfMembers, this.data);
-
   static bool inGroup = false;
 
   @override
@@ -102,7 +101,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                       elevation: 5,
                       margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                       child: Container(
-                        height: 150,
+                        height: 120,
                         child: Column(
                           children: <Widget>[
                             Row(
@@ -114,7 +113,6 @@ class _GroupDetailsState extends State<GroupDetails> {
                                   child: Container(
                                       margin: EdgeInsets.only(
                                         left: 20,
-                                        top: 20,
                                       ),
                                       child: widget.destination == 'New Delhi Railway Station'
                                           ? Icon(
@@ -133,7 +131,6 @@ class _GroupDetailsState extends State<GroupDetails> {
                             Padding(
                               padding: EdgeInsets.only(
                                 bottom: 5,
-                                top: 10,
                               ),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -217,7 +214,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                                                       backgroundColor: Theme.of(context).primaryColor,
                                                       content: Text(
                                                         'Copied to Clipboard',
-                                                        style: TextStyle(color: Theme.of(context).accentColor),
+                                                        style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
                                                       ),
                                                       duration: Duration(seconds: 1),
                                                     );
@@ -233,7 +230,7 @@ class _GroupDetailsState extends State<GroupDetails> {
                                                     backgroundColor: Theme.of(context).primaryColor,
                                                     content: Text(
                                                       'Copied to Clipboard',
-                                                      style: TextStyle(color: Theme.of(context).accentColor),
+                                                      style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
                                                     ),
                                                     duration: Duration(seconds: 1),
                                                   );

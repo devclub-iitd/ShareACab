@@ -184,10 +184,7 @@ class _TripsListState extends State<TripsList> {
                                                     },
                                                     child: Text('Join Now'),
                                                   )
-                                                : FlatButton(
-                                                    onPressed: null,
-                                                    child: Text('Already in group'),
-                                                  ),
+                                                : null,
                                       ),
                                     )
                                   ],
