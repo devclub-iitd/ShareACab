@@ -19,7 +19,7 @@ class _TripsListState extends State<TripsList> {
 
   Future getTrips() async {
     var firestore = Firestore.instance;
-    var qn = await firestore.collection('group').orderBy('created', descending: true).getDocuments();
+    var qn = await firestore.collection('group').where('end', isGreaterThan: Timestamp.now()).orderBy('end', descending: true).getDocuments();
     return qn.documents;
     //.where((doc) => doc['maxPoolers'] + 1 > doc['users'].length)
   }
@@ -51,8 +51,7 @@ class _TripsListState extends State<TripsList> {
       child: FutureBuilder(
         future: getTrips(),
         builder: (_, snapshot) {
-          // will fix this later, it should have ConnectionState.waiting, but it was having issues.
-          if (snapshot.connectionState == null) {
+          if (!snapshot.hasData) {
             return Center(
               child: Text('Loading..'),
             );
@@ -82,158 +81,160 @@ class _TripsListState extends State<TripsList> {
                           elevation: 5,
                           margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                           child: Container(
-                            child: Column(
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Flexible(
-                                      fit: FlexFit.tight,
-                                      flex: 1,
-                                      child: Container(
-                                          margin: EdgeInsets.only(
-                                            left: 20,
-                                            top: 20,
-                                          ),
-                                          child: snapshot.data[index].data['destination'] == 'New Delhi Railway Station' || snapshot.data[index].data['destination'] == 'Hazrat Nizamuddin Railway Station'
-                                              ? Icon(
-                                                  Icons.train,
-                                                  color: Theme.of(context).accentColor,
-                                                  size: 30,
-                                                )
-                                              : snapshot.data[index].data['destination'] == 'Indira Gandhi International Airport'
-                                                  ? Icon(
-                                                      Icons.airplanemode_active,
-                                                      color: Theme.of(context).accentColor,
-                                                      size: 30,
-                                                    )
-                                                  : Icon(
-                                                      Icons.directions_bus,
-                                                      color: Theme.of(context).accentColor,
-                                                      size: 30,
-                                                    )),
-                                    ),
-                                    Flexible(
-                                      fit: FlexFit.tight,
-                                      flex: 4,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 10.0),
-                                        child: Text(
-                                          '${snapshot.data[index].data['destination']}',
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      flex: 2,
-                                      child: Container(
-                                        child: snapshot.data[index].data['privacy'] == 'true'
-                                            ? Padding(
-                                                padding: const EdgeInsets.only(right: 15.0),
-                                                child: Icon(
-                                                  Icons.lock,
-                                                  color: Theme.of(context).accentColor,
-                                                ),
-                                              )
-                                            : !inGroup
-                                                ? FlatButton(
-                                                    onPressed: () async {
-                                                      try {
-                                                        await showDialog(
-                                                            context: ctx,
-                                                            builder: (BuildContext ctx) {
-                                                              return AlertDialog(
-                                                                title: Text('Join Group'),
-                                                                content: Text('Are you sure you want to join this group?'),
-                                                                actions: <Widget>[
-                                                                  FlatButton(
-                                                                    child: Text('Join', style: TextStyle(color: Theme.of(context).accentColor)),
-                                                                    onPressed: () async {
-                                                                      DocumentSnapshot temp = snapshot.data[index];
-                                                                      await _request.joinGroup(temp.documentID);
-                                                                      await Navigator.of(context).pop();
-                                                                      // final snackBar = SnackBar(
-                                                                      //   backgroundColor: Theme.of(context).primaryColor,
-                                                                      //   content: Text(
-                                                                      //     'Yayyy!! You joined the trip.',
-                                                                      //     style: TextStyle(color: Theme.of(context).accentColor),
-                                                                      //   ),
-                                                                      //   duration: Duration(seconds: 1),
-                                                                      // );
-                                                                      // Scaffold.of(ctx).hideCurrentSnackBar();
-                                                                      // Scaffold.of(ctx).showSnackBar(snackBar);
-                                                                      await Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
-                                                                    },
-                                                                  ),
-                                                                  FlatButton(
-                                                                    child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
-                                                                    onPressed: () {
-                                                                      Navigator.of(context).pop();
-                                                                    },
-                                                                  ),
-                                                                ],
-                                                              );
-                                                            });
-                                                      } catch (e) {
-                                                        print(e.toString());
-                                                      }
-                                                    },
-                                                    child: Text('Join Now'),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Flexible(
+                                        fit: FlexFit.tight,
+                                        flex: 1,
+                                        child: Container(
+                                            margin: EdgeInsets.only(
+                                              left: 20,
+                                              top: 20,
+                                            ),
+                                            child: snapshot.data[index].data['destination'] == 'New Delhi Railway Station' || snapshot.data[index].data['destination'] == 'Hazrat Nizamuddin Railway Station'
+                                                ? Icon(
+                                                    Icons.train,
+                                                    color: Theme.of(context).accentColor,
+                                                    size: 30,
                                                   )
-                                                : null,
+                                                : snapshot.data[index].data['destination'] == 'Indira Gandhi International Airport'
+                                                    ? Icon(
+                                                        Icons.airplanemode_active,
+                                                        color: Theme.of(context).accentColor,
+                                                        size: 30,
+                                                      )
+                                                    : Icon(
+                                                        Icons.directions_bus,
+                                                        color: Theme.of(context).accentColor,
+                                                        size: 30,
+                                                      )),
                                       ),
-                                    )
-                                  ],
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: 5,
-                                    top: 10,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        'Start : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data[index].data['start'].toDate())}',
-                                        style: TextStyle(
-                                          fontSize: 15,
+                                      Flexible(
+                                        fit: FlexFit.tight,
+                                        flex: 4,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(top: 10.0),
+                                          child: Text(
+                                            '${snapshot.data[index].data['destination']}',
+                                            style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: 5,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        'End : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data[index].data['end'].toDate())}',
-                                        style: TextStyle(
-                                          fontSize: 15,
+                                      Flexible(
+                                        flex: 2,
+                                        child: Container(
+                                          child: snapshot.data[index].data['privacy'] == 'true'
+                                              ? Padding(
+                                                  padding: const EdgeInsets.only(right: 15.0),
+                                                  child: Icon(
+                                                    Icons.lock,
+                                                    color: Theme.of(context).accentColor,
+                                                  ),
+                                                )
+                                              : !inGroup
+                                                  ? FlatButton(
+                                                      onPressed: () async {
+                                                        try {
+                                                          await showDialog(
+                                                              context: ctx,
+                                                              builder: (BuildContext ctx) {
+                                                                return AlertDialog(
+                                                                  title: Text('Join Group'),
+                                                                  content: Text('Are you sure you want to join this group?'),
+                                                                  actions: <Widget>[
+                                                                    FlatButton(
+                                                                      child: Text('Join', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                                      onPressed: () async {
+                                                                        DocumentSnapshot temp = snapshot.data[index];
+                                                                        await _request.joinGroup(temp.documentID);
+                                                                        await Navigator.of(context).pop();
+                                                                        // final snackBar = SnackBar(
+                                                                        //   backgroundColor: Theme.of(context).primaryColor,
+                                                                        //   content: Text(
+                                                                        //     'Yayyy!! You joined the trip.',
+                                                                        //     style: TextStyle(color: Theme.of(context).accentColor),
+                                                                        //   ),
+                                                                        //   duration: Duration(seconds: 1),
+                                                                        // );
+                                                                        // Scaffold.of(ctx).hideCurrentSnackBar();
+                                                                        // Scaffold.of(ctx).showSnackBar(snackBar);
+                                                                        await Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
+                                                                      },
+                                                                    ),
+                                                                    FlatButton(
+                                                                      child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                                      onPressed: () {
+                                                                        Navigator.of(context).pop();
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              });
+                                                        } catch (e) {
+                                                          print(e.toString());
+                                                        }
+                                                      },
+                                                      child: Text('Join Now'),
+                                                    )
+                                                  : null,
                                         ),
-                                      ),
+                                      )
                                     ],
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      Column(
-                                        children: <Widget>[Text('Number of members in group: ${snapshot.data[index].data['numberOfMembers'].toString()}')],
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: 5,
+                                      top: 10,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          'Start : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data[index].data['start'].toDate())}',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: 5,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Text(
+                                          'End : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data[index].data['end'].toDate())}',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: <Widget>[
+                                        Column(
+                                          children: <Widget>[Text('Number of members in group: ${snapshot.data[index].data['numberOfMembers'].toString()}')],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

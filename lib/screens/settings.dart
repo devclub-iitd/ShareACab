@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -77,6 +78,28 @@ class _SettingsState extends State<Settings> {
                       _darkTheme = val;
                     });
                     onThemeChanged(val, themeNotifier);
+                  },
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                'Bug Report',
+                style: TextStyle(fontSize: 28.0),
+              ),
+              contentPadding: EdgeInsets.all(26.0),
+              subtitle: Text('Found a bug, report here:'),
+              trailing: Tooltip(
+                message: 'Report Bug',
+                verticalOffset: -60,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.bug_report,
+                    size: 40.0,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  onPressed: () {
+                    launch('https://github.com/devclub-iitd/ShareACab/issues/new?assignees=&labels=bug&template=bug_report.md&title=Issue+Title+%40AssignedUser');
                   },
                 ),
               ),
