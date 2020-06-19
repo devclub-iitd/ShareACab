@@ -117,6 +117,7 @@ class _RootScreenState extends State<RootScreen> {
     return loading
         ? Loading()
         : Scaffold(
+            key: _scaffoldKey,
             body: buildPageView(),
             bottomNavigationBar: CurvedNavigationBar(
               color: Theme.of(context).bottomAppBarColor,
