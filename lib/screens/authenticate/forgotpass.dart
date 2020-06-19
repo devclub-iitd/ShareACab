@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/services/auth.dart';
@@ -38,8 +39,18 @@ class _ForgotPassState extends State<ForgotPass> {
                   key: _formKey,
                   child: SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 100.0),
+                        CircleAvatar(
+                          radius: 48,
+                          backgroundColor: Theme.of(context).accentColor,
+                          child: Icon(
+                            CupertinoIcons.car_detailed,
+                            size: 48,
+                          ),
+                        ),
+                        SizedBox(height: 30.0),
                         TextFormField(
                           decoration: textInputDecoration.copyWith(hintText: 'Email'),
                           validator: (val) => val.isEmpty ? 'Enter a valid Email' : null,
@@ -50,9 +61,18 @@ class _ForgotPassState extends State<ForgotPass> {
                         SizedBox(height: 20.0),
                         RaisedButton(
                           color: Theme.of(context).accentColor,
-                          child: Text(
-                            'Send Password Reset Link',
-                            style: TextStyle(color: getVisibleColorOnAccentColor(context)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 14.0),
+                            child: Text(
+                              'SEND RESET LINK',
+                              style: TextStyle(
+                                color: getVisibleColorOnAccentColor(context),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poiret',
+                                fontSize: 20,
+                                letterSpacing: 2,
+                              ),
+                            ),
                           ),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
@@ -87,12 +107,21 @@ class _ForgotPassState extends State<ForgotPass> {
                             }
                           },
                         ),
-                        SizedBox(height: 12.0),
+                        SizedBox(height: 15.0),
                         RaisedButton(
                           color: Theme.of(context).accentColor,
-                          child: Text(
-                            'Go back to Sign In',
-                            style: TextStyle(color: getVisibleColorOnAccentColor(context)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 14.0),
+                            child: Text(
+                              'GO BACK TO SIGN IN',
+                              style: TextStyle(
+                                color: getVisibleColorOnAccentColor(context),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poiret',
+                                fontSize: 20,
+                                letterSpacing: 2,
+                              ),
+                            ),
                           ),
                           onPressed: () {
                             Navigator.pop(context);

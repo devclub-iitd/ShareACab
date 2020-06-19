@@ -5,6 +5,7 @@ import 'package:shareacab/main.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/constants.dart';
 import 'package:shareacab/shared/loading.dart';
+import 'package:flutter/cupertino.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -71,17 +72,17 @@ class _RegisterState extends State<Register> {
               elevation: 0.0,
               title: Text(
                 'Sign up',
-                style: TextStyle(color: Theme.of(context).accentColor),
+                style: TextStyle(color: Provider.of<ThemeNotifier>(context).getTheme() == darkTheme ? Colors.orange : Colors.white),
               ),
               actions: <Widget>[
                 FlatButton.icon(
                   icon: Icon(
                     Icons.person,
-                    color: Theme.of(context).accentColor,
+                    color: Provider.of<ThemeNotifier>(context).getTheme() == darkTheme ? Colors.orange : Colors.white,
                   ),
                   label: Text(
                     'Sign in',
-                    style: TextStyle(color: Theme.of(context).accentColor, fontSize: 18),
+                    style: TextStyle(color: Provider.of<ThemeNotifier>(context).getTheme() == darkTheme ? Colors.orange : Colors.white, fontSize: 18),
                   ),
                   onPressed: () {
                     widget.toggleView();
@@ -101,7 +102,16 @@ class _RegisterState extends State<Register> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        SizedBox(height: 50.0),
+                        SizedBox(height: 20.0),
+                        CircleAvatar(
+                          radius: 48,
+                          backgroundColor: Theme.of(context).accentColor,
+                          child: Icon(
+                            CupertinoIcons.car_detailed,
+                            size: 48,
+                          ),
+                        ),
+                        SizedBox(height: 20.0),
                         TextFormField(
                           decoration:
                               // use this inputdecoration of IITD email

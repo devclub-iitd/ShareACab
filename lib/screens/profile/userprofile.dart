@@ -153,7 +153,11 @@ class _MyProfileState extends State<MyProfile> {
                         backgroundColor: Theme.of(context).accentColor,
                         child: Text(
                           namefirst,
-                          style: TextStyle(fontSize: 40),
+                          style: TextStyle(
+                            fontSize: 48,
+                            fontFamily: "Poiret",
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     )
@@ -164,7 +168,9 @@ class _MyProfileState extends State<MyProfile> {
                     child: Center(
                       child: SelectableText(
                         name,
-                        style: TextStyle(fontSize: 30),
+                        style: TextStyle(
+                          fontSize: 40,
+                        ),
                       ),
                     )),
                 Container(

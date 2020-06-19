@@ -49,14 +49,17 @@ class _SignInState extends State<SignIn> {
               title: Text(
                 'Sign in',
                 style: TextStyle(
-                  color: Theme.of(context).accentColor,
+                  color: _darkTheme ? Colors.orange : Colors.white,
                 ),
               ),
               actions: <Widget>[
                 IconButton(
                     tooltip: 'Settings',
-                    color: Theme.of(context).accentColor,
-                    icon: Icon(Icons.settings),
+                    color: _darkTheme ? Colors.orange : Colors.white,
+                    icon: Icon(
+                      Icons.settings,
+                      color: _darkTheme ? Colors.orange : Colors.white,
+                    ),
                     onPressed: () {
                       return Navigator.push(context, MaterialPageRoute(builder: (context) {
                         return Settings(_auth);
@@ -65,11 +68,11 @@ class _SignInState extends State<SignIn> {
                 FlatButton.icon(
                   icon: Icon(
                     Icons.person_add,
-                    color: Theme.of(context).accentColor,
+                    color: _darkTheme ? Colors.orange : Colors.white,
                   ),
                   label: Text(
                     'Register',
-                    style: TextStyle(color: Theme.of(context).accentColor, fontSize: 18),
+                    style: TextStyle(color: _darkTheme ? Colors.orange : Colors.white, fontSize: 18),
                   ),
                   onPressed: () {
                     widget.toggleView();
@@ -111,8 +114,11 @@ class _SignInState extends State<SignIn> {
                         ),
                         SizedBox(height: 20.0),
                         TextFormField(
+                          cursorColor: _darkTheme ? Colors.white : Theme.of(context).accentColor,
                           decoration: textInputDecoration.copyWith(
                             hintText: 'Email',
+                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 2.0)),
+                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0)),
                           ),
                           validator: (val) => val.isEmpty ? 'Enter a valid Email' : null,
                           onChanged: (val) {
@@ -121,8 +127,11 @@ class _SignInState extends State<SignIn> {
                         ),
                         SizedBox(height: 20.0),
                         TextFormField(
+                          cursorColor: _darkTheme ? Colors.white : Theme.of(context).accentColor,
                           decoration: textInputDecoration.copyWith(
                             hintText: 'Password',
+                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 2.0)),
+                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0)),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 passwordHide ? Icons.visibility_off : Icons.visibility,
@@ -233,7 +242,7 @@ class _SignInState extends State<SignIn> {
                         SizedBox(height: 20.0),
                         !_darkTheme
                             ? Text(
-                                'Tip: Enable Dark mode from settings (icon in the AppBar).',
+                                'Pro-Tip: Enable Dark mode from settings (icon in the AppBar).',
                                 style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic, color: Colors.green),
                               )
                             : Text(''),

@@ -72,6 +72,7 @@ class _SettingsState extends State<Settings> {
               trailing: Transform.scale(
                 scale: 1.6,
                 child: Switch(
+                  activeColor: Theme.of(context).accentColor,
                   value: _darkTheme,
                   onChanged: (val) {
                     setState(() {
