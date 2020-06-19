@@ -17,14 +17,6 @@ class _MyRequestsState extends State<MyRequests> {
     return Scaffold(
         appBar: AppBar(
           title: Text('My Requests'),
-          actions: <Widget>[
-            FlatButton.icon(
-              textColor: getVisibleColorOnPrimaryColor(context),
-              icon: Icon(Icons.clear_all),
-              onPressed: () {},
-              label: Text('Clear All'),
-            )
-          ],
         ),
         body: requests.isEmpty
             ? Center(

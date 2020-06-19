@@ -22,6 +22,7 @@ class _RegisterState extends State<Register> {
 
   String email = '';
   String password = '';
+  String confirmpass = '';
   String name = '';
   String mobileNum = '';
   String hostel;
@@ -145,6 +146,36 @@ class _RegisterState extends State<Register> {
                           obscureText: passwordHide,
                           onChanged: (val) {
                             setState(() => password = val);
+                          },
+                        ),
+                        SizedBox(height: 20.0),
+                        TextFormField(
+                          decoration: textInputDecoration.copyWith(
+                            hintText: 'Confirm Password',
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                passwordHide ? Icons.visibility_off : Icons.visibility,
+                                color: Theme.of(context).accentColor,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  passwordHide = !passwordHide;
+                                });
+                              },
+                            ),
+                          ),
+                          validator: (val) {
+                            if (val.length < 6) {
+                              return 'Enter a password greater than 6 characters.';
+                            }
+                            if (val != password) {
+                              return 'Password not matching';
+                            }
+                            return null;
+                          },
+                          obscureText: passwordHide,
+                          onChanged: (val) {
+                            setState(() => confirmpass = val);
                           },
                         ),
                         SizedBox(height: 20.0),

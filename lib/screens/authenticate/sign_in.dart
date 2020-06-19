@@ -59,7 +59,7 @@ class _SignInState extends State<SignIn> {
                     icon: Icon(Icons.settings),
                     onPressed: () {
                       return Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return Settings();
+                        return Settings(_auth);
                       }));
                     }),
                 FlatButton.icon(

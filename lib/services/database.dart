@@ -110,7 +110,7 @@ class DatabaseService {
     });
     final docRef = await groupdetails.add({
       'owner': user.uid.toString(),
-      'users': FieldValue.arrayUnion([reqRef.documentID.toString()]),
+      'users': FieldValue.arrayUnion([user.uid]),
       'destination': requestDetails.destination.toString(),
       'start': starting,
       'end': ending,
@@ -127,9 +127,8 @@ class DatabaseService {
     await userDetails.document(user.uid).updateData({
       'currentGroup': docRef.documentID,
       'currentReq': reqRef.documentID,
+      'previous_groups': FieldValue.arrayUnion([docRef.documentID]),
     });
-
-    // dont remove these comments yet, need to think about this later.
 
     var request = groupdetails.document(docRef.documentID).collection('users');
     await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) async {
@@ -154,24 +153,41 @@ class DatabaseService {
   Future<void> exitGroup() async {
     var user = await _auth.currentUser();
     var currentGrp;
-    var currentReq;
+    //var currentReq;
     var presentNum;
+    var startTimeStamp;
     await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) {
       currentGrp = value.data['currentGroup'];
-      currentReq = value.data['currentReq'];
+      //currentReq = value.data['currentReq'];
     });
     await groupdetails.document(currentGrp).get().then((value) {
       presentNum = value.data['numberOfMembers'];
+      startTimeStamp = value.data['start'];
     });
-    await groupdetails.document(currentGrp).updateData({
-      'users': FieldValue.arrayRemove([currentReq.toString()]),
-      'numberOfMembers': presentNum - 1,
-    });
-    await groupdetails.document(currentGrp).collection('users').document(user.uid).delete();
-    await userDetails.document(user.uid).updateData({
-      'currentGroup': null,
-      'currentReq': null,
-    });
+
+    if (startTimeStamp.compareTo(Timestamp.now()) > 0) {
+      await userDetails.document(user.uid).updateData({
+        'currentGroup': null,
+        'currentReq': null,
+        'previous_groups': FieldValue.arrayRemove([currentGrp]),
+      });
+      await groupdetails.document(currentGrp).updateData({
+        'users': FieldValue.arrayRemove([user.uid]),
+        'numberOfMembers': presentNum - 1,
+      });
+      await groupdetails.document(currentGrp).collection('users').document(user.uid).delete();
+    } else {
+      await userDetails.document(user.uid).updateData({
+        'currentGroup': null,
+        'currentReq': null,
+      });
+    }
+
+    // delete group if last member and startTime is greater than present time.
+    if (presentNum == 1 && startTimeStamp.compareTo(Timestamp.now()) > 0) {
+      await groupdetails.document(currentGrp).delete();
+    }
+
     //deleting user from chat group
     await ChatService().exitChatRoom(currentGrp);
   }
@@ -181,6 +197,7 @@ class DatabaseService {
     var user = await _auth.currentUser();
     var presentNum;
     await userDetails.document(user.uid).updateData({
+      'previous_groups': FieldValue.arrayUnion([listuid]),
       'currentGroup': listuid,
     });
     await groupdetails.document(listuid).get().then((value) {
@@ -213,8 +230,6 @@ class DatabaseService {
 
   Future<void> setToken(String token) async {
     final user = await _auth.currentUser();
-    await userDetails.document(user.uid).updateData({
-      'device_token' : token
-    });
+    await userDetails.document(user.uid).updateData({'device_token': token});
   }
 }
