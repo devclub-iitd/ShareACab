@@ -78,6 +78,7 @@ class _DashboardState extends State<Dashboard> {
     return null;
   }
 
+  var inGroupFetch = false;
   @override
   Widget build(BuildContext context) {
     final currentuser = Provider.of<FirebaseUser>(context);
@@ -85,10 +86,12 @@ class _DashboardState extends State<Dashboard> {
       if (value.data['currentGroup'] != null) {
         setState(() {
           inGroup = true;
+          inGroupFetch = true;
         });
       } else {
         setState(() {
           inGroup = false;
+          inGroupFetch = true;
         });
       }
     });
@@ -135,33 +138,35 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: !inGroup
-          ? Padding(
-              padding: const EdgeInsets.fromLTRB(0, 20, 0, 60),
-              child: FloatingActionButton(
-                splashColor: Theme.of(context).primaryColor,
-                onPressed: () => _startCreatingTrip(context),
-                child: Tooltip(
-                  message: 'Create Group',
-                  verticalOffset: -60,
-                  child: Icon(Icons.add),
-                ),
-              ),
-            )
-          : Padding(
-              padding: const EdgeInsets.fromLTRB(0, 20, 0, 60),
-              child: FloatingActionButton(
-                splashColor: Theme.of(context).primaryColor,
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
-                },
-                child: Tooltip(
-                  message: 'Group Details',
-                  verticalOffset: -60,
-                  child: Icon(Icons.group),
-                ),
-              ),
-            ),
+      floatingActionButton: inGroupFetch
+          ? !inGroup
+              ? Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 60),
+                  child: FloatingActionButton(
+                    splashColor: Theme.of(context).primaryColor,
+                    onPressed: () => _startCreatingTrip(context),
+                    child: Tooltip(
+                      message: 'Create Group',
+                      verticalOffset: -60,
+                      child: Icon(Icons.add),
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 60),
+                  child: FloatingActionButton(
+                    splashColor: Theme.of(context).primaryColor,
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
+                    },
+                    child: Tooltip(
+                      message: 'Group Details',
+                      verticalOffset: -60,
+                      child: Icon(Icons.group),
+                    ),
+                  ),
+                )
+          : null,
     );
   }
 }
