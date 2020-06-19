@@ -10,6 +10,12 @@ An app for sharing cab with college students
 ## Description
 Usually, after exams or when the mid-sem break begins, there is a large surge of people going back to their respective hometown by air/railways. This journey involves an initial travel where the person takes a cab to the IGI Airport or the New Delhi Railway station. A lot of times, people are forced to travel solo, if there isn't anyone he/she knows traveling at a similar time. Also, this leads to shortage of cabs nearby and increase in waiting time. Had there been a student of IIT-D with whom the cab could have been shared, the fares would also be split and the waiting time will also reduce. Another thing is that girls prefer not to travel alone in Cabs in Delhi, so that problem will also be solved by this app.  
 
+## Screenshots:
+
+Dark Theme Dashboard.      |    Group Details Page.    | Destination Trip          |Light theme login and logout
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+<img src="https://user-images.githubusercontent.com/52427677/84919163-31ec8080-b0df-11ea-927d-673bc64845a5.jpeg" width=200/> | <img src="https://user-images.githubusercontent.com/22472045/84910976-30b65600-b0d5-11ea-8d9d-230c4c2bcbf1.gif" width=200/>  | <img src="https://user-images.githubusercontent.com/22472045/84910892-12e8f100-b0d5-11ea-91fc-89cfd4e6805f.gif" width=200/> |  <img src="https://user-images.githubusercontent.com/52520071/84898326-b2ea4e80-b0c4-11ea-9517-d1bf5a7ccb8d.gif" width=200/>
+
 ## Directory Layout
 ```go
  ShareACab
@@ -129,8 +135,6 @@ Usually, after exams or when the mid-sem break begins, there is a large surge of
 * Phone authentication also required
 * A dialer icon beside user name in group details which on pressed redirects to dialer app in phone with phone number entered.
 * Implement request-only access to groups.
-
-## Screenshots:
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
