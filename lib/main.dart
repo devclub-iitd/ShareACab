@@ -14,11 +14,9 @@ Color userIsOnline(BuildContext context) => Colors.green;
 
 Color sendMessageIcon(BuildContext context) => Colors.green;
 
-
 Color requestAccepted(BuildContext context) => Colors.green;
 Color requestRejected(BuildContext context) => Colors.red;
 Color requestPending(BuildContext context) => Colors.yellow;
-
 
 Color warning(BuildContext context) => Colors.yellow;
 Color warningHeading(BuildContext context) => Colors.red;
@@ -119,7 +117,6 @@ final lightTheme = ThemeData(
   accentIconTheme: IconThemeData(color: Colors.white),
   dividerColor: Colors.white54,
   scaffoldBackgroundColor: const Color(0xFFE5E5E5),
-
 
   //scaffoldBackgroundColor: const Color(0xFFFFFF)
 );

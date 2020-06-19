@@ -32,11 +32,11 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   void initState() {
-    pagelist.add(Dashboard(_auth));
+    pagelist.add(Dashboard());
     pagelist.add(MyRequests());
     pagelist.add(Messages());
     pagelist.add(Notifications());
-    pagelist.add(MyProfile());
+    pagelist.add(MyProfile(_auth));
     super.initState();
   }
 
