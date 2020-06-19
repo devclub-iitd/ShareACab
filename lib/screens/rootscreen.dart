@@ -27,8 +27,67 @@ class _RootScreenState extends State<RootScreen> {
   bool isHome = true;
 
   int _selectedPage = 0;
+  List<Widget> buildBottomNavBarItems() {
+    return [
+      Tooltip(
+        message: 'Dashboard',
+        child: Icon(
+          FontAwesomeIcons.home,
+          size: 20.0,
+          color: Theme.of(context).accentColor,
+          //color: Colors.black,
+        ),
+      ),
+      Tooltip(
+        message: 'My Requests',
+        child: Icon(
+          Icons.format_list_bulleted,
+          size: 20.0,
+          color: Theme.of(context).accentColor,
+        ),
+      ),
+      Tooltip(
+        message: 'Messages',
+        child: Icon(
+          _selectedPage == 2 ? Icons.chat_bubble : Icons.chat_bubble_outline,
+          size: 20.0,
+          color: Theme.of(context).accentColor,
+        ),
+      ),
+      Tooltip(
+        message: 'Notifications',
+        child: Icon(
+          _selectedPage == 3 ? Icons.notifications : Icons.notifications_none,
+          size: 20.0,
+          color: Theme.of(context).accentColor,
+        ),
+      ),
+      Tooltip(
+        message: 'Profile',
+        child: Icon(
+          _selectedPage == 4 ? Icons.person : Icons.person_outline,
+          size: 20.0,
+          color: Theme.of(context).accentColor,
+        ),
+      ),
+    ];
+  }
 
   List<Widget> pagelist = <Widget>[];
+  PageController pageController = PageController(
+    initialPage: 0,
+    keepPage: true,
+  );
+
+  Widget buildPageView() {
+    return PageView(
+      controller: pageController,
+      onPageChanged: (index) {
+        pageChanged(index);
+      },
+      children: pagelist,
+    );
+  }
 
   @override
   void initState() {
@@ -40,80 +99,33 @@ class _RootScreenState extends State<RootScreen> {
     super.initState();
   }
 
+  void pageChanged(int index) {
+    setState(() {
+      _selectedPage = index;
+    });
+  }
+
+  void bottomTapped(int index) {
+    setState(() {
+      _selectedPage = index;
+      pageController.animateToPage(index, duration: Duration(milliseconds: 100), curve: Curves.bounceInOut);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return loading
         ? Loading()
         : Scaffold(
-            key: _scaffoldKey,
-            extendBody: true,
+            body: buildPageView(),
             bottomNavigationBar: CurvedNavigationBar(
               color: Theme.of(context).bottomAppBarColor,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              height: 60.0,
-              items: <Widget>[
-                Tooltip(
-                  message: 'Dashboard',
-                  child: Icon(
-                    FontAwesomeIcons.home,
-                    size: 20.0,
-                    color: Theme.of(context).accentColor,
-                    //color: Colors.black,
-                  ),
-                ),
-                Tooltip(
-                  message: 'My Requests',
-                  child: Icon(
-                    Icons.format_list_bulleted,
-                    size: 20.0,
-                    color: Theme.of(context).accentColor,
-                  ),
-                ),
-                Tooltip(
-                  message: 'Messages',
-                  child: Icon(
-                    _selectedPage == 2 ? Icons.chat_bubble : Icons.chat_bubble_outline,
-                    size: 20.0,
-                    color: Theme.of(context).accentColor,
-                  ),
-                ),
-                Tooltip(
-                  message: 'Notifications',
-                  child: Icon(
-                    _selectedPage == 3 ? Icons.notifications : Icons.notifications_none,
-                    size: 20.0,
-                    color: Theme.of(context).accentColor,
-                  ),
-                ),
-                Tooltip(
-                  message: 'Profile',
-                  child: Icon(
-                    _selectedPage == 4 ? Icons.person : Icons.person_outline,
-                    size: 20.0,
-                    color: Theme.of(context).accentColor,
-                  ),
-                ),
-              ],
-              animationDuration: Duration(milliseconds: 200),
-              index: 0,
-              animationCurve: Curves.bounceInOut,
-              onTap: (index) {
-                setState(() {
-                  _selectedPage = index;
-                });
-              },
-            ),
-
-            // body: justLoggedin
-            //     ? Center(
-            //         child: Dashboard(),
-            //       )
-            //     : Center(
-            //         child: choose,
-            //       ),
-            body: IndexedStack(
               index: _selectedPage,
-              children: pagelist,
+              onTap: (index) {
+                bottomTapped(index);
+              },
+              items: buildBottomNavBarItems(),
             ),
           );
   }
