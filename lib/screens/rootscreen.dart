@@ -108,7 +108,7 @@ class _RootScreenState extends State<RootScreen> {
   void bottomTapped(int index) {
     setState(() {
       _selectedPage = index;
-      pageController.animateToPage(index, duration: Duration(milliseconds: 100), curve: Curves.bounceInOut);
+      pageController.animateToPage(index, duration: Duration(milliseconds: 200), curve: Curves.bounceInOut);
     });
   }
 
@@ -118,6 +118,7 @@ class _RootScreenState extends State<RootScreen> {
         ? Loading()
         : Scaffold(
             key: _scaffoldKey,
+            extendBody: true,
             body: buildPageView(),
             bottomNavigationBar: CurvedNavigationBar(
               color: Theme.of(context).bottomAppBarColor,
