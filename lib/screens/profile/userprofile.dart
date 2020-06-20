@@ -155,7 +155,7 @@ class _MyProfileState extends State<MyProfile> {
                           namefirst,
                           style: TextStyle(
                             fontSize: 48,
-                            fontFamily: "Poiret",
+                            fontFamily: 'Poiret',
                             fontWeight: FontWeight.bold,
                           ),
                         ),
