@@ -67,8 +67,7 @@ class _ForgotPassState extends State<ForgotPass> {
                               'SEND RESET LINK',
                               style: TextStyle(
                                 color: getVisibleColorOnAccentColor(context),
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Poiret',
+                                fontWeight: FontWeight.w500,
                                 fontSize: 20,
                                 letterSpacing: 2,
                               ),
@@ -116,8 +115,7 @@ class _ForgotPassState extends State<ForgotPass> {
                               'GO BACK TO SIGN IN',
                               style: TextStyle(
                                 color: getVisibleColorOnAccentColor(context),
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Poiret',
+                                fontWeight: FontWeight.w500,
                                 fontSize: 20,
                                 letterSpacing: 2,
                               ),

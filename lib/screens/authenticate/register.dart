@@ -251,11 +251,10 @@ class _RegisterState extends State<Register> {
                             child: Text(
                               'REGISTER',
                               style: TextStyle(
-                                fontFamily: 'Poiret',
-                                letterSpacing: 3.0,
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).scaffoldBackgroundColor,
                                 fontSize: 20,
+                                color: Theme.of(context).scaffoldBackgroundColor,
+                                letterSpacing: 2,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),

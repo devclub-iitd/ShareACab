@@ -153,14 +153,13 @@ class _SignInState extends State<SignIn> {
                         RaisedButton(
                           color: Theme.of(context).accentColor,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 17),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
                             child: Text(
                               'SIGN IN',
                               style: TextStyle(
                                 fontSize: 20,
                                 color: Theme.of(context).scaffoldBackgroundColor,
-                                fontFamily: 'Poiret',
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w500,
                                 letterSpacing: 3,
                               ),
                             ),
@@ -222,15 +221,14 @@ class _SignInState extends State<SignIn> {
                         RaisedButton(
                           color: Theme.of(context).accentColor,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 17),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
                             child: Text(
                               'FORGOT PASSWORD',
                               style: TextStyle(
                                 fontSize: 20,
                                 color: Theme.of(context).scaffoldBackgroundColor,
-                                fontFamily: 'Poiret',
                                 letterSpacing: 2,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
