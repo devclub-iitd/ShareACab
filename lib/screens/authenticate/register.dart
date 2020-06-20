@@ -63,6 +63,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    var _darkTheme = Provider.of<ThemeNotifier>(context).getTheme() == darkTheme;
     return loading
         ? Loading()
         : Scaffold(
@@ -72,7 +73,7 @@ class _RegisterState extends State<Register> {
               elevation: 0.0,
               title: Text(
                 'Sign up',
-                style: TextStyle(color: Provider.of<ThemeNotifier>(context).getTheme() == darkTheme ? Colors.orange : Colors.white),
+                style: TextStyle(color: _darkTheme ? Theme.of(context).accentColor : Theme.of(context).bottomAppBarColor),
               ),
               actions: <Widget>[
                 FlatButton.icon(
@@ -82,7 +83,7 @@ class _RegisterState extends State<Register> {
                   ),
                   label: Text(
                     'Sign in',
-                    style: TextStyle(color: Provider.of<ThemeNotifier>(context).getTheme() == darkTheme ? Colors.orange : Colors.white, fontSize: 18),
+                    style: TextStyle(color: _darkTheme ? Theme.of(context).accentColor : Theme.of(context).bottomAppBarColor, fontSize: 18),
                   ),
                   onPressed: () {
                     widget.toggleView();
@@ -253,7 +254,7 @@ class _RegisterState extends State<Register> {
                                 fontFamily: 'Poiret',
                                 letterSpacing: 3.0,
                                 fontWeight: FontWeight.bold,
-                                color: Provider.of<ThemeNotifier>(context).getTheme() == darkTheme ? Colors.black : Colors.white,
+                                color: Theme.of(context).scaffoldBackgroundColor,
                                 fontSize: 20,
                               ),
                             ),
