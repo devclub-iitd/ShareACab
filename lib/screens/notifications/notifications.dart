@@ -6,7 +6,7 @@ class Notifications extends StatefulWidget {
   _NotificationsState createState() => _NotificationsState();
 }
 
-class _NotificationsState extends State<Notifications> {
+class _NotificationsState extends State<Notifications> with AutomaticKeepAliveClientMixin<Notifications>{
   List<Notification> notifications = [
     Notification(heading: 'Demo -1', message: 'This is one of the demo notifications and the message can be a very long text extending upto many lines and the card would adjust the size accordingly', type: 'Normal', dateTime: '20/05/2020'),
     Notification(heading: 'Warning', message: 'It has come to our notice that you are spamming different groups and disturbing the normal working of the app. We are thus giving you a warning. Any such behavior in future from your side may force us to ban you from using this app', type: 'Warning', dateTime: '20/05/2020'),
@@ -17,6 +17,7 @@ class _NotificationsState extends State<Notifications> {
     Notification(heading: 'Demo -3', message: 'This is also another demo notifications', type: 'Normal', dateTime: '20/05/2020'),
   ];
   @override
+  bool get wantKeepAlive => true;
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(

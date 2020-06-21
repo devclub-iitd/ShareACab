@@ -17,7 +17,7 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixin<Dashboard>{
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthService _auth = AuthService();
   // List<RequestDetails> _listOfTrips = allTrips;
@@ -48,6 +48,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   @override
+  bool get wantKeepAlive => true;
   void initState() {
     // _listOfTrips = filtered;
 

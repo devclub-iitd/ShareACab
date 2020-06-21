@@ -31,7 +31,7 @@ class GroupDetails extends StatefulWidget {
   _GroupDetailsState createState() => _GroupDetailsState();
 }
 
-class _GroupDetailsState extends State<GroupDetails> {
+class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClientMixin<GroupDetails>{
   final RequestService _request = RequestService();
 
   Future getUserDetails() async {
@@ -42,6 +42,7 @@ class _GroupDetailsState extends State<GroupDetails> {
   var _fetchData;
 
   @override
+  bool get wantKeepAlive => true;
   void initState() {
     super.initState();
     _fetchData = getUserDetails();
@@ -318,4 +319,5 @@ class _GroupDetailsState extends State<GroupDetails> {
           ),
         ));
   }
+
 }
