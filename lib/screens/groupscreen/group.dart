@@ -336,6 +336,11 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                       child: FutureBuilder(
                         future: getMembers(groupUID),
                         builder: (_, snapshots) {
+                          if (!snapshots.hasData) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
                           return ListView.builder(
                             shrinkWrap: true,
                             itemCount: snapshots.data == null ? 0 : snapshots.data.length,

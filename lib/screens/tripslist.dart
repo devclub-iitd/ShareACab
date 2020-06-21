@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/screens/groupscreen/group.dart';
 import 'package:shareacab/services/trips.dart';
@@ -154,9 +155,25 @@ class _TripsListState extends State<TripsList> {
                                                                     FlatButton(
                                                                       child: Text('Join', style: TextStyle(color: Theme.of(context).accentColor)),
                                                                       onPressed: () async {
-                                                                        DocumentSnapshot temp = snapshot.data[index];
-                                                                        await _request.joinGroup(temp.documentID);
-                                                                        await Navigator.of(context).pop();
+                                                                        ProgressDialog pr;
+                                                                        pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                                                                        pr.style(
+                                                                          message: 'Joining Group...',
+                                                                          backgroundColor: Theme.of(context).backgroundColor,
+                                                                          messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                                                        );
+                                                                        await pr.show();
+                                                                        await Future.delayed(Duration(seconds: 1));
+                                                                        try {
+                                                                          DocumentSnapshot temp = snapshot.data[index];
+                                                                          await _request.joinGroup(temp.documentID);
+                                                                          await Navigator.of(context).pop();
+                                                                          await pr.hide();
+                                                                        } catch (e) {
+                                                                          await pr.hide();
+                                                                          print(e.toString());
+                                                                        }
+
                                                                         // final snackBar = SnackBar(
                                                                         //   backgroundColor: Theme.of(context).primaryColor,
                                                                         //   content: Text(

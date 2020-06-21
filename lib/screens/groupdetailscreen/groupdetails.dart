@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'dart:io';
 
 import 'package:shareacab/services/trips.dart';
@@ -273,9 +274,24 @@ class _GroupDetailsState extends State<GroupDetails> {
                             FlatButton(
                               child: Text('Join', style: TextStyle(color: Theme.of(context).accentColor)),
                               onPressed: () async {
-                                await _request.joinGroup(widget.docId);
-                                GroupDetails.inGroup = true;
-                                await Navigator.of(context).pop();
+                                ProgressDialog pr;
+                                pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                                pr.style(
+                                  message: 'Joining Group...',
+                                  backgroundColor: Theme.of(context).backgroundColor,
+                                  messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                );
+                                await pr.show();
+                                await Future.delayed(Duration(seconds: 1));
+                                try {
+                                  await _request.joinGroup(widget.docId);
+                                  GroupDetails.inGroup = true;
+                                  await Navigator.of(context).pop();
+                                  await pr.hide();
+                                } catch (e) {
+                                  await pr.hide();
+                                  print(e.toString());
+                                }
                                 // final snackBar = SnackBar(
                                 //   backgroundColor: Theme.of(context).primaryColor,
                                 //   content: Text(
