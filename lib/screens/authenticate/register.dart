@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/services/auth.dart';
@@ -63,7 +62,6 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    var _darkTheme = Provider.of<ThemeNotifier>(context).getTheme() == darkTheme;
     return loading
         ? Loading()
         : Scaffold(
