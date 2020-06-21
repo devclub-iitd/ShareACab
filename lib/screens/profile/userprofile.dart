@@ -62,7 +62,7 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
   bool loading = true;
 
   @override
-  bool get wantKeepAlive => true;
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     final currentuser = Provider.of<FirebaseUser>(context);
 
@@ -360,6 +360,8 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
             ),
           );
   }
+  @override
+  bool get wantKeepAlive => true;
 }
 
 //class User {

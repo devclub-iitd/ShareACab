@@ -42,7 +42,6 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
   var _fetchData;
 
   @override
-  bool get wantKeepAlive => true;
   void initState() {
     super.initState();
     _fetchData = getUserDetails();
@@ -57,6 +56,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
   }
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     final currentuser = Provider.of<FirebaseUser>(context);
     Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
@@ -319,5 +319,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
           ),
         ));
   }
+  @override
+  bool get wantKeepAlive => true;
 
 }

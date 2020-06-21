@@ -45,7 +45,6 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
   bool timestampFlag = false;
 
   @override
-  bool get wantKeepAlive => true;
   Widget build(BuildContext context) {
     super.build(context);
     final currentuser = Provider.of<FirebaseUser>(context);
@@ -385,6 +384,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
             ),
           );
   }
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class Members {

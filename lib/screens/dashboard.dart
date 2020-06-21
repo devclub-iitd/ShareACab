@@ -48,7 +48,6 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
   }
 
   @override
-  bool get wantKeepAlive => true;
   void initState() {
     // _listOfTrips = filtered;
 
@@ -81,6 +80,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
 
   var inGroupFetch = false;
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     final currentuser = Provider.of<FirebaseUser>(context);
     Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
@@ -170,4 +170,6 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
           : null,
     );
   }
+  @override
+  bool get wantKeepAlive => true;
 }

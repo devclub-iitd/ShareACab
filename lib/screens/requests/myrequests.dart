@@ -13,7 +13,7 @@ class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMi
     Requests(name: 'Demo Request Trip-3', destination: 'New Delhi Railway Station', id: '1', status: 'Rejected'),
   ];
   @override
-  bool get wantKeepAlive => true;
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -184,7 +184,10 @@ class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMi
                   );
                 },
                 itemCount: requests.length));
+
   }
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class Requests {
