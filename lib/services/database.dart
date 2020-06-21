@@ -99,15 +99,15 @@ class DatabaseService {
 
     //var timeStamp = Timestamp.fromDate(temp2);
 
-    final reqRef = await requests.add({
-      'user': user.uid.toString(),
-      'destination': requestDetails.destination.toString(),
-      'start': starting,
-      'end': ending,
-      'finaldestination': requestDetails.finalDestination.toString(),
-      'maxpoolers': requestDetails.maxPoolers,
-      'created': Timestamp.now(),
-    });
+    // final reqRef = await requests.add({
+    //   'user': user.uid.toString(),
+    //   'destination': requestDetails.destination.toString(),
+    //   'start': starting,
+    //   'end': ending,
+    //   'finaldestination': requestDetails.finalDestination.toString(),
+    //   'maxpoolers': requestDetails.maxPoolers,
+    //   'created': Timestamp.now(),
+    // });
     final docRef = await groupdetails.add({
       'owner': user.uid.toString(),
       'users': FieldValue.arrayUnion([user.uid]),
@@ -126,7 +126,7 @@ class DatabaseService {
 
     await userDetails.document(user.uid).updateData({
       'currentGroup': docRef.documentID,
-      'currentReq': reqRef.documentID,
+      // 'currentReq': reqRef.documentID,
       'previous_groups': FieldValue.arrayUnion([docRef.documentID]),
     });
 
@@ -156,8 +156,12 @@ class DatabaseService {
     //var currentReq;
     var presentNum;
     var startTimeStamp;
+    var totalRides;
+    var cancelledRides;
     await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) {
       currentGrp = value.data['currentGroup'];
+      totalRides = value.data['totalRides'];
+      cancelledRides = value.data['cancelledRides'];
       //currentReq = value.data['currentReq'];
     });
     await groupdetails.document(currentGrp).get().then((value) {
@@ -170,6 +174,7 @@ class DatabaseService {
         'currentGroup': null,
         'currentReq': null,
         'previous_groups': FieldValue.arrayRemove([currentGrp]),
+        'cancelledRides': cancelledRides + 1,
       });
       await groupdetails.document(currentGrp).updateData({
         'users': FieldValue.arrayRemove([user.uid]),
@@ -180,6 +185,7 @@ class DatabaseService {
       await userDetails.document(user.uid).updateData({
         'currentGroup': null,
         'currentReq': null,
+        'totalRides': totalRides + 1,
       });
     }
 
