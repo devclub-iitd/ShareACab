@@ -149,6 +149,7 @@ class _TripsListState extends State<TripsList> {
                                                                 return AlertDialog(
                                                                   title: Text('Join Group'),
                                                                   content: Text('Are you sure you want to join this group?'),
+                                                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                                   actions: <Widget>[
                                                                     FlatButton(
                                                                       child: Text('Join', style: TextStyle(color: Theme.of(context).accentColor)),
