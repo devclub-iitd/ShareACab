@@ -18,7 +18,7 @@ class MyProfile extends StatefulWidget {
   _MyProfileState createState() => _MyProfileState();
 }
 
-class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixin<MyProfile>{
+class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixin<MyProfile> {
   FirebaseUser currentUser;
   var namefirst = 'P';
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();

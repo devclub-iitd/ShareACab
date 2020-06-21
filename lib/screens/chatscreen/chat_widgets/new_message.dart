@@ -20,7 +20,7 @@ class _NewMessageState extends State<NewMessage> {
     final user = await FirebaseAuth.instance.currentUser();
     final userData = await Firestore.instance.collection('userdetails').document(user.uid).get();
     await Firestore.instance.collection('chatroom').document(widget.docId).updateData({
-      'lastMessage' : Timestamp.now(),
+      'lastMessage': Timestamp.now(),
     });
     await Firestore.instance.collection('chatroom').document(widget.docId).collection('chats').add({
       'text': _enteredMessage,
@@ -37,7 +37,7 @@ class _NewMessageState extends State<NewMessage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 8),
+      margin: EdgeInsets.only(top: 8, bottom: 12),
       padding: EdgeInsets.all(8),
       child: Row(
         children: <Widget>[

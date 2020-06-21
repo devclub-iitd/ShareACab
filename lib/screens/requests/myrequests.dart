@@ -6,7 +6,7 @@ class MyRequests extends StatefulWidget {
   _MyRequestsState createState() => _MyRequestsState();
 }
 
-class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMixin<MyRequests>{
+class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMixin<MyRequests> {
   List<Requests> requests = [
     Requests(name: 'Demo Request Trip-1', destination: 'New Delhi Railway Station', id: '1', status: 'Pending'),
     Requests(name: 'Demo Request Trip-2', destination: 'IGI Airport', id: '1', status: 'Accepted'),

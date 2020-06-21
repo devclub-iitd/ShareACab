@@ -17,7 +17,7 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixin<Dashboard>{
+class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixin<Dashboard> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthService _auth = AuthService();
   // List<RequestDetails> _listOfTrips = allTrips;
