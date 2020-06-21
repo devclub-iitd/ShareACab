@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter/services.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/services/auth.dart';
 import 'package:shareacab/shared/constants.dart';
 import 'package:shareacab/shared/loading.dart';
+import 'package:flutter/cupertino.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -69,16 +69,16 @@ class _RegisterState extends State<Register> {
             appBar: AppBar(
               backgroundColor: Theme.of(context).primaryColor,
               elevation: 0.0,
-              title: Text('Sign up'),
+              title: Text(
+                'Sign up',
+                style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
+              ),
               actions: <Widget>[
                 FlatButton.icon(
-                  icon: Icon(
-                    Icons.person,
-                    color: getVisibleColorOnPrimaryColor(context),
-                  ),
+                  icon: Icon(Icons.person, color: getVisibleColorOnPrimaryColor(context)),
                   label: Text(
                     'Sign in',
-                    style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
+                    style: TextStyle(fontSize: 18, color: getVisibleColorOnPrimaryColor(context)),
                   ),
                   onPressed: () {
                     widget.toggleView();
@@ -96,7 +96,17 @@ class _RegisterState extends State<Register> {
                   key: _formKey,
                   child: SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
+                        SizedBox(height: 20.0),
+                        CircleAvatar(
+                          radius: 48,
+                          backgroundColor: Theme.of(context).accentColor,
+                          child: Icon(
+                            CupertinoIcons.car_detailed,
+                            size: 48,
+                          ),
+                        ),
                         SizedBox(height: 20.0),
                         TextFormField(
                           decoration:
@@ -231,9 +241,17 @@ class _RegisterState extends State<Register> {
                         SizedBox(height: 20.0),
                         RaisedButton(
                           color: Theme.of(context).accentColor,
-                          child: Text(
-                            'Register',
-                            style: TextStyle(color: Colors.white),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 17.0),
+                            child: Text(
+                              'REGISTER',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Theme.of(context).scaffoldBackgroundColor,
+                                letterSpacing: 2,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
