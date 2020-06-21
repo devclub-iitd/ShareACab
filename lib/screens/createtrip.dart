@@ -13,6 +13,8 @@ class CreateTrip extends StatefulWidget {
 }
 
 class _CreateTripState extends State<CreateTrip> {
+  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<String> destinations = ['New Delhi Railway Station', 'Indira Gandhi International Airport', 'Anand Vihar ISBT', 'Hazrat Nizamuddin Railway Station'];
   List<int> maxpoolers = [1, 2, 3, 4, 5, 6];
   String _destination;
@@ -29,6 +31,13 @@ class _CreateTripState extends State<CreateTrip> {
     final newRq = RequestDetails(name: 'Name', id: DateTime.now().toString(), destination: _destination, finalDestination: _finalDestinationController.text, startDate: _selectedStartDate, startTime: _selectedStartTime, endDate: _selectedEndDate, endTime: _selectedEndTime, privacy: privacy, maxPoolers: _maxPoolers);
     try {
       await _request.createTrip(newRq);
+      // LOOK FOR A WAY TO SHOW A RESPONSE THAT THE TRIP HAS BEEN CREATED
+      // _scaffoldKey.currentState.hideCurrentSnackBar();
+      // await _scaffoldKey.currentState.showSnackBar(SnackBar(
+      //   duration: Duration(seconds: 1),
+      //   backgroundColor: Theme.of(context).primaryColor,
+      //   content: Text('Your Trip has been created', style: TextStyle(color: Theme.of(context).accentColor)),
+      // ));
     } catch (e) {
       print(e.toString());
       //String errStr = e.message ?? e.toString();
@@ -38,15 +47,33 @@ class _CreateTripState extends State<CreateTrip> {
   }
 
   void _submitData() {
+    _formKey.currentState.validate();
     final enteredDestination = _destination;
     final enteredFinalDestination = _finalDestinationController.text;
-    if (enteredDestination.isEmpty || enteredFinalDestination.isEmpty || _selectedStartDate == null || _selectedStartTime == null || _selectedEndDate == null || _selectedEndTime == null || _maxPoolers == null) {
+
+    if (enteredFinalDestination == null || _maxPoolers == null || enteredDestination == null) {
+      _scaffoldKey.currentState.hideCurrentSnackBar();
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        duration: Duration(seconds: 1),
+        backgroundColor: Theme.of(context).primaryColor,
+        content: Text('One or more fields is missing', style: TextStyle(color: Theme.of(context).accentColor)),
+      ));
       return; //return stops function execution and thus nothing is called or returned
+    } else if (_selectedStartDate == null || _selectedStartTime == null || _selectedEndDate == null || _selectedEndTime == null) {
+      _scaffoldKey.currentState.hideCurrentSnackBar();
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        duration: Duration(seconds: 1),
+        backgroundColor: Theme.of(context).primaryColor,
+        content: Text('Date or Time is missing', style: TextStyle(color: Theme.of(context).accentColor)),
+      ));
+      return;
+    } else {
+      setState(() {
+        _formKey.currentState.save();
+        _addNewRequest();
+      });
+      Navigator.of(context).pop();
     }
-    setState(() {
-      _addNewRequest();
-    });
-    Navigator.of(context).pop();
   }
 
   void _startDatePicker() {
@@ -166,155 +193,178 @@ class _CreateTripState extends State<CreateTrip> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        //key: scaffoldKey,
+        key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('Create Trip'),
         ),
-        body: Container(
-          //padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                buildLabel('Destination'),
-                Row(
+        body: Builder(builder: (BuildContext context) {
+          return Container(
+            //padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Column(
                   children: <Widget>[
+                    buildLabel('Destination'),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(
+                            top: 20,
+                            left: 40,
+                          ),
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: DropdownButtonFormField<String>(
+                            icon: Icon(
+                              Icons.keyboard_arrow_down,
+                              size: 30,
+                            ),
+                            items: destinations.map((String dropDownStringItem) {
+                              return DropdownMenuItem<String>(
+                                value: dropDownStringItem,
+                                child: Text(
+                                  dropDownStringItem,
+                                  style: TextStyle(
+                                    color: Theme.of(context).accentColor,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            value: _destination,
+                            onChanged: (val) {
+                              setState(() {
+                                _destination = val;
+                              });
+                            },
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please Enter Destination';
+                              }
+                              return null;
+                            },
+                            hint: Text('Select The Destination'),
+                          ),
+                        ),
+                      ],
+                    ),
+                    buildLabel('Going To'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.77,
+                          margin: EdgeInsets.only(top: 20, left: 40),
+                          child: TextFormField(
+                            decoration: InputDecoration(hintText: 'Enter Your Final Destination'),
+                            controller: _finalDestinationController,
+                            // onSubmitted: (_) => _submitData(),
+                            onChanged: (val) {},
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter your final destination';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    buildLabel('Starting'),
+                    buildContainer('Start', _selectedStartDate, _selectedStartTime, _startDatePicker, _startTimePicker),
+                    buildLabel('Ending'),
+                    buildContainer('End', _selectedEndDate, _selectedEndTime, _endDatePicker, _endTimePicker),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          width: 45,
+                          margin: EdgeInsets.only(top: 20, left: 40),
+                          child: DropdownButtonFormField<int>(
+                            icon: Icon(
+                              Icons.keyboard_arrow_down,
+                              size: 30,
+                            ),
+                            items: maxpoolers.map((int dropDownIntItem) {
+                              return DropdownMenuItem<int>(
+                                value: dropDownIntItem,
+                                child: Text(
+                                  dropDownIntItem.toString(),
+                                  style: TextStyle(
+                                    color: Theme.of(context).accentColor,
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                            value: _maxPoolers,
+                            onChanged: (val) {
+                              setState(() {
+                                _maxPoolers = val;
+                              });
+                            },
+                            validator: (value) {
+                              if (value.toString().isEmpty) {
+                                return 'Please Enter Max CabPoolers';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 12.0),
+                          child: Text('No of poolers with you',
+                              style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                              )),
+                        ),
+                      ],
+                    ),
                     Container(
                       margin: EdgeInsets.only(
                         top: 20,
-                        left: 40,
+                        left: 30,
                       ),
-                      //width: MediaQuery.of(context).size.width * 0.7,
-                      child: DropdownButton<String>(
-                        icon: Icon(
-                          Icons.keyboard_arrow_down,
-                          size: 30,
-                        ),
-                        items: destinations.map((String dropDownStringItem) {
-                          return DropdownMenuItem<String>(
-                            value: dropDownStringItem,
-                            child: Text(
-                              dropDownStringItem,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Checkbox(
+                              value: privacy,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  privacy = value;
+                                });
+                              }),
+                          Text('Require Permission To Join Trip',
                               style: TextStyle(
                                 color: Theme.of(context).accentColor,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                        value: _destination,
-                        onChanged: (val) {
-                          setState(() {
-                            _destination = val;
-                          });
-                        },
-                        hint: Text('Select The Destination'),
+                              )),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-                buildLabel('Going To'),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.77,
-                      margin: EdgeInsets.only(top: 20, left: 40),
-                      child: TextField(
-                        decoration: InputDecoration(hintText: 'Enter Your Final Destination'),
-                        controller: _finalDestinationController,
-                        onSubmitted: (_) => _submitData(),
-                        onChanged: (val) {},
+                      height: 50,
+                      width: 150,
+                      margin: EdgeInsets.only(
+                        top: 40,
+                        bottom: 30,
+                        right: 20,
                       ),
-                    ),
-                  ],
-                ),
-                buildLabel('Starting'),
-                buildContainer('Start', _selectedStartDate, _selectedStartTime, _startDatePicker, _startTimePicker),
-                buildLabel('Ending'),
-                buildContainer('End', _selectedEndDate, _selectedEndTime, _endDatePicker, _endTimePicker),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: 45,
-                      margin: EdgeInsets.only(top: 20, left: 40),
-                      child: DropdownButton<int>(
-                        icon: Icon(
-                          Icons.keyboard_arrow_down,
-                          size: 30,
-                        ),
-                        items: maxpoolers.map((int dropDownIntItem) {
-                          return DropdownMenuItem<int>(
-                            value: dropDownIntItem,
-                            child: Text(
-                              dropDownIntItem.toString(),
-                              style: TextStyle(
-                                color: Theme.of(context).accentColor,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                        value: _maxPoolers,
-                        onChanged: (val) {
-                          setState(() {
-                            _maxPoolers = val;
-                          });
+                      child: RaisedButton(
+                        textColor: getVisibleColorOnAccentColor(context),
+                        onPressed: () {
+                          SystemChannels.textInput.invokeMethod('Text Input hide');
+                          _submitData();
                         },
+                        color: Theme.of(context).accentColor,
+                        child: Text('Create Trip', style: TextStyle(fontSize: 18)),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Text('No of poolers with you',
-                          style: TextStyle(
-                            color: Theme.of(context).accentColor,
-                          )),
                     ),
                   ],
                 ),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 20,
-                    left: 30,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Checkbox(
-                          value: privacy,
-                          onChanged: (bool value) {
-                            setState(() {
-                              privacy = value;
-                            });
-                          }),
-                      Text('Require Permission To Join Trip',
-                          style: TextStyle(
-                            color: Theme.of(context).accentColor,
-                          )),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: 50,
-                  width: 150,
-                  margin: EdgeInsets.only(
-                    top: 40,
-                    bottom: 30,
-                    right: 20,
-                  ),
-                  child: RaisedButton(
-                    textColor: getVisibleColorOnAccentColor(context),
-                    onPressed: () {
-                      SystemChannels.textInput.invokeMethod('Text Input hide');
-                      _submitData();
-                    },
-                    color: Theme.of(context).accentColor,
-                    child: Text('Create Trip', style: TextStyle(fontSize: 18)),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

@@ -143,10 +143,41 @@ class _TripsListState extends State<TripsList> {
                                                   ? FlatButton(
                                                       onPressed: () async {
                                                         try {
-                                                          DocumentSnapshot temp = snapshot.data[index];
-                                                          await _request.joinGroup(temp.documentID);
-                                                          //print(temp.documentID);
-                                                          await Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
+                                                          await showDialog(
+                                                              context: ctx,
+                                                              builder: (BuildContext ctx) {
+                                                                return AlertDialog(
+                                                                  title: Text('Join Group'),
+                                                                  content: Text('Are you sure you want to join this group?'),
+                                                                  actions: <Widget>[
+                                                                    FlatButton(
+                                                                      child: Text('Join', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                                      onPressed: () async {
+                                                                        DocumentSnapshot temp = snapshot.data[index];
+                                                                        await _request.joinGroup(temp.documentID);
+                                                                        await Navigator.of(context).pop();
+                                                                        // final snackBar = SnackBar(
+                                                                        //   backgroundColor: Theme.of(context).primaryColor,
+                                                                        //   content: Text(
+                                                                        //     'Yayyy!! You joined the trip.',
+                                                                        //     style: TextStyle(color: Theme.of(context).accentColor),
+                                                                        //   ),
+                                                                        //   duration: Duration(seconds: 1),
+                                                                        // );
+                                                                        // Scaffold.of(ctx).hideCurrentSnackBar();
+                                                                        // Scaffold.of(ctx).showSnackBar(snackBar);
+                                                                        await Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
+                                                                      },
+                                                                    ),
+                                                                    FlatButton(
+                                                                      child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                                      onPressed: () {
+                                                                        Navigator.of(context).pop();
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              });
                                                         } catch (e) {
                                                           print(e.toString());
                                                         }

@@ -53,14 +53,14 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
     final currentuser = Provider.of<FirebaseUser>(context);
 
     Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
-      if (value.exists) {
+      if (value.exists && mounted) {
         setState(() {
           groupUID = value.data['currentGroup'];
         });
       }
     });
     Firestore.instance.collection('group').document(groupUID).get().then((value) {
-      if (value.exists) {
+      if (value.exists && mounted) {
         setState(() {
           destination = value.data['destination'];
           start = DateFormat('dd.MM.yyyy - kk:mm a').format(value.data['start'].toDate());

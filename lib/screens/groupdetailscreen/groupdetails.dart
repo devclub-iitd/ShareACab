@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'dart:io';
 
-//import './appbar.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,9 +13,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:shareacab/main.dart';
 import 'package:flutter/scheduler.dart';
 
-class GroupDetails extends StatelessWidget {
-//  static const routeName = '/groupDetails';
+import './appbar.dart';
 
+class GroupDetails extends StatefulWidget {
   final String destination;
   final docId;
   final privacy;
@@ -24,24 +25,48 @@ class GroupDetails extends StatelessWidget {
   final data;
 
   GroupDetails(this.destination, this.docId, this.privacy, this.start, this.end, this.numberOfMembers, this.data);
+  static bool inGroup = false;
 
+  @override
+  _GroupDetailsState createState() => _GroupDetailsState();
+}
+
+class _GroupDetailsState extends State<GroupDetails> {
   final RequestService _request = RequestService();
 
   Future getUserDetails() async {
-    final userDetails = await Firestore.instance.collection('group').document(docId).collection('users').getDocuments();
+    final userDetails = await Firestore.instance.collection('group').document(widget.docId).collection('users').getDocuments();
     return userDetails.documents;
   }
 
-  static bool inGroup = false;
+  var _fetchData;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData = getUserDetails();
+  }
+
+  Timer _countdownTimer;
+  @override
+  void dispose() {
+    _countdownTimer?.cancel();
+    _countdownTimer = null;
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final currentuser = Provider.of<FirebaseUser>(context);
     Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
-      if (value.data['currentGroup'] != null) {
-        inGroup = true;
-      } else {
-        inGroup = false;
+      if (value.data['currentGroup'] != null && mounted) {
+        setState(() {
+          GroupDetails.inGroup = true;
+        });
+      } else if (mounted) {
+        setState(() {
+          GroupDetails.inGroup = false;
+        });
       }
     });
     timeDilation = 1.0;
@@ -54,13 +79,7 @@ class GroupDetails extends StatelessWidget {
               floating: false,
               expandedHeight: 120,
               flexibleSpace: FlexibleSpaceBar(
-                // background: Image.asset(
-                //   destination == 'New Delhi Railway Station' ? 'assets/images/train.jpg' : 'assets/images/plane.jpg',
-                //   fit: BoxFit.cover,
-                // ),
-                //title: AppBarTitle(destination),
-                // THE ABOVE WAS THROWING AN ERROR, WILL CHECK LATER
-                title: Text(destination),
+                title: AppBarTitle(widget.destination),
               ),
             ),
           ];
@@ -75,7 +94,7 @@ class GroupDetails extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   Hero(
-                    tag: docId,
+                    tag: widget.docId,
                     child: Card(
                       color: Theme.of(context).accentColor,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
@@ -95,7 +114,7 @@ class GroupDetails extends StatelessWidget {
                                       margin: EdgeInsets.only(
                                         left: 20,
                                       ),
-                                      child: destination == 'New Delhi Railway Station'
+                                      child: widget.destination == 'New Delhi Railway Station'
                                           ? Icon(
                                               Icons.train,
                                               color: Theme.of(context).accentColor,
@@ -116,7 +135,7 @@ class GroupDetails extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text('Start : ${DateFormat('dd.MM.yyyy - kk:mm a').format(start)}', style: TextStyle(fontSize: 15.0, color: getVisibleColorOnAccentColor(context))),
+                                  Text('Start : ${DateFormat('dd.MM.yyyy - kk:mm a').format(widget.start)}', style: TextStyle(fontSize: 15.0, color: getVisibleColorOnAccentColor(context))),
                                 ],
                               ),
                             ),
@@ -128,7 +147,7 @@ class GroupDetails extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    'End : ${DateFormat('dd.MM.yyyy - kk:mm a').format(end)}',
+                                    'End : ${DateFormat('dd.MM.yyyy - kk:mm a').format(widget.end)}',
                                     style: TextStyle(fontSize: 15, color: getVisibleColorOnAccentColor(context)),
                                   ),
                                 ],
@@ -141,7 +160,7 @@ class GroupDetails extends StatelessWidget {
                                   children: <Widget>[
                                     Text(
                                       'Number of members in group: '
-                                      '${numberOfMembers}',
+                                      '${widget.numberOfMembers}',
                                       style: TextStyle(color: getVisibleColorOnAccentColor(context)),
                                     )
                                   ],
@@ -157,7 +176,7 @@ class GroupDetails extends StatelessWidget {
                     margin: EdgeInsets.only(top: 60),
                     height: MediaQuery.of(context).size.height * 0.7,
                     child: FutureBuilder(
-                      future: getUserDetails(),
+                      future: _fetchData,
                       builder: (ctx, futureSnapshot) {
                         if (futureSnapshot.connectionState == ConnectionState.waiting) {
                           return Center(
@@ -241,23 +260,55 @@ class GroupDetails extends StatelessWidget {
             textColor: getVisibleColorOnAccentColor(context),
             onPressed: () async {
               try {
-                if (privacy == true || inGroup) {
+                if (widget.privacy == true || GroupDetails.inGroup) {
                   null;
                 } else {
-                  await _request.joinGroup(docId);
-                  inGroup = true;
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext ctx) {
+                        return AlertDialog(
+                          title: Text('Join Group'),
+                          content: Text('Are you sure you want to join this group?'),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('Join', style: TextStyle(color: Theme.of(context).accentColor)),
+                              onPressed: () async {
+                                await _request.joinGroup(widget.docId);
+                                GroupDetails.inGroup = true;
+                                await Navigator.of(context).pop();
+                                // final snackBar = SnackBar(
+                                //   backgroundColor: Theme.of(context).primaryColor,
+                                //   content: Text(
+                                //     'Yayyy!! You joined the trip.',
+                                //     style: TextStyle(color: Theme.of(context).accentColor),
+                                //   ),
+                                //   duration: Duration(seconds: 1),
+                                // );
+                                // Scaffold.of(ctx).hideCurrentSnackBar();
+                                // Scaffold.of(ctx).showSnackBar(snackBar);
+                              },
+                            ),
+                            FlatButton(
+                              child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      });
                 }
               } catch (e) {
                 print(e.toString());
               }
             },
             padding: EdgeInsets.all(20),
-            child: privacy == 'true'
+            child: widget.privacy == 'true'
                 ? Text(
                     'Request to Join',
                     style: TextStyle(fontSize: 20),
                   )
-                : inGroup
+                : GroupDetails.inGroup
                     ? Text(
                         'Already in a Group',
                         style: TextStyle(fontSize: 20),

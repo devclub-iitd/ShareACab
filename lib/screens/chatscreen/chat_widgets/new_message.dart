@@ -29,6 +29,9 @@ class _NewMessageState extends State<NewMessage> {
       'name': userData['name'],
     });
     _controller.clear();
+    setState(() {
+      _enteredMessage = '';
+    });
   }
 
   @override
