@@ -48,17 +48,12 @@ class _SignInState extends State<SignIn> {
               elevation: 0.0,
               title: Text(
                 'Sign in',
-                style: TextStyle(
-                  color: _darkTheme ? Theme.of(context).accentColor : Theme.of(context).bottomAppBarColor,
-                ),
               ),
               actions: <Widget>[
                 IconButton(
                     tooltip: 'Settings',
-                    color: _darkTheme ? Theme.of(context).accentColor : Theme.of(context).bottomAppBarColor,
                     icon: Icon(
                       Icons.settings,
-                      color: _darkTheme ? Theme.of(context).accentColor : Theme.of(context).bottomAppBarColor,
                     ),
                     onPressed: () {
                       return Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -66,13 +61,10 @@ class _SignInState extends State<SignIn> {
                       }));
                     }),
                 FlatButton.icon(
-                  icon: Icon(
-                    Icons.person_add,
-                    color: _darkTheme ? Theme.of(context).accentColor : Theme.of(context).bottomAppBarColor,
-                  ),
+                  icon: Icon(Icons.person_add, color: getVisibleColorOnPrimaryColor(context)),
                   label: Text(
                     'Register',
-                    style: TextStyle(color: _darkTheme ? Theme.of(context).accentColor : Theme.of(context).bottomAppBarColor, fontSize: 18),
+                    style: TextStyle(fontSize: 18, color: getVisibleColorOnPrimaryColor(context)),
                   ),
                   onPressed: () {
                     widget.toggleView();

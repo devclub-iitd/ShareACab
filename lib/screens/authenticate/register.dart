@@ -73,17 +73,14 @@ class _RegisterState extends State<Register> {
               elevation: 0.0,
               title: Text(
                 'Sign up',
-                style: TextStyle(color: _darkTheme ? Theme.of(context).accentColor : Theme.of(context).bottomAppBarColor),
+                style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
               ),
               actions: <Widget>[
                 FlatButton.icon(
-                  icon: Icon(
-                    Icons.person,
-                    color: Provider.of<ThemeNotifier>(context).getTheme() == darkTheme ? Colors.orange : Colors.white,
-                  ),
+                  icon: Icon(Icons.person, color: getVisibleColorOnPrimaryColor(context)),
                   label: Text(
                     'Sign in',
-                    style: TextStyle(color: _darkTheme ? Theme.of(context).accentColor : Theme.of(context).bottomAppBarColor, fontSize: 18),
+                    style: TextStyle(fontSize: 18, color: getVisibleColorOnPrimaryColor(context)),
                   ),
                   onPressed: () {
                     widget.toggleView();
