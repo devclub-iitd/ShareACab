@@ -80,8 +80,8 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
 
   var inGroupFetch = false;
   @override
-  // ignore: must_call_super
   Widget build(BuildContext context) {
+    super.build(context);
     final currentuser = Provider.of<FirebaseUser>(context);
     Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
       if (value.data['currentGroup'] != null) {

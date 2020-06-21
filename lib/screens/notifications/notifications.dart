@@ -17,8 +17,8 @@ class _NotificationsState extends State<Notifications> with AutomaticKeepAliveCl
     Notification(heading: 'Demo -3', message: 'This is also another demo notifications', type: 'Normal', dateTime: '20/05/2020'),
   ];
   @override
-  // ignore: must_call_super
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         appBar: AppBar(
           title: Text('My Notifications'),

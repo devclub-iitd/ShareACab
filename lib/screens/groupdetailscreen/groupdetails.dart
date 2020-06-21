@@ -56,8 +56,8 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
   }
 
   @override
-  // ignore: must_call_super
   Widget build(BuildContext context) {
+    super.build(context);
     final currentuser = Provider.of<FirebaseUser>(context);
     Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
       if (value.data['currentGroup'] != null && mounted) {

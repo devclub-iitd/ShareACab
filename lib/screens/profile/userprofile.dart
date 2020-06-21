@@ -62,8 +62,8 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
   bool loading = true;
 
   @override
-  // ignore: must_call_super
   Widget build(BuildContext context) {
+    super.build(context);
     final currentuser = Provider.of<FirebaseUser>(context);
 
     //print(currentuser.uid);

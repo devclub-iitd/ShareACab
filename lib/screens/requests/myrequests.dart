@@ -13,8 +13,8 @@ class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMi
     Requests(name: 'Demo Request Trip-3', destination: 'New Delhi Railway Station', id: '1', status: 'Rejected'),
   ];
   @override
-  // ignore: must_call_super
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         appBar: AppBar(
           title: Text('My Requests'),
