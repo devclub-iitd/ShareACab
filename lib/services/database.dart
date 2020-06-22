@@ -15,6 +15,7 @@ class DatabaseService {
   final CollectionReference groupdetails = Firestore.instance.collection('group');
   final CollectionReference requests = Firestore.instance.collection('requests');
 
+  // Enter user data (W=1, R=0)
   Future enterUserData({String name, String mobileNumber, String hostel, String sex}) async {
     return await userDetails.document(uid).setData({
       'name': name,
@@ -28,6 +29,7 @@ class DatabaseService {
     });
   }
 
+  // Update user data (W=1,R=0)
   Future updateUserData({String name, String mobileNumber, String hostel, String sex}) async {
     return await userDetails.document(uid).updateData({
       'name': name,
@@ -86,7 +88,7 @@ class DatabaseService {
     });
   }
 
-  // add group details
+  // add group details (W = 4, R = 0)
   Future<void> createTrip(RequestDetails requestDetails) async {
     var user = await _auth.currentUser();
 
@@ -138,7 +140,7 @@ class DatabaseService {
     });
   }
 
-  // to update group details
+  // to update group details (W=1, R=0)
   Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET) async {
     var starting = DateTime(SD.year, SD.month, SD.day, ST.hour, ST.minute);
     var ending = DateTime(ED.year, ED.month, ED.day, ET.hour, ET.minute);
@@ -149,7 +151,7 @@ class DatabaseService {
     }, merge: true);
   }
 
-  // exit a group
+  // exit a group (W=4, R =3)
   Future<void> exitGroup() async {
     var user = await _auth.currentUser();
     var currentGrp;
@@ -198,7 +200,7 @@ class DatabaseService {
     await ChatService().exitChatRoom(currentGrp);
   }
 
-  // join a group from dashboard
+  // join a group from dashboard (W=4,R=2)
   Future<void> joinGroup(String listuid) async {
     var user = await _auth.currentUser();
     var presentNum;
@@ -234,6 +236,7 @@ class DatabaseService {
     await ChatService().joinGroup(listuid);
   }
 
+  // set device token (W=1,R=0)
   Future<void> setToken(String token) async {
     final user = await _auth.currentUser();
     await userDetails.document(user.uid).updateData({'device_token': token});
