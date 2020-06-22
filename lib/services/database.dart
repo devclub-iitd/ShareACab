@@ -129,7 +129,7 @@ class DatabaseService {
     await userDetails.document(user.uid).updateData({
       'currentGroup': docRef.documentID,
       // 'currentReq': reqRef.documentID,
-      'previous_groups': FieldValue.arrayUnion([docRef.documentID]),
+      //'previous_groups': FieldValue.arrayUnion([docRef.documentID]),
     });
 
     var request = groupdetails.document(docRef.documentID).collection('users');
@@ -175,7 +175,7 @@ class DatabaseService {
       await userDetails.document(user.uid).updateData({
         'currentGroup': null,
         'currentReq': null,
-        'previous_groups': FieldValue.arrayRemove([currentGrp]),
+        //'previous_groups': FieldValue.arrayRemove([currentGrp]),
         'cancelledRides': cancelledRides + 1,
       });
       await groupdetails.document(currentGrp).updateData({
@@ -188,6 +188,7 @@ class DatabaseService {
         'currentGroup': null,
         'currentReq': null,
         'totalRides': totalRides + 1,
+        'previous_groups': FieldValue.arrayUnion([currentGrp]),
       });
     }
 
