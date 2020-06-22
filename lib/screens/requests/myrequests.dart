@@ -10,7 +10,7 @@ class MyRequests extends StatefulWidget {
   _MyRequestsState createState() => _MyRequestsState();
 }
 
-class _MyRequestsState extends State<MyRequests> {
+class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMixin<MyRequests> {
   Future getOldTrips(String uid) async {
     var qn = await Firestore.instance.collection('group').where('users', arrayContains: uid).orderBy('end', descending: true).getDocuments();
     return qn.documents;
@@ -19,6 +19,7 @@ class _MyRequestsState extends State<MyRequests> {
   var currentGroup = 'ab';
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final currentuser = Provider.of<FirebaseUser>(context);
     Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
       if (value.data['currentGroup'] != null) {
@@ -178,4 +179,7 @@ class _MyRequestsState extends State<MyRequests> {
       )),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

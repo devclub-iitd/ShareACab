@@ -214,7 +214,7 @@ class _CreateTripState extends State<CreateTrip> {
                             top: 20,
                             left: 40,
                           ),
-                          width: MediaQuery.of(context).size.width * 0.7,
+                          width: MediaQuery.of(context).size.width * 0.8,
                           child: DropdownButtonFormField<String>(
                             icon: Icon(
                               Icons.keyboard_arrow_down,
