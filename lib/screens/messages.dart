@@ -7,11 +7,12 @@ class Messages extends StatefulWidget {
   _MessagesState createState() => _MessagesState();
 }
 
-class _MessagesState extends State<Messages> {
+class _MessagesState extends State<Messages> with AutomaticKeepAliveClientMixin<Messages> {
   bool isSearching = false;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Messages'),
@@ -37,6 +38,9 @@ class _MessagesState extends State<Messages> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class DataSearch extends SearchDelegate {
