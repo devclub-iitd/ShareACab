@@ -18,7 +18,7 @@ class MyProfile extends StatefulWidget {
   _MyProfileState createState() => _MyProfileState();
 }
 
-class _MyProfileState extends State<MyProfile> {
+class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixin<MyProfile> {
   FirebaseUser currentUser;
   var namefirst = 'P';
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -63,6 +63,7 @@ class _MyProfileState extends State<MyProfile> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final currentuser = Provider.of<FirebaseUser>(context);
 
     //print(currentuser.uid);
@@ -359,6 +360,8 @@ class _MyProfileState extends State<MyProfile> {
             ),
           );
   }
+  @override
+  bool get wantKeepAlive => true;
 }
 
 //class User {

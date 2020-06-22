@@ -17,7 +17,7 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixin<Dashboard> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthService _auth = AuthService();
   // List<RequestDetails> _listOfTrips = allTrips;
@@ -81,6 +81,7 @@ class _DashboardState extends State<Dashboard> {
   var inGroupFetch = false;
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final currentuser = Provider.of<FirebaseUser>(context);
     Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
       if (value.data['currentGroup'] != null) {
@@ -169,4 +170,6 @@ class _DashboardState extends State<Dashboard> {
           : null,
     );
   }
+  @override
+  bool get wantKeepAlive => true;
 }

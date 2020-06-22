@@ -31,7 +31,7 @@ class GroupDetails extends StatefulWidget {
   _GroupDetailsState createState() => _GroupDetailsState();
 }
 
-class _GroupDetailsState extends State<GroupDetails> {
+class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClientMixin<GroupDetails>{
   final RequestService _request = RequestService();
 
   Future getUserDetails() async {
@@ -57,6 +57,7 @@ class _GroupDetailsState extends State<GroupDetails> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final currentuser = Provider.of<FirebaseUser>(context);
     Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
       if (value.data['currentGroup'] != null && mounted) {
@@ -318,4 +319,7 @@ class _GroupDetailsState extends State<GroupDetails> {
           ),
         ));
   }
+  @override
+  bool get wantKeepAlive => true;
+
 }

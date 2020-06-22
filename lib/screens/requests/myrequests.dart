@@ -6,7 +6,7 @@ class MyRequests extends StatefulWidget {
   _MyRequestsState createState() => _MyRequestsState();
 }
 
-class _MyRequestsState extends State<MyRequests> {
+class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMixin<MyRequests> {
   List<Requests> requests = [
     Requests(name: 'Demo Request Trip-1', destination: 'New Delhi Railway Station', id: '1', status: 'Pending'),
     Requests(name: 'Demo Request Trip-2', destination: 'IGI Airport', id: '1', status: 'Accepted'),
@@ -14,6 +14,7 @@ class _MyRequestsState extends State<MyRequests> {
   ];
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         appBar: AppBar(
           title: Text('My Requests'),
@@ -183,7 +184,10 @@ class _MyRequestsState extends State<MyRequests> {
                   );
                 },
                 itemCount: requests.length));
+
   }
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class Requests {
