@@ -185,23 +185,20 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                         )
                       : Padding(
                           padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
-                          child: FloatingActionButton(
+                          child: FloatingActionButton.extended(
                             splashColor: Theme.of(context).primaryColor,
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
                             },
-                            child: Tooltip(
-                              message: 'Group Details',
-                              verticalOffset: -60,
-                              child: Icon(Icons.group),
-                            ),
+                            icon: Icon(Icons.group),
+                            label: Text('Group'),
                           ),
                         )
                   : null,
             );
           } else {
             return Center(
-              child: Text('Loading..'),
+              child: CircularProgressIndicator(),
             );
           }
         });
