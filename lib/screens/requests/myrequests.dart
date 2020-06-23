@@ -79,7 +79,7 @@ class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMi
                             final numberOfMembers = snapshot.data[index].data['numberOfMembers'];
                             final data = snapshot.data[index];
                             return Hero(
-                              tag: docId,
+                              tag: Text(docId),
                               child: (docId != usersnapshot.data['currentGroup'])
                                   ? Card(
                                       color: Theme.of(context).scaffoldBackgroundColor,
