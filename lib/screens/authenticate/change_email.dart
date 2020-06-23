@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/services/auth.dart';
-import 'package:shareacab/shared/constants.dart';
 import 'package:shareacab/shared/loading.dart';
+import 'package:shareacab/main.dart';
 
 class ChangeEmail extends StatefulWidget {
   @override
@@ -44,10 +44,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                       SizedBox(height: 20.0),
                       TextFormField(
                         initialValue: originalEmail,
-                        decoration:
-                            // use this inputdecoration of IITD email
-                            //textInputDecoration.copyWith(hintText: 'Kerberos email'),
-                            textInputDecoration.copyWith(hintText: 'Email'),
+                        decoration: InputDecoration(hintText: 'Email', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                         validator: (val) {
                           if (val.isEmpty) {
                             return 'Enter a valid Email';

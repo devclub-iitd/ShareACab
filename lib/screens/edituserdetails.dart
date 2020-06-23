@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/services/database.dart';
-import 'package:shareacab/shared/constants.dart';
 import 'package:shareacab/shared/loading.dart';
 
 class EditForm extends StatefulWidget {
@@ -103,10 +102,7 @@ class _EditFormState extends State<EditForm> {
                           SizedBox(height: 20.0),
                           TextFormField(
                             initialValue: snapshot.data['name'],
-                            decoration: InputDecoration(
-                                hintText: 'Name',
-                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 2.0)),
-                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                            decoration: InputDecoration(hintText: 'Name', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                             validator: (val) => val.isEmpty ? 'Enter a valid Name' : null,
                             onChanged: (val) {
                               setState(() => name = val);
@@ -115,10 +111,7 @@ class _EditFormState extends State<EditForm> {
                           SizedBox(height: 20.0),
                           TextFormField(
                             initialValue: snapshot.data['mobileNumber'],
-                            decoration: InputDecoration(
-                                hintText: 'Mobile Number',
-                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 2.0)),
-                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                            decoration: InputDecoration(hintText: 'Mobile Number', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                             validator: (val) => val.length != 10 ? 'Enter a valid mobile number.' : null,
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
@@ -128,10 +121,7 @@ class _EditFormState extends State<EditForm> {
                           ),
                           SizedBox(height: 20.0),
                           DropdownButtonFormField(
-                            decoration: InputDecoration(
-                                hintText: 'Select Hostel',
-                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 2.0)),
-                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                            decoration: InputDecoration(hintText: 'Select Hostel', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                             value: hostel ?? snapshot.data['hostel'],
                             onChanged: (newValue) {
                               setState(() {
@@ -148,10 +138,7 @@ class _EditFormState extends State<EditForm> {
                           ),
                           SizedBox(height: 20.0),
                           DropdownButtonFormField(
-                            decoration: InputDecoration(
-                                hintText: 'Select Gender',
-                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 2.0)),
-                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                            decoration: InputDecoration(hintText: 'Select Gender', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                             value: sex ?? snapshot.data['sex'],
                             onChanged: (newValue) {
                               setState(() {

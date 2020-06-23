@@ -90,6 +90,14 @@ Color getVisibleColorOnAccentColor(BuildContext context) {
   }
 }
 
+Color getBorderColorForInputFields(BuildContext context) {
+  if (Theme.of(context).brightness == Brightness.dark) {
+    return Colors.white;
+  } else {
+    return Colors.black;
+  }
+}
+
 final darkTheme = ThemeData(
   primarySwatch: Colors.grey,
   bottomAppBarColor: const Color(0xFF212121),

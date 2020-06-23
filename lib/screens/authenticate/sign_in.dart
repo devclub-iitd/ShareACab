@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/screens/settings.dart';
 import 'package:shareacab/services/auth.dart';
-import 'package:shareacab/shared/constants.dart';
 import 'package:shareacab/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
@@ -111,10 +110,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         SizedBox(height: 20.0),
                         TextFormField(
-                          decoration: InputDecoration(
-                              hintText: 'Email',
-                              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 2.0)),
-                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                          decoration: InputDecoration(hintText: 'Email', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                           validator: (val) => val.isEmpty ? 'Enter a valid Email' : null,
                           onChanged: (val) {
                             setState(() => email = val);
@@ -122,10 +118,9 @@ class _SignInState extends State<SignIn> {
                         ),
                         SizedBox(height: 20.0),
                         TextFormField(
-                          cursorColor: _darkTheme ? Colors.white : Theme.of(context).accentColor,
                           decoration: InputDecoration(
                             hintText: 'Password',
-                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.white, width: 2.0)),
+                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)),
                             focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0)),
                             suffixIcon: IconButton(
                               icon: Icon(

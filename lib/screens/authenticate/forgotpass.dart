@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/services/auth.dart';
-import 'package:shareacab/shared/constants.dart';
 import 'package:shareacab/shared/loading.dart';
 
 class ForgotPass extends StatefulWidget {
@@ -52,7 +51,7 @@ class _ForgotPassState extends State<ForgotPass> {
                         ),
                         SizedBox(height: 30.0),
                         TextFormField(
-                          decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                          decoration: InputDecoration(hintText: 'Email', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                           validator: (val) => val.isEmpty ? 'Enter a valid Email' : null,
                           onChanged: (val) {
                             setState(() => email = val);

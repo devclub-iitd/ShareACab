@@ -178,10 +178,10 @@ class _FilterState extends State<Filter> {
                 value: _destination,
                 onChanged: _dest
                     ? (newValue) {
-                  setState(() {
-                    _destination = newValue;
-                  });
-                }
+                        setState(() {
+                          _destination = newValue;
+                        });
+                      }
                     : null,
                 hint: Text('Select The Destination'),
               ),
