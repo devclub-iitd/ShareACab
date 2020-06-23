@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:shareacab/models/requestdetails.dart';
 import 'package:shareacab/models/alltrips.dart';
 
-
 import '../main.dart';
 
 class Filter extends StatefulWidget {
@@ -130,6 +129,7 @@ class _FilterState extends State<Filter> {
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -147,6 +147,7 @@ class _FilterState extends State<Filter> {
               title: Text('Destination'),
               value: _dest,
               subtitle: Text('Select Preferred Destination'),
+              activeColor: Theme.of(context).accentColor,
               onChanged: (newValue) {
                 setState(() {
                   _dest = newValue;
@@ -177,10 +178,10 @@ class _FilterState extends State<Filter> {
                 value: _destination,
                 onChanged: _dest
                     ? (newValue) {
-                        setState(() {
-                          _destination = newValue;
-                        });
-                      }
+                  setState(() {
+                    _destination = newValue;
+                  });
+                }
                     : null,
                 hint: Text('Select The Destination'),
               ),
@@ -189,6 +190,7 @@ class _FilterState extends State<Filter> {
               title: Text('Date'),
               value: _date,
               subtitle: Text('Select Preferred Date Period'),
+              activeColor: Theme.of(context).accentColor,
               onChanged: (newValue) {
                 setState(() {
                   _date = newValue;
@@ -223,6 +225,7 @@ class _FilterState extends State<Filter> {
               title: Text('Time'),
               value: _time,
               subtitle: Text('Select Preferred Time Interval'),
+              activeColor: Theme.of(context).accentColor,
               onChanged: (newValue) {
                 setState(() {
                   _time = newValue;
@@ -274,7 +277,9 @@ class _FilterState extends State<Filter> {
                 ),
               ],
             ),
-            SizedBox(height: 20,)
+            SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),
