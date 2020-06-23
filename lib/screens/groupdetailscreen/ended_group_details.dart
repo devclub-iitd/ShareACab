@@ -3,12 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'dart:io';
-
-import 'package:shareacab/services/trips.dart';
-import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shareacab/main.dart';
@@ -16,7 +11,7 @@ import 'package:flutter/scheduler.dart';
 
 import './appbar.dart';
 
-class GroupDetails extends StatefulWidget {
+class EndedGroupDetails extends StatefulWidget {
   final String destination;
   final docId;
   final privacy;
@@ -25,16 +20,14 @@ class GroupDetails extends StatefulWidget {
   final numberOfMembers;
   final data;
 
-  GroupDetails(this.destination, this.docId, this.privacy, this.start, this.end, this.numberOfMembers, this.data);
+  EndedGroupDetails(this.destination, this.docId, this.privacy, this.start, this.end, this.numberOfMembers, this.data);
   static bool inGroup = false;
 
   @override
-  _GroupDetailsState createState() => _GroupDetailsState();
+  _EndedGroupDetailsState createState() => _EndedGroupDetailsState();
 }
 
-class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClientMixin<GroupDetails>{
-  final RequestService _request = RequestService();
-
+class _EndedGroupDetailsState extends State<EndedGroupDetails> {
   Future getUserDetails() async {
     final userDetails = await Firestore.instance.collection('group').document(widget.docId).collection('users').getDocuments();
     return userDetails.documents;
@@ -58,19 +51,6 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    final currentuser = Provider.of<FirebaseUser>(context);
-    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
-      if (value.data['currentGroup'] != null && mounted) {
-        setState(() {
-          GroupDetails.inGroup = true;
-        });
-      } else if (mounted) {
-        setState(() {
-          GroupDetails.inGroup = false;
-        });
-      }
-    });
     timeDilation = 1.0;
     return NestedScrollView(
         controller: ScrollController(keepScrollOffset: true),
@@ -137,7 +117,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Text('Start : ${DateFormat('dd.MM.yyyy - kk:mm a').format(widget.start)}', style: TextStyle(fontSize: 15.0, color: getVisibleColorOnAccentColor(context))),
+                                  Text('Started : ${DateFormat('dd.MM.yyyy - kk:mm a').format(widget.start)}', style: TextStyle(fontSize: 15.0, color: getVisibleColorOnAccentColor(context))),
                                 ],
                               ),
                             ),
@@ -149,7 +129,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    'End : ${DateFormat('dd.MM.yyyy - kk:mm a').format(widget.end)}',
+                                    'Ended : ${DateFormat('dd.MM.yyyy - kk:mm a').format(widget.end)}',
                                     style: TextStyle(fontSize: 15, color: getVisibleColorOnAccentColor(context)),
                                   ),
                                 ],
@@ -258,84 +238,6 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
               ),
             ),
           ),
-          bottomNavigationBar: FlatButton(
-            textColor: getVisibleColorOnAccentColor(context),
-            onPressed: () async {
-              try {
-                if (widget.privacy == true || GroupDetails.inGroup) {
-                  null;
-                } else {
-                  await showDialog(
-                      context: context,
-                      builder: (BuildContext ctx) {
-                        return AlertDialog(
-                          title: Text('Join Group'),
-                          content: Text('Are you sure you want to join this group?'),
-                          actions: <Widget>[
-                            FlatButton(
-                              child: Text('Join', style: TextStyle(color: Theme.of(context).accentColor)),
-                              onPressed: () async {
-                                ProgressDialog pr;
-                                pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
-                                pr.style(
-                                  message: 'Joining Group...',
-                                  backgroundColor: Theme.of(context).backgroundColor,
-                                  messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
-                                );
-                                await pr.show();
-                                await Future.delayed(Duration(seconds: 1));
-                                try {
-                                  await _request.joinGroup(widget.docId);
-                                  GroupDetails.inGroup = true;
-                                  await Navigator.of(context).pop();
-                                  await pr.hide();
-                                } catch (e) {
-                                  await pr.hide();
-                                  print(e.toString());
-                                }
-                                // final snackBar = SnackBar(
-                                //   backgroundColor: Theme.of(context).primaryColor,
-                                //   content: Text(
-                                //     'Yayyy!! You joined the trip.',
-                                //     style: TextStyle(color: Theme.of(context).accentColor),
-                                //   ),
-                                //   duration: Duration(seconds: 1),
-                                // );
-                                // Scaffold.of(ctx).hideCurrentSnackBar();
-                                // Scaffold.of(ctx).showSnackBar(snackBar);
-                              },
-                            ),
-                            FlatButton(
-                              child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      });
-                }
-              } catch (e) {
-                print(e.toString());
-              }
-            },
-            padding: EdgeInsets.all(20),
-            child: widget.privacy == 'true'
-                ? Text(
-                    'Request to Join',
-                    style: TextStyle(fontSize: 20),
-                  )
-                : GroupDetails.inGroup
-                    ? Text(
-                        'Already in a Group',
-                        style: TextStyle(fontSize: 20),
-                      )
-                    : Text('Join Now', style: TextStyle(fontSize: 20)),
-            color: Theme.of(context).accentColor,
-          ),
         ));
   }
-  @override
-  bool get wantKeepAlive => true;
-
 }

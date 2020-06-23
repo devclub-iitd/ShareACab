@@ -84,8 +84,18 @@ class _SignInState extends State<SignIn> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        SizedBox(height: 80.0),
+                        SizedBox(height: 20.0),
+                        CircleAvatar(
+                          radius: 48,
+                          backgroundColor: Theme.of(context).accentColor,
+                          child: Icon(
+                            CupertinoIcons.car_detailed,
+                            size: 48,
+                          ),
+                        ),
+                        SizedBox(height: 10.0),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
                               'ShareACab ',
@@ -96,11 +106,6 @@ class _SignInState extends State<SignIn> {
                                 fontWeight: FontWeight.bold,
                                 textBaseline: TextBaseline.alphabetic,
                               ),
-                            ),
-                            Icon(
-                              CupertinoIcons.car_detailed,
-                              size: 40,
-                              color: Theme.of(context).accentColor,
                             ),
                           ],
                         ),
