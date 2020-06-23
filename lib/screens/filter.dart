@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:shareacab/models/requestdetails.dart';
 import 'package:shareacab/models/alltrips.dart';
 
-
 import '../main.dart';
 
 class Filter extends StatefulWidget {
@@ -130,6 +129,7 @@ class _FilterState extends State<Filter> {
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -143,6 +143,13 @@ class _FilterState extends State<Filter> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Container(
+              child: Center(
+                  child: Text(
+                '*filter is not working in the current version.',
+                style: TextStyle(color: Theme.of(context).accentColor),
+              )),
+            ),
             SwitchListTile(
               title: Text('Destination'),
               value: _dest,
@@ -274,7 +281,9 @@ class _FilterState extends State<Filter> {
                 ),
               ],
             ),
-            SizedBox(height: 20,)
+            SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),

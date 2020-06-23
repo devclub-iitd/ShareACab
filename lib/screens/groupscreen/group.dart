@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/screens/chatscreen/chat_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shareacab/main.dart';
-import 'package:shareacab/screens/dashboard.dart';
 import 'package:shareacab/screens/groupscreen/editgroup.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:shareacab/shared/loading.dart';

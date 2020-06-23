@@ -64,7 +64,7 @@ class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMi
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       //print('myrequests waiting');
                       return Center(
-                        child: Text('Loading..'),
+                        child: CircularProgressIndicator(),
                       );
                     } else {
                       return ListView.builder(
