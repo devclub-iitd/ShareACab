@@ -69,7 +69,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
               GroupDetails.inGroup = false;
             }
             return StreamBuilder(
-                stream: Firestore.instance.collection('group').document(groupUID).snapshots(),
+                stream: Firestore.instance.collection('group').document(widget.docId).snapshots(),
                 builder: (context, groupsnapshot) {
                   if (groupsnapshot.connectionState == ConnectionState.active) {
                     destination = groupsnapshot.data['destination'];
