@@ -103,7 +103,7 @@ class _TripsListState extends State<TripsList> {
                                             ),
                                             Flexible(
                                               fit: FlexFit.tight,
-                                              flex: 4,
+                                              flex: !inGroup ? 4 : 100,
                                               child: Padding(
                                                 padding: const EdgeInsets.only(top: 10.0),
                                                 child: Text(
@@ -252,7 +252,7 @@ class _TripsListState extends State<TripsList> {
             );
           } else {
             return Center(
-              child: Text('Loading..'),
+              child: CircularProgressIndicator(),
             );
           }
         });

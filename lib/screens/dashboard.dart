@@ -172,7 +172,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
               floatingActionButton: inGroupFetch
                   ? !inGroup
                       ? Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 60),
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
                           child: FloatingActionButton(
                             splashColor: Theme.of(context).primaryColor,
                             onPressed: () => _startCreatingTrip(context),
@@ -184,7 +184,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                           ),
                         )
                       : Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 60),
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
                           child: FloatingActionButton(
                             splashColor: Theme.of(context).primaryColor,
                             onPressed: () {
