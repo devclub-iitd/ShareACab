@@ -47,13 +47,6 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
     setState(() {});
   }
 
-  @override
-  void initState() {
-    // _listOfTrips = filtered;
-
-    super.initState();
-  }
-
   void _startFilter(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
@@ -78,98 +71,139 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
     return null;
   }
 
+  final FirebaseAuth auth = FirebaseAuth.instance;
   var inGroupFetch = false;
+  var UID;
+  Future getCurrentUser() async {
+    var user = await auth.currentUser();
+    final userid = user.uid;
+    setState(() {
+      UID = userid;
+    });
+  }
+
+  var currentGroup;
+  @override
+  void initState() {
+    inGroupFetch = false;
+    super.initState();
+    getCurrentUser();
+    // Firestore.instance.collection('userdetails').document(UID).get().then((value) {
+    //   if (value.data['currentGroup'] != null) {
+    //     setState(() {
+    //       inGroup = true;
+    //       inGroupFetch = true;
+    //     });
+    //   } else {
+    //     setState(() {
+    //       inGroup = false;
+    //       inGroupFetch = true;
+    //     });
+    //   }
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
+    var fetched = false;
     super.build(context);
     final currentuser = Provider.of<FirebaseUser>(context);
-    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
-      if (value.data['currentGroup'] != null) {
-        setState(() {
-          inGroup = true;
-          inGroupFetch = true;
-        });
-      } else {
-        setState(() {
-          inGroup = false;
-          inGroupFetch = true;
-        });
-      }
-    });
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: AppBar(
-        title: Text('Dashboard'),
-        actions: <Widget>[
-          FlatButton.icon(
-            textColor: getVisibleColorOnPrimaryColor(context),
-            icon: Icon(
-              Icons.filter_list,
-              size: 30.0,
-            ),
-            onPressed: () async {
-              _startFilter(context);
-            },
-            label: Text('Filter'),
-          ),
-          IconButton(
-              icon: Icon(Icons.settings),
-              tooltip: 'Settings',
-              onPressed: () {
-                return Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Settings(_auth);
-                }));
-              }),
-        ],
-      ),
-      resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.all(5),
-              height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
-              width: double.infinity,
-              child: RefreshIndicator(
-                child: TripsList(),
-                onRefresh: refreshList,
-              ),
-            ),
-          ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: inGroupFetch
-          ? !inGroup
-              ? Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 60),
-                  child: FloatingActionButton(
-                    splashColor: Theme.of(context).primaryColor,
-                    onPressed: () => _startCreatingTrip(context),
-                    child: Tooltip(
-                      message: 'Create Group',
-                      verticalOffset: -60,
-                      child: Icon(Icons.add),
+    return StreamBuilder(
+        stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            //print('dash');
+          }
+          if (snapshot.connectionState == ConnectionState.active) {
+            var temp = snapshot.data['currentGroup'];
+            if (temp != null) {
+              inGroup = true;
+              inGroupFetch = true;
+            } else {
+              inGroup = false;
+              inGroupFetch = true;
+            }
+            fetched = true;
+          }
+          if (snapshot.connectionState == ConnectionState.active && fetched == true) {
+            return Scaffold(
+              key: scaffoldKey,
+              appBar: AppBar(
+                title: Text('Dashboard'),
+                actions: <Widget>[
+                  FlatButton.icon(
+                    textColor: getVisibleColorOnPrimaryColor(context),
+                    icon: Icon(
+                      Icons.filter_list,
+                      size: 30.0,
                     ),
-                  ),
-                )
-              : Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 60),
-                  child: FloatingActionButton(
-                    splashColor: Theme.of(context).primaryColor,
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
+                    onPressed: () async {
+                      _startFilter(context);
                     },
-                    child: Tooltip(
-                      message: 'Group Details',
-                      verticalOffset: -60,
-                      child: Icon(Icons.group),
-                    ),
+                    label: Text('Filter'),
                   ),
-                )
-          : null,
-    );
+                  IconButton(
+                      icon: Icon(Icons.settings),
+                      tooltip: 'Settings',
+                      onPressed: () {
+                        return Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return Settings(_auth);
+                        }));
+                      }),
+                ],
+              ),
+              resizeToAvoidBottomInset: false,
+              body: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.all(5),
+                      height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
+                      width: double.infinity,
+                      child: RefreshIndicator(
+                        child: TripsList(),
+                        onRefresh: refreshList,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+              floatingActionButton: inGroupFetch
+                  ? !inGroup
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
+                          child: FloatingActionButton(
+                            splashColor: Theme.of(context).primaryColor,
+                            onPressed: () => _startCreatingTrip(context),
+                            child: Tooltip(
+                              message: 'Create Group',
+                              verticalOffset: -60,
+                              child: Icon(Icons.add),
+                            ),
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
+                          child: FloatingActionButton.extended(
+                            splashColor: Theme.of(context).primaryColor,
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
+                            },
+                            icon: Icon(Icons.group),
+                            label: Text('Group'),
+                          ),
+                        )
+                  : null,
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
   }
+
   @override
   bool get wantKeepAlive => true;
 }

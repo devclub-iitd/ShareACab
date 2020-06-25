@@ -11,172 +11,195 @@ class MyRequests extends StatefulWidget {
 }
 
 class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMixin<MyRequests> {
-  Future getOldTrips(String uid) async {
-    var qn = await Firestore.instance.collection('group').where('users', arrayContains: uid).orderBy('end', descending: true).getDocuments();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  Future getOldTrips() async {
+    var user = await auth.currentUser();
+    final userid = user.uid;
+    var qn = await Firestore.instance.collection('group').where('users', arrayContains: userid).orderBy('end', descending: true).getDocuments();
     return qn.documents;
   }
 
-  var currentGroup = 'ab';
+  // var UID;
+  // Future getCurrentUser() async {
+  //   var user = await auth.currentUser();
+  //   final userid = user.uid;
+  //   setState(() {
+  //     UID = userid;
+  //   });
+  // }
+
+  // var currentGroup;
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   getCurrentUser();
+  //   Firestore.instance.collection('userdetails').document(UID).get().then((value) {
+  //     if (value.data['currentGroup'] != null) {
+  //       setState(() {
+  //         currentGroup = value.data['currentGroup'].toString();
+  //       });
+  //     } else {
+  //       setState(() {
+  //         currentGroup = '';
+  //       });
+  //     }
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
     final currentuser = Provider.of<FirebaseUser>(context);
-    Firestore.instance.collection('userdetails').document(currentuser.uid).get().then((value) {
-      if (value.data['currentGroup'] != null) {
-        setState(() {
-          currentGroup = value.data['currentGroup'].toString();
-        });
-      } else {
-        setState(() {
-          currentGroup = '';
-        });
-      }
-    });
     return Scaffold(
       appBar: AppBar(
         title: Text('Ended rides'),
       ),
       body: Container(
-          child: FutureBuilder(
-        future: getOldTrips(currentuser.uid),
-        builder: (_, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: Text('Loading..'),
-            );
-          } else {
-            return ListView.builder(
-                physics: BouncingScrollPhysics(),
-                itemCount: snapshot.data == null ? 0 : snapshot.data.length,
-                itemBuilder: (ctx, index) {
-                  final destination = snapshot.data[index].data['destination'];
-                  final start = snapshot.data[index].data['start'].toDate();
-                  final end = snapshot.data[index].data['end'].toDate();
-                  final docId = snapshot.data[index].documentID;
-                  final privacy = snapshot.data[index].data['privacy'];
-                  final numberOfMembers = snapshot.data[index].data['numberOfMembers'];
-                  final data = snapshot.data[index];
-                  return (docId.toString() != currentGroup)
-                      ? Hero(
-                          tag: docId,
-                          child: Card(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            elevation: 0.0,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => EndedGroupDetails(destination, docId, privacy, start, end, numberOfMembers, data)));
-                              },
-                              child: Card(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
-                                elevation: 5,
-                                margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
-                                child: Container(
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: <Widget>[
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Flexible(
-                                              fit: FlexFit.tight,
-                                              flex: 1,
-                                              child: Container(
-                                                  margin: EdgeInsets.only(
-                                                    left: 20,
-                                                    top: 20,
+          child: StreamBuilder(
+              stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
+              builder: (context, usersnapshot) {
+                return FutureBuilder(
+                  future: getOldTrips(),
+                  builder: (_, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      //print('myrequests waiting');
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return ListView.builder(
+                          physics: BouncingScrollPhysics(),
+                          itemCount: snapshot.data == null ? 0 : snapshot.data.length,
+                          itemBuilder: (ctx, index) {
+                            final destination = snapshot.data[index].data['destination'];
+                            final start = snapshot.data[index].data['start'].toDate();
+                            final end = snapshot.data[index].data['end'].toDate();
+                            final docId = snapshot.data[index].documentID;
+                            final privacy = snapshot.data[index].data['privacy'];
+                            final numberOfMembers = snapshot.data[index].data['numberOfMembers'];
+                            final data = snapshot.data[index];
+                            return Hero(
+                              tag: Text(docId),
+                              child: (docId != usersnapshot.data['currentGroup'])
+                                  ? Card(
+                                      color: Theme.of(context).scaffoldBackgroundColor,
+                                      elevation: 0.0,
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => EndedGroupDetails(destination, docId, privacy, start, end, numberOfMembers, data)));
+                                        },
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
+                                          elevation: 5,
+                                          margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
+                                          child: Container(
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                children: <Widget>[
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: <Widget>[
+                                                      Flexible(
+                                                        fit: FlexFit.tight,
+                                                        flex: 1,
+                                                        child: Container(
+                                                            margin: EdgeInsets.only(
+                                                              left: 20,
+                                                              top: 20,
+                                                            ),
+                                                            child: snapshot.data[index].data['destination'] == 'New Delhi Railway Station' || snapshot.data[index].data['destination'] == 'Hazrat Nizamuddin Railway Station'
+                                                                ? Icon(
+                                                                    Icons.train,
+                                                                    color: Theme.of(context).accentColor,
+                                                                    size: 30,
+                                                                  )
+                                                                : snapshot.data[index].data['destination'] == 'Indira Gandhi International Airport'
+                                                                    ? Icon(
+                                                                        Icons.airplanemode_active,
+                                                                        color: Theme.of(context).accentColor,
+                                                                        size: 30,
+                                                                      )
+                                                                    : Icon(
+                                                                        Icons.directions_bus,
+                                                                        color: Theme.of(context).accentColor,
+                                                                        size: 30,
+                                                                      )),
+                                                      ),
+                                                      Flexible(
+                                                        fit: FlexFit.tight,
+                                                        flex: 4,
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.only(top: 10.0),
+                                                          child: Text(
+                                                            '${snapshot.data[index].data['destination']}',
+                                                            style: TextStyle(
+                                                              fontSize: 17,
+                                                              fontWeight: FontWeight.bold,
+                                                            ),
+                                                            textAlign: TextAlign.center,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                  child: snapshot.data[index].data['destination'] == 'New Delhi Railway Station' || snapshot.data[index].data['destination'] == 'Hazrat Nizamuddin Railway Station'
-                                                      ? Icon(
-                                                          Icons.train,
-                                                          color: Theme.of(context).accentColor,
-                                                          size: 30,
-                                                        )
-                                                      : snapshot.data[index].data['destination'] == 'Indira Gandhi International Airport'
-                                                          ? Icon(
-                                                              Icons.airplanemode_active,
-                                                              color: Theme.of(context).accentColor,
-                                                              size: 30,
-                                                            )
-                                                          : Icon(
-                                                              Icons.directions_bus,
-                                                              color: Theme.of(context).accentColor,
-                                                              size: 30,
-                                                            )),
-                                            ),
-                                            Flexible(
-                                              fit: FlexFit.tight,
-                                              flex: 4,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(top: 10.0),
-                                                child: Text(
-                                                  '${snapshot.data[index].data['destination']}',
-                                                  style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight: FontWeight.bold,
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                      bottom: 5,
+                                                      top: 10,
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Started : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data[index].data['start'].toDate())}',
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                  textAlign: TextAlign.center,
-                                                ),
+                                                  Padding(
+                                                    padding: EdgeInsets.only(
+                                                      bottom: 5,
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: <Widget>[
+                                                        Text(
+                                                          'Ended : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data[index].data['end'].toDate())}',
+                                                          style: TextStyle(
+                                                            fontSize: 15,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                      children: <Widget>[
+                                                        Column(
+                                                          children: <Widget>[Text('Number of poolers: ${snapshot.data[index].data['numberOfMembers'].toString()}')],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            bottom: 5,
-                                            top: 10,
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Text(
-                                                'Started : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data[index].data['start'].toDate())}',
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ],
                                           ),
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                            bottom: 5,
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: <Widget>[
-                                              Text(
-                                                'Ended : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data[index].data['end'].toDate())}',
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                            children: <Widget>[
-                                              Column(
-                                                children: <Widget>[Text('Number of poolers: ${snapshot.data[index].data['numberOfMembers'].toString()}')],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      : null;
-                });
-          }
-        },
-      )),
+                                      ),
+                                    )
+                                  : Card(),
+                            );
+                          });
+                    }
+                  },
+                );
+              })),
     );
   }
 

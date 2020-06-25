@@ -143,6 +143,13 @@ class _FilterState extends State<Filter> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Container(
+              child: Center(
+                  child: Text(
+                '*filter is not working in the current version.',
+                style: TextStyle(color: Theme.of(context).accentColor),
+              )),
+            ),
             SwitchListTile(
               title: Text('Destination'),
               value: _dest,
