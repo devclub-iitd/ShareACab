@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/services/auth.dart';
-import 'package:shareacab/shared/constants.dart';
 import 'package:shareacab/shared/loading.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -109,10 +108,11 @@ class _RegisterState extends State<Register> {
                         ),
                         SizedBox(height: 20.0),
                         TextFormField(
-                          decoration:
-                              // use this inputdecoration of IITD email
-                              //textInputDecoration.copyWith(hintText: 'Kerberos email'),
-                              textInputDecoration.copyWith(hintText: 'Email'),
+                          decoration: InputDecoration(
+                            hintText: 'Email',
+                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)),
+                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0)),
+                          ),
                           validator: (val) {
                             if (val.isEmpty) {
                               return 'Enter a valid Email';
@@ -134,8 +134,10 @@ class _RegisterState extends State<Register> {
                         ),
                         SizedBox(height: 20.0),
                         TextFormField(
-                          decoration: textInputDecoration.copyWith(
+                          decoration: InputDecoration(
                             hintText: 'Password',
+                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)),
+                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0)),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 passwordHide ? Icons.visibility_off : Icons.visibility,
@@ -156,8 +158,10 @@ class _RegisterState extends State<Register> {
                         ),
                         SizedBox(height: 20.0),
                         TextFormField(
-                          decoration: textInputDecoration.copyWith(
+                          decoration: InputDecoration(
                             hintText: 'Confirm Password',
+                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)),
+                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0)),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 passwordHide ? Icons.visibility_off : Icons.visibility,
@@ -186,7 +190,7 @@ class _RegisterState extends State<Register> {
                         ),
                         SizedBox(height: 20.0),
                         TextFormField(
-                          decoration: textInputDecoration.copyWith(hintText: 'Name'),
+                          decoration: InputDecoration(hintText: 'Name', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                           validator: (val) => val.isEmpty ? 'Enter a valid Name' : null,
                           onChanged: (val) {
                             setState(() => name = val);
@@ -194,7 +198,7 @@ class _RegisterState extends State<Register> {
                         ),
                         SizedBox(height: 20.0),
                         TextFormField(
-                          decoration: textInputDecoration.copyWith(hintText: 'Mobile Number'),
+                          decoration: InputDecoration(hintText: 'Mobile Number', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                           validator: (val) => val.length != 10 ? 'Enter a valid mobile number.' : null,
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
@@ -204,8 +208,7 @@ class _RegisterState extends State<Register> {
                         ),
                         SizedBox(height: 20.0),
                         DropdownButtonFormField(
-                          decoration: textInputDecoration,
-                          hint: Text('Select Hostel'),
+                          decoration: InputDecoration(hintText: 'Select Hostel', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                           value: hostel,
                           onChanged: (newValue) {
                             setState(() {
@@ -222,8 +225,7 @@ class _RegisterState extends State<Register> {
                         ),
                         SizedBox(height: 20.0),
                         DropdownButtonFormField(
-                          decoration: textInputDecoration,
-                          hint: Text('Select Sex'),
+                          decoration: InputDecoration(hintText: 'Select Gendet', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                           value: sex,
                           onChanged: (newValue) {
                             setState(() {

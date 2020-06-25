@@ -90,6 +90,14 @@ Color getVisibleColorOnAccentColor(BuildContext context) {
   }
 }
 
+Color getBorderColorForInputFields(BuildContext context) {
+  if (Theme.of(context).brightness == Brightness.dark) {
+    return Colors.white;
+  } else {
+    return Colors.black;
+  }
+}
+
 final darkTheme = ThemeData(
   primarySwatch: Colors.grey,
   bottomAppBarColor: const Color(0xFF212121),
@@ -101,6 +109,7 @@ final darkTheme = ThemeData(
   accentIconTheme: IconThemeData(color: Colors.black),
   dividerColor: Colors.black12,
   scaffoldBackgroundColor: Colors.black,
+  textSelectionHandleColor: Color(0xFFff9f34),
   // inputDecorationTheme: const InputDecorationTheme(fillColor: Colors.black),
 );
 
@@ -117,6 +126,7 @@ final lightTheme = ThemeData(
   accentIconTheme: IconThemeData(color: Colors.white),
   dividerColor: Colors.white54,
   scaffoldBackgroundColor: const Color(0xFFE5E5E5),
+  textSelectionHandleColor: Colors.blueGrey[700],
 
   //scaffoldBackgroundColor: const Color(0xFFFFFF)
 );
