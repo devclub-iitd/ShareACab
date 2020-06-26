@@ -14,6 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:shareacab/main.dart';
 import 'package:flutter/scheduler.dart';
 
+import 'package:shareacab/screens/notifications/services/notifservices.dart';
 import './appbar.dart';
 
 class GroupDetails extends StatefulWidget {
@@ -34,7 +35,7 @@ class GroupDetails extends StatefulWidget {
 
 class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClientMixin<GroupDetails> {
   final RequestService _request = RequestService();
-
+  final NotifServices _notifServices = NotifServices();
   Future getUserDetails() async {
     final userDetails = await Firestore.instance.collection('group').document(widget.docId).collection('users').getDocuments();
     return userDetails.documents;
@@ -268,8 +269,46 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                             textColor: getVisibleColorOnAccentColor(context),
                             onPressed: () async {
                               try {
-                                if (widget.privacy == true || GroupDetails.inGroup) {
+                                if (GroupDetails.inGroup) {
                                   null;
+                                } else if(widget.privacy == true){
+                                  await showDialog(
+                                      context: context,
+                                      builder: (BuildContext ctx) {
+                                        return AlertDialog(
+                                          title: Text('Request To Join Group'),
+                                          content: Text('Are you sure you want to request to join this group?'),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text('Request', style: TextStyle(color: Theme.of(context).accentColor)),
+                                              onPressed: () async {
+                                                ProgressDialog pr;
+                                                pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                                                pr.style(
+                                                  message: 'Requesting...',
+                                                  backgroundColor: Theme.of(context).backgroundColor,
+                                                  messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                                );
+                                                await pr.show();
+                                                await Future.delayed(Duration(seconds: 1));
+                                                try {
+                                                  await _notifServices.createRequest(widget.docId);
+                                                } catch (e) {
+                                                  await pr.hide();
+                                                  print(e.toString());
+                                                }
+                                               
+                                              },
+                                            ),
+                                            FlatButton(
+                                              child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      });
                                 } else {
                                   await showDialog(
                                       context: context,
