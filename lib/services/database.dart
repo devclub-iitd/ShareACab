@@ -151,7 +151,7 @@ class DatabaseService {
     }, merge: true);
   }
 
-  // exit a group (W=4, R =3)
+  // exit a group (W=4/5, R =3/4)
   Future<void> exitGroup() async {
     var user = await _auth.currentUser();
     var currentGrp;
@@ -160,6 +160,7 @@ class DatabaseService {
     var startTimeStamp;
     var totalRides;
     var cancelledRides;
+    var owner;
     await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) {
       currentGrp = value.data['currentGroup'];
       totalRides = value.data['totalRides'];
@@ -169,6 +170,7 @@ class DatabaseService {
     await groupdetails.document(currentGrp).get().then((value) {
       presentNum = value.data['numberOfMembers'];
       startTimeStamp = value.data['start'];
+      owner = value.data['owner'];
     });
 
     if (startTimeStamp.compareTo(Timestamp.now()) > 0) {
@@ -182,6 +184,15 @@ class DatabaseService {
         'users': FieldValue.arrayRemove([user.uid]),
         'numberOfMembers': presentNum - 1,
       });
+      if (owner == user.uid && presentNum > 1) {
+        var newowner;
+        await groupdetails.document(currentGrp).get().then((value) {
+          newowner = value.data['users'][0];
+        });
+        await groupdetails.document(currentGrp).updateData({
+          'owner': newowner,
+        });
+      }
       await groupdetails.document(currentGrp).collection('users').document(user.uid).delete();
     } else {
       await userDetails.document(user.uid).updateData({
