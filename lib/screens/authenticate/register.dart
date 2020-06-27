@@ -225,7 +225,7 @@ class _RegisterState extends State<Register> {
                         ),
                         SizedBox(height: 20.0),
                         DropdownButtonFormField(
-                          decoration: InputDecoration(hintText: 'Select Gendet', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                          decoration: InputDecoration(hintText: 'Select Gender', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                           value: sex,
                           onChanged: (newValue) {
                             setState(() {

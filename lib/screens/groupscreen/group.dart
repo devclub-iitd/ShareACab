@@ -86,26 +86,53 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                             textColor: getVisibleColorOnPrimaryColor(context),
                                             icon: Icon(FontAwesomeIcons.signOutAlt),
                                             onPressed: () async {
-                                              ProgressDialog pr;
-                                              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
-                                              pr.style(
-                                                message: 'Ending Trip...',
-                                                backgroundColor: Theme.of(context).backgroundColor,
-                                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
-                                              );
-                                              await pr.show();
-                                              await Future.delayed(Duration(seconds: 1));
                                               try {
-                                                buttonEnabled = false;
-                                                await _request.exitGroup();
-                                                Navigator.pop(context);
-                                                await pr.hide();
+                                                await showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext ctx) {
+                                                      return AlertDialog(
+                                                        title: Text('End Trip'),
+                                                        content: Text('Are you sure you want to end this trip?'),
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                                                        actions: <Widget>[
+                                                          FlatButton(
+                                                            child: Text('End', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                            onPressed: () async {
+                                                              ProgressDialog pr;
+                                                              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                                                              pr.style(
+                                                                message: 'Ending Trip...',
+                                                                backgroundColor: Theme.of(context).backgroundColor,
+                                                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                                              );
+                                                              await pr.show();
+                                                              await Future.delayed(Duration(seconds: 1));
+                                                              try {
+                                                                buttonEnabled = false;
+                                                                await _request.exitGroup();
+                                                                Navigator.pop(context);
+                                                                await pr.hide();
+                                                              } catch (e) {
+                                                                await pr.hide();
+                                                                print(e.toString());
+                                                                String errStr = e.message ?? e.toString();
+                                                                final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+                                                                scaffoldKey.currentState.showSnackBar(snackBar);
+                                                              }
+                                                              Navigator.pop(context);
+                                                            },
+                                                          ),
+                                                          FlatButton(
+                                                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                            onPressed: () {
+                                                              Navigator.of(context).pop();
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    });
                                               } catch (e) {
-                                                await pr.hide();
                                                 print(e.toString());
-                                                String errStr = e.message ?? e.toString();
-                                                final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
-                                                scaffoldKey.currentState.showSnackBar(snackBar);
                                               }
                                             },
                                             label: Text('End Trip'),
@@ -114,27 +141,59 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                             textColor: getVisibleColorOnPrimaryColor(context),
                                             icon: Icon(FontAwesomeIcons.signOutAlt),
                                             onPressed: () async {
-                                              ProgressDialog pr;
-                                              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
-                                              pr.style(
-                                                message: 'Leaving Group...',
-                                                backgroundColor: Theme.of(context).backgroundColor,
-                                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
-                                              );
-                                              await pr.show();
-                                              await Future.delayed(Duration(seconds: 1));
                                               try {
-                                                buttonEnabled = false;
-                                                await _notifServices.leftGroup(usersnapshot.data['name'], groupUID);
-                                                await _request.exitGroup();
-                                                Navigator.pop(context);
-                                                await pr.hide();
+                                                await showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext ctx) {
+                                                      return AlertDialog(
+                                                        title: Text('Leave Group'),
+                                                        content: Text('Are you sure you want to leave this group?'),
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                                                        actions: <Widget>[
+                                                          FlatButton(
+                                                            child: Text('Leave', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                            onPressed: () async {
+                                                              ProgressDialog pr;
+                                                              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                                                              pr.style(
+                                                                message: 'Leaving Group...',
+                                                                backgroundColor: Theme.of(context).backgroundColor,
+                                                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                                              );
+                                                              await pr.show();
+                                                              await Future.delayed(Duration(seconds: 1));
+                                                              try {
+                                                                buttonEnabled = false;
+                                                                await _request.exitGroup();
+                                                                Navigator.pop(context);
+                                                                await pr.hide();
+                                                              } catch (e) {
+                                                                await pr.hide();
+                                                                print(e.toString());
+                                                                String errStr = e.message ?? e.toString();
+                                                                final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+                                                                scaffoldKey.currentState.showSnackBar(snackBar);
+                                                              }
+                                                              Navigator.pop(context);
+                                                            },
+                                                          ),
+                                                          FlatButton(
+                                                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                            onPressed: () {
+                                                              Navigator.of(context).pop();
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    });
+                                                // fixed this conflict =======
+//                                                 buttonEnabled = false;
+//                                                 await _notifServices.leftGroup(usersnapshot.data['name'], groupUID);
+//                                                 await _request.exitGroup();
+//                                                 Navigator.pop(context);
+//                                                 await pr.hide();
                                               } catch (e) {
-                                                await pr.hide();
                                                 print(e.toString());
-                                                String errStr = e.message ?? e.toString();
-                                                final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
-                                                scaffoldKey.currentState.showSnackBar(snackBar);
                                               }
                                             },
                                             label: Text('Leave Group'),
