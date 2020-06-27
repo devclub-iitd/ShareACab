@@ -41,6 +41,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
     return userDetails.documents;
   }
 
+  String privacy;
   String start = '';
   String end = '';
   String destination = '';
@@ -73,6 +74,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                 stream: Firestore.instance.collection('group').document(widget.docId).snapshots(),
                 builder: (context, groupsnapshot) {
                   if (groupsnapshot.connectionState == ConnectionState.active) {
+                    privacy = groupsnapshot.data['privacy'];
                     destination = groupsnapshot.data['destination'];
                     start = DateFormat('dd.MM.yyyy - kk:mm a').format(groupsnapshot.data['start'].toDate());
                     end = DateFormat('dd.MM.yyyy - kk:mm a').format(groupsnapshot.data['end'].toDate());
@@ -271,7 +273,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                               try {
                                 if (GroupDetails.inGroup) {
                                   null;
-                                } else if(widget.privacy == true){
+                                } else if (privacy == 'true') {
                                   await showDialog(
                                       context: context,
                                       builder: (BuildContext ctx) {
@@ -293,11 +295,12 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                 await Future.delayed(Duration(seconds: 1));
                                                 try {
                                                   await _notifServices.createRequest(widget.docId);
+                                                  await Navigator.of(context).pop();
+                                                  await pr.hide();
                                                 } catch (e) {
                                                   await pr.hide();
                                                   print(e.toString());
                                                 }
-                                               
                                               },
                                             ),
                                             FlatButton(
@@ -332,6 +335,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                 try {
                                                   await _request.joinGroup(widget.docId);
                                                   GroupDetails.inGroup = true;
+                                                  await _notifServices.groupJoin(usersnapshot.data['name'], groupUID);
                                                   await Navigator.of(context).pop();
                                                   await pr.hide();
                                                 } catch (e) {
@@ -366,10 +370,15 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                             },
                             padding: EdgeInsets.all(20),
                             child: widget.privacy == 'true'
-                                ? Text(
-                                    'Request to Join',
-                                    style: TextStyle(fontSize: 20),
-                                  )
+                                ? GroupDetails.inGroup
+                                    ? Text(
+                                        'Already in a Group',
+                                        style: TextStyle(fontSize: 20),
+                                      )
+                                    : Text(
+                                        'Request to Join',
+                                        style: TextStyle(fontSize: 20),
+                                      )
                                 : GroupDetails.inGroup
                                     ? Text(
                                         'Already in a Group',

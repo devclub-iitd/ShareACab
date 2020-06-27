@@ -13,11 +13,11 @@ class NotificationDatabase {
     var name;
     var admin;
 
-    await userDetails.document(user.uid).get().then((data) {
-      name = data['name'];
+    await userDetails.document(user.uid).get().then((value) {
+      name = value.data['name'];
     });
     await groupdetails.document(groupId).get().then((value) {
-      admin = value['admin'];
+      admin = value.data['owner'];
     });
     if (admin != null) {
       await userDetails.document(admin).collection('Notifications').add({
@@ -31,18 +31,44 @@ class NotificationDatabase {
     }
   }
 
+//Creating a notification when a user joins the group
+  Future<void> joined(String name, String groupId) async {
+    var allUsers;
+    final user = await _auth.currentUser();
+    await groupdetails.document(groupId).get().then((value) {
+      allUsers = value.data['users'];
+    });
+
+    for (var i = 0; i < allUsers.length; i++) {
+      if (allUsers[i] != user.uid) {
+        await userDetails.document(allUsers[i]).collection('Notifications').add({
+          'from': user.uid,
+          'senderName': name,
+          'createdAt': Timestamp.now(),
+          'purpose': 'joined the group',
+          'response': null,
+          'groupId': groupId,
+        });
+      }
+    }
+  }
+
 //Updating response, adding user to the group, adding user to chatroom
   Future<void> response(bool response, String notifId) async {
     var user = await _auth.currentUser();
     var listuid;
     var uid;
+    var name;
+    var nameo;
+
     await userDetails.document(user.uid).collection('Notifications').document(notifId).updateData({
       'response': response,
     });
+
     if (response == true) {
       await userDetails.document(user.uid).collection('Notifications').document(notifId).get().then((value) {
-        listuid = value['groupId'];
-        uid = value['from'];
+        listuid = value.data['groupId'];
+        uid = value.data['from'];
       });
       var presentNum;
       await userDetails.document(uid).updateData({
@@ -70,51 +96,85 @@ class NotificationDatabase {
             'cancelledrides': value.data['cancelledRides'],
             'numberofratings': value.data['numberOfRatings'],
           });
+          name = value.data['name'];
         }
       });
+
+      var allUsers;
+      await groupdetails.document(listuid).get().then((value) {
+        allUsers = value.data['users'];
+      });
+
+      await userDetails.document(user.uid).get().then((value) {
+        nameo = value.data['name'];
+      });
+
+      for (var i = 0; i < allUsers.length; i++) {
+        if (allUsers[i] != uid && allUsers[i] != user.uid) {
+          await userDetails.document(allUsers[i]).collection('Notifications').add({
+            'from': uid,
+            'senderName': name,
+            'createdAt': Timestamp.now(),
+            'purpose': 'joined the group',
+            'response': null,
+            'groupId': listuid,
+          });
+        } else if (allUsers[i] == uid) {
+          await userDetails.document(uid).collection('Notifications').add({
+            'from': user.uid,
+            'senderName': nameo,
+            'createdAt': Timestamp.now(),
+            'purpose': 'Your request is accepted',
+            'response': null,
+            'groupId': listuid,
+          });
+        }
+      }
+
       await chatLists.document(listuid).updateData({
         'users': FieldValue.arrayUnion([uid.toString()]),
       });
-    }
-  }
+    } else if (response == false) {
+      var name;
+      await userDetails.document(user.uid).get().then((value) {
+        name = value.data['name'];
+      });
 
-//Creating a notification when a user joins the group
-  Future<void> joined(String name, String uid, String groupId) async {
-    var allUsers;
+      await userDetails.document(user.uid).collection('Notifications').document(notifId).get().then((value) {
+        listuid = value.data['groupId'];
+        uid = value.data['from'];
+      });
 
-    await groupdetails.document(groupId).get().then((value) {
-      allUsers = value['users'];
-    });
-
-    for (var i = 0; allUsers.length; i++) {
-      await userDetails.document(allUsers[i]).collection('Notifications').add({
-        'from': uid,
+      await userDetails.document(uid).collection('Notifications').add({
+        'from': user.uid,
         'senderName': name,
         'createdAt': Timestamp.now(),
-        'purpose': '${name} joined the group',
+        'purpose': 'Request to Join Declined',
         'response': null,
-        'groupId': groupId,
+        'groupId': listuid,
       });
     }
   }
 
 //Creating a notification for all users of a group when a user leaves that group
-  Future<void> left(String name, String uid, String groupId) async {
+  Future<void> left(String name, String groupId) async {
+    final user = await _auth.currentUser();
     var allUsers;
-
     await groupdetails.document(groupId).get().then((value) {
-      allUsers = value['users'];
+      allUsers = value.data['users'];
     });
 
-    for (var i = 0; allUsers.length; i++) {
-      await userDetails.document(allUsers[i]).collection('Notifications').add({
-        'from': uid,
-        'senderName': name,
-        'createdAt': Timestamp.now(),
-        'purpose': '${name} left the group',
-        'response': null,
-        'groupId': groupId,
-      });
+    for (var i = 0; i < allUsers.length; i++) {
+      if (user.uid != allUsers[i]) {
+        await userDetails.document(allUsers[i]).collection('Notifications').add({
+          'from': user.uid,
+          'senderName': name,
+          'createdAt': Timestamp.now(),
+          'purpose': 'left the group',
+          'response': null,
+          'groupId': groupId,
+        });
+      }
     }
   }
 }

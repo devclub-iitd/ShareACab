@@ -7,6 +7,7 @@ import 'package:shareacab/screens/groupscreen/group.dart';
 import 'package:shareacab/services/trips.dart';
 import 'package:intl/intl.dart';
 import 'groupdetailscreen/groupdetails.dart';
+import 'package:shareacab/screens/notifications/services/notifservices.dart';
 
 class TripsList extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class TripsList extends StatefulWidget {
 
 class _TripsListState extends State<TripsList> {
   final RequestService _request = RequestService();
+  final NotifServices _notifServices = NotifServices();
 
   var inGroup = false;
 
@@ -156,6 +158,7 @@ class _TripsListState extends State<TripsList> {
                                                                                 await _request.joinGroup(temp.documentID);
                                                                                 await Navigator.of(context).pop();
                                                                                 await pr.hide();
+                                                                                await _notifServices.groupJoin(usersnapshot.data['name'], docId);
                                                                               } catch (e) {
                                                                                 await pr.hide();
                                                                                 print(e.toString());

@@ -5,15 +5,15 @@ class NotifServices {
     await NotificationDatabase().createRequest(groupId);
   }
 
-  Future<void> responseToRequest(bool response, String uid, String notifId) async {
+  Future<void> responseToRequest(bool response, String notifId) async {
     await NotificationDatabase().response(response, notifId);
   }
 
-  Future<void> groupJoin(String name, String uid, String groupId) async {
-    await NotificationDatabase().joined(name, uid, groupId);
+  Future<void> groupJoin(String name, String groupId) async {
+    await NotificationDatabase().joined(name, groupId);
   }
 
-  Future<void> leftGroup(String name, String uid, String groupId) async {
-    await NotificationDatabase().left(name, uid, groupId);
+  Future<void> leftGroup(String name, String groupId) async {
+    await NotificationDatabase().left(name, groupId);
   }
 }
