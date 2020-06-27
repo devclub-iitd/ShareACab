@@ -37,8 +37,8 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
   final RequestService _request = RequestService();
   final NotifServices _notifServices = NotifServices();
   Future getUserDetails() async {
-    final userDetails = await Firestore.instance.collection('group').document(widget.docId).collection('users').getDocuments();
-    return userDetails.documents;
+    final userDetails = await Firestore.instance.collection('group').document(widget.docId).collection('users').snapshots();
+    return userDetails;
   }
 
   String privacy;
@@ -184,8 +184,8 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                   Container(
                                     margin: EdgeInsets.only(top: 60),
                                     height: MediaQuery.of(context).size.height * 0.7,
-                                    child: FutureBuilder(
-                                      future: getUserDetails(),
+                                    child: StreamBuilder(
+                                      stream: Firestore.instance.collection('group').document(widget.docId).collection('users').snapshots(),
                                       builder: (ctx, futureSnapshot) {
                                         if (futureSnapshot.connectionState == ConnectionState.waiting) {
                                           return Column(
@@ -196,7 +196,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                         }
                                         return ListView.builder(
                                             physics: NeverScrollableScrollPhysics(),
-                                            itemCount: futureSnapshot.data.length,
+                                            itemCount: futureSnapshot.data.documents.length,
                                             itemBuilder: (ctx, index) {
                                               return Container(
                                                 margin: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
@@ -208,11 +208,11 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                     children: <Widget>[
                                                       Padding(
                                                         padding: const EdgeInsets.all(8.0),
-                                                        child: Text(futureSnapshot.data[index].data['name']),
+                                                        child: Text(futureSnapshot.data.documents[index].data['name']),
                                                       ),
                                                       Padding(
                                                         padding: const EdgeInsets.all(8.0),
-                                                        child: Text(futureSnapshot.data[index].data['hostel']),
+                                                        child: Text(futureSnapshot.data.documents[index].data['hostel']),
                                                       ),
                                                       Padding(
                                                         padding: const EdgeInsets.all(8.0),
@@ -220,7 +220,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                             onPressed: () async {
                                                               try {
                                                                 if (Platform.isIOS) {
-                                                                  await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data[index].data['mobilenum'].toString()}')).then((result) {
+                                                                  await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data.documents[index].data['mobilenum'].toString()}')).then((result) {
                                                                     final snackBar = SnackBar(
                                                                       backgroundColor: Theme.of(context).primaryColor,
                                                                       content: Text(
@@ -233,10 +233,10 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                                     Scaffold.of(ctx).showSnackBar(snackBar);
                                                                   });
                                                                 } else {
-                                                                  await launch('tel://${futureSnapshot.data[index].data['mobilenum'].toString()}');
+                                                                  await launch('tel://${futureSnapshot.data.documents[index].data['mobilenum'].toString()}');
                                                                 }
                                                               } catch (e) {
-                                                                await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data[index].data['mobilenum'].toString()}')).then((result) {
+                                                                await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data.documents[index].data['mobilenum'].toString()}')).then((result) {
                                                                   final snackBar = SnackBar(
                                                                     backgroundColor: Theme.of(context).primaryColor,
                                                                     content: Text(

@@ -17,6 +17,7 @@ class _NewMessageState extends State<NewMessage> {
 
   void _sendMessage() async {
     FocusScope.of(context).unfocus();
+    _controller.clear();
     final user = await FirebaseAuth.instance.currentUser();
     final userData = await Firestore.instance.collection('userdetails').document(user.uid).get();
     await Firestore.instance.collection('chatroom').document(widget.docId).updateData({
@@ -28,10 +29,7 @@ class _NewMessageState extends State<NewMessage> {
       'userId': user.uid,
       'name': userData['name'],
     });
-    _controller.clear();
-    setState(() {
-      _enteredMessage = '';
-    });
+    _enteredMessage = '';
   }
 
   @override

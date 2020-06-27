@@ -105,13 +105,13 @@ class _TripsListState extends State<TripsList> {
                                             ),
                                             Flexible(
                                               fit: FlexFit.tight,
-                                              flex: !inGroup ? 4 : 100,
+                                              flex: !inGroup ? 4 : 300,
                                               child: Padding(
                                                 padding: const EdgeInsets.only(top: 10.0),
                                                 child: Text(
                                                   '${snapshot.data.documents[index].data['destination']}',
                                                   style: TextStyle(
-                                                    fontSize: 17,
+                                                    fontSize: 16,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                   textAlign: TextAlign.center,
