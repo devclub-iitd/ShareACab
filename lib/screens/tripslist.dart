@@ -119,11 +119,11 @@ class _TripsListState extends State<TripsList> {
                                               ),
                                             ),
                                             Flexible(
-                                              flex: 2,
+                                              flex: inGroup ? 9 : 2,
                                               child: Container(
                                                 child: snapshot.data.documents[index].data['privacy'] == 'true'
                                                     ? Padding(
-                                                        padding: const EdgeInsets.only(right: 15.0),
+                                                        padding: const EdgeInsets.only( right: 15.0),
                                                         child: Icon(
                                                           Icons.lock,
                                                           color: Theme.of(context).accentColor,
@@ -230,15 +230,18 @@ class _TripsListState extends State<TripsList> {
                                             ],
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                            children: <Widget>[
-                                              Column(
-                                                children: <Widget>[Text('Number of members in group: ${snapshot.data.documents[index].data['numberOfMembers'].toString()}')],
-                                              ),
-                                            ],
+                                        Container(
+                                          margin: EdgeInsets.only(bottom: 10),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              children: <Widget>[
+                                                Column(
+                                                  children: <Widget>[Text('Number of members in group: ${snapshot.data.documents[index].data['numberOfMembers'].toString()}')],
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ],

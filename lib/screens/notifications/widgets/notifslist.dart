@@ -3,9 +3,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import './notiftile.dart';
+import 'package:shareacab/screens/notifications/services/notifservices.dart';
 
 class NotifsList extends StatelessWidget {
   static FirebaseUser user;
+  final NotifServices _notifServices = NotifServices();
+  Future getUserDetails(String uid, String purpose, String notifId, var response) async {
+    var currentGroup;
+    await Firestore.instance.collection('userdetails').document(uid).get().then((value) {
+      currentGroup = value.data['currentGroup'];
+    });
+    if (currentGroup != null && purpose == 'Request to Join' && response == null) {
+      await _notifServices.removeNotif(notifId, purpose, uid, response);
+      return null;
+    }
+    return 'del';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +40,17 @@ class NotifsList extends StatelessWidget {
             final createdAt = futureSnapshot.data.documents[index].data['createdAt'];
             final response = futureSnapshot.data.documents[index].data['response'];
             final purpose = futureSnapshot.data.documents[index].data['purpose'];
-            return NotifTile(docId, fromuid, name, createdAt, response, purpose);
+            return FutureBuilder(
+                future: getUserDetails(fromuid, purpose, docId, response),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    // print('loading..');
+                  }
+                  if (snapshot != null) {
+                    return NotifTile(docId, fromuid, name, createdAt, response, purpose);
+                  }
+                  return null;
+                });
           },
         );
       },

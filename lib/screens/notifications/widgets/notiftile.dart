@@ -45,45 +45,76 @@ class _NotifTileState extends State<NotifTile> {
         subtitle: widget.purpose == 'Request to Join'
             ? widget.response == null
                 ? Container(
-                  child: Row(
-                    children: <Widget>[
-                      FlatButton(
-                        onPressed: () async {
-                          ProgressDialog pr;
-                          pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
-                          pr.style(
-                            message: 'Accepting...',
-                            backgroundColor: Theme.of(context).backgroundColor,
-                            messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
-                          );
-                          await pr.show();
-                          await Future.delayed(Duration(seconds: 1));
-                          try {
-                            await _notifServices.responseToRequest(true, widget.docId);
-                            await pr.hide();
-                          } catch (e) {
-                            await pr.hide();
-                            print(e.toString());
-                          }
-                        },
-                        child: Text('Accept'),
-                      ),
-                      FlatButton(
-                        onPressed: () async {
-                          try {
-                            await _notifServices.responseToRequest(false, widget.docId);
-                          } catch (e) {
-                            print(e.toString());
-                          }
-                        },
-                        child: Text('Decline'),
-                      )
-                    ],
-                  ),
-                )
+                    child: Row(
+                      children: <Widget>[
+                        FlatButton(
+                          onPressed: () async {
+                            ProgressDialog pr;
+                            pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                            pr.style(
+                              message: 'Accepting...',
+                              backgroundColor: Theme.of(context).backgroundColor,
+                              messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                            );
+                            await pr.show();
+                            await Future.delayed(Duration(seconds: 1));
+                            try {
+                              await _notifServices.responseToRequest(true, widget.docId);
+                              await pr.hide();
+                            } catch (e) {
+                              await pr.hide();
+                              print(e.toString());
+                            }
+                          },
+                          child: Text(
+                            'Accept',
+                            style: TextStyle(color: Theme.of(context).accentColor),
+                          ),
+                        ),
+                        FlatButton(
+                          onPressed: () async {
+                            try {
+                              await _notifServices.responseToRequest(false, widget.docId);
+                            } catch (e) {
+                              print(e.toString());
+                            }
+                          },
+                          child: Text(
+                            'Decline',
+                            style: TextStyle(color: Theme.of(context).accentColor),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
                 : widget.response == true ? Text('You accepted the request') : Text('You declined the request')
             : null,
-        trailing: Text(DateFormat.yMMMd().format(widget.createdAt.toDate())),
+        trailing: Column(
+          children: <Widget>[
+            Text(DateFormat.yMMMd().format(widget.createdAt.toDate())),
+            Container(
+                margin: EdgeInsets.only(top: 10),
+                child: GestureDetector(
+                  onTap: () async {
+                    widget.response == null && widget.purpose == 'Request to Join' ? await _notifServices.removeNotif(widget.docId, widget.purpose, widget.fromuid, false) : await _notifServices.removeNotif(widget.docId, widget.purpose, widget.fromuid, widget.response);
+                    Scaffold.of(context).hideCurrentSnackBar();
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      duration: Duration(seconds: 1),
+                      content: Text(
+                        'notification deleted',
+                        style: TextStyle(color: Theme.of(context).accentColor),
+                      ),
+                    ));
+                  },
+                  child: Icon(
+                    Icons.delete,
+                    size: 20,
+                    color: Theme.of(context).accentColor,
+                  ),
+                )),
+          ],
+        ),
       ),
     );
   }

@@ -16,4 +16,8 @@ class NotifServices {
   Future<void> leftGroup(String name, String groupId) async {
     await NotificationDatabase().left(name, groupId);
   }
+
+  Future<void> removeNotif(String notifId, var purpose, var uid, var response) async {
+    await NotificationDatabase().remNotif(notifId, purpose, uid, response);
+  }
 }

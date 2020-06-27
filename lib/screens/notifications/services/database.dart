@@ -28,15 +28,23 @@ class NotificationDatabase {
         'response': null,
         'groupId': groupId,
       });
+      await userDetails.document(user.uid).updateData({
+        'currentGroupJoinRequests': FieldValue.arrayUnion([groupId])
+      });
     }
   }
 
-//Creating a notification when a user joins the group
+//Creating a notification when a user joins the group (non-private groups)
   Future<void> joined(String name, String groupId) async {
     var allUsers;
     final user = await _auth.currentUser();
+
     await groupdetails.document(groupId).get().then((value) {
       allUsers = value.data['users'];
+    });
+
+    await userDetails.document(user.uid).updateData({
+      'currentGroupJoinRequests': null,
     });
 
     for (var i = 0; i < allUsers.length; i++) {
@@ -74,6 +82,7 @@ class NotificationDatabase {
       await userDetails.document(uid).updateData({
         'previous_groups': FieldValue.arrayUnion([listuid]),
         'currentGroup': listuid,
+        'currentGroupJoinRequests': null,
       });
       await groupdetails.document(listuid).get().then((value) {
         presentNum = value.data['numberOfMembers'];
@@ -176,5 +185,33 @@ class NotificationDatabase {
         });
       }
     }
+  }
+
+  //Deleting a notification
+  Future<void> remNotif(String notifId, var purpose, var uid, var response) async {
+    final user = await _auth.currentUser();
+
+    if (purpose == 'Request to Join' && response == false) {
+      var name;
+      var listuid;
+
+      await userDetails.document(user.uid).get().then((value) {
+        name = value.data['name'];
+      });
+
+      await userDetails.document(user.uid).collection('Notifications').document(notifId).get().then((value) {
+        listuid = value.data['groupId'];
+      });
+
+      await userDetails.document(uid).collection('Notifications').add({
+        'from': user.uid,
+        'senderName': name,
+        'createdAt': Timestamp.now(),
+        'purpose': 'Request to Join Declined',
+        'response': null,
+        'groupId': listuid,
+      });
+    }
+    await userDetails.document(user.uid).collection('Notifications').document(notifId).delete();
   }
 }

@@ -274,44 +274,47 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                 if (GroupDetails.inGroup) {
                                   null;
                                 } else if (privacy == 'true') {
-                                  await showDialog(
-                                      context: context,
-                                      builder: (BuildContext ctx) {
-                                        return AlertDialog(
-                                          title: Text('Request To Join Group'),
-                                          content: Text('Are you sure you want to request to join this group?'),
-                                          actions: <Widget>[
-                                            FlatButton(
-                                              child: Text('Request', style: TextStyle(color: Theme.of(context).accentColor)),
-                                              onPressed: () async {
-                                                ProgressDialog pr;
-                                                pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
-                                                pr.style(
-                                                  message: 'Requesting...',
-                                                  backgroundColor: Theme.of(context).backgroundColor,
-                                                  messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
-                                                );
-                                                await pr.show();
-                                                await Future.delayed(Duration(seconds: 1));
-                                                try {
-                                                  await _notifServices.createRequest(widget.docId);
-                                                  await Navigator.of(context).pop();
-                                                  await pr.hide();
-                                                } catch (e) {
-                                                  await pr.hide();
-                                                  print(e.toString());
-                                                }
-                                              },
-                                            ),
-                                            FlatButton(
-                                              child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      });
+                                  usersnapshot.data['currentGroupJoinRequests'] != null && usersnapshot.data['currentGroupJoinRequests'].contains(widget.docId)
+                                      ? null
+                                      // print('already req')
+                                      : await showDialog(
+                                          context: context,
+                                          builder: (BuildContext ctx) {
+                                            return AlertDialog(
+                                              title: Text('Request To Join Group'),
+                                              content: Text('Are you sure you want to request to join this group?'),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  child: Text('Request', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                  onPressed: () async {
+                                                    ProgressDialog pr;
+                                                    pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                                                    pr.style(
+                                                      message: 'Requesting...',
+                                                      backgroundColor: Theme.of(context).backgroundColor,
+                                                      messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                                    );
+                                                    await pr.show();
+                                                    await Future.delayed(Duration(seconds: 1));
+                                                    try {
+                                                      await _notifServices.createRequest(widget.docId);
+                                                      await Navigator.of(context).pop();
+                                                      await pr.hide();
+                                                    } catch (e) {
+                                                      await pr.hide();
+                                                      print(e.toString());
+                                                    }
+                                                  },
+                                                ),
+                                                FlatButton(
+                                                  child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          });
                                 } else {
                                   await showDialog(
                                       context: context,
@@ -375,10 +378,15 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                         'Already in a Group',
                                         style: TextStyle(fontSize: 20),
                                       )
-                                    : Text(
-                                        'Request to Join',
-                                        style: TextStyle(fontSize: 20),
-                                      )
+                                    : usersnapshot.data['currentGroupJoinRequests'] != null && usersnapshot.data['currentGroupJoinRequests'].contains(widget.docId)
+                                        ? Text(
+                                            'Already requested',
+                                            style: TextStyle(fontSize: 20),
+                                          )
+                                        : Text(
+                                            'Request to Join',
+                                            style: TextStyle(fontSize: 20),
+                                          )
                                 : GroupDetails.inGroup
                                     ? Text(
                                         'Already in a Group',
