@@ -10,6 +10,7 @@ import 'package:shareacab/services/trips.dart';
 import 'package:shareacab/shared/loading.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:shareacab/screens/notifications/services/notifservices.dart';
 
 class GroupPage extends StatefulWidget {
   @override
@@ -19,6 +20,7 @@ class GroupPage extends StatefulWidget {
 class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixin<GroupPage> {
   final RequestService _request = RequestService();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  final NotifServices _notifServices = NotifServices();
 
   String groupUID = '';
   String destination = '';
@@ -184,6 +186,12 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                         ],
                                                       );
                                                     });
+                                                // fixed this conflict =======
+//                                                 buttonEnabled = false;
+//                                                 await _notifServices.leftGroup(usersnapshot.data['name'], groupUID);
+//                                                 await _request.exitGroup();
+//                                                 Navigator.pop(context);
+//                                                 await pr.hide();
                                               } catch (e) {
                                                 print(e.toString());
                                               }
