@@ -5,9 +5,16 @@ import 'package:provider/provider.dart';
 import './notiftile.dart';
 import 'package:shareacab/screens/notifications/services/notifservices.dart';
 
-class NotifsList extends StatelessWidget {
+class NotifsList extends StatefulWidget {
   static FirebaseUser user;
+
+  @override
+  _NotifsListState createState() => _NotifsListState();
+}
+
+class _NotifsListState extends State<NotifsList> {
   final NotifServices _notifServices = NotifServices();
+
   Future getUserDetails(String uid, String purpose, String notifId, var response) async {
     var currentGroup;
     await Firestore.instance.collection('userdetails').document(uid).get().then((value) {
@@ -27,9 +34,9 @@ class NotifsList extends StatelessWidget {
       stream: Firestore.instance.collection('userdetails').document(user.uid).collection('Notifications').orderBy('createdAt', descending: true).snapshots(),
       builder: (ctx, futureSnapshot) {
         if (futureSnapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          // return Center(
+          //   child: CircularProgressIndicator(),
+          // );
         }
         return ListView.builder(
           itemCount: futureSnapshot.data == null ? 0 : futureSnapshot.data.documents.length,

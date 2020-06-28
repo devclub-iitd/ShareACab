@@ -26,6 +26,7 @@ class _NotifTileState extends State<NotifTile> {
         bottom: BorderSide(width: 0.15, color: Theme.of(context).accentColor),
       )),
       child: ListTile(
+        key: Key('${widget.docId}'),
         leading: CircleAvatar(
           backgroundColor: Theme.of(context).accentColor,
           radius: 40,
@@ -96,16 +97,16 @@ class _NotifTileState extends State<NotifTile> {
                 margin: EdgeInsets.only(top: 10),
                 child: GestureDetector(
                   onTap: () async {
-                    widget.response == null && widget.purpose == 'Request to Join' ? await _notifServices.removeNotif(widget.docId, widget.purpose, widget.fromuid, false) : await _notifServices.removeNotif(widget.docId, widget.purpose, widget.fromuid, widget.response);
-                    Scaffold.of(context).hideCurrentSnackBar();
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      duration: Duration(seconds: 1),
-                      content: Text(
-                        'notification deleted',
-                        style: TextStyle(color: Theme.of(context).accentColor),
-                      ),
-                    ));
+                    widget.response == null && widget.purpose == 'Request to Join' ? await _notifServices.removeNotif(widget.docId, widget.purpose, widget.fromuid, false) : await _notifServices.removeNotif(widget.docId, widget.purpose, widget.fromuid, true);
+                    // Scaffold.of(context).hideCurrentSnackBar();
+                    // Scaffold.of(context).showSnackBar(SnackBar(
+                    //   backgroundColor: Theme.of(context).primaryColor,
+                    //   duration: Duration(seconds: 1),
+                    //   content: Text(
+                    //     'notification deleted',
+                    //     style: TextStyle(color: Theme.of(context).accentColor),
+                    //   ),
+                    // ));
                   },
                   child: Icon(
                     Icons.delete,
