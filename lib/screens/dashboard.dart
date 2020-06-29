@@ -108,12 +108,36 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
     var fetched = false;
     super.build(context);
     final currentuser = Provider.of<FirebaseUser>(context);
-    return StreamBuilder(
+    return Scaffold(
+      key: scaffoldKey,
+      appBar: AppBar(
+        title: Text('Dashboard'),
+        actions: <Widget>[
+          FlatButton.icon(
+            textColor: getVisibleColorOnPrimaryColor(context),
+            icon: Icon(
+              Icons.filter_list,
+              size: 30.0,
+            ),
+            onPressed: () async {
+              _startFilter(context);
+            },
+            label: Text('Filter'),
+          ),
+          IconButton(
+              icon: Icon(Icons.settings),
+              tooltip: 'Settings',
+              onPressed: () {
+                return Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Settings(_auth);
+                }));
+              }),
+        ],
+      ),
+      resizeToAvoidBottomInset: false,
+      body: StreamBuilder(
         stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            //print('dash');
-          }
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             var temp = snapshot.data['currentGroup'];
             if (temp != null) {
@@ -127,32 +151,6 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
           }
           if (snapshot.connectionState == ConnectionState.active && fetched == true) {
             return Scaffold(
-              key: scaffoldKey,
-              appBar: AppBar(
-                title: Text('Dashboard'),
-                actions: <Widget>[
-                  FlatButton.icon(
-                    textColor: getVisibleColorOnPrimaryColor(context),
-                    icon: Icon(
-                      Icons.filter_list,
-                      size: 30.0,
-                    ),
-                    onPressed: () async {
-                      _startFilter(context);
-                    },
-                    label: Text('Filter'),
-                  ),
-                  IconButton(
-                      icon: Icon(Icons.settings),
-                      tooltip: 'Settings',
-                      onPressed: () {
-                        return Navigator.push(context, MaterialPageRoute(builder: (context) {
-                          return Settings(_auth);
-                        }));
-                      }),
-                ],
-              ),
-              resizeToAvoidBottomInset: false,
               body: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
@@ -201,7 +199,9 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
               child: CircularProgressIndicator(),
             );
           }
-        });
+        },
+      ),
+    );
   }
 
   @override
