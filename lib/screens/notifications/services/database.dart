@@ -190,28 +190,27 @@ class NotificationDatabase {
   //Deleting a notification
   Future<void> remNotif(String notifId, var purpose, var uid, var response) async {
     final user = await _auth.currentUser();
+    // if (purpose == 'Request to Join' && response == false) {
+    //   var name;
+    //   var listuid;
 
-    if (purpose == 'Request to Join' && response == false) {
-      var name;
-      var listuid;
+    //   await userDetails.document(user.uid).get().then((value) {
+    //     name = value.data['name'];
+    //   });
 
-      await userDetails.document(user.uid).get().then((value) {
-        name = value.data['name'];
-      });
+    //   await userDetails.document(user.uid).collection('Notifications').document(notifId).get().then((value) {
+    //     listuid = value.data['groupId'];
+    //   });
 
-      await userDetails.document(user.uid).collection('Notifications').document(notifId).get().then((value) {
-        listuid = value.data['groupId'];
-      });
-
-      await userDetails.document(uid).collection('Notifications').add({
-        'from': user.uid,
-        'senderName': name,
-        'createdAt': Timestamp.now(),
-        'purpose': 'Request to Join Declined',
-        'response': null,
-        'groupId': listuid,
-      });
-    }
+    //   await userDetails.document(uid).collection('Notifications').add({
+    //     'from': user.uid,
+    //     'senderName': name,
+    //     'createdAt': Timestamp.now(),
+    //     'purpose': 'Request to Join Declined',
+    //     'response': null,
+    //     'groupId': listuid,
+    //   });
+    // }
     await userDetails.document(user.uid).collection('Notifications').document(notifId).delete();
   }
 }

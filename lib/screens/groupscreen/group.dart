@@ -162,6 +162,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                               await Future.delayed(Duration(seconds: 1));
                                                               try {
                                                                 buttonEnabled = false;
+                                                                await _notifServices.leftGroup(usersnapshot.data['name'], groupUID);
                                                                 await _request.exitGroup();
                                                                 Navigator.pop(context);
                                                                 await pr.hide();
