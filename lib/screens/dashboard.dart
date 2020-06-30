@@ -183,7 +183,6 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                       : Padding(
                           padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
                           child: FloatingActionButton.extended(
-                            splashColor: Theme.of(context).primaryColor,
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
                             },
