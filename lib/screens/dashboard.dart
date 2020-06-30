@@ -172,7 +172,6 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                       ? Padding(
                           padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
                           child: FloatingActionButton(
-                            splashColor: Theme.of(context).primaryColor,
                             onPressed: () => _startCreatingTrip(context),
                             child: Tooltip(
                               message: 'Create Group',
