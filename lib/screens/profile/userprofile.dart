@@ -146,7 +146,7 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                                   radius: 50,
                                   backgroundColor: Theme.of(context).accentColor,
                                   child: Text(
-                                    namefirst,
+                                    namefirst.toUpperCase(),
                                     style: TextStyle(
                                       fontSize: 48,
                                       fontFamily: 'Poiret',

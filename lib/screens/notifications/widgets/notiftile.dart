@@ -33,7 +33,7 @@ class _NotifTileState extends State<NotifTile> {
           child: Padding(
             padding: EdgeInsets.all(6),
             child: Text(
-              widget.name.substring(0, 1),
+              widget.name.substring(0, 1).toUpperCase(),
               style: TextStyle(
                 fontSize: 30,
                 fontFamily: 'Poiret',
@@ -46,7 +46,7 @@ class _NotifTileState extends State<NotifTile> {
         subtitle: widget.purpose == 'Request to Join'
             ? widget.response == null
                 ? Container(
-                    child: Row(
+                    child: Wrap(
                       children: <Widget>[
                         FlatButton(
                           onPressed: () async {
