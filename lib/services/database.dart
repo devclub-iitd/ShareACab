@@ -29,14 +29,27 @@ class DatabaseService {
     });
   }
 
-  // Update user data (W=1,R=0)
+  // Update user data (W=1/2,R=1)
   Future updateUserData({String name, String mobileNumber, String hostel, String sex}) async {
-    return await userDetails.document(uid).updateData({
+    var currentGrp;
+    var user = await _auth.currentUser();
+    await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) {
+      currentGrp = value.data['currentGroup'];
+    });
+    await userDetails.document(uid).updateData({
       'name': name,
       'mobileNumber': mobileNumber,
       'hostel': hostel,
       'sex': sex,
     });
+    if (currentGrp != null) {
+      await groupdetails.document(currentGrp).collection('users').document(user.uid).setData({
+        'name': name,
+        'mobilenum': mobileNumber,
+        'hostel': hostel,
+        'sex': sex,
+      }, merge: true);
+    }
   }
 
   // user list from snapshot
