@@ -328,6 +328,8 @@ class _CreateTripState extends State<CreateTrip> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Checkbox(
+                              checkColor: getVisibleColorOnAccentColor(context),
+                              activeColor: Theme.of(context).accentColor,
                               value: privacy,
                               onChanged: (bool value) {
                                 setState(() {

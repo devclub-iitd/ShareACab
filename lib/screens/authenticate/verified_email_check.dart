@@ -1,5 +1,6 @@
 import 'dart:async' show Future, Timer;
 import 'package:flutter/material.dart';
+import 'package:shareacab/main.dart';
 import 'package:shareacab/screens/authenticate/change_email.dart';
 import 'package:shareacab/screens/rootscreen.dart';
 import 'package:shareacab/services/auth.dart';
@@ -79,7 +80,10 @@ class _VerificationCheckState extends State<VerificationCheck> {
               title: Text('Verification Screen'),
               actions: <Widget>[
                 FlatButton.icon(
-                  icon: Icon(Icons.person),
+                  icon: Icon(
+                    Icons.person,
+                    color: getVisibleColorOnPrimaryColor(context),
+                  ),
                   onPressed: () async {
                     setState(() => loading = true);
                     try {
@@ -92,7 +96,10 @@ class _VerificationCheckState extends State<VerificationCheck> {
                       });
                     }
                   },
-                  label: Text('Logout'),
+                  label: Text(
+                    'Logout',
+                    style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
+                  ),
                 )
               ],
             ),
@@ -106,13 +113,13 @@ class _VerificationCheckState extends State<VerificationCheck> {
                     RichText(
                         text: TextSpan(
                       text: 'Verification email has been sent to your ID. Please click on the verification link in your mail.',
-                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold, color: getBorderColorForInputFields(context)),
                     )),
                     SizedBox(height: 30.0),
                     RichText(
                       text: TextSpan(
                         text: 'The registered email id is: ${email}',
-                        style: TextStyle(fontSize: 17.0),
+                        style: TextStyle(fontSize: 17.0, color: getBorderColorForInputFields(context), fontWeight: FontWeight.w700),
                       ),
                     ),
                     SizedBox(
@@ -125,7 +132,7 @@ class _VerificationCheckState extends State<VerificationCheck> {
                           color: Theme.of(context).accentColor,
                           child: Text(
                             'Resend email',
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: getVisibleColorOnAccentColor(context)),
                           ),
                           onPressed: () {
                             try {
@@ -143,7 +150,7 @@ class _VerificationCheckState extends State<VerificationCheck> {
                           color: Theme.of(context).accentColor,
                           child: Text(
                             'Change email',
-                            style: TextStyle(),
+                            style: TextStyle(color: getVisibleColorOnAccentColor(context)),
                           ),
                           onPressed: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => ChangeEmail()));

@@ -123,6 +123,7 @@ class _RootScreenState extends State<RootScreen> {
             bottomNavigationBar: CurvedNavigationBar(
               color: Theme.of(context).bottomAppBarColor,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              animationDuration: Duration(milliseconds: 200),
               index: _selectedPage,
               onTap: (index) {
                 bottomTapped(index);
