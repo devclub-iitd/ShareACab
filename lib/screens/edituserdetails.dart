@@ -123,8 +123,10 @@ class _EditFormState extends State<EditForm> {
                           DropdownButtonFormField(
                             decoration: InputDecoration(hintText: 'Select Hostel', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                             value: hostel ?? snapshot.data['hostel'],
+                            onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
                             onChanged: (newValue) {
                               setState(() {
+                                FocusScope.of(context).requestFocus(FocusNode());
                                 hostel = newValue;
                               });
                             },
@@ -140,8 +142,10 @@ class _EditFormState extends State<EditForm> {
                           DropdownButtonFormField(
                             decoration: InputDecoration(hintText: 'Select Gender', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                             value: sex ?? snapshot.data['sex'],
+                            onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
                             onChanged: (newValue) {
                               setState(() {
+                                FocusScope.of(context).requestFocus(FocusNode());
                                 sex = newValue;
                               });
                             },
@@ -154,32 +158,6 @@ class _EditFormState extends State<EditForm> {
                             validator: (val) => val == null ? 'Please select your sex' : null,
                           ),
                           SizedBox(height: 20.0),
-                          // RaisedButton(
-                          //   color: Theme.of(context).accentColor,
-                          //   child: Text('Update'),
-                          //   onPressed: () async {
-                          //     if (_formKey.currentState.validate()) {
-                          //       Navigator.pop(context);
-                          //       setState(() {
-                          //         if (name == '') {
-                          //           name = snapshot.data['name'];
-                          //         }
-                          //         if (mobileNum == '') {
-                          //           mobileNum = snapshot.data['mobileNumber'];
-                          //         }
-                          //         hostel ??= snapshot.data['hostel'];
-                          //         sex ??= snapshot.data['sex'];
-                          //       });
-                          //       await DatabaseService(uid: user.uid)
-                          //           .updateUserData(
-                          //         name: name,
-                          //         mobileNumber: mobileNum,
-                          //         hostel: hostel,
-                          //         sex: sex,
-                          //       );
-                          //     }
-                          //   },
-                          // ),
                         ],
                       ),
                     ),

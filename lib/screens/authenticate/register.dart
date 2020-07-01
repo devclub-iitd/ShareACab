@@ -210,8 +210,10 @@ class _RegisterState extends State<Register> {
                         DropdownButtonFormField(
                           decoration: InputDecoration(hintText: 'Select Hostel', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                           value: hostel,
+                          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
                           onChanged: (newValue) {
                             setState(() {
+                              FocusScope.of(context).requestFocus(FocusNode());
                               hostel = newValue;
                             });
                           },
@@ -227,8 +229,10 @@ class _RegisterState extends State<Register> {
                         DropdownButtonFormField(
                           decoration: InputDecoration(hintText: 'Select Gender', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                           value: sex,
+                          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
                           onChanged: (newValue) {
                             setState(() {
+                              FocusScope.of(context).requestFocus(FocusNode());
                               sex = newValue;
                             });
                           },
