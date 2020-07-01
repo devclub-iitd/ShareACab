@@ -28,6 +28,7 @@ class MessageScreen extends StatelessWidget {
                   'createdAt',
                   descending: true,
                 )
+                .limit(30)
                 .snapshots(),
             builder: (ctx, chatSnapshot) {
               if (chatSnapshot.connectionState == ConnectionState.waiting) {
