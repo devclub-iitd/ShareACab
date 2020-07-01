@@ -123,7 +123,7 @@ class _TripsListState extends State<TripsList> {
                                               child: Container(
                                                 child: snapshot.data.documents[index].data['privacy'] == 'true'
                                                     ? Padding(
-                                                        padding: const EdgeInsets.only( right: 15.0),
+                                                        padding: const EdgeInsets.only(right: 25),
                                                         child: Icon(
                                                           Icons.lock,
                                                           color: Theme.of(context).accentColor,
