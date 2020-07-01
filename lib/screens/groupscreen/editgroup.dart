@@ -15,6 +15,7 @@ class EditGroup extends StatefulWidget {
 }
 
 class _EditGroupState extends State<EditGroup> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final DatabaseService _databaseService = DatabaseService();
   String groupUID;
   _EditGroupState(this.groupUID);
@@ -170,39 +171,57 @@ class _EditGroupState extends State<EditGroup> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Edit Group'),
-        ),
-        body: Container(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                buildLabel('Starting'),
-                buildContainer('Start', _selectedStartDate, _selectedStartTime, _startDatePicker, _startTimePicker),
-                buildLabel('Ending'),
-                buildContainer('End', _selectedEndDate, _selectedEndTime, _endDatePicker, _endTimePicker),
-                Container(
-                  height: 50,
-                  width: 150,
-                  margin: EdgeInsets.only(
-                    top: 40,
-                    bottom: 30,
-                    right: 20,
-                  ),
-                  child: RaisedButton(
-                    textColor: getVisibleColorOnAccentColor(context),
-                    onPressed: () {
-                      _submitData();
-                    },
-                    color: Theme.of(context).accentColor,
-                    child: Text('Update Trip', style: TextStyle(fontSize: 18)),
+          key: _scaffoldKey,
+          appBar: AppBar(
+            title: Text('Edit Group'),
+          ),
+          body: Builder(
+            builder: (BuildContext context) {
+              return Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      buildLabel('Starting'),
+                      buildContainer('Start', _selectedStartDate, _selectedStartTime, _startDatePicker, _startTimePicker),
+                      buildLabel('Ending'),
+                      buildContainer('End', _selectedEndDate, _selectedEndTime, _endDatePicker, _endTimePicker),
+                      Container(
+                        height: 50,
+                        width: 150,
+                        margin: EdgeInsets.only(
+                          top: 40,
+                          bottom: 30,
+                          right: 20,
+                        ),
+                        child: RaisedButton(
+                          textColor: getVisibleColorOnAccentColor(context),
+                          onPressed: () {
+                            var starting = DateTime(_selectedStartDate.year, _selectedStartDate.month, _selectedStartDate.day, _selectedStartTime.hour, _selectedStartTime.minute);
+                            var ending = DateTime(_selectedEndDate.year, _selectedEndDate.month, _selectedEndDate.day, _selectedEndTime.hour, _selectedEndTime.minute);
+                            if (starting.compareTo(ending) < 0) {
+                              _submitData();
+                            } else {
+                              Scaffold.of(context).hideCurrentSnackBar();
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                duration: Duration(seconds: 2),
+                                content: Text(
+                                  'INVALID : Start Time > End Time',
+                                  style: TextStyle(color: Theme.of(context).accentColor),
+                                ),
+                              ));
+                            }
+                          },
+                          color: Theme.of(context).accentColor,
+                          child: Text('Update Trip', style: TextStyle(fontSize: 18)),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
-      ),
+              );
+            },
+          )),
     );
   }
 }

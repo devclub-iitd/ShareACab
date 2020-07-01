@@ -103,7 +103,7 @@ class _CreateTripState extends State<CreateTrip> {
   void _startTimePicker() {
     showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialTime: _selectedStartTime ?? TimeOfDay.now(),
     ).then((pickedTime) {
       if (pickedTime == null) {
         return;
@@ -118,7 +118,7 @@ class _CreateTripState extends State<CreateTrip> {
   void _endTimePicker() {
     showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialTime: _selectedEndTime ?? _selectedStartTime,
     ).then((pickedTime) {
       if (pickedTime == null) {
         return;
@@ -354,8 +354,23 @@ class _CreateTripState extends State<CreateTrip> {
                       child: RaisedButton(
                         textColor: getVisibleColorOnAccentColor(context),
                         onPressed: () {
-                          SystemChannels.textInput.invokeMethod('Text Input hide');
-                          _submitData();
+                          var starting = DateTime(_selectedStartDate.year, _selectedStartDate.month, _selectedStartDate.day, _selectedStartTime.hour, _selectedStartTime.minute);
+                          var ending = DateTime(_selectedEndDate.year, _selectedEndDate.month, _selectedEndDate.day, _selectedEndTime.hour, _selectedEndTime.minute);
+                          if (starting.compareTo(ending) < 0) {
+                            SystemChannels.textInput.invokeMethod('Text Input hide');
+                            _submitData();
+                          } else {
+                            Scaffold.of(context).hideCurrentSnackBar();
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              duration: Duration(seconds: 2),
+                              content: Text(
+                                'INVALID : Start Time > End Time',
+                                style: TextStyle(color: Theme.of(context).accentColor),
+                              ),
+                            ));
+                            SystemChannels.textInput.invokeMethod('Text Input hide');
+                          }
                         },
                         color: Theme.of(context).accentColor,
                         child: Text('Create Trip', style: TextStyle(fontSize: 18)),
