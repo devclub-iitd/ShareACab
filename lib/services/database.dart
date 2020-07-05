@@ -169,7 +169,6 @@ class DatabaseService {
   Future<void> exitGroup() async {
     var user = await _auth.currentUser();
     var currentGrp;
-    //var currentReq;
     var presentNum;
     var startTimeStamp;
     var totalRides;
@@ -179,19 +178,17 @@ class DatabaseService {
       currentGrp = value.data['currentGroup'];
       totalRides = value.data['totalRides'];
       cancelledRides = value.data['cancelledRides'];
-      //currentReq = value.data['currentReq'];
     });
     await groupdetails.document(currentGrp).get().then((value) {
       presentNum = value.data['numberOfMembers'];
       startTimeStamp = value.data['start'];
       owner = value.data['owner'];
     });
-
+    // if user leaves early, then :
     if (startTimeStamp.compareTo(Timestamp.now()) > 0) {
       await userDetails.document(user.uid).updateData({
         'currentGroup': null,
         'currentReq': null,
-        //'previous_groups': FieldValue.arrayRemove([currentGrp]),
         'cancelledRides': cancelledRides + 1,
       });
       await groupdetails.document(currentGrp).updateData({
@@ -208,7 +205,11 @@ class DatabaseService {
         });
       }
       await groupdetails.document(currentGrp).collection('users').document(user.uid).delete();
-    } else {
+      //deleting user from chat group
+      await ChatService().exitChatRoom(currentGrp);
+    }
+    // if user leaves after ride completion:
+    else {
       await userDetails.document(user.uid).updateData({
         'currentGroup': null,
         'currentReq': null,
@@ -221,9 +222,6 @@ class DatabaseService {
     if (presentNum == 1 && startTimeStamp.compareTo(Timestamp.now()) > 0) {
       await groupdetails.document(currentGrp).delete();
     }
-
-    //deleting user from chat group
-    await ChatService().exitChatRoom(currentGrp);
   }
 
   // join a group from dashboard (W=4,R=2)
