@@ -339,12 +339,12 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                   await _request.joinGroup(widget.docId);
                                                   GroupDetails.inGroup = true;
                                                   await _notifServices.groupJoin(usersnapshot.data['name'], groupUID);
-                                                  await Navigator.of(context).pop();
                                                   await pr.hide();
                                                 } catch (e) {
                                                   await pr.hide();
                                                   print(e.toString());
                                                 }
+                                                Navigator.of(context).pop();
                                                 // final snackBar = SnackBar(
                                                 //   backgroundColor: Theme.of(context).primaryColor,
                                                 //   content: Text(
