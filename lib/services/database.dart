@@ -154,13 +154,14 @@ class DatabaseService {
   }
 
   // to update group details (W=1, R=0)
-  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET) async {
+  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET, bool privacy) async {
     var starting = DateTime(SD.year, SD.month, SD.day, ST.hour, ST.minute);
     var ending = DateTime(ED.year, ED.month, ED.day, ET.hour, ET.minute);
 
     await groupdetails.document(groupUID).setData({
       'start': starting,
       'end': ending,
+      'privacy': privacy.toString(),
     }, merge: true);
   }
 

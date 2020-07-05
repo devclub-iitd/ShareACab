@@ -7,8 +7,8 @@ class RequestService {
     await DatabaseService().createTrip(requestDetails);
   }
 
-  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET) async {
-    await DatabaseService().updateGroup(groupUID, SD, ST, ED, ET);
+  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET, bool privacy) async {
+    await DatabaseService().updateGroup(groupUID, SD, ST, ED, ET, privacy);
   }
 
   Future<void> exitGroup() async {

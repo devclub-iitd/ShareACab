@@ -27,10 +27,12 @@ class _EditGroupState extends State<EditGroup> {
 
   Timestamp startTS;
   Timestamp endTS;
+  bool privacy = false;
+  String tempPrivacy;
 
   void _updateGroup() async {
     try {
-      await _databaseService.updateGroup(groupUID, _selectedStartDate, _selectedStartTime, _selectedEndDate, _selectedEndTime);
+      await _databaseService.updateGroup(groupUID, _selectedStartDate, _selectedStartTime, _selectedEndDate, _selectedEndTime, privacy);
     } catch (e) {
       print(e.toString());
     }
@@ -154,11 +156,17 @@ class _EditGroupState extends State<EditGroup> {
       setState(() {
         startTS = value.data['start'];
         endTS = value.data['end'];
+        tempPrivacy = value.data['privacy'];
         _selectedStartDate = startTS.toDate();
         _selectedEndDate = endTS.toDate();
         _selectedStartTime = TimeOfDay(hour: _selectedStartDate.hour, minute: _selectedStartDate.minute);
         _selectedEndTime = TimeOfDay(hour: _selectedEndDate.hour, minute: _selectedEndDate.minute);
       });
+      if (tempPrivacy == 'true') {
+        privacy = true;
+      } else {
+        privacy = false;
+      }
     });
     super.initState();
   }
@@ -185,6 +193,30 @@ class _EditGroupState extends State<EditGroup> {
                       buildContainer('Start', _selectedStartDate, _selectedStartTime, _startDatePicker, _startTimePicker),
                       buildLabel('Ending'),
                       buildContainer('End', _selectedEndDate, _selectedEndTime, _endDatePicker, _endTimePicker),
+                      Container(
+                        margin: EdgeInsets.only(
+                          top: 20,
+                          left: 30,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Checkbox(
+                                checkColor: getVisibleColorOnAccentColor(context),
+                                activeColor: Theme.of(context).accentColor,
+                                value: privacy,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    privacy = value;
+                                  });
+                                }),
+                            Text('Require Permission To Join Trip',
+                                style: TextStyle(
+                                  color: Theme.of(context).accentColor,
+                                )),
+                          ],
+                        ),
+                      ),
                       Container(
                         height: 50,
                         width: 150,
