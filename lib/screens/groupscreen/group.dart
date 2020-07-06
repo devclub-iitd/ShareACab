@@ -20,6 +20,7 @@ class GroupPage extends StatefulWidget {
 
 class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixin<GroupPage> {
   final RequestService _request = RequestService();
+  final NotifServices _notifServices = NotifServices();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final NotifServices _notifServices = NotifServices();
 

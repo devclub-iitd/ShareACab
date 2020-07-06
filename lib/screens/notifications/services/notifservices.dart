@@ -20,4 +20,8 @@ class NotifServices {
   Future<void> removeNotif(String notifId, var purpose, var uid, var response) async {
     await NotificationDatabase().remNotif(notifId, purpose, uid, response);
   }
+
+  Future<void> removeAll() async {
+    await NotificationDatabase().removeAllNotif();
+  }
 }
