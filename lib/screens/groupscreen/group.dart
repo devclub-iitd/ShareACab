@@ -11,6 +11,7 @@ import 'package:shareacab/services/trips.dart';
 import 'package:shareacab/shared/loading.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class GroupPage extends StatefulWidget {
   @override
@@ -19,6 +20,7 @@ class GroupPage extends StatefulWidget {
 
 class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixin<GroupPage> {
   final RequestService _request = RequestService();
+  final NotifServices _notifServices = NotifServices();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final NotifServices _notifServices = NotifServices();
 
@@ -36,6 +38,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
   String end = '';
 
   int i = 0, numberOfMessages = 696;
+  double userRating;
 
   Future getMembers(String docid) async {
     var qp = await Firestore.instance.collection('group').document(docid).collection('users').getDocuments();
@@ -368,11 +371,34 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                             shrinkWrap: true,
                                             itemCount: snapshots.data == null ? 0 : snapshots.data.documents.length,
                                             itemBuilder: (ctx, index) {
+                                              userRating = 2.5 + snapshots.data.documents[index].data['actualrating'] / 2;
                                               return Card(
                                                 color: Theme.of(context).scaffoldBackgroundColor,
                                                 child: ListTile(
                                                   title: Text(snapshots.data.documents[index].data['name']),
-                                                  subtitle: Text('Hostel: ${snapshots.data.documents[index].data['hostel']}\n Mobile Number: ${snapshots.data.documents[index].data['mobilenum']}\n User Rating: ${2.5 + snapshots.data.documents[index].data['actualrating'] / 2}'),
+                                                  subtitle: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      Text('Hostel: ${snapshots.data.documents[index].data['hostel']}'),
+                                                      Text('Mobile Number: ${snapshots.data.documents[index].data['mobilenum']}'),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Text('User Rating:'),
+                                                          SmoothStarRating(
+                                                            rating: userRating,
+                                                            filledIconData: Icons.star,
+                                                            color: Theme.of(context).accentColor,
+                                                            borderColor: Theme.of(context).accentColor,
+                                                            halfFilledIconData: Icons.star_half,
+                                                            defaultIconData: Icons.star_border,
+                                                            starCount: 5,
+                                                            allowHalfRating: true,
+                                                            spacing: 2.0,
+                                                          ),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
                                                   trailing: grpOwner == snapshots.data.documents[index].documentID ? FaIcon(FontAwesomeIcons.crown) : null,
                                                   isThreeLine: true,
                                                   onTap: () {},
