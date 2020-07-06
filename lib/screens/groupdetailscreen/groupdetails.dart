@@ -65,7 +65,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
     return StreamBuilder(
         stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
         builder: (context, usersnapshot) {
-          requestedToJoin = usersnapshot.data['currentGroupJoinRequests'] != null && usersnapshot.data['currentGroupJoinRequests'].contains(widget.docId);
+          requestedToJoin = usersnapshot.hasData ? usersnapshot.data['currentGroupJoinRequests'] != null && usersnapshot.data['currentGroupJoinRequests'].contains(widget.docId) : false;
           if (usersnapshot.connectionState == ConnectionState.active) {
             var groupUID = usersnapshot.data['currentGroup'];
             if (groupUID != null) {
