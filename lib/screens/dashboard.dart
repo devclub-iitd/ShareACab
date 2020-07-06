@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/screens/createtrip.dart';
 import 'package:shareacab/screens/groupscreen/group.dart';
+import 'package:shareacab/screens/help.dart';
 import 'package:shareacab/screens/tripslist.dart';
 import 'package:shareacab/screens/filter.dart';
 import 'package:shareacab/screens/settings.dart';
@@ -123,6 +124,13 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
               _startFilter(context);
             },
             label: Text('Filter'),
+          ),
+          IconButton(
+            icon: Icon(Icons.help),
+            tooltip: 'Help',
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Help()));
+            },
           ),
           IconButton(
               icon: Icon(Icons.settings),
