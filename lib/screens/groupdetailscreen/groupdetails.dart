@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:shareacab/screens/groupscreen/group.dart';
 import 'dart:io';
 
 import 'package:shareacab/services/trips.dart';
@@ -46,6 +47,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
   String end = '';
   String destination = '';
   String presentNum = '';
+  bool requestedToJoin;
 
   Timer _countdownTimer;
   @override
@@ -63,6 +65,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
     return StreamBuilder(
         stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
         builder: (context, usersnapshot) {
+          requestedToJoin = usersnapshot.data['currentGroupJoinRequests'] != null && usersnapshot.data['currentGroupJoinRequests'].contains(widget.docId);
           if (usersnapshot.connectionState == ConnectionState.active) {
             var groupUID = usersnapshot.data['currentGroup'];
             if (groupUID != null) {
@@ -272,9 +275,9 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                             onPressed: () async {
                               try {
                                 if (GroupDetails.inGroup) {
-                                  null;
+                                  await Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
                                 } else if (privacy == 'true') {
-                                  usersnapshot.data['currentGroupJoinRequests'] != null && usersnapshot.data['currentGroupJoinRequests'].contains(widget.docId)
+                                  requestedToJoin
                                       ? null
                                       // print('already req')
                                       : await showDialog(
@@ -375,24 +378,24 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                             child: widget.privacy == 'true'
                                 ? GroupDetails.inGroup
                                     ? Text(
-                                        'Already in a Group',
+                                        'My Group Page', // You are in a group and viewing a private group
                                         style: TextStyle(fontSize: 20),
                                       )
-                                    : usersnapshot.data['currentGroupJoinRequests'] != null && usersnapshot.data['currentGroupJoinRequests'].contains(widget.docId)
+                                    : requestedToJoin
                                         ? Text(
-                                            'Already requested',
+                                            'Requested', // You are not in any group and requested to join
                                             style: TextStyle(fontSize: 20),
                                           )
                                         : Text(
-                                            'Request to Join',
+                                            'Request to Join', // fresh visit to private group (and user is not in any group)
                                             style: TextStyle(fontSize: 20),
                                           )
                                 : GroupDetails.inGroup
                                     ? Text(
-                                        'Already in a Group',
+                                        'My Group Page', // visiting a group page
                                         style: TextStyle(fontSize: 20),
                                       )
-                                    : Text('Join Now', style: TextStyle(fontSize: 20)),
+                                    : Text('Join Now', style: TextStyle(fontSize: 20)), // Visiting a public group page and not in any group
                             color: Theme.of(context).accentColor,
                           ),
                         ));

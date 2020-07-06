@@ -112,6 +112,7 @@ final darkTheme = ThemeData(
   scaffoldBackgroundColor: Colors.black,
   textSelectionHandleColor: Color(0xFFff9f34),
   cursorColor: Colors.white,
+  textSelectionColor: Color(0xFFff9f34),
   // inputDecorationTheme: const InputDecorationTheme(fillColor: Colors.black),
 );
 
@@ -129,7 +130,8 @@ final lightTheme = ThemeData(
   dividerColor: Colors.white54,
   scaffoldBackgroundColor: const Color(0xFFE5E5E5),
   textSelectionHandleColor: Colors.blueGrey[700],
-  cursorColor: Colors.black
+  cursorColor: Colors.black,
+  textSelectionColor: Colors.blueGrey[700],
 
   //scaffoldBackgroundColor: const Color(0xFFFFFF)
 );
