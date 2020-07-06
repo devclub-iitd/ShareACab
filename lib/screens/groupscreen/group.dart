@@ -386,6 +386,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                           SmoothStarRating(
                                                             rating: userRating,
                                                             filledIconData: Icons.star,
+                                                            color: Theme.of(context).accentColor,
+                                                            borderColor: Theme.of(context).accentColor,
                                                             halfFilledIconData: Icons.star_half,
                                                             defaultIconData: Icons.star_border,
                                                             starCount: 5,
