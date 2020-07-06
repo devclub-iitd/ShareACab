@@ -68,7 +68,6 @@ class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMi
                       );
                     } else {
                       return ListView.builder(
-                          physics: BouncingScrollPhysics(),
                           itemCount: snapshot.data == null ? 0 : snapshot.data.length,
                           itemBuilder: (ctx, index) {
                             final destination = snapshot.data[index].data['destination'];

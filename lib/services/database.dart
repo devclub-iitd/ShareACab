@@ -29,14 +29,27 @@ class DatabaseService {
     });
   }
 
-  // Update user data (W=1,R=0)
+  // Update user data (W=1/2,R=1)
   Future updateUserData({String name, String mobileNumber, String hostel, String sex}) async {
-    return await userDetails.document(uid).updateData({
+    var currentGrp;
+    var user = await _auth.currentUser();
+    await Firestore.instance.collection('userdetails').document(user.uid).get().then((value) {
+      currentGrp = value.data['currentGroup'];
+    });
+    await userDetails.document(uid).updateData({
       'name': name,
       'mobileNumber': mobileNumber,
       'hostel': hostel,
       'sex': sex,
     });
+    if (currentGrp != null) {
+      await groupdetails.document(currentGrp).collection('users').document(user.uid).setData({
+        'name': name,
+        'mobilenum': mobileNumber,
+        'hostel': hostel,
+        'sex': sex,
+      }, merge: true);
+    }
   }
 
   // user list from snapshot
@@ -141,13 +154,14 @@ class DatabaseService {
   }
 
   // to update group details (W=1, R=0)
-  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET) async {
+  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET, bool privacy) async {
     var starting = DateTime(SD.year, SD.month, SD.day, ST.hour, ST.minute);
     var ending = DateTime(ED.year, ED.month, ED.day, ET.hour, ET.minute);
 
     await groupdetails.document(groupUID).setData({
       'start': starting,
       'end': ending,
+      'privacy': privacy.toString(),
     }, merge: true);
   }
 
@@ -155,7 +169,6 @@ class DatabaseService {
   Future<void> exitGroup() async {
     var user = await _auth.currentUser();
     var currentGrp;
-    //var currentReq;
     var presentNum;
     var startTimeStamp;
     var totalRides;
@@ -165,19 +178,17 @@ class DatabaseService {
       currentGrp = value.data['currentGroup'];
       totalRides = value.data['totalRides'];
       cancelledRides = value.data['cancelledRides'];
-      //currentReq = value.data['currentReq'];
     });
     await groupdetails.document(currentGrp).get().then((value) {
       presentNum = value.data['numberOfMembers'];
       startTimeStamp = value.data['start'];
       owner = value.data['owner'];
     });
-
+    // if user leaves early, then :
     if (startTimeStamp.compareTo(Timestamp.now()) > 0) {
       await userDetails.document(user.uid).updateData({
         'currentGroup': null,
         'currentReq': null,
-        //'previous_groups': FieldValue.arrayRemove([currentGrp]),
         'cancelledRides': cancelledRides + 1,
       });
       await groupdetails.document(currentGrp).updateData({
@@ -194,7 +205,11 @@ class DatabaseService {
         });
       }
       await groupdetails.document(currentGrp).collection('users').document(user.uid).delete();
-    } else {
+      //deleting user from chat group
+      await ChatService().exitChatRoom(currentGrp);
+    }
+    // if user leaves after ride completion:
+    else {
       await userDetails.document(user.uid).updateData({
         'currentGroup': null,
         'currentReq': null,
@@ -207,9 +222,6 @@ class DatabaseService {
     if (presentNum == 1 && startTimeStamp.compareTo(Timestamp.now()) > 0) {
       await groupdetails.document(currentGrp).delete();
     }
-
-    //deleting user from chat group
-    await ChatService().exitChatRoom(currentGrp);
   }
 
   // join a group from dashboard (W=4,R=2)

@@ -65,7 +65,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
     return StreamBuilder(
         stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
         builder: (context, usersnapshot) {
-          requestedToJoin = usersnapshot.data['currentGroupJoinRequests'] != null && usersnapshot.data['currentGroupJoinRequests'].contains(widget.docId);
+          requestedToJoin = usersnapshot.hasData ? usersnapshot.data['currentGroupJoinRequests'] != null && usersnapshot.data['currentGroupJoinRequests'].contains(widget.docId) : false;
           if (usersnapshot.connectionState == ConnectionState.active) {
             var groupUID = usersnapshot.data['currentGroup'];
             if (groupUID != null) {
@@ -342,12 +342,12 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                   await _request.joinGroup(widget.docId);
                                                   GroupDetails.inGroup = true;
                                                   await _notifServices.groupJoin(usersnapshot.data['name'], groupUID);
-                                                  await Navigator.of(context).pop();
                                                   await pr.hide();
                                                 } catch (e) {
                                                   await pr.hide();
                                                   print(e.toString());
                                                 }
+                                                Navigator.of(context).pop();
                                                 // final snackBar = SnackBar(
                                                 //   backgroundColor: Theme.of(context).primaryColor,
                                                 //   content: Text(

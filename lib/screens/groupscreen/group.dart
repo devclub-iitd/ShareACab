@@ -22,7 +22,6 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
   final RequestService _request = RequestService();
   final NotifServices _notifServices = NotifServices();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  final NotifServices _notifServices = NotifServices();
 
   String groupUID = '';
   String destination = '';
