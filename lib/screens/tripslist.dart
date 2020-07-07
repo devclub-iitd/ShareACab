@@ -12,12 +12,20 @@ class TripsList extends StatefulWidget {
 
 class _TripsListState extends State<TripsList> {
   bool flag;
+  var requestsArray = [];
   @override
   Widget build(BuildContext context) {
     final currentuser = Provider.of<FirebaseUser>(context);
     return StreamBuilder(
         stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
         builder: (_, usersnapshot) {
+          if (usersnapshot.connectionState == ConnectionState.waiting) {
+            CircularProgressIndicator();
+          }
+          if (usersnapshot.connectionState == ConnectionState.active) {
+            requestsArray = usersnapshot.data['currentGroupJoinRequests'];
+            requestsArray ??= [];
+          }
           return Container(
             child: StreamBuilder(
               stream: Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).orderBy('end', descending: true).snapshots(),
@@ -53,10 +61,18 @@ class _TripsListState extends State<TripsList> {
                             },
                             child: Card(
                               shape: flag
-                                  ? RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0)), side: BorderSide(color: Theme.of(context).accentColor, width: 2.0))
-                                  : RoundedRectangleBorder(
+                                  ? RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                                    ),
+                                      side: BorderSide(color: Theme.of(context).accentColor, width: 2.0),
+                                    )
+                                  : requestsArray.contains(docId)
+                                      ? RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                                          side: BorderSide(color: Colors.pink[300], width: 2.0),
+                                        )
+                                      : RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                                        ),
                               elevation: 5,
                               margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                               child: Container(

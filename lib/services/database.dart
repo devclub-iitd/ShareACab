@@ -188,7 +188,7 @@ class DatabaseService {
     if (startTimeStamp.compareTo(Timestamp.now()) > 0) {
       await userDetails.document(user.uid).updateData({
         'currentGroup': null,
-        'currentReq': null,
+        //'currentReq': null,
         'cancelledRides': cancelledRides + 1,
       });
       await groupdetails.document(currentGrp).updateData({
@@ -212,7 +212,7 @@ class DatabaseService {
     else {
       await userDetails.document(user.uid).updateData({
         'currentGroup': null,
-        'currentReq': null,
+        //'currentReq': null,
         'totalRides': totalRides + 1,
         'previous_groups': FieldValue.arrayUnion([currentGrp]),
       });
@@ -229,7 +229,7 @@ class DatabaseService {
     var user = await _auth.currentUser();
     var presentNum;
     await userDetails.document(user.uid).updateData({
-      'previous_groups': FieldValue.arrayUnion([listuid]),
+      // 'previous_groups': FieldValue.arrayUnion([listuid]),
       'currentGroup': listuid,
     });
     await groupdetails.document(listuid).get().then((value) {
