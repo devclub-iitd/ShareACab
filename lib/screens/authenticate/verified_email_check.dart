@@ -66,9 +66,9 @@ class _VerificationCheckState extends State<VerificationCheck> {
   @override
   Widget build(BuildContext context) {
     var currentuser = Provider.of<FirebaseUser>(context);
-    setState(() {
-      email = currentuser.email;
-    });
+
+    email = currentuser.email;
+
     currentuser.reload();
     return verified
         ? RootScreen()

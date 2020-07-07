@@ -12,18 +12,26 @@ class Wrapper extends StatelessWidget {
     // return either home or Authenticate widget
 
     final user = Provider.of<FirebaseUser>(context);
-    // print(user);
-    // return Authenticate();
-//
-    if (user == null) {
-      return Authenticate();
-    } else if (user.isEmailVerified) {
-      //print('Verified');
-      return RootScreen();
-    } else {
-      //print('Not verified');
 
-      return VerificationCheck();
-    }
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (_, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          if (user == null) {
+            return Authenticate();
+          } else if (user.isEmailVerified) {
+            //print('Verified');
+            return RootScreen();
+          } else {
+            //print('Not verified');
+            return VerificationCheck();
+          }
+        }
+      },
+    );
   }
 }
