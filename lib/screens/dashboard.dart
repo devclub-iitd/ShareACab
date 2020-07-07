@@ -21,30 +21,16 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixin<Dashboard> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthService _auth = AuthService();
-  // List<RequestDetails> _listOfTrips = allTrips;
   List<RequestDetails> filtered = allTrips;
   bool _dest = false;
-  bool _date = false;
-  bool _time = false;
+  bool _notPrivacy = false;
   String _selecteddest;
-  DateTime _SD;
-  TimeOfDay _ST;
-  DateTime _ED;
-  TimeOfDay _ET;
-
-  //String groupID = null;
   bool inGroup = false;
 
-  void _filteredList(filtered, destination, date, time, dest, sdate, stime, edate, etime) {
+  void _filteredList(destination, dest, priv) {
+    _notPrivacy = priv;
     _dest = destination;
-    _date = date;
-    _time = time;
     _selecteddest = dest;
-    _SD = sdate;
-    _ST = stime;
-    _ED = edate;
-    _ET = etime;
-    // _listOfTrips = filtered;
     setState(() {});
   }
 
@@ -52,7 +38,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
     showModalBottomSheet(
       context: ctx,
       builder: (_) {
-        return Filter(_filteredList, _dest, _date, _time, _selecteddest, _SD, _ST, _ED, _ET);
+        return Filter(_filteredList, _dest, _selecteddest, _notPrivacy);
       },
     );
   }
@@ -167,7 +153,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                       height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
                       width: double.infinity,
                       child: RefreshIndicator(
-                        child: TripsList(),
+                        child: TripsList(_dest, _selecteddest, _notPrivacy),
                         onRefresh: refreshList,
                       ),
                     ),

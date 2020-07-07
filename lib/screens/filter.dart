@@ -1,50 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shareacab/models/requestdetails.dart';
 import 'package:shareacab/models/alltrips.dart';
-
 import '../main.dart';
 
 class Filter extends StatefulWidget {
   final Function filtering;
   final bool _dest;
-  final bool _date;
-  final bool _time;
+  final bool _notPrivacy;
   final String _selecteddest;
-  final DateTime _SD;
-  final TimeOfDay _ST;
-  final DateTime _ED;
-  final TimeOfDay _ET;
-
-  Filter(this.filtering, this._dest, this._date, this._time, this._selecteddest, this._SD, this._ST, this._ED, this._ET);
-
+  Filter(this.filtering, this._dest, this._selecteddest, this._notPrivacy);
   @override
   _FilterState createState() => _FilterState();
 }
 
 class _FilterState extends State<Filter> {
-  List<String> destinations = ['New Delhi Railway Station', 'Indira Gandhi International Airport'];
+  List<String> destinations = ['New Delhi Railway Station', 'Indira Gandhi International Airport', 'Anand Vihar ISBT', 'Hazrat Nizamuddin Railway Station'];
   List<RequestDetails> _Trips = allTrips;
 
   String _destination;
-  DateTime _selectedStartDate;
-  TimeOfDay _selectedStartTime;
-  DateTime _selectedEndDate;
-  TimeOfDay _selectedEndTime;
   bool _dest = false;
-  bool _time = false;
-  bool _date = false;
-
+  bool _notPrivacy = false;
+ 
   @override
   void initState() {
     _dest = widget._dest;
-    _time = widget._time;
-    _date = widget._date;
+    _notPrivacy = widget._notPrivacy;
     _destination = widget._selecteddest;
-    _selectedStartDate = widget._SD;
-    _selectedEndDate = widget._ED;
-    _selectedStartTime = widget._ST;
-    _selectedEndTime = widget._ET;
     super.initState();
   }
 
@@ -54,80 +35,10 @@ class _FilterState extends State<Filter> {
         return trip.destination.contains(_destination);
       }).toList();
     }
-    if (_date) {
-      _Trips = _Trips.where((trip) {
-        return (trip.startDate.isBefore(_selectedEndDate) && trip.endDate.isAfter(_selectedStartDate));
-      }).toList();
-    }
-    if (_time) {
-      var _startTime = double.parse(_selectedStartTime.hour.toString()) + double.parse(_selectedStartTime.minute.toString()) / 60;
-      var _endTime = double.parse(_selectedEndTime.hour.toString()) + double.parse(_selectedEndTime.minute.toString()) / 60;
-      _Trips = _Trips.where((trip) {
-        var _tripStartTime = double.parse(trip.startTime.hour.toString()) + double.parse(trip.startTime.minute.toString()) / 60;
-        var _tripEndTime = double.parse(trip.endTime.hour.toString()) + double.parse(trip.endTime.minute.toString()) / 60;
-        if (trip.endDate.isAfter(trip.startDate)) {
-          _tripEndTime = _tripEndTime + 24;
-        }
-        if (_startTime > _endTime) {
-          _endTime = _endTime + 24;
-        }
-        return (_tripStartTime <= _endTime && _tripEndTime >= _startTime);
-      }).toList();
-    }
     setState(() {
-      widget.filtering(_Trips, _dest, _date, _time, _destination, _selectedStartDate, _selectedStartTime, _selectedEndDate, _selectedEndTime);
+      widget.filtering(_dest, _destination, _notPrivacy);
     });
     Navigator.of(context).pop();
-  }
-
-  void _startDatePicker() {
-    showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now().subtract(Duration(days: 1)), lastDate: DateTime.now().add(Duration(days: 30))).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      setState(() {
-        _selectedStartDate = pickedDate;
-      });
-    });
-  }
-
-  void _endDatePicker() {
-    showDatePicker(context: context, initialDate: _selectedStartDate, firstDate: DateTime.parse(_selectedStartDate.toString()), lastDate: DateTime.now().add(Duration(days: 30))).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-      setState(() {
-        _selectedEndDate = pickedDate;
-      });
-    });
-  }
-
-  void _startTimePicker() {
-    showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    ).then((pickedTime) {
-      if (pickedTime == null) {
-        return;
-      }
-      setState(() {
-        _selectedStartTime = pickedTime;
-      });
-    });
-  }
-
-  void _endTimePicker() {
-    showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    ).then((pickedTime) {
-      if (pickedTime == null) {
-        return;
-      }
-      setState(() {
-        _selectedEndTime = pickedTime;
-      });
-    });
   }
 
   @override
@@ -143,13 +54,6 @@ class _FilterState extends State<Filter> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Container(
-              child: Center(
-                  child: Text(
-                '*filter is not working in the current version.',
-                style: TextStyle(color: Theme.of(context).accentColor),
-              )),
-            ),
             SwitchListTile(
               title: Text('Destination'),
               value: _dest,
@@ -194,74 +98,15 @@ class _FilterState extends State<Filter> {
               ),
             ),
             SwitchListTile(
-              title: Text('Date'),
-              value: _date,
-              subtitle: Text('Select Preferred Date Period'),
+              title: Text('Privacy'),
+              value: _notPrivacy,
+              subtitle: Text('Only see groups which are Free to Join'),
               activeColor: Theme.of(context).accentColor,
               onChanged: (newValue) {
                 setState(() {
-                  _date = newValue;
+                  _notPrivacy = newValue;
                 });
               },
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 5, bottom: 20, left: 30, right: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Text(_date ? _selectedStartDate == null ? 'Start Date' : '${DateFormat.yMd().format(_selectedStartDate)}' : 'Start Date'),
-                  IconButton(
-                    icon: Icon(
-                      Icons.calendar_today,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    onPressed: _date ? () => _startDatePicker() : null,
-                  ),
-                  Text(_date ? _selectedEndDate == null ? 'End Date' : '${DateFormat.yMd().format(_selectedEndDate)}' : 'End Date'),
-                  IconButton(
-                    icon: Icon(
-                      Icons.calendar_today,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    onPressed: _date ? () => _endDatePicker() : null,
-                  ),
-                ],
-              ),
-            ),
-            SwitchListTile(
-              title: Text('Time'),
-              value: _time,
-              subtitle: Text('Select Preferred Time Interval'),
-              activeColor: Theme.of(context).accentColor,
-              onChanged: (newValue) {
-                setState(() {
-                  _time = newValue;
-                });
-              },
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 5, bottom: 20, left: 30, right: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Text(_time ? _selectedStartTime == null ? 'Start Time' : '${_selectedStartTime.toString().substring(10, 15)}' : 'Start Time'),
-                  IconButton(
-                    icon: Icon(
-                      Icons.schedule,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    onPressed: _time ? () => _startTimePicker() : null,
-                  ),
-                  Text(_time ? _selectedEndTime == null ? 'End Time' : '${_selectedEndTime.toString().substring(10, 15)}' : 'End Time'),
-                  IconButton(
-                    icon: Icon(
-                      Icons.schedule,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    onPressed: _time ? () => _endTimePicker() : null,
-                  ),
-                ],
-              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
