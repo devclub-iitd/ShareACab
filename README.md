@@ -69,6 +69,7 @@ Usually, after exams or when the mid-sem break begins, there is a large surge of
           +--- dashboard.dart // handles dashboard
           +--- edituserdetails.dart // handles edit user details page
           +--- filter.dart // handles filter service
+          +--- help.dart // handles help/FAQ screen
           +--- messages.dart // messages screen
           +--- rootscreen.dart // handles navigation services
           +--- settings.dart // settings page to set dark mode
@@ -137,6 +138,10 @@ Usually, after exams or when the mid-sem break begins, there is a large surge of
 * [x] Request only groups
   
   * There is also a facility to create private groups which require an invite to be sent to the admin of the group and the admin needs to accept that invitation to allow the user to get in the group. This invite will be present in the Notifications screen and can be accepted/declined from there itself.
+
+## Upcoming:
+
+* [ ] Restricting entry in group if maximum number of poolers setting has been reached.
 
 ## Bugs:
 
