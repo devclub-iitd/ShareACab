@@ -12,9 +12,9 @@ Usually, after exams or when the mid-sem break begins, there is a large surge of
 
 ## Screenshots:
 
-Dark Theme Dashboard.      |    Group Details Page.    | Destination Trip          |Light theme login and logout
-:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
-<img src="https://user-images.githubusercontent.com/52427677/84919163-31ec8080-b0df-11ea-927d-673bc64845a5.jpeg" width=200/> | <img src="https://user-images.githubusercontent.com/22472045/84910976-30b65600-b0d5-11ea-8d9d-230c4c2bcbf1.gif" width=200/>  | <img src="https://user-images.githubusercontent.com/22472045/84910892-12e8f100-b0d5-11ea-91fc-89cfd4e6805f.gif" width=200/> |  <img src="https://user-images.githubusercontent.com/52520071/84898326-b2ea4e80-b0c4-11ea-9517-d1bf5a7ccb8d.gif" width=200/>
+|                                                    Dark Theme Dashboard.                                                     |                                                     Group Details Page.                                                     |                                                      Destination Trip                                                       |                                                Light theme login and logout                                                 |
+| :--------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------: |
+| <img src="https://user-images.githubusercontent.com/52427677/84919163-31ec8080-b0df-11ea-927d-673bc64845a5.jpeg" width=200/> | <img src="https://user-images.githubusercontent.com/22472045/84910976-30b65600-b0d5-11ea-8d9d-230c4c2bcbf1.gif" width=200/> | <img src="https://user-images.githubusercontent.com/22472045/84910892-12e8f100-b0d5-11ea-91fc-89cfd4e6805f.gif" width=200/> | <img src="https://user-images.githubusercontent.com/52520071/84898326-b2ea4e80-b0c4-11ea-9517-d1bf5a7ccb8d.gif" width=200/> |
 
 ## Directory Layout
 ```go
@@ -47,17 +47,24 @@ Dark Theme Dashboard.      |    Group Details Page.    | Destination Trip       
             +--- chat_screen.dart
           +--- groupdetailscreen // handles the screen when user clicks on a card on dashboard
             +--- appbar.dart // group details page appbar
+            +--- ended_group_details.dart // group details page for ended rides
             +--- groupdetails.dart // group details page
           +--- groupscreen // handles the screen when user is in a cab/group
             +--- group.dart // shows the current group details
           +--- notifications // handles notification screen
-            +--- notifications.dart
+            +--- services
+              +--- database.dart // handles database for notifications
+              +--- notifservice.dart // service file for calling database functions relevant to notifications
+            +--- widgets
+              +--- notifslist.dart // displays list of notifications
+              +--- notiftile.dart // UI for notification tile
+            +--- notifications.dart // notification page
           +--- profile
             +--- userprofile.dart // handles user profile screen
           +--- requests // handles the requests of users screen
-            +--- createrequests.dart
-            +--- myrequests.dart
-            +--- requestslist.dart
+            +--- createrequests.dart // Will be deleted during cleanup
+            +--- myrequests.dart // displays Ended rides
+            +--- requestslist.dart // Will be deleted during cleanup
           +--- createtrip.dart // the screen for creating a new group
           +--- dashboard.dart // handles dashboard
           +--- edituserdetails.dart // handles edit user details page
@@ -72,7 +79,6 @@ Dark Theme Dashboard.      |    Group Details Page.    | Destination Trip       
           +--- database.dart // the PRIMARY database service which handles everything
           +--- trips.dart // for calling a function purposes
         +--- shared
-          +--- constants.dart // the constant files
           +--- loading.dart // the loading screen
         +--- main.dart
    |
@@ -82,7 +88,7 @@ Dark Theme Dashboard.      |    Group Details Page.    | Destination Trip       
    +--- etc
 ```
 
-## What's working (In order of implementation):
+## What's working:
 
 * [x] Authentication
   
@@ -97,18 +103,19 @@ Dark Theme Dashboard.      |    Group Details Page.    | Destination Trip       
 
 * [x] Dashboard
 
-  * Displaying the list of ongoing cabs/groups here. If the user taps on a card, the user is navigated to a screen which shows an overview of the group. Whereas, if the person clicks on join now, he's added to that group and is navigated to a screen where the details of the group are shown. There is also a floating action button which can be used in two ways, if the person is currently not in a group, by clicking the button he can create a new one, whereas if the user is already in a group, the button navigates him/her to the group details page. There is also an option to leave the group in the group details page.
+  * Displaying the list of ongoing cabs/groups here. If the user taps on a card, the user is navigated to a screen which shows an overview of the group. On the group page, if the person clicks on join now, he's added to that group and is navigated to a screen where the details of the group are shown. There is also a floating action button which can be used in two ways, if the person is currently not in a group, by clicking the button he can create a new one, whereas if the user is already in a group, the button navigates him/her to the group details page. There is also an option to leave the group in the group details page. The admin of the group can also edit the details of the group.
   * UI by @Ishaan21
   * Backend/Logic by @kshitijalwadhi
   
-* [x] Requests
+* [x] Ended Rides
   
-  * Housing the requests by the user in this screen. *Dummy for now*
-  * UI by @Deepanshu-Rohilla
+  * Displays completed rides of the user. 
+  * The user can tap on the cards to view the details.
+  * Implemented by @kshitijalwadhi
 
 * [x] Settings
   
-  * Currently only has ability to switch to dark mode.
+  * Currently has the ability to switch to dark mode and also report bugs.
   * Implemented by @kshitijalwadhi
 
 * [x] Chatting Functionality
@@ -123,18 +130,17 @@ Dark Theme Dashboard.      |    Group Details Page.    | Destination Trip       
   * UI by @Deepanshu-Rohilla and @kshitijalwadhi
   * Backend/Logic by @kshitijalwadhi
 
-## Whats not working (WIP):
+* [x] Filter Page
 
-* [ ] Filtering groups on Dashboard
-* [ ] Requests page (Houses dummy data for now)
-* [ ] Notifications
+  * Rides on the dashboard can be filtered according to destination and privacy setting.
 
-## Upcoming features:
+* [x] Request only groups
+  
+  * There is also a facility to create private groups which require an invite to be sent to the admin of the group and the admin needs to accept that invitation to allow the user to get in the group. This invite will be present in the Notifications screen and can be accepted/declined from there itself.
 
-* Taking a request (his/her preferences) from user when the user tries to join a group. (These will be shown on requests page as well)
-* Phone authentication also required
-* A dialer icon beside user name in group details which on pressed redirects to dialer app in phone with phone number entered.
-* Implement request-only access to groups.
+## Bugs:
+
+* You tell us.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
