@@ -312,7 +312,7 @@ class _CreateTripState extends State<CreateTrip> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 12.0),
-                          child: Text('No of poolers with you',
+                          child: Text('Max No. of poolers: ',
                               style: TextStyle(
                                 color: Theme.of(context).accentColor,
                               )),

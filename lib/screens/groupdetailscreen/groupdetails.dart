@@ -341,7 +341,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                 try {
                                                   await _request.joinGroup(widget.docId);
                                                   GroupDetails.inGroup = true;
-                                                  await _notifServices.groupJoin(usersnapshot.data['name'], groupUID);
+                                                  await _notifServices.groupJoin(usersnapshot.data['name'], widget.docId);
                                                   await pr.hide();
                                                 } catch (e) {
                                                   await pr.hide();

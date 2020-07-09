@@ -42,7 +42,6 @@ class NotificationDatabase {
     await groupdetails.document(groupId).get().then((value) {
       allUsers = value.data['users'];
     });
-
     await userDetails.document(user.uid).updateData({
       'currentGroupJoinRequests': null,
     });
@@ -80,7 +79,7 @@ class NotificationDatabase {
       });
       var presentNum;
       await userDetails.document(uid).updateData({
-        'previous_groups': FieldValue.arrayUnion([listuid]),
+        // 'previous_groups': FieldValue.arrayUnion([listuid]),
         'currentGroup': listuid,
         'currentGroupJoinRequests': null,
       });
