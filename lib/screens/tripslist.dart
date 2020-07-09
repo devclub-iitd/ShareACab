@@ -6,6 +6,10 @@ import 'package:provider/provider.dart';
 import 'groupdetailscreen/groupdetails.dart';
 
 class TripsList extends StatefulWidget {
+  final _dest;
+  final _notPrivate;
+  final _selectedDestination;
+  TripsList(this._dest, this._selectedDestination, this._notPrivate);
   @override
   _TripsListState createState() => _TripsListState();
 }
@@ -28,7 +32,7 @@ class _TripsListState extends State<TripsList> {
           }
           return Container(
             child: StreamBuilder(
-              stream: Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).orderBy('end', descending: true).snapshots(),
+              stream: widget._dest == true && widget._notPrivate == true ? Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).where('destination', isEqualTo: widget._selectedDestination).where('privacy', isEqualTo: false.toString()).orderBy('end', descending: true).snapshots() : widget._dest == true ? Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).where('destination', isEqualTo: widget._selectedDestination).orderBy('end', descending: true).snapshots() : widget._notPrivate == true ? Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).where('privacy', isEqualTo: false.toString()).orderBy('end', descending: true).snapshots() : Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).orderBy('end', descending: true).snapshots(),
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   CircularProgressIndicator();
