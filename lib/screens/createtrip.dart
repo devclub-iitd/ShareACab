@@ -68,11 +68,25 @@ class _CreateTripState extends State<CreateTrip> {
       ));
       return;
     } else {
-      setState(() {
-        _formKey.currentState.save();
-        _addNewRequest();
-      });
-      Navigator.of(context).pop();
+      var starting = DateTime(_selectedStartDate.year, _selectedStartDate.month, _selectedStartDate.day, _selectedStartTime.hour, _selectedStartTime.minute);
+      var ending = DateTime(_selectedEndDate.year, _selectedEndDate.month, _selectedEndDate.day, _selectedEndTime.hour, _selectedEndTime.minute);
+      if (starting.compareTo(ending) < 0) {
+        setState(() {
+          _formKey.currentState.save();
+          _addNewRequest();
+        });
+        Navigator.of(context).pop();
+      } else {
+        _scaffoldKey.currentState.hideCurrentSnackBar();
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          backgroundColor: Theme.of(context).primaryColor,
+          duration: Duration(seconds: 2),
+          content: Text(
+            'INVALID : Start Time > End Time',
+            style: TextStyle(color: Theme.of(context).accentColor),
+          ),
+        ));
+      }
     }
   }
 
@@ -238,7 +252,7 @@ class _CreateTripState extends State<CreateTrip> {
                               });
                             },
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value == null) {
                                 return 'Please Enter Destination';
                               }
                               return null;
@@ -261,7 +275,7 @@ class _CreateTripState extends State<CreateTrip> {
                             // onSubmitted: (_) => _submitData(),
                             onChanged: (val) {},
                             validator: (value) {
-                              if (value.isEmpty) {
+                              if (value == null) {
                                 return 'Please enter your final destination';
                               }
                               return null;
@@ -303,8 +317,8 @@ class _CreateTripState extends State<CreateTrip> {
                               });
                             },
                             validator: (value) {
-                              if (value.toString().isEmpty) {
-                                return 'Please Enter Max CabPoolers';
+                              if (value == null) {
+                                return 'Empty';
                               }
                               return null;
                             },
@@ -354,23 +368,23 @@ class _CreateTripState extends State<CreateTrip> {
                       child: RaisedButton(
                         textColor: getVisibleColorOnAccentColor(context),
                         onPressed: () {
-                          var starting = DateTime(_selectedStartDate.year, _selectedStartDate.month, _selectedStartDate.day, _selectedStartTime.hour, _selectedStartTime.minute);
-                          var ending = DateTime(_selectedEndDate.year, _selectedEndDate.month, _selectedEndDate.day, _selectedEndTime.hour, _selectedEndTime.minute);
-                          if (starting.compareTo(ending) < 0) {
-                            SystemChannels.textInput.invokeMethod('Text Input hide');
-                            _submitData();
-                          } else {
-                            Scaffold.of(context).hideCurrentSnackBar();
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              duration: Duration(seconds: 2),
-                              content: Text(
-                                'INVALID : Start Time > End Time',
-                                style: TextStyle(color: Theme.of(context).accentColor),
-                              ),
-                            ));
-                            SystemChannels.textInput.invokeMethod('Text Input hide');
-                          }
+                          // var starting = DateTime(_selectedStartDate.year, _selectedStartDate.month, _selectedStartDate.day, _selectedStartTime.hour, _selectedStartTime.minute);
+                          // var ending = DateTime(_selectedEndDate.year, _selectedEndDate.month, _selectedEndDate.day, _selectedEndTime.hour, _selectedEndTime.minute);
+                          // if (starting.compareTo(ending) < 0) {
+                          SystemChannels.textInput.invokeMethod('Text Input hide');
+                          _submitData();
+                          // } else {
+                          //   Scaffold.of(context).hideCurrentSnackBar();
+                          //   Scaffold.of(context).showSnackBar(SnackBar(
+                          //     backgroundColor: Theme.of(context).primaryColor,
+                          //     duration: Duration(seconds: 2),
+                          //     content: Text(
+                          //       'INVALID : Start Time > End Time',
+                          //       style: TextStyle(color: Theme.of(context).accentColor),
+                          //     ),
+                          //   ));
+                          //   SystemChannels.textInput.invokeMethod('Text Input hide');
+                          // }
                         },
                         color: Theme.of(context).accentColor,
                         child: Text('Create Trip', style: TextStyle(fontSize: 18)),
