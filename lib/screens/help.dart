@@ -23,6 +23,9 @@ class _HelpState extends State<Help> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Help'),
+      ),
       body: ListView(
         children: [
           Padding(
