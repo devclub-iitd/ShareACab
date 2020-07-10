@@ -277,9 +277,17 @@ class _CreateTripState extends State<CreateTrip> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30.0, left: 40.0),
+                          child: Text('Max No. of poolers: ',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                color: Theme.of(context).accentColor,
+                              )),
+                        ),
                         Container(
                           width: 45,
-                          margin: EdgeInsets.only(top: 20, left: 40),
+                          margin: EdgeInsets.only(top: 30.0, left: 20),
                           child: DropdownButtonFormField<int>(
                             icon: Icon(
                               Icons.keyboard_arrow_down,
@@ -309,13 +317,6 @@ class _CreateTripState extends State<CreateTrip> {
                               return null;
                             },
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 12.0),
-                          child: Text('Max No. of poolers: ',
-                              style: TextStyle(
-                                color: Theme.of(context).accentColor,
-                              )),
                         ),
                       ],
                     ),
