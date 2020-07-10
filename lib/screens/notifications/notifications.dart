@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shareacab/main.dart';
 import './widgets/notifslist.dart';
 import './services/notifservices.dart';
 
@@ -19,8 +20,8 @@ class _NotificationsState extends State<Notifications> {
               onPressed: () async {
                 await _notifServices.removeAll();
               },
-              icon: Icon(Icons.delete),
-              label: Text('Remove All'))
+              icon: Icon(Icons.delete, color: getVisibleColorOnPrimaryColor(context),),
+              label: Text('Remove All', style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),))
         ],
       ),
       body: Container(
