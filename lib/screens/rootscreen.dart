@@ -32,7 +32,7 @@ class _RootScreenState extends State<RootScreen> {
       Tooltip(
         message: 'Dashboard',
         child: Icon(
-          FontAwesomeIcons.home,
+          Icons.home,
           size: 20.0,
           color: Theme.of(context).accentColor,
           //color: Colors.black,
