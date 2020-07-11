@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shareacab/screens/dashboard.dart';
 import 'messages.dart';
 import 'profile/userprofile.dart';
@@ -32,7 +31,7 @@ class _RootScreenState extends State<RootScreen> {
       Tooltip(
         message: 'Dashboard',
         child: Icon(
-          FontAwesomeIcons.home,
+          Icons.home,
           size: 20.0,
           color: Theme.of(context).accentColor,
           //color: Colors.black,

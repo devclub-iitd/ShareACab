@@ -47,6 +47,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - assets/
   fonts:
     - family: Poiret
       fonts:
