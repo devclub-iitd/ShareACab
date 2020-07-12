@@ -300,7 +300,7 @@ class ThemeModel {
 
 class PreviewWidget extends StatefulWidget {
   @override
-  PreviewWidgetState createState() => new PreviewWidgetState();
+  PreviewWidgetState createState() => PreviewWidgetState();
 }
 
 class PreviewWidgetState extends State<PreviewWidget> {
