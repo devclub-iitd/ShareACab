@@ -259,7 +259,7 @@ class _RegisterState extends State<Register> {
                                   'REGISTER',
                                   style: TextStyle(
                                     fontSize: 20,
-                                    color: Theme.of(context).scaffoldBackgroundColor,
+                                    color: getVisibleColorOnAccentColor(context),
                                     letterSpacing: 2,
                                     fontWeight: FontWeight.w500,
                                   ),
