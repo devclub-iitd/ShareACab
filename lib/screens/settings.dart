@@ -57,10 +57,6 @@ class _SettingsState extends State<Settings> {
       Colors.purple,
     ),
     ColorModel(
-      'Pink',
-      Colors.pink,
-    ),
-    ColorModel(
       'Red',
       Colors.red,
     ),
@@ -179,6 +175,9 @@ class _SettingsState extends State<Settings> {
               ),
             ),
           ),
+          SizedBox(
+            height: w * 0.03,
+          ),
           ListTile(
             subtitle: Material(
               child: Padding(
@@ -251,6 +250,7 @@ class _SettingsState extends State<Settings> {
               message: 'Report Bug',
               verticalOffset: -60,
               child: IconButton(
+                padding: EdgeInsets.only(bottom: 100),
                 icon: Icon(
                   Icons.bug_report,
                   size: 40.0,

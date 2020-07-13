@@ -59,11 +59,7 @@ Color getVisibleColorOnPrimaryColor(BuildContext context) {
 }
 
 Color getVisibleColorOnAccentColor(BuildContext context) {
-  if (Theme.of(context).brightness == Brightness.dark) {
-    return Colors.black;
-  } else {
-    return Colors.white;
-  }
+  return Colors.white;
 }
 
 Color getBorderColorForInputFields(BuildContext context) {
@@ -117,13 +113,6 @@ void main() {
       runApp(
         ChangeNotifierProvider<ThemeNotifier>(
           create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.purple, darkModeOn), darkModeOn),
-          child: MyApp(),
-        ),
-      );
-    } else if (chosenAccentColor == 'Pink') {
-      runApp(
-        ChangeNotifierProvider<ThemeNotifier>(
-          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.pink, darkModeOn), darkModeOn),
           child: MyApp(),
         ),
       );
