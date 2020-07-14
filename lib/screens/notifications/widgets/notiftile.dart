@@ -60,7 +60,7 @@ class _NotifTileState extends State<NotifTile> {
           subtitle: widget.purpose == 'Request to Join'
               ? widget.response == null
                   ? Container(
-                      child: Row(
+                      child: Wrap(
                         children: <Widget>[
                           FlatButton(
                             onPressed: () async {

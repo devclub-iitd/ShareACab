@@ -22,37 +22,12 @@ Color requestPending(BuildContext context) => Colors.yellow;
 Color warning(BuildContext context) => Colors.yellow;
 Color warningHeading(BuildContext context) => Colors.red;
 
-Color getMenuItemColor(int i) {
-  switch (i) {
-    case 0:
-      {
-        return Colors.amber;
-      }
-    case 1:
-      {
-        return Colors.blue;
-      }
-    case 2:
-      {
-        return Colors.orange;
-      }
-    case 3:
-      {
-        return Colors.green;
-      }
-    case 4:
-      {
-        return Colors.purple;
-      }
-    default:
-      {
-        return Colors.amber;
-      }
+Color getVisibleColorOnScaffold(BuildContext context) {
+  if (Theme.of(context).brightness == Brightness.dark) {
+    return Colors.white;
+  } else {
+    return Colors.black;
   }
-}
-
-Color getChatBubbleTextColor() {
-  return Colors.black;
 }
 
 ThemeData getSearchAppBarTheme(BuildContext context) {
@@ -84,11 +59,7 @@ Color getVisibleColorOnPrimaryColor(BuildContext context) {
 }
 
 Color getVisibleColorOnAccentColor(BuildContext context) {
-  if (Theme.of(context).brightness == Brightness.dark) {
-    return Colors.black;
-  } else {
-    return Colors.white;
-  }
+  return Colors.white;
 }
 
 Color getBorderColorForInputFields(BuildContext context) {
@@ -99,51 +70,19 @@ Color getBorderColorForInputFields(BuildContext context) {
   }
 }
 
-final darkTheme = ThemeData(
-  primarySwatch: Colors.grey,
-  bottomAppBarColor: const Color(0xFF212121),
-  primaryColor: const Color(0xFF212121),
-  primaryColorDark: Colors.black,
-  brightness: Brightness.dark,
-  backgroundColor: const Color(0xFF212121),
-  accentColor: Color(0xFFff9f34),
-  accentIconTheme: IconThemeData(color: Colors.black),
-  dividerColor: Colors.black12,
-  scaffoldBackgroundColor: Colors.black,
-  textSelectionHandleColor: Color(0xFFff9f34),
-  cursorColor: Colors.white,
-  textSelectionColor: Color(0xFFff9f34),
-  // inputDecorationTheme: const InputDecorationTheme(fillColor: Colors.black),
-);
-
-final lightTheme = ThemeData(
-  primarySwatch: Colors.grey,
-  bottomAppBarColor: Colors.white,
-  primaryColor: Colors.grey[600],
-  primaryColorDark: Colors.grey[800],
-  //primaryColor: Colors.white,
-  brightness: Brightness.light,
-  backgroundColor: const Color(0xFFE5E5E5),
-  accentColor: Colors.blueGrey[700],
-  //accentColor: Colors.blueGrey[700],
-  accentIconTheme: IconThemeData(color: Colors.white),
-  dividerColor: Colors.white54,
-  scaffoldBackgroundColor: const Color(0xFFE5E5E5),
-  textSelectionHandleColor: Colors.blueGrey[700],
-  cursorColor: Colors.black,
-  textSelectionColor: Colors.blueGrey[700],
-
-  //scaffoldBackgroundColor: const Color(0xFFFFFF)
-);
-
 class ThemeNotifier with ChangeNotifier {
   ThemeData _themeData;
-
-  ThemeNotifier(this._themeData);
+  bool _darkModeOn;
+  ThemeNotifier(this._themeData, this._darkModeOn);
 
   ThemeData getTheme() => _themeData;
+  bool darkModeIsOn() => _darkModeOn;
 
   void setTheme(ThemeData themeData) async {
+    await SharedPreferences.getInstance().then((prefs) {
+      _darkModeOn = !prefs.getBool('darkMode');
+      print('darkModeOn is $_darkModeOn');
+    });
     _themeData = themeData;
     notifyListeners();
   }
@@ -153,12 +92,66 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then((prefs) {
     var darkModeOn = prefs.getBool('darkMode') ?? true;
-    runApp(
-      ChangeNotifierProvider<ThemeNotifier>(
-        create: (_) => ThemeNotifier(darkModeOn ? darkTheme : lightTheme),
-        child: MyApp(),
-      ),
-    );
+    var _theme = prefs.getString('theme') ?? 'system';
+    var chosenAccentColor = prefs.getString('accentColor');
+    if (_theme == 'system') {
+      var brightness = WidgetsBinding.instance.window.platformBrightness;
+      if (brightness == Brightness.dark) {
+        darkModeOn = true;
+      } else {
+        darkModeOn = false;
+      }
+    }
+    if (chosenAccentColor == 'Blue') {
+      runApp(
+        ChangeNotifierProvider<ThemeNotifier>(
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.blue, darkModeOn), darkModeOn),
+          child: MyApp(),
+        ),
+      );
+    } else if (chosenAccentColor == 'Purple') {
+      runApp(
+        ChangeNotifierProvider<ThemeNotifier>(
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.purple, darkModeOn), darkModeOn),
+          child: MyApp(),
+        ),
+      );
+    } else if (chosenAccentColor == 'Red') {
+      runApp(
+        ChangeNotifierProvider<ThemeNotifier>(
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.red, darkModeOn), darkModeOn),
+          child: MyApp(),
+        ),
+      );
+    } else if (chosenAccentColor == 'Orange') {
+      runApp(
+        ChangeNotifierProvider<ThemeNotifier>(
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.orange, darkModeOn), darkModeOn),
+          child: MyApp(),
+        ),
+      );
+    } else if (chosenAccentColor == 'Yellow') {
+      runApp(
+        ChangeNotifierProvider<ThemeNotifier>(
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.yellow, darkModeOn), darkModeOn),
+          child: MyApp(),
+        ),
+      );
+    } else if (chosenAccentColor == 'Green') {
+      runApp(
+        ChangeNotifierProvider<ThemeNotifier>(
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.green, darkModeOn), darkModeOn),
+          child: MyApp(),
+        ),
+      );
+    } else {
+      runApp(
+        ChangeNotifierProvider<ThemeNotifier>(
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.blue, darkModeOn), darkModeOn),
+          child: MyApp(),
+        ),
+      );
+    }
   });
 }
 
@@ -206,3 +199,44 @@ class MyApp extends StatelessWidget {
 //             title: title,
 //             actions: <Widget>[IconButton(icon: icon, onPressed: () {})]);
 // }
+
+ThemeData getThemeDataForAccentColor(Color accentColor, bool darkTheme) {
+  print('dark theme is $darkTheme');
+  return darkTheme
+      ? ThemeData(
+          primarySwatch: Colors.grey,
+          bottomAppBarColor: const Color(0xFF212121),
+          primaryColor: const Color(0xFF212121),
+          primaryColorDark: Colors.black,
+          brightness: Brightness.dark,
+          backgroundColor: const Color(0xFF212121),
+          accentColor: accentColor,
+          accentIconTheme: IconThemeData(color: Colors.black),
+          dividerColor: Colors.black12,
+          scaffoldBackgroundColor: Colors.black,
+          textSelectionHandleColor: Colors.blue,
+          cursorColor: Colors.white,
+          textSelectionColor: Colors.blue,
+          // inputDecorationTheme: const InputDecorationTheme(fillColor: Colors.black),
+        )
+      : ThemeData(
+          appBarTheme: AppBarTheme(color: accentColor),
+          primarySwatch: Colors.grey,
+          bottomAppBarColor: Colors.white,
+          primaryColor: Colors.grey[600],
+          primaryColorDark: Colors.grey[800],
+          //primaryColor: Colors.white,
+          brightness: Brightness.light,
+          backgroundColor: const Color(0xFFE5E5E5),
+          accentColor: accentColor,
+          //accentColor: Colors.blueGrey[700],
+          accentIconTheme: IconThemeData(color: Colors.white),
+          dividerColor: Colors.white54,
+          scaffoldBackgroundColor: const Color(0xFFE5E5E5),
+          textSelectionHandleColor: Colors.blueGrey[700],
+          cursorColor: Colors.black,
+          textSelectionColor: Colors.blueGrey[700],
+
+          //scaffoldBackgroundColor: const Color(0xFFFFFF)
+        );
+}

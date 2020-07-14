@@ -392,6 +392,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                             defaultIconData: Icons.star_border,
                                                             starCount: 5,
                                                             allowHalfRating: true,
+                                                            isReadOnly: true,
                                                             spacing: 2.0,
                                                           ),
                                                         ],
