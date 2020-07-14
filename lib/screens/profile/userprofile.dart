@@ -78,7 +78,6 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
               textColor: getVisibleColorOnPrimaryColor(context),
               onPressed: () {
                 Navigator.pushNamed(context, '/edituserdetails');
-                // _showEditPannel();
               },
               icon: Icon(Icons.edit),
               label: Text('Edit')),
@@ -86,25 +85,47 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
             textColor: getVisibleColorOnPrimaryColor(context),
             icon: Icon(FontAwesomeIcons.signOutAlt),
             onPressed: () async {
-              ProgressDialog pr;
-              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
-              pr.style(
-                message: 'Logging out...',
-                backgroundColor: Theme.of(context).backgroundColor,
-                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
-              );
-              await pr.show();
-              await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
-              try {
-                await widget._auth.signOut();
-                await pr.hide();
-              } catch (err) {
-                // show e.message
-                await pr.hide();
-                String errStr = err.message ?? err.toString();
-                final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
-                scaffoldKey.currentState.showSnackBar(snackBar);
-              }
+              await showDialog(
+                  context: context,
+                  builder: (BuildContext ctx) {
+                    return AlertDialog(
+                      title: Text('Log out'),
+                      content: Text('Are you sure you want to log out?'),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text('Log out', style: TextStyle(color: Theme.of(context).accentColor)),
+                          onPressed: () async {
+                            ProgressDialog pr;
+                            pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                            pr.style(
+                              message: 'Logging out...',
+                              backgroundColor: Theme.of(context).backgroundColor,
+                              messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                            );
+                            await pr.show();
+                            await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
+                            try {
+                              await widget._auth.signOut();
+                              await pr.hide();
+                            } catch (err) {
+                              await pr.hide();
+                              String errStr = err.message ?? err.toString();
+                              final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+                              scaffoldKey.currentState.showSnackBar(snackBar);
+                            }
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        FlatButton(
+                          child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  });
             },
             label: Text('Logout'),
           )
