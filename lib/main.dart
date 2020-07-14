@@ -112,8 +112,10 @@ class ThemeNotifier with ChangeNotifier {
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then((prefs) {
-    prefs.setBool('darkMode', true);
-    prefs.setString('accentColor', 'Blue');
+    if (prefs.getBool('darkMode') == null || prefs.getString('accentColor') == null) {
+      prefs.setBool('darkMode', true);
+      prefs.setString('accentColor', 'Blue');
+    }
   });
   SharedPreferences.getInstance().then((prefs) {
     var darkModeOn = prefs.getBool('darkMode') ?? true;
