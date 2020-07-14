@@ -379,21 +379,21 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                 ? GroupDetails.inGroup
                                     ? Text(
                                         'My Group Page', // You are in a group and viewing a private group
-                                        style: TextStyle(fontSize: 20),
+                                        style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
                                       )
                                     : requestedToJoin
                                         ? Text(
                                             'Requested', // You are not in any group and requested to join
-                                            style: TextStyle(fontSize: 20),
+                                            style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
                                           )
                                         : Text(
                                             'Request to Join', // fresh visit to private group (and user is not in any group)
-                                            style: TextStyle(fontSize: 20),
+                                            style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
                                           )
                                 : GroupDetails.inGroup
                                     ? Text(
                                         'My Group Page', // visiting a group page
-                                        style: TextStyle(fontSize: 20),
+                                        style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
                                       )
                                     : Text('Join Now', style: TextStyle(fontSize: 20)), // Visiting a public group page and not in any group
                             color: Theme.of(context).accentColor,

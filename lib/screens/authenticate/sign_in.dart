@@ -94,6 +94,7 @@ class _SignInState extends State<SignIn> {
                             child: Icon(
                               CupertinoIcons.car_detailed,
                               size: 48,
+                              color: getVisibleColorOnAccentColor(context),
                             ),
                           ),
                           SizedBox(height: 10.0),
@@ -153,7 +154,7 @@ class _SignInState extends State<SignIn> {
                                 'SIGN IN',
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color: Theme.of(context).scaffoldBackgroundColor,
+                                  color: getVisibleColorOnAccentColor(context),
                                   fontWeight: FontWeight.w500,
                                   letterSpacing: 3,
                                 ),
@@ -242,7 +243,7 @@ class _SignInState extends State<SignIn> {
                                 'FORGOT PASSWORD',
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color: Theme.of(context).scaffoldBackgroundColor,
+                                  color: getVisibleColorOnAccentColor(context),
                                   letterSpacing: 2,
                                   fontWeight: FontWeight.w500,
                                 ),
