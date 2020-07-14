@@ -50,27 +50,35 @@ class _SettingsState extends State<Settings> {
   List<ColorModel> colorList = [
     ColorModel(
       'Blue',
-      Colors.blue,
+      Colors.blueAccent,
+    ),
+    ColorModel(
+      'Cyan',
+      Colors.cyanAccent,
+    ),
+    ColorModel(
+      'Teal',
+      Colors.tealAccent,
     ),
     ColorModel(
       'Purple',
-      Colors.purple,
+      Colors.purpleAccent,
     ),
     ColorModel(
       'Red',
-      Colors.red,
+      Colors.redAccent,
     ),
     ColorModel(
       'Orange',
-      Colors.orange,
+      Colors.deepOrangeAccent,
     ),
     ColorModel(
       'Yellow',
-      Colors.yellow,
+      Colors.yellowAccent,
     ),
     ColorModel(
       'Green',
-      Colors.green,
+      Colors.greenAccent,
     ),
   ];
   double w, h;
