@@ -76,7 +76,7 @@ Color getBorderColorForInputFields(BuildContext context) {
 
 class ThemeNotifier with ChangeNotifier {
   ThemeData _themeData;
-  bool _darkModeOn;
+  bool _darkModeOn = true;
   ThemeNotifier(this._themeData, this._darkModeOn);
 
   ThemeData getTheme() => _themeData;
@@ -95,15 +95,23 @@ class ThemeNotifier with ChangeNotifier {
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then((prefs) {
+    prefs.setBool('darkMode', true);
+    prefs.setString('accentColor', 'Blue');
+  });
+  SharedPreferences.getInstance().then((prefs) {
     var darkModeOn = prefs.getBool('darkMode') ?? true;
     var _theme = prefs.getString('theme') ?? 'system';
-    var chosenAccentColor = prefs.getString('accentColor');
+    var chosenAccentColor = prefs.getString('accentColor') ?? 'Blue';
     if (_theme == 'system') {
       var brightness = WidgetsBinding.instance.window.platformBrightness;
-      if (brightness == Brightness.dark) {
+      if (brightness == null) {
         darkModeOn = true;
       } else {
-        darkModeOn = false;
+        if (brightness == Brightness.dark) {
+          darkModeOn = true;
+        } else {
+          darkModeOn = false;
+        }
       }
     }
     if (chosenAccentColor == 'Blue') {
@@ -186,23 +194,10 @@ class MyApp extends StatelessWidget {
         },
         debugShowCheckedModeBanner: false,
         theme: themeNotifier.getTheme(),
-        // theme: ThemeData(
-        //   primaryColor: Colors.grey[600], //  Color(0xFFF3F5F7)
-        //   accentColor: Colors.blueGrey[700],
-        //   scaffoldBackgroundColor: Color(0xFFF3F5F7),
-        // ),
       ),
     );
   }
 }
-
-// class MyAppBar extends AppBar {
-//   MyAppBar({Key key, Widget title, Icon icon})
-//       : super(
-//             key: key,
-//             title: title,
-//             actions: <Widget>[IconButton(icon: icon, onPressed: () {})]);
-// }
 
 ThemeData getThemeDataForAccentColor(Color accentColor, bool darkTheme) {
   //print('dark theme is $darkTheme');
@@ -221,7 +216,6 @@ ThemeData getThemeDataForAccentColor(Color accentColor, bool darkTheme) {
           textSelectionHandleColor: Colors.blue,
           cursorColor: Colors.white,
           textSelectionColor: Colors.blue,
-          // inputDecorationTheme: const InputDecorationTheme(fillColor: Colors.black),
         )
       : ThemeData(
           appBarTheme: AppBarTheme(color: accentColor),
@@ -229,18 +223,14 @@ ThemeData getThemeDataForAccentColor(Color accentColor, bool darkTheme) {
           bottomAppBarColor: Colors.white,
           primaryColor: Colors.grey[600],
           primaryColorDark: Colors.grey[800],
-          //primaryColor: Colors.white,
           brightness: Brightness.light,
           backgroundColor: const Color(0xFFE5E5E5),
           accentColor: accentColor,
-          //accentColor: Colors.blueGrey[700],
           accentIconTheme: IconThemeData(color: Colors.white),
           dividerColor: Colors.white54,
           scaffoldBackgroundColor: const Color(0xFFE5E5E5),
           textSelectionHandleColor: Colors.blueGrey[700],
           cursorColor: Colors.black,
           textSelectionColor: Colors.blueGrey[700],
-
-          //scaffoldBackgroundColor: const Color(0xFFFFFF)
         );
 }

@@ -22,8 +22,8 @@ class _SettingsState extends State<Settings> {
     SharedPreferences.getInstance().then((prefs) {
       _darkTheme = prefs.getBool('darkMode') ?? true;
       _theme = prefs.getString('theme') ?? 'system';
-      print(_theme);
-      _chosenAccentColor = prefs.getString('accentColor');
+      //print(_theme);
+      _chosenAccentColor = prefs.getString('accentColor') ?? 'blue';
       for (var i = 0; i < colorList.length; i++) {
         if (_chosenAccentColor == colorList[i].value) {
           _selectedIndex = i;
@@ -35,7 +35,7 @@ class _SettingsState extends State<Settings> {
     super.initState();
   }
 
-  var _darkTheme;
+  var _darkTheme = true;
   Brightness brightness = WidgetsBinding.instance.window.platformBrightness;
   var _theme;
   String _chosenAccentColor;
