@@ -157,7 +157,7 @@ class _CreateTripState extends State<CreateTrip> {
             label,
             style: TextStyle(
               fontSize: 25,
-              color: Theme.of(context).accentColor,
+              color: getVisibleTextColorOnScaffold(context),
             ),
           ),
         ],
@@ -296,7 +296,7 @@ class _CreateTripState extends State<CreateTrip> {
                           child: Text('Max No. of poolers: ',
                               style: TextStyle(
                                 fontSize: 20.0,
-                                color: Theme.of(context).accentColor,
+                                color: getVisibleTextColorOnScaffold(context),
                               )),
                         ),
                         Container(
@@ -353,7 +353,7 @@ class _CreateTripState extends State<CreateTrip> {
                               }),
                           Text('Require Permission To Join Trip',
                               style: TextStyle(
-                                color: Theme.of(context).accentColor,
+                                color: getVisibleTextColorOnScaffold(context),
                               )),
                         ],
                       ),
