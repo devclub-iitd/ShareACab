@@ -189,12 +189,6 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                         ],
                                                       );
                                                     });
-                                                // fixed this conflict =======
-//                                                 buttonEnabled = false;
-//                                                 await _notifServices.leftGroup(usersnapshot.data['name'], groupUID);
-//                                                 await _request.exitGroup();
-//                                                 Navigator.pop(context);
-//                                                 await pr.hide();
                                               } catch (e) {
                                                 print(e.toString());
                                               }
@@ -316,7 +310,6 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                         children: <Widget>[
                                           Text(
                                             'Start : $start',
-                                            //'Start : ${DateFormat.yMMMd().format(DateTime.parse(startDate))} ${startTime.substring(10, 15)}',
                                             style: TextStyle(
                                               fontSize: 15,
                                             ),
@@ -333,7 +326,6 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                         children: <Widget>[
                                           Text(
                                             'End: $end',
-                                            //'End : ${DateFormat.yMMMd().format(DateTime.parse(endDate))} ${endTime.substring(10, 15)}',
                                             style: TextStyle(
                                               fontSize: 15,
                                             ),
@@ -370,7 +362,16 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                             shrinkWrap: true,
                                             itemCount: snapshots.data == null ? 0 : snapshots.data.documents.length,
                                             itemBuilder: (ctx, index) {
-                                              userRating = 2.5 + snapshots.data.documents[index].data['actualrating'] / 2;
+                                              //userRating = 2.5 + snapshots.data.documents[index].data['actualrating'] / 2;
+                                              var cancelledRides = snapshots.data.documents[index].data['cancelledrides'];
+                                              var totalRides = snapshots.data.documents[index].data['totalrides'];
+                                              userRating = 5 - (0.2 * cancelledRides) + (0.35 * totalRides);
+                                              if (userRating < 0) {
+                                                userRating = 0;
+                                              }
+                                              if (userRating > 5) {
+                                                userRating = 5;
+                                              }
                                               return Card(
                                                 color: Theme.of(context).scaffoldBackgroundColor,
                                                 child: ListTile(
@@ -399,7 +400,12 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                       )
                                                     ],
                                                   ),
-                                                  trailing: grpOwner == snapshots.data.documents[index].documentID ? FaIcon(FontAwesomeIcons.crown) : null,
+                                                  trailing: grpOwner == snapshots.data.documents[index].documentID
+                                                      ? FaIcon(
+                                                          FontAwesomeIcons.crown,
+                                                          color: Theme.of(context).accentColor,
+                                                        )
+                                                      : null,
                                                   isThreeLine: true,
                                                   onTap: () {},
                                                 ),
@@ -425,17 +431,6 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                     verticalOffset: 30,
                                     child: Icon(Icons.chat),
                                   ),
-
-                                  // COMMENTING OUT THE CODE FOR NUMBER OF MESSAGES FOR NOW
-
-                                  // CircleAvatar(
-                                  //   backgroundColor: Colors.red,
-                                  //   radius: 10.0,
-                                  //   child: Text(
-                                  //     numberOfMessages.toString(),
-                                  //     style: TextStyle(color: Colors.white, fontSize: numberOfMessages.toString().length < 3 ? 14 : 8),
-                                  //   ),
-                                  // )
                                 ],
                               ),
                             ),

@@ -58,7 +58,8 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
   int actualrating = 0;
   int totalrides = 0;
   int numberofratings = 0;
-
+  double rating = 0;
+  int finalrating = 0;
   bool loading = true;
 
   @override
@@ -124,6 +125,15 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
               loading = false;
 
               namefirst = name.substring(0, 1);
+
+              rating = 5 - (0.2 * cancelledrides) + (0.35 * totalrides);
+              if (rating < 0) {
+                rating = 0;
+              }
+              if (rating > 5) {
+                rating = 5;
+              }
+              finalrating = rating.round();
             }
             if (snapshot.connectionState == ConnectionState.active) {
               return loading
@@ -318,7 +328,7 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                                       ),
                                       subtitle: Center(
                                         child: Text(
-                                          '${2.5 + actualrating / 2}',
+                                          '${finalrating}',
                                           style: TextStyle(fontSize: 15),
                                         ),
                                       )),
