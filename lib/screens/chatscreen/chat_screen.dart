@@ -4,7 +4,6 @@ import 'package:shareacab/screens/chatscreen/chat_widgets/message.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shareacab/services/trips.dart';
 
-
 class ChatScreen extends StatefulWidget {
   final String docId;
 
@@ -17,12 +16,11 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-
   //Set device token for current user
   final RequestService _request = RequestService();
   final FirebaseMessaging _fbm = FirebaseMessaging();
   Future<void> _getToken() async {
-   await _fbm.getToken().then((token) {
+    await _fbm.getToken().then((token) {
       _request.setDeviceToken(token);
     });
   }
@@ -36,20 +34,19 @@ class _ChatScreenState extends State<ChatScreen> {
       return;
     }, onLaunch: (msg) {
       print(msg);
-      return ;
+      return;
     }, onResume: (msg) {
       print(msg);
-      return ;
+      return;
     });
     _getToken();
     super.initState();
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
         title: Text('Chat'),
       ),
       body: Container(
