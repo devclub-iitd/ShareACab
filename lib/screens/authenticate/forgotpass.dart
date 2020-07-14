@@ -24,7 +24,6 @@ class _ForgotPassState extends State<ForgotPass> {
         : Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).primaryColor,
               elevation: 0.0,
               title: Text('Forgot Password'),
             ),

@@ -17,7 +17,6 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  //var _darkTheme = true;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
@@ -38,15 +37,12 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    // final themeNotifier = Provider.of<ThemeNotifier>(context);
-    // _darkTheme = (themeNotifier.getTheme() == darkTheme);
     return loading
         ? Loading()
         : Scaffold(
             key: _scaffoldKey,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).primaryColor,
               elevation: 0.0,
               title: Text(
                 'Sign in',
@@ -106,7 +102,7 @@ class _SignInState extends State<SignIn> {
                                 style: TextStyle(
                                   fontFamily: 'Poiret',
                                   fontSize: 47,
-                                  color: Theme.of(context).accentColor,
+                                  color: getVisibleTextColorOnScaffold(context),
                                   fontWeight: FontWeight.bold,
                                   textBaseline: TextBaseline.alphabetic,
                                 ),
@@ -130,7 +126,7 @@ class _SignInState extends State<SignIn> {
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   passwordHide ? Icons.visibility_off : Icons.visibility,
-                                  color: Theme.of(context).accentColor,
+                                  color: getVisibleTextColorOnScaffold(context),
                                 ),
                                 onPressed: () {
                                   setState(() {
@@ -169,7 +165,9 @@ class _SignInState extends State<SignIn> {
                                 pr.style(
                                   message: 'Signing in...',
                                   backgroundColor: Theme.of(context).backgroundColor,
-                                  messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                  messageTextStyle: TextStyle(
+                                    color: getVisibleTextColorOnScaffold(context),
+                                  ),
                                 );
                                 await pr.show();
                                 await Future.delayed(Duration(seconds: 1));
@@ -257,7 +255,11 @@ class _SignInState extends State<SignIn> {
                           Text(
                             'Tip: Toggle theme from settings (icon in the AppBar).',
                             textAlign: TextAlign.justify,
-                            style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic, color: Theme.of(context).accentColor),
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontStyle: FontStyle.italic,
+                              color: getVisibleTextColorOnScaffold(context),
+                            ),
                           ),
                           SizedBox(height: 12.0),
                           // Text(

@@ -66,6 +66,21 @@ Color getVisibleColorOnAccentColor(BuildContext context) {
   return Colors.white;
 }
 
+Color getVisibleTextColorOnScaffold(BuildContext context) {
+  var color = Theme.of(context).accentColor;
+  var theme;
+  if (Theme.of(context).brightness == Brightness.dark) {
+    theme = 'dark';
+  } else {
+    theme = 'light';
+  }
+  if (color == Colors.yellow && theme == 'light') {
+    return Colors.black;
+  } else {
+    return color;
+  }
+}
+
 Color getBorderColorForInputFields(BuildContext context) {
   if (Theme.of(context).brightness == Brightness.dark) {
     return Colors.white;
@@ -218,9 +233,9 @@ ThemeData getThemeDataForAccentColor(Color accentColor, bool darkTheme) {
           textSelectionColor: Colors.blue,
         )
       : ThemeData(
-          appBarTheme: AppBarTheme(color: accentColor),
+          appBarTheme: AppBarTheme(color: Colors.black),
           primarySwatch: Colors.grey,
-          bottomAppBarColor: Colors.white,
+          bottomAppBarColor: Color(0xFF212121),
           primaryColor: Colors.grey[600],
           primaryColorDark: Colors.grey[800],
           brightness: Brightness.light,

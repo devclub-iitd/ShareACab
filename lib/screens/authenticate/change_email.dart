@@ -30,7 +30,6 @@ class _ChangeEmailState extends State<ChangeEmail> {
         ? Loading()
         : Scaffold(
             appBar: AppBar(
-              backgroundColor: Theme.of(context).primaryColor,
               elevation: 0.0,
               title: Text('Change Email'),
             ),

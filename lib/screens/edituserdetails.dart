@@ -56,7 +56,6 @@ class _EditFormState extends State<EditForm> {
               },
               child: Scaffold(
                 appBar: AppBar(
-                  backgroundColor: Theme.of(context).primaryColor,
                   elevation: 0.0,
                   title: Text('Edit User Details'),
                   actions: <Widget>[

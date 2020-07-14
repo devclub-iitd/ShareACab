@@ -254,7 +254,7 @@ class _SettingsState extends State<Settings> {
                 icon: Icon(
                   Icons.bug_report,
                   size: 40.0,
-                  color: Theme.of(context).accentColor,
+                  color: getVisibleTextColorOnScaffold(context),
                 ),
                 onPressed: () {
                   launch('https://github.com/devclub-iitd/ShareACab/issues/new?assignees=&labels=bug&template=bug_report.md&title=Issue+Title+%40AssignedUser');

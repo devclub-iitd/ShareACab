@@ -115,7 +115,7 @@ class _EditGroupState extends State<EditGroup> {
             label,
             style: TextStyle(
               fontSize: 25,
-              color: Theme.of(context).accentColor,
+              color: getVisibleTextColorOnScaffold(context),
             ),
           ),
         ],
@@ -212,7 +212,7 @@ class _EditGroupState extends State<EditGroup> {
                                 }),
                             Text('Require Permission To Join Trip',
                                 style: TextStyle(
-                                  color: Theme.of(context).accentColor,
+                                  color: getVisibleTextColorOnScaffold(context),
                                 )),
                           ],
                         ),

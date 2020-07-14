@@ -105,7 +105,9 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                               pr.style(
                                                                 message: 'Ending Trip...',
                                                                 backgroundColor: Theme.of(context).backgroundColor,
-                                                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                                                messageTextStyle: TextStyle(
+                                                                  color: getVisibleTextColorOnScaffold(context),
+                                                                ),
                                                               );
                                                               await pr.show();
                                                               await Future.delayed(Duration(seconds: 1));
@@ -160,7 +162,9 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                               pr.style(
                                                                 message: 'Leaving Group...',
                                                                 backgroundColor: Theme.of(context).backgroundColor,
-                                                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                                                messageTextStyle: TextStyle(
+                                                                  color: getVisibleTextColorOnScaffold(context),
+                                                                ),
                                                               );
                                                               await pr.show();
                                                               await Future.delayed(Duration(seconds: 1));
@@ -277,11 +281,13 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                     icon: Icon(
                                                       FontAwesomeIcons.pen,
                                                       size: 16.0,
-                                                      color: Theme.of(context).accentColor,
+                                                      color: getVisibleTextColorOnScaffold(context),
                                                     ),
                                                     label: Text(
                                                       'Edit',
-                                                      style: TextStyle(color: Theme.of(context).accentColor),
+                                                      style: TextStyle(
+                                                        color: getVisibleTextColorOnScaffold(context),
+                                                      ),
                                                     )),
                                               ],
                                             ),
@@ -427,7 +433,9 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                                               pr.style(
                                                                                 message: 'Kicking the user...',
                                                                                 backgroundColor: Theme.of(context).backgroundColor,
-                                                                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                                                                messageTextStyle: TextStyle(
+                                                                                  color: getVisibleTextColorOnScaffold(context),
+                                                                                ),
                                                                               );
                                                                               await pr.show();
                                                                               try {
