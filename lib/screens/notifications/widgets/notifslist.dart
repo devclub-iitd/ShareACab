@@ -50,9 +50,7 @@ class _NotifsListState extends State<NotifsList> {
             return FutureBuilder(
                 future: getUserDetails(fromuid, purpose, docId, response),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    // print('loading..');
-                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {}
                   if (snapshot != null) {
                     return NotifTile(docId, fromuid, name, createdAt, response, purpose);
                   }

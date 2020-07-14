@@ -368,7 +368,6 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                             shrinkWrap: true,
                                             itemCount: snapshots.data == null ? 0 : snapshots.data.documents.length,
                                             itemBuilder: (ctx, index) {
-                                              //userRating = 2.5 + snapshots.data.documents[index].data['actualrating'] / 2;
                                               var cancelledRides = snapshots.data.documents[index].data['cancelledrides'];
                                               var totalRides = snapshots.data.documents[index].data['totalrides'];
                                               userRating = 5 - (0.2 * cancelledRides) + (0.35 * totalRides);

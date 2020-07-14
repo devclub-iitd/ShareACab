@@ -227,7 +227,7 @@ class DatabaseService {
     await userDetails.document(user.uid).updateData({'device_token': token});
   }
 
-  // Function for kicking a user (ADMIN ONLY)
+  // Function for kicking a user (ADMIN ONLY) (W=4,R=1)
   Future<void> kickUser(String currentGrp, String uid) async {
     await groupdetails.document(currentGrp).collection('users').document(uid).delete();
     var presentNum;

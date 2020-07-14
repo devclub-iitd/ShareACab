@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-// import 'package:provider/provider.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/screens/settings.dart';
 import 'package:shareacab/services/auth.dart';
@@ -9,9 +8,7 @@ import 'package:shareacab/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
-
   SignIn({this.toggleView});
-
   @override
   _SignInState createState() => _SignInState();
 }
@@ -24,7 +21,6 @@ class _SignInState extends State<SignIn> {
 
   bool passwordHide = false;
 
-  // text field states
   String email = '';
   String password = '';
   String error = '';
@@ -158,8 +154,6 @@ class _SignInState extends State<SignIn> {
                             ),
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                //setState(() => loading = true);
-
                                 ProgressDialog pr;
                                 pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
                                 pr.style(
@@ -173,7 +167,6 @@ class _SignInState extends State<SignIn> {
                                 await Future.delayed(Duration(seconds: 1));
                                 try {
                                   email = email.trim();
-
                                   var flag = await _auth.signInWithEmailAndPassword(email, password);
                                   if (flag == false) {
                                     error = 'ID not verified, verification mail sent again.';
@@ -188,7 +181,6 @@ class _SignInState extends State<SignIn> {
                                     ));
                                   }
                                   await pr.hide();
-                                  //setState(() => loading = false);
                                 } catch (e) {
                                   await pr.hide();
                                   if (mounted) {
@@ -217,7 +209,6 @@ class _SignInState extends State<SignIn> {
                                           error = 'An undefined Error happened.';
                                         }
                                     }
-                                    //loading = false;
                                     Scaffold.of(context).hideCurrentSnackBar();
                                     Scaffold.of(context).showSnackBar(SnackBar(
                                       backgroundColor: Theme.of(context).primaryColor,
@@ -262,10 +253,6 @@ class _SignInState extends State<SignIn> {
                             ),
                           ),
                           SizedBox(height: 12.0),
-                          // Text(
-                          //   error,
-                          //   style: TextStyle(color: Colors.red, fontSize: 14.0),
-                          // ),
                         ],
                       ),
                     ),

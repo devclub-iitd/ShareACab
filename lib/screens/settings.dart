@@ -113,7 +113,6 @@ class _SettingsState extends State<Settings> {
                       await pr.hide();
                       Navigator.pop(context);
                     } catch (err) {
-                      // show e.message
                       await pr.hide();
                       String errStr = err.message ?? err.toString();
                       final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));

@@ -81,7 +81,6 @@ class _ChangeEmailState extends State<ChangeEmail> {
                                 await _auth.changeEmail(email);
                                 await _auth.signOut();
                                 await Navigator.pushNamedAndRemoveUntil(context, '/wrapper', (route) => false);
-                                //await Navigator.popUntil(context, ModalRoute.withName('/wrapper'));
                                 setState(() {
                                   loading = false;
                                 });

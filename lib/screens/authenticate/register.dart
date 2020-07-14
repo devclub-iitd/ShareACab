@@ -266,8 +266,6 @@ class _RegisterState extends State<Register> {
                               ),
                               onPressed: () async {
                                 if (_formKey.currentState.validate()) {
-                                  // setState(() => loading = true);
-
                                   ProgressDialog pr;
                                   pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
                                   pr.style(

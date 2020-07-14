@@ -67,19 +67,6 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
     inGroupFetch = false;
     super.initState();
     getCurrentUser();
-    // Firestore.instance.collection('userdetails').document(UID).get().then((value) {
-    //   if (value.data['currentGroup'] != null) {
-    //     setState(() {
-    //       inGroup = true;
-    //       inGroupFetch = true;
-    //     });
-    //   } else {
-    //     setState(() {
-    //       inGroup = false;
-    //       inGroupFetch = true;
-    //     });
-    //   }
-    // });
   }
 
   @override
