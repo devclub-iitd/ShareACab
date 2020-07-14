@@ -59,6 +59,10 @@ Color getVisibleColorOnPrimaryColor(BuildContext context) {
 }
 
 Color getVisibleColorOnAccentColor(BuildContext context) {
+  var color = Theme.of(context).accentColor;
+  if (color == Colors.yellow || color == Colors.orange) {
+    return Colors.black;
+  }
   return Colors.white;
 }
 
@@ -81,7 +85,7 @@ class ThemeNotifier with ChangeNotifier {
   void setTheme(ThemeData themeData) async {
     await SharedPreferences.getInstance().then((prefs) {
       _darkModeOn = !prefs.getBool('darkMode');
-      print('darkModeOn is $_darkModeOn');
+      //print('darkModeOn is $_darkModeOn');
     });
     _themeData = themeData;
     notifyListeners();
@@ -201,7 +205,7 @@ class MyApp extends StatelessWidget {
 // }
 
 ThemeData getThemeDataForAccentColor(Color accentColor, bool darkTheme) {
-  print('dark theme is $darkTheme');
+  //print('dark theme is $darkTheme');
   return darkTheme
       ? ThemeData(
           primarySwatch: Colors.grey,

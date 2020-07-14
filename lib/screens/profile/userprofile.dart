@@ -151,6 +151,7 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                                       fontSize: 48,
                                       fontFamily: 'Poiret',
                                       fontWeight: FontWeight.bold,
+                                      color: getVisibleColorOnAccentColor(context),
                                     ),
                                   ),
                                 ),
