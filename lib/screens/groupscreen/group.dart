@@ -405,7 +405,52 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                           FontAwesomeIcons.crown,
                                                           color: Theme.of(context).accentColor,
                                                         )
-                                                      : null,
+                                                      : grpOwner == currentuser.uid && !timestampFlag
+                                                          ? IconButton(
+                                                              icon: Icon(Icons.exit_to_app),
+                                                              tooltip: 'Kick User',
+                                                              onPressed: () async {
+                                                                await showDialog(
+                                                                    context: context,
+                                                                    builder: (BuildContext ctx) {
+                                                                      return AlertDialog(
+                                                                        title: Text('Kick User'),
+                                                                        content: Text('Are you sure you want to kick this user?'),
+                                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                                                                        actions: <Widget>[
+                                                                          FlatButton(
+                                                                            child: Text('Kick', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                                            onPressed: () async {
+                                                                              Navigator.pop(context);
+                                                                              ProgressDialog pr;
+                                                                              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                                                                              pr.style(
+                                                                                message: 'Kicking the user...',
+                                                                                backgroundColor: Theme.of(context).backgroundColor,
+                                                                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                                                              );
+                                                                              await pr.show();
+                                                                              try {
+                                                                                await _request.kickUser(groupUID, snapshots.data.documents[index].documentID);
+                                                                                await pr.hide();
+                                                                              } catch (e) {
+                                                                                await pr.hide();
+                                                                                print(e.toString());
+                                                                              }
+                                                                            },
+                                                                          ),
+                                                                          FlatButton(
+                                                                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                                            onPressed: () {
+                                                                              Navigator.of(context).pop();
+                                                                            },
+                                                                          ),
+                                                                        ],
+                                                                      );
+                                                                    });
+                                                              },
+                                                            )
+                                                          : null,
                                                   isThreeLine: true,
                                                   onTap: () {},
                                                 ),

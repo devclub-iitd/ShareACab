@@ -226,4 +226,21 @@ class DatabaseService {
     final user = await _auth.currentUser();
     await userDetails.document(user.uid).updateData({'device_token': token});
   }
+
+  // Function for kicking a user (ADMIN ONLY)
+  Future<void> kickUser(String currentGrp, String uid) async {
+    await groupdetails.document(currentGrp).collection('users').document(uid).delete();
+    var presentNum;
+    await groupdetails.document(currentGrp).get().then((value) {
+      presentNum = value.data['numberOfMembers'];
+    });
+    await userDetails.document(uid).updateData({
+      'currentGroup': null,
+    });
+    await groupdetails.document(currentGrp).updateData({
+      'users': FieldValue.arrayRemove([uid]),
+      'numberOfMembers': presentNum - 1,
+    });
+    await ChatService().kickedChatRoom(currentGrp, uid);
+  }
 }

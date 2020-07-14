@@ -22,4 +22,8 @@ class RequestService {
   Future<void> setDeviceToken(String token) async {
     await DatabaseService().setToken(token);
   }
+
+  Future<void> kickUser(String currentGrp, String uid) async {
+    await DatabaseService().kickUser(currentGrp, uid);
+  }
 }
