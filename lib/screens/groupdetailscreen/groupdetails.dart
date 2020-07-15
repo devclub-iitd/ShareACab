@@ -348,7 +348,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                               ],
                                             );
                                           });
-                                } else if (!full) {
+                                } else if (privacy == 'false' && !full) {
                                   await showDialog(
                                       context: context,
                                       builder: (BuildContext ctx) {
@@ -405,7 +405,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                               }
                             },
                             padding: EdgeInsets.all(20),
-                            child: widget.privacy == 'true'
+                            child: privacy == 'true'
                                 ? GroupDetails.inGroup
                                     ? Text(
                                         'My Group Page', // You are in a group and viewing a private group
