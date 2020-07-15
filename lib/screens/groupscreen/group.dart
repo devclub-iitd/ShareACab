@@ -302,7 +302,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  '*Contact group creator to edit timings.',
+                                                  '*Contact group admin to edit details.',
                                                   style: TextStyle(color: Theme.of(context).accentColor),
                                                 ),
                                               ],
