@@ -202,7 +202,7 @@ class _EditGroupState extends State<EditGroup> {
                         children: <Widget>[
                           Padding(
                             padding: const EdgeInsets.only(top: 30.0, left: 40.0),
-                            child: Text('Max No. of poolers: ${_maxPoolers}',
+                            child: Text('Max No. of poolers:',
                                 style: TextStyle(
                                   fontSize: 20.0,
                                   color: getVisibleTextColorOnScaffold(context),
@@ -227,7 +227,7 @@ class _EditGroupState extends State<EditGroup> {
                                   ),
                                 );
                               }).toList(),
-                              value: 2,
+                              value: int.parse(_maxPoolers.toString()),
                               onChanged: (val) {
                                 setState(() {
                                   _maxPoolers = val;

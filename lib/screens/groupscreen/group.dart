@@ -31,6 +31,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
   String endDate = '';
   String grpOwner = '';
   String presentNum = '';
+  int maxPoolers = 0;
   bool loading = true;
 
   String start = '';
@@ -71,6 +72,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                       grpOwner = groupsnapshot.data['owner'];
                       presentNum = groupsnapshot.data['numberOfMembers'].toString();
                       endTimeStamp = groupsnapshot.data['end'];
+                      maxPoolers = groupsnapshot.data['maxpoolers'];
                       loading = false;
                       if (endTimeStamp.compareTo(Timestamp.now()) < 0) {
                         timestampFlag = true;
@@ -348,6 +350,22 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                         children: <Widget>[
                                           Text(
                                             'Number of members in group: ${presentNum}',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: 5,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            'Max number of poolers: ${maxPoolers}',
                                             style: TextStyle(
                                               fontSize: 15,
                                             ),
