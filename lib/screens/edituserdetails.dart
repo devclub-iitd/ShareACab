@@ -101,6 +101,7 @@ class _EditFormState extends State<EditForm> {
                         children: <Widget>[
                           SizedBox(height: 20.0),
                           TextFormField(
+                            textCapitalization: TextCapitalization.words,
                             initialValue: snapshot.data['name'],
                             decoration: InputDecoration(hintText: 'Name', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                             validator: (val) => val.isEmpty ? 'Enter a valid Name' : null,

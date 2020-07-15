@@ -41,6 +41,7 @@ class _NewMessageState extends State<NewMessage> {
         children: <Widget>[
           Expanded(
               child: TextField(
+            textCapitalization: TextCapitalization.sentences,
             controller: _controller,
             maxLength: 50,
             decoration: InputDecoration(

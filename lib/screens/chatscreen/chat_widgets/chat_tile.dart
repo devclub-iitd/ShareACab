@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shareacab/screens/chatscreen/chat_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:shareacab/main.dart';
 
 class ChatTile extends StatefulWidget {
   final Timestamp lastMessageAt;
@@ -32,7 +33,10 @@ class _ChatTileState extends State<ChatTile> {
           radius: 30,
           child: Padding(
             padding: EdgeInsets.all(6),
-            child: widget.destination == 'New Delhi Railway Station' || widget.destination == 'Hazrat Nizamuddin Railway Station' ? Icon(Icons.train) : widget.destination == 'Indira Gandhi International Airport' ? Icon(Icons.flight_takeoff) : Icon(Icons.directions_bus),
+            child: Icon(
+              widget.destination == 'New Delhi Railway Station' || widget.destination == 'Hazrat Nizamuddin Railway Station' ? Icons.train : widget.destination == 'Indira Gandhi International Airport' ? Icons.flight_takeoff : Icons.directions_bus,
+              color: getVisibleColorOnAccentColor(context),
+            ),
           ),
         ),
         title: Text(
