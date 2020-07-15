@@ -191,7 +191,7 @@ class _TripsListState extends State<TripsList> {
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: <Widget>[
                                               Column(
-                                                children: <Widget>[Text('Number of members in group: ${snapshot.data.documents[index].data['numberOfMembers'].toString()}')],
+                                                children: <Widget>[Text('Number of members in group: ${snapshot.data.documents[index].data['numberOfMembers'].toString()}/${snapshot.data.documents[index].data['maxpoolers'].toString()}')],
                                               ),
                                             ],
                                           ),
