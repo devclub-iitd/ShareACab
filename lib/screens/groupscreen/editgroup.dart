@@ -30,9 +30,12 @@ class _EditGroupState extends State<EditGroup> {
   bool privacy = false;
   String tempPrivacy;
 
+  List<int> maxpoolers = [1, 2, 3, 4, 5, 6];
+  int _maxPoolers;
+
   void _updateGroup() async {
     try {
-      await _databaseService.updateGroup(groupUID, _selectedStartDate, _selectedStartTime, _selectedEndDate, _selectedEndTime, privacy);
+      await _databaseService.updateGroup(groupUID, _selectedStartDate, _selectedStartTime, _selectedEndDate, _selectedEndTime, privacy, _maxPoolers);
     } catch (e) {
       print(e.toString());
     }
@@ -161,6 +164,7 @@ class _EditGroupState extends State<EditGroup> {
         _selectedEndDate = endTS.toDate();
         _selectedStartTime = TimeOfDay(hour: _selectedStartDate.hour, minute: _selectedStartDate.minute);
         _selectedEndTime = TimeOfDay(hour: _selectedEndDate.hour, minute: _selectedEndDate.minute);
+        _maxPoolers = value.data['maxpoolers'];
       });
       if (tempPrivacy == 'true') {
         privacy = true;
@@ -193,6 +197,52 @@ class _EditGroupState extends State<EditGroup> {
                       buildContainer('Start', _selectedStartDate, _selectedStartTime, _startDatePicker, _startTimePicker),
                       buildLabel('Ending'),
                       buildContainer('End', _selectedEndDate, _selectedEndTime, _endDatePicker, _endTimePicker),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(top: 30.0, left: 40.0),
+                            child: Text('Max No. of poolers: ${_maxPoolers}',
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: getVisibleTextColorOnScaffold(context),
+                                )),
+                          ),
+                          Container(
+                            width: 45,
+                            margin: EdgeInsets.only(top: 30.0, left: 20),
+                            child: DropdownButtonFormField<int>(
+                              icon: Icon(
+                                Icons.keyboard_arrow_down,
+                                size: 30,
+                              ),
+                              items: maxpoolers.map((int dropDownIntItem) {
+                                return DropdownMenuItem<int>(
+                                  value: dropDownIntItem,
+                                  child: Text(
+                                    dropDownIntItem.toString(),
+                                    style: TextStyle(
+                                      color: Theme.of(context).accentColor,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              value: 2,
+                              onChanged: (val) {
+                                setState(() {
+                                  _maxPoolers = val;
+                                });
+                              },
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'Empty';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                       Container(
                         margin: EdgeInsets.only(
                           top: 20,

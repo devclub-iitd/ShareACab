@@ -119,7 +119,7 @@ class DatabaseService {
   }
 
   // to update group details (W=1, R=0)
-  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET, bool privacy) async {
+  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET, bool privacy, int maxPoolers) async {
     var starting = DateTime(SD.year, SD.month, SD.day, ST.hour, ST.minute);
     var ending = DateTime(ED.year, ED.month, ED.day, ET.hour, ET.minute);
 
@@ -127,6 +127,7 @@ class DatabaseService {
       'start': starting,
       'end': ending,
       'privacy': privacy.toString(),
+      'maxpoolers': maxPoolers,
     }, merge: true);
   }
 
