@@ -31,6 +31,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
   String endDate = '';
   String grpOwner = '';
   String presentNum = '';
+  int maxPoolers = 0;
   bool loading = true;
 
   String start = '';
@@ -71,6 +72,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                       grpOwner = groupsnapshot.data['owner'];
                       presentNum = groupsnapshot.data['numberOfMembers'].toString();
                       endTimeStamp = groupsnapshot.data['end'];
+                      maxPoolers = groupsnapshot.data['maxpoolers'];
                       loading = false;
                       if (endTimeStamp.compareTo(Timestamp.now()) < 0) {
                         timestampFlag = true;
@@ -105,7 +107,9 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                               pr.style(
                                                                 message: 'Ending Trip...',
                                                                 backgroundColor: Theme.of(context).backgroundColor,
-                                                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                                                messageTextStyle: TextStyle(
+                                                                  color: getVisibleTextColorOnScaffold(context),
+                                                                ),
                                                               );
                                                               await pr.show();
                                                               await Future.delayed(Duration(seconds: 1));
@@ -160,7 +164,9 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                               pr.style(
                                                                 message: 'Leaving Group...',
                                                                 backgroundColor: Theme.of(context).backgroundColor,
-                                                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                                                messageTextStyle: TextStyle(
+                                                                  color: getVisibleTextColorOnScaffold(context),
+                                                                ),
                                                               );
                                                               await pr.show();
                                                               await Future.delayed(Duration(seconds: 1));
@@ -189,12 +195,6 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                         ],
                                                       );
                                                     });
-                                                // fixed this conflict =======
-//                                                 buttonEnabled = false;
-//                                                 await _notifServices.leftGroup(usersnapshot.data['name'], groupUID);
-//                                                 await _request.exitGroup();
-//                                                 Navigator.pop(context);
-//                                                 await pr.hide();
                                               } catch (e) {
                                                 print(e.toString());
                                               }
@@ -283,11 +283,13 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                     icon: Icon(
                                                       FontAwesomeIcons.pen,
                                                       size: 16.0,
-                                                      color: Theme.of(context).accentColor,
+                                                      color: getVisibleTextColorOnScaffold(context),
                                                     ),
                                                     label: Text(
                                                       'Edit',
-                                                      style: TextStyle(color: Theme.of(context).accentColor),
+                                                      style: TextStyle(
+                                                        color: getVisibleTextColorOnScaffold(context),
+                                                      ),
                                                     )),
                                               ],
                                             ),
@@ -300,7 +302,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  '*Contact group creator to edit timings.',
+                                                  '*Contact group admin to edit details.',
                                                   style: TextStyle(color: Theme.of(context).accentColor),
                                                 ),
                                               ],
@@ -316,7 +318,6 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                         children: <Widget>[
                                           Text(
                                             'Start : $start',
-                                            //'Start : ${DateFormat.yMMMd().format(DateTime.parse(startDate))} ${startTime.substring(10, 15)}',
                                             style: TextStyle(
                                               fontSize: 15,
                                             ),
@@ -333,7 +334,6 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                         children: <Widget>[
                                           Text(
                                             'End: $end',
-                                            //'End : ${DateFormat.yMMMd().format(DateTime.parse(endDate))} ${endTime.substring(10, 15)}',
                                             style: TextStyle(
                                               fontSize: 15,
                                             ),
@@ -357,6 +357,22 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                         ],
                                       ),
                                     ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: 5,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(
+                                            'Max number of poolers: ${maxPoolers}',
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                     Container(
                                       child: StreamBuilder(
                                         stream: Firestore.instance.collection('group').document(groupUID).collection('users').snapshots(),
@@ -370,7 +386,15 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                             shrinkWrap: true,
                                             itemCount: snapshots.data == null ? 0 : snapshots.data.documents.length,
                                             itemBuilder: (ctx, index) {
-                                              userRating = 2.5 + snapshots.data.documents[index].data['actualrating'] / 2;
+                                              var cancelledRides = snapshots.data.documents[index].data['cancelledrides'];
+                                              var totalRides = snapshots.data.documents[index].data['totalrides'];
+                                              userRating = 5 - (0.2 * cancelledRides) + (0.35 * totalRides);
+                                              if (userRating < 0) {
+                                                userRating = 0;
+                                              }
+                                              if (userRating > 5) {
+                                                userRating = 5;
+                                              }
                                               return Card(
                                                 color: Theme.of(context).scaffoldBackgroundColor,
                                                 child: ListTile(
@@ -399,7 +423,59 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                       )
                                                     ],
                                                   ),
-                                                  trailing: grpOwner == snapshots.data.documents[index].documentID ? FaIcon(FontAwesomeIcons.crown) : null,
+                                                  trailing: grpOwner == snapshots.data.documents[index].documentID
+                                                      ? FaIcon(
+                                                          FontAwesomeIcons.crown,
+                                                          color: Theme.of(context).accentColor,
+                                                        )
+                                                      : grpOwner == currentuser.uid && !timestampFlag
+                                                          ? IconButton(
+                                                              icon: Icon(Icons.exit_to_app),
+                                                              tooltip: 'Kick User',
+                                                              onPressed: () async {
+                                                                await showDialog(
+                                                                    context: context,
+                                                                    builder: (BuildContext ctx) {
+                                                                      return AlertDialog(
+                                                                        title: Text('Kick User'),
+                                                                        content: Text('Are you sure you want to kick this user?'),
+                                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                                                                        actions: <Widget>[
+                                                                          FlatButton(
+                                                                            child: Text('Kick', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                                            onPressed: () async {
+                                                                              Navigator.pop(context);
+                                                                              ProgressDialog pr;
+                                                                              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                                                                              pr.style(
+                                                                                message: 'Kicking the user...',
+                                                                                backgroundColor: Theme.of(context).backgroundColor,
+                                                                                messageTextStyle: TextStyle(
+                                                                                  color: getVisibleTextColorOnScaffold(context),
+                                                                                ),
+                                                                              );
+                                                                              await pr.show();
+                                                                              try {
+                                                                                await _request.kickUser(groupUID, snapshots.data.documents[index].documentID);
+                                                                                await pr.hide();
+                                                                              } catch (e) {
+                                                                                await pr.hide();
+                                                                                print(e.toString());
+                                                                              }
+                                                                            },
+                                                                          ),
+                                                                          FlatButton(
+                                                                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                                            onPressed: () {
+                                                                              Navigator.of(context).pop();
+                                                                            },
+                                                                          ),
+                                                                        ],
+                                                                      );
+                                                                    });
+                                                              },
+                                                            )
+                                                          : null,
                                                   isThreeLine: true,
                                                   onTap: () {},
                                                 ),
@@ -425,17 +501,6 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                     verticalOffset: 30,
                                     child: Icon(Icons.chat),
                                   ),
-
-                                  // COMMENTING OUT THE CODE FOR NUMBER OF MESSAGES FOR NOW
-
-                                  // CircleAvatar(
-                                  //   backgroundColor: Colors.red,
-                                  //   radius: 10.0,
-                                  //   child: Text(
-                                  //     numberOfMessages.toString(),
-                                  //     style: TextStyle(color: Colors.white, fontSize: numberOfMessages.toString().length < 3 ? 14 : 8),
-                                  //   ),
-                                  // )
                                 ],
                               ),
                             ),

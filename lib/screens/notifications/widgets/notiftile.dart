@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:shareacab/main.dart';
 import 'package:shareacab/screens/notifications/services/notifservices.dart';
 import 'package:intl/intl.dart';
 
@@ -52,6 +53,7 @@ class _NotifTileState extends State<NotifTile> {
                   fontSize: 30,
                   fontFamily: 'Poiret',
                   fontWeight: FontWeight.bold,
+                  color: getVisibleColorOnAccentColor(context),
                 ),
               ),
             ),

@@ -33,8 +33,7 @@ class _RootScreenState extends State<RootScreen> {
         child: Icon(
           Icons.home,
           size: 20.0,
-          color: Theme.of(context).accentColor,
-          //color: Colors.black,
+          color: _selectedPage == 0 ? Theme.of(context).accentColor : Colors.white,
         ),
       ),
       Tooltip(
@@ -42,7 +41,7 @@ class _RootScreenState extends State<RootScreen> {
         child: Icon(
           Icons.format_list_bulleted,
           size: 20.0,
-          color: Theme.of(context).accentColor,
+          color: _selectedPage == 1 ? Theme.of(context).accentColor : Colors.white,
         ),
       ),
       Tooltip(
@@ -50,7 +49,7 @@ class _RootScreenState extends State<RootScreen> {
         child: Icon(
           _selectedPage == 2 ? Icons.chat_bubble : Icons.chat_bubble_outline,
           size: 20.0,
-          color: Theme.of(context).accentColor,
+          color: _selectedPage == 2 ? Theme.of(context).accentColor : Colors.white,
         ),
       ),
       Tooltip(
@@ -58,7 +57,7 @@ class _RootScreenState extends State<RootScreen> {
         child: Icon(
           _selectedPage == 3 ? Icons.notifications : Icons.notifications_none,
           size: 20.0,
-          color: Theme.of(context).accentColor,
+          color: _selectedPage == 3 ? Theme.of(context).accentColor : Colors.white,
         ),
       ),
       Tooltip(
@@ -66,7 +65,7 @@ class _RootScreenState extends State<RootScreen> {
         child: Icon(
           _selectedPage == 4 ? Icons.person : Icons.person_outline,
           size: 20.0,
-          color: Theme.of(context).accentColor,
+          color: _selectedPage == 4 ? Theme.of(context).accentColor : Colors.white,
         ),
       ),
     ];
@@ -120,8 +119,10 @@ class _RootScreenState extends State<RootScreen> {
             extendBody: true,
             body: buildPageView(),
             bottomNavigationBar: CurvedNavigationBar(
-              color: Theme.of(context).bottomAppBarColor,
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              color: Color(0xFF212121),
+              //color: Theme.of(context).bottomAppBarColor,
+              backgroundColor: Colors.black,
+              //backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               animationDuration: Duration(milliseconds: 200),
               index: _selectedPage,
               onTap: (index) {

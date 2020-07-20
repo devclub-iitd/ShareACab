@@ -12,4 +12,8 @@ class ChatService {
   Future<void> joinGroup(String listuid) async {
     await ChatDatabase().joinGroup(listuid);
   }
+
+  Future<void> kickedChatRoom(String groupID, String uid) async {
+    await ChatDatabase().kickedChatRoom(groupID, uid);
+  }
 }

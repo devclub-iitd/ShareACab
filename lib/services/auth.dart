@@ -29,14 +29,10 @@ class AuthService {
   // sign up with email pass
 
   Future<void> registerWithEmailAndPassword({String email, String password, String name, String mobilenum, String hostel, String sex}) async {
-    // AuthResult
     var result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-    // FirebaseUser
     var user = result.user;
-
     // creating a new document for user
     await DatabaseService(uid: user.uid).enterUserData(name: name, mobileNumber: mobilenum, hostel: hostel, sex: sex);
-
     await result.user.sendEmailVerification();
   }
 
@@ -62,26 +58,20 @@ class AuthService {
     await user.reload();
     await user.getIdToken(refresh: true);
     await user.reload();
-    //bool
     var flag = await user.isEmailVerified;
-    //print(flag);
     return flag;
   }
 
   Future<FirebaseUser> reloadCurrentUser() async {
-    // FirebaseUser
     var oldUser = await FirebaseAuth.instance.currentUser();
     await oldUser.reload();
-    // FirebaseUser
     var newUser = await FirebaseAuth.instance.currentUser();
     return newUser;
   }
 
   Future<String> getCurrentUID() async {
-    // FirebaseUser
     var user = await _auth.currentUser();
     final uid = user.uid;
-    //print(uid);
     return uid.toString();
   }
 
@@ -89,6 +79,5 @@ class AuthService {
   Future<void> changeEmail(String newEmail) async {
     var user = await _auth.currentUser();
     await user.updateEmail(newEmail);
-    //await _auth.signOut();
   }
 }

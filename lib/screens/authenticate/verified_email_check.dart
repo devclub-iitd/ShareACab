@@ -21,17 +21,6 @@ class _VerificationCheckState extends State<VerificationCheck> {
   bool verified = false;
   String email = '';
 
-  // void _checkIfVerified() async {
-  //   await FirebaseAuth.instance.currentUser()
-  //     ..reload();
-  //   var user = await FirebaseAuth.instance.currentUser();
-  //   if (user.isEmailVerified) {
-  //     setState(() {
-  //       verified = user.isEmailVerified;
-  //     });
-  //   }
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -51,16 +40,6 @@ class _VerificationCheckState extends State<VerificationCheck> {
         }
       });
     });
-    // void _checkIfVerified() async {
-    //   await FirebaseAuth.instance.currentUser()
-    //     ..reload();
-    //   var user = await FirebaseAuth.instance.currentUser();
-    //   if (user.isEmailVerified) {
-    //     setState(() {
-    //       verified = user.isEmailVerified;
-    //     });
-    //   }
-    // }
   }
 
   @override
@@ -75,7 +54,6 @@ class _VerificationCheckState extends State<VerificationCheck> {
         : Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).primaryColor,
               elevation: 0.0,
               title: Text('Verification Screen'),
               actions: <Widget>[
