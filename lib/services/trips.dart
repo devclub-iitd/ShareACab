@@ -7,8 +7,8 @@ class RequestService {
     await DatabaseService().createTrip(requestDetails);
   }
 
-  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET, bool privacy) async {
-    await DatabaseService().updateGroup(groupUID, SD, ST, ED, ET, privacy);
+  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET, bool privacy, int maxPoolers) async {
+    await DatabaseService().updateGroup(groupUID, SD, ST, ED, ET, privacy, maxPoolers);
   }
 
   Future<void> exitGroup() async {
@@ -21,5 +21,9 @@ class RequestService {
 
   Future<void> setDeviceToken(String token) async {
     await DatabaseService().setToken(token);
+  }
+
+  Future<void> kickUser(String currentGrp, String uid) async {
+    await DatabaseService().kickUser(currentGrp, uid);
   }
 }

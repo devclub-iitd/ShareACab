@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-// import 'package:provider/provider.dart';
 import 'package:shareacab/main.dart';
 import 'package:shareacab/screens/settings.dart';
 import 'package:shareacab/services/auth.dart';
@@ -9,15 +8,12 @@ import 'package:shareacab/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
-
   SignIn({this.toggleView});
-
   @override
   _SignInState createState() => _SignInState();
 }
 
 class _SignInState extends State<SignIn> {
-  //var _darkTheme = true;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
@@ -25,7 +21,6 @@ class _SignInState extends State<SignIn> {
 
   bool passwordHide = false;
 
-  // text field states
   String email = '';
   String password = '';
   String error = '';
@@ -38,15 +33,12 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    // final themeNotifier = Provider.of<ThemeNotifier>(context);
-    // _darkTheme = (themeNotifier.getTheme() == darkTheme);
     return loading
         ? Loading()
         : Scaffold(
             key: _scaffoldKey,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).primaryColor,
               elevation: 0.0,
               title: Text(
                 'Sign in',
@@ -106,7 +98,7 @@ class _SignInState extends State<SignIn> {
                                 style: TextStyle(
                                   fontFamily: 'Poiret',
                                   fontSize: 47,
-                                  color: Theme.of(context).accentColor,
+                                  color: getVisibleTextColorOnScaffold(context),
                                   fontWeight: FontWeight.bold,
                                   textBaseline: TextBaseline.alphabetic,
                                 ),
@@ -130,7 +122,7 @@ class _SignInState extends State<SignIn> {
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   passwordHide ? Icons.visibility_off : Icons.visibility,
-                                  color: Theme.of(context).accentColor,
+                                  color: getVisibleTextColorOnScaffold(context),
                                 ),
                                 onPressed: () {
                                   setState(() {
@@ -162,20 +154,19 @@ class _SignInState extends State<SignIn> {
                             ),
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                //setState(() => loading = true);
-
                                 ProgressDialog pr;
                                 pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
                                 pr.style(
                                   message: 'Signing in...',
                                   backgroundColor: Theme.of(context).backgroundColor,
-                                  messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                  messageTextStyle: TextStyle(
+                                    color: getVisibleTextColorOnScaffold(context),
+                                  ),
                                 );
                                 await pr.show();
                                 await Future.delayed(Duration(seconds: 1));
                                 try {
                                   email = email.trim();
-
                                   var flag = await _auth.signInWithEmailAndPassword(email, password);
                                   if (flag == false) {
                                     error = 'ID not verified, verification mail sent again.';
@@ -190,7 +181,6 @@ class _SignInState extends State<SignIn> {
                                     ));
                                   }
                                   await pr.hide();
-                                  //setState(() => loading = false);
                                 } catch (e) {
                                   await pr.hide();
                                   if (mounted) {
@@ -219,7 +209,6 @@ class _SignInState extends State<SignIn> {
                                           error = 'An undefined Error happened.';
                                         }
                                     }
-                                    //loading = false;
                                     Scaffold.of(context).hideCurrentSnackBar();
                                     Scaffold.of(context).showSnackBar(SnackBar(
                                       backgroundColor: Theme.of(context).primaryColor,
@@ -257,13 +246,13 @@ class _SignInState extends State<SignIn> {
                           Text(
                             'Tip: Toggle theme from settings (icon in the AppBar).',
                             textAlign: TextAlign.justify,
-                            style: TextStyle(fontSize: 20.0, fontStyle: FontStyle.italic, color: Theme.of(context).accentColor),
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontStyle: FontStyle.italic,
+                              color: getVisibleTextColorOnScaffold(context),
+                            ),
                           ),
                           SizedBox(height: 12.0),
-                          // Text(
-                          //   error,
-                          //   style: TextStyle(color: Colors.red, fontSize: 14.0),
-                          // ),
                         ],
                       ),
                     ),

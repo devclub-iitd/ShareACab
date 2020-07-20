@@ -49,6 +49,10 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
   String presentNum = '';
   bool requestedToJoin;
 
+  int present = 0;
+  int max = 0;
+  bool full = false;
+
   Timer _countdownTimer;
   @override
   void dispose() {
@@ -82,6 +86,13 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                     start = DateFormat('dd.MM.yyyy - kk:mm a').format(groupsnapshot.data['start'].toDate());
                     end = DateFormat('dd.MM.yyyy - kk:mm a').format(groupsnapshot.data['end'].toDate());
                     presentNum = groupsnapshot.data['numberOfMembers'].toString();
+                    present = int.parse(presentNum);
+                    max = groupsnapshot.data['maxpoolers'];
+                    if (present >= max) {
+                      full = true;
+                    } else {
+                      full = false;
+                    }
                     return NestedScrollView(
                         controller: ScrollController(keepScrollOffset: true),
                         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -165,14 +176,31 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                 ],
                                               ),
                                             ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(bottom: 5),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                children: <Widget>[
+                                                  Column(
+                                                    children: <Widget>[
+                                                      Text(
+                                                        'Number of members in group: '
+                                                        '${presentNum}',
+                                                        style: TextStyle(color: getVisibleColorOnAccentColor(context)),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                                               children: <Widget>[
                                                 Column(
                                                   children: <Widget>[
                                                     Text(
-                                                      'Number of members in group: '
-                                                      '${presentNum}',
+                                                      'Max Number of members: '
+                                                      '${max}',
                                                       style: TextStyle(color: getVisibleColorOnAccentColor(context)),
                                                     )
                                                   ],
@@ -276,7 +304,9 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                               try {
                                 if (GroupDetails.inGroup) {
                                   await Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
-                                } else if (privacy == 'true') {
+                                } else if (full) {
+                                  null;
+                                } else if (privacy == 'true' && !full) {
                                   requestedToJoin
                                       ? null
                                       // print('already req')
@@ -318,7 +348,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                               ],
                                             );
                                           });
-                                } else {
+                                } else if (privacy == 'false' && !full) {
                                   await showDialog(
                                       context: context,
                                       builder: (BuildContext ctx) {
@@ -375,27 +405,29 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                               }
                             },
                             padding: EdgeInsets.all(20),
-                            child: widget.privacy == 'true'
+                            child: privacy == 'true'
                                 ? GroupDetails.inGroup
                                     ? Text(
                                         'My Group Page', // You are in a group and viewing a private group
                                         style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
                                       )
-                                    : requestedToJoin
-                                        ? Text(
-                                            'Requested', // You are not in any group and requested to join
-                                            style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
-                                          )
-                                        : Text(
-                                            'Request to Join', // fresh visit to private group (and user is not in any group)
-                                            style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
-                                          )
+                                    : full
+                                        ? Text('Group is full', style: TextStyle(fontSize: 20))
+                                        : requestedToJoin
+                                            ? Text(
+                                                'Requested', // You are not in any group and requested to join
+                                                style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
+                                              )
+                                            : Text(
+                                                'Request to Join', // fresh visit to private group (and user is not in any group)
+                                                style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
+                                              )
                                 : GroupDetails.inGroup
                                     ? Text(
                                         'My Group Page', // visiting a group page
                                         style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
                                       )
-                                    : Text('Join Now', style: TextStyle(fontSize: 20)), // Visiting a public group page and not in any group
+                                    : full ? Text('Group is full', style: TextStyle(fontSize: 20)) : Text('Join Now', style: TextStyle(fontSize: 20)), // Visiting a public group page and not in any group
                             color: Theme.of(context).accentColor,
                           ),
                         ));

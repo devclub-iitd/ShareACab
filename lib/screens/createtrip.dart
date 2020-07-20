@@ -28,7 +28,7 @@ class _CreateTripState extends State<CreateTrip> {
   final RequestService _request = RequestService();
 
   void _addNewRequest() async {
-    final newRq = RequestDetails(name: 'Name', id: DateTime.now().toString(), destination: _destination, finalDestination: _finalDestinationController.text, startDate: _selectedStartDate, startTime: _selectedStartTime, endDate: _selectedEndDate, endTime: _selectedEndTime, privacy: privacy, maxPoolers: _maxPoolers);
+    final newRq = RequestDetails(name: 'Name', id: DateTime.now().toString(), destination: _destination, finalDestination: '', startDate: _selectedStartDate, startTime: _selectedStartTime, endDate: _selectedEndDate, endTime: _selectedEndTime, privacy: privacy, maxPoolers: _maxPoolers);
     try {
       await _request.createTrip(newRq);
       // LOOK FOR A WAY TO SHOW A RESPONSE THAT THE TRIP HAS BEEN CREATED
@@ -49,7 +49,8 @@ class _CreateTripState extends State<CreateTrip> {
   void _submitData() {
     _formKey.currentState.validate();
     final enteredDestination = _destination;
-    final enteredFinalDestination = _finalDestinationController.text;
+    var enteredFinalDestination = _finalDestinationController.text;
+    enteredFinalDestination = '';
 
     if (enteredFinalDestination == null || _maxPoolers == null || enteredDestination == null) {
       _scaffoldKey.currentState.hideCurrentSnackBar();
@@ -157,7 +158,7 @@ class _CreateTripState extends State<CreateTrip> {
             label,
             style: TextStyle(
               fontSize: 25,
-              color: Theme.of(context).accentColor,
+              color: getVisibleTextColorOnScaffold(context),
             ),
           ),
         ],
@@ -262,28 +263,6 @@ class _CreateTripState extends State<CreateTrip> {
                         ),
                       ],
                     ),
-                    buildLabel('Going To'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.77,
-                          margin: EdgeInsets.only(top: 20, left: 40),
-                          child: TextFormField(
-                            decoration: InputDecoration(hintText: 'Enter Your Final Destination'),
-                            controller: _finalDestinationController,
-                            // onSubmitted: (_) => _submitData(),
-                            onChanged: (val) {},
-                            validator: (value) {
-                              if (value == null) {
-                                return 'Please enter your final destination';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
                     buildLabel('Starting'),
                     buildContainer('Start', _selectedStartDate, _selectedStartTime, _startDatePicker, _startTimePicker),
                     buildLabel('Ending'),
@@ -291,9 +270,17 @@ class _CreateTripState extends State<CreateTrip> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(top: 30.0, left: 40.0),
+                          child: Text('Max No. of poolers: ',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                color: getVisibleTextColorOnScaffold(context),
+                              )),
+                        ),
                         Container(
                           width: 45,
-                          margin: EdgeInsets.only(top: 20, left: 40),
+                          margin: EdgeInsets.only(top: 30.0, left: 20),
                           child: DropdownButtonFormField<int>(
                             icon: Icon(
                               Icons.keyboard_arrow_down,
@@ -324,13 +311,6 @@ class _CreateTripState extends State<CreateTrip> {
                             },
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 12.0),
-                          child: Text('Max No. of poolers: ',
-                              style: TextStyle(
-                                color: Theme.of(context).accentColor,
-                              )),
-                        ),
                       ],
                     ),
                     Container(
@@ -352,7 +332,7 @@ class _CreateTripState extends State<CreateTrip> {
                               }),
                           Text('Require Permission To Join Trip',
                               style: TextStyle(
-                                color: Theme.of(context).accentColor,
+                                color: getVisibleTextColorOnScaffold(context),
                               )),
                         ],
                       ),

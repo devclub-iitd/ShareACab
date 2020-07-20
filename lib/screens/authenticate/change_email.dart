@@ -30,7 +30,6 @@ class _ChangeEmailState extends State<ChangeEmail> {
         ? Loading()
         : Scaffold(
             appBar: AppBar(
-              backgroundColor: Theme.of(context).primaryColor,
               elevation: 0.0,
               title: Text('Change Email'),
             ),
@@ -82,7 +81,6 @@ class _ChangeEmailState extends State<ChangeEmail> {
                                 await _auth.changeEmail(email);
                                 await _auth.signOut();
                                 await Navigator.pushNamedAndRemoveUntil(context, '/wrapper', (route) => false);
-                                //await Navigator.popUntil(context, ModalRoute.withName('/wrapper'));
                                 setState(() {
                                   loading = false;
                                 });

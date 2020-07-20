@@ -70,7 +70,6 @@ class _RegisterState extends State<Register> {
             key: _scaffoldKey,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: AppBar(
-              backgroundColor: Theme.of(context).primaryColor,
               elevation: 0.0,
               title: Text(
                 'Sign up',
@@ -147,7 +146,7 @@ class _RegisterState extends State<Register> {
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     passwordHide ? Icons.visibility_off : Icons.visibility,
-                                    color: Theme.of(context).accentColor,
+                                    color: getVisibleTextColorOnScaffold(context),
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -171,7 +170,7 @@ class _RegisterState extends State<Register> {
                                 suffixIcon: IconButton(
                                   icon: Icon(
                                     passwordHide ? Icons.visibility_off : Icons.visibility,
-                                    color: Theme.of(context).accentColor,
+                                    color: getVisibleTextColorOnScaffold(context),
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -268,8 +267,6 @@ class _RegisterState extends State<Register> {
                               ),
                               onPressed: () async {
                                 if (_formKey.currentState.validate()) {
-                                  // setState(() => loading = true);
-
                                   ProgressDialog pr;
                                   pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
                                   pr.style(

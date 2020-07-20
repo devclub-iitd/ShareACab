@@ -15,7 +15,7 @@ class _HelpState extends State<Help> {
     helper = <Helper>[];
     for (var i = 0; i < 1; i++) {
       helper.add(
-        Helper(thumbnail: Image(image: AssetImage('assets/sampleHelpImage.jpeg')), heading: 'Creating a Trip', description: 'To create a new trip, click the Floating Action button(plus sign) on the dashboard. Note that you should not be present in any existing group. Then fill the information and click CreateTrip', isExpanded: false),
+        Helper(thumbnail: Image(image: AssetImage('assets/create_group.jpg')), heading: 'Creating a Trip', description: 'To create a new trip, click the "Plus sign" on the dashboard. Note that you should not be present in any existing group.', isExpanded: false),
       );
     }
   }
@@ -29,7 +29,7 @@ class _HelpState extends State<Help> {
       body: ListView(
         children: [
           Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
             child: ExpansionPanelList(
               expansionCallback: (int index, bool isExpanded) {
                 setState(() {
@@ -52,9 +52,13 @@ class _HelpState extends State<Help> {
                   isExpanded: helper.isExpanded,
                   body: Column(
                     children: <Widget>[
-                      Text(
-                        helper.description,
-                        style: TextStyle(fontSize: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 20.0),
+                        child: Text(
+                          helper.description,
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 16),
+                        ),
                       ),
                       helper.thumbnail,
                     ],

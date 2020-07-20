@@ -22,8 +22,8 @@ class _SettingsState extends State<Settings> {
     SharedPreferences.getInstance().then((prefs) {
       _darkTheme = prefs.getBool('darkMode') ?? true;
       _theme = prefs.getString('theme') ?? 'system';
-      print(_theme);
-      _chosenAccentColor = prefs.getString('accentColor');
+      //print(_theme);
+      _chosenAccentColor = prefs.getString('accentColor') ?? 'blue';
       for (var i = 0; i < colorList.length; i++) {
         if (_chosenAccentColor == colorList[i].value) {
           _selectedIndex = i;
@@ -35,7 +35,7 @@ class _SettingsState extends State<Settings> {
     super.initState();
   }
 
-  var _darkTheme;
+  var _darkTheme = true;
   Brightness brightness = WidgetsBinding.instance.window.platformBrightness;
   var _theme;
   String _chosenAccentColor;
@@ -50,27 +50,35 @@ class _SettingsState extends State<Settings> {
   List<ColorModel> colorList = [
     ColorModel(
       'Blue',
-      Colors.blue,
+      Colors.blueAccent,
+    ),
+    ColorModel(
+      'Cyan',
+      Colors.cyanAccent,
+    ),
+    ColorModel(
+      'Teal',
+      Colors.tealAccent,
     ),
     ColorModel(
       'Purple',
-      Colors.purple,
+      Colors.purpleAccent,
     ),
     ColorModel(
       'Red',
-      Colors.red,
+      Colors.redAccent,
     ),
     ColorModel(
       'Orange',
-      Colors.orange,
+      Colors.deepOrangeAccent,
     ),
     ColorModel(
       'Yellow',
-      Colors.yellow,
+      Colors.yellowAccent,
     ),
     ColorModel(
       'Green',
-      Colors.green,
+      Colors.greenAccent,
     ),
   ];
   double w, h;
@@ -91,26 +99,48 @@ class _SettingsState extends State<Settings> {
                   textColor: getVisibleColorOnPrimaryColor(context),
                   icon: Icon(FontAwesomeIcons.signOutAlt),
                   onPressed: () async {
-                    ProgressDialog pr;
-                    pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
-                    pr.style(
-                      message: 'Logging out...',
-                      backgroundColor: Theme.of(context).backgroundColor,
-                      messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
-                    );
-                    await pr.show();
-                    await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
-                    try {
-                      await widget._auth.signOut();
-                      await pr.hide();
-                      Navigator.pop(context);
-                    } catch (err) {
-                      // show e.message
-                      await pr.hide();
-                      String errStr = err.message ?? err.toString();
-                      final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
-                      scaffoldKey.currentState.showSnackBar(snackBar);
-                    }
+                    await showDialog(
+                        context: context,
+                        builder: (BuildContext ctx) {
+                          return AlertDialog(
+                            title: Text('Log out'),
+                            content: Text('Are you sure you want to log out?'),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                            actions: <Widget>[
+                              FlatButton(
+                                child: Text('Log out', style: TextStyle(color: Theme.of(context).accentColor)),
+                                onPressed: () async {
+                                  ProgressDialog pr;
+                                  pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                                  pr.style(
+                                    message: 'Logging out...',
+                                    backgroundColor: Theme.of(context).backgroundColor,
+                                    messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                  );
+                                  await pr.show();
+                                  await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
+                                  try {
+                                    await widget._auth.signOut();
+                                    await pr.hide();
+                                  } catch (err) {
+                                    await pr.hide();
+                                    String errStr = err.message ?? err.toString();
+                                    final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+                                    scaffoldKey.currentState.showSnackBar(snackBar);
+                                  }
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              FlatButton(
+                                child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        });
                   },
                   label: Text('Logout'),
                 )
@@ -254,7 +284,7 @@ class _SettingsState extends State<Settings> {
                 icon: Icon(
                   Icons.bug_report,
                   size: 40.0,
-                  color: Theme.of(context).accentColor,
+                  color: getVisibleTextColorOnScaffold(context),
                 ),
                 onPressed: () {
                   launch('https://github.com/devclub-iitd/ShareACab/issues/new?assignees=&labels=bug&template=bug_report.md&title=Issue+Title+%40AssignedUser');

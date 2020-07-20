@@ -24,7 +24,7 @@ class _TripsListState extends State<TripsList> {
         stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
         builder: (_, usersnapshot) {
           if (usersnapshot.connectionState == ConnectionState.waiting) {
-            CircularProgressIndicator();
+            Center(child: CircularProgressIndicator());
           }
           if (usersnapshot.connectionState == ConnectionState.active) {
             requestsArray = usersnapshot.data['currentGroupJoinRequests'];
@@ -35,7 +35,7 @@ class _TripsListState extends State<TripsList> {
               stream: widget._dest == true && widget._notPrivate == true ? Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).where('destination', isEqualTo: widget._selectedDestination).where('privacy', isEqualTo: false.toString()).orderBy('end', descending: true).snapshots() : widget._dest == true ? Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).where('destination', isEqualTo: widget._selectedDestination).orderBy('end', descending: true).snapshots() : widget._notPrivate == true ? Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).where('privacy', isEqualTo: false.toString()).orderBy('end', descending: true).snapshots() : Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).orderBy('end', descending: true).snapshots(),
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  CircularProgressIndicator();
+                  Center(child: CircularProgressIndicator());
                 }
 
                 return ListView.builder(
@@ -191,7 +191,7 @@ class _TripsListState extends State<TripsList> {
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: <Widget>[
                                               Column(
-                                                children: <Widget>[Text('Number of members in group: ${snapshot.data.documents[index].data['numberOfMembers'].toString()}')],
+                                                children: <Widget>[Text('Number of members in group: ${snapshot.data.documents[index].data['numberOfMembers'].toString()}/${snapshot.data.documents[index].data['maxpoolers'].toString()}')],
                                               ),
                                             ],
                                           ),
