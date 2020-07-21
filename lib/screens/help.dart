@@ -6,6 +6,7 @@ class Help extends StatefulWidget {
 }
 
 class _HelpState extends State<Help> {
+
   List<Helper> helper = [
     Helper(thumbnail: Image(image: AssetImage('assets/images/create trip.jpg')), heading: 'Creating a Trip', description: 'To create a new trip, click the Floating Action button(plus sign) on the dashboard. Note that you should not be present in any existing group. Then fill the information and click CreateTrip', isExpanded: false),
     Helper(thumbnail: Image(image: AssetImage('assets/images/profile and edit.jpg')), heading: 'Your Profile/Edit Profile', description: 'You can view your profile by clicking on profile icon in navbar. Also, you can edit details of your profile by clicking on Edit Profile', isExpanded: false),
@@ -27,7 +28,7 @@ class _HelpState extends State<Help> {
       body: ListView(
         children: [
           Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
             child: ExpansionPanelList(
               expansionCallback: (int index, bool isExpanded) {
                 setState(() {
@@ -51,11 +52,12 @@ class _HelpState extends State<Help> {
                   isExpanded: helper.isExpanded,
                   body: Column(
                     children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(15),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 20.0),
                         child: Text(
                           helper.description,
-                          style: TextStyle(fontSize: 20),
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 16),
                         ),
                       ),
                       Container(

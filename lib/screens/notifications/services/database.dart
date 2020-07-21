@@ -78,6 +78,7 @@ class NotificationDatabase {
         uid = value.data['from'];
       });
       var presentNum;
+      var maxPoolers;
       await userDetails.document(uid).updateData({
         // 'previous_groups': FieldValue.arrayUnion([listuid]),
         'currentGroup': listuid,
@@ -85,11 +86,20 @@ class NotificationDatabase {
       });
       await groupdetails.document(listuid).get().then((value) {
         presentNum = value.data['numberOfMembers'];
+        maxPoolers = value.data['maxpoolers'];
       });
-      await groupdetails.document(listuid).updateData({
-        'users': FieldValue.arrayUnion([uid.toString()]),
-        'numberOfMembers': presentNum + 1,
-      });
+      if (presentNum == maxPoolers) {
+        await groupdetails.document(listuid).updateData({
+          'users': FieldValue.arrayUnion([uid.toString()]),
+          'numberOfMembers': presentNum + 1,
+          'maxpoolers': maxPoolers + 1,
+        });
+      } else {
+        await groupdetails.document(listuid).updateData({
+          'users': FieldValue.arrayUnion([uid.toString()]),
+          'numberOfMembers': presentNum + 1,
+        });
+      }
 
       var request = groupdetails.document(listuid).collection('users');
       await Firestore.instance.collection('userdetails').document(uid).get().then((value) async {

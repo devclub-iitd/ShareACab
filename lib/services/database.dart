@@ -79,28 +79,6 @@ class DatabaseService {
     return userDetails.document(uid).snapshots();
   }
 
-  // add request details from user (will use in future versions)
-  Future<void> addRequest(RequestDetails requestDetails) async {
-    var user = await _auth.currentUser();
-
-    // CODE FOR CONVERTING DATE TIME TO TIMESTAMP
-
-    var temp = requestDetails.startTime;
-    var starting = DateTime(requestDetails.startDate.year, requestDetails.startDate.month, requestDetails.startDate.day, temp.hour, temp.minute);
-    var temp2 = requestDetails.endTime;
-    var ending = DateTime(requestDetails.endDate.year, requestDetails.endDate.month, requestDetails.endDate.day, temp2.hour, temp2.minute);
-
-    await requests.add({
-      'user': user.uid.toString(),
-      'destination': requestDetails.destination.toString(),
-      'start': starting,
-      'end': ending,
-      'finaldestination': requestDetails.finalDestination.toString(),
-      'maxpoolers': 0,
-      'created': Timestamp.now(),
-    });
-  }
-
   // add group details (W = 4, R = 0)
   Future<void> createTrip(RequestDetails requestDetails) async {
     var user = await _auth.currentUser();
@@ -112,17 +90,6 @@ class DatabaseService {
     var temp2 = requestDetails.endTime;
     var ending = DateTime(requestDetails.endDate.year, requestDetails.endDate.month, requestDetails.endDate.day, temp2.hour, temp2.minute);
 
-    //var timeStamp = Timestamp.fromDate(temp2);
-
-    // final reqRef = await requests.add({
-    //   'user': user.uid.toString(),
-    //   'destination': requestDetails.destination.toString(),
-    //   'start': starting,
-    //   'end': ending,
-    //   'finaldestination': requestDetails.finalDestination.toString(),
-    //   'maxpoolers': requestDetails.maxPoolers,
-    //   'created': Timestamp.now(),
-    // });
     final docRef = await groupdetails.add({
       'owner': user.uid.toString(),
       'users': FieldValue.arrayUnion([user.uid]),
@@ -141,8 +108,6 @@ class DatabaseService {
 
     await userDetails.document(user.uid).updateData({
       'currentGroup': docRef.documentID,
-      // 'currentReq': reqRef.documentID,
-      //'previous_groups': FieldValue.arrayUnion([docRef.documentID]),
     });
 
     var request = groupdetails.document(docRef.documentID).collection('users');
@@ -154,7 +119,7 @@ class DatabaseService {
   }
 
   // to update group details (W=1, R=0)
-  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET, bool privacy) async {
+  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET, bool privacy, int maxPoolers) async {
     var starting = DateTime(SD.year, SD.month, SD.day, ST.hour, ST.minute);
     var ending = DateTime(ED.year, ED.month, ED.day, ET.hour, ET.minute);
 
@@ -162,6 +127,7 @@ class DatabaseService {
       'start': starting,
       'end': ending,
       'privacy': privacy.toString(),
+      'maxpoolers': maxPoolers,
     }, merge: true);
   }
 
@@ -188,7 +154,6 @@ class DatabaseService {
     if (startTimeStamp.compareTo(Timestamp.now()) > 0) {
       await userDetails.document(user.uid).updateData({
         'currentGroup': null,
-        //'currentReq': null,
         'cancelledRides': cancelledRides + 1,
       });
       await groupdetails.document(currentGrp).updateData({
@@ -212,7 +177,6 @@ class DatabaseService {
     else {
       await userDetails.document(user.uid).updateData({
         'currentGroup': null,
-        //'currentReq': null,
         'totalRides': totalRides + 1,
         'previous_groups': FieldValue.arrayUnion([currentGrp]),
       });
@@ -229,14 +193,12 @@ class DatabaseService {
     var user = await _auth.currentUser();
     var presentNum;
     await userDetails.document(user.uid).updateData({
-      // 'previous_groups': FieldValue.arrayUnion([listuid]),
       'currentGroup': listuid,
     });
     await groupdetails.document(listuid).get().then((value) {
       presentNum = value.data['numberOfMembers'];
     });
     await groupdetails.document(listuid).updateData({
-      // presently storing user.uid in users, need to change this later to the requestID when we start taking input of requests. (IMPORTANT)
       'users': FieldValue.arrayUnion([user.uid.toString()]),
       'numberOfMembers': presentNum + 1,
     });
@@ -264,5 +226,22 @@ class DatabaseService {
   Future<void> setToken(String token) async {
     final user = await _auth.currentUser();
     await userDetails.document(user.uid).updateData({'device_token': token});
+  }
+
+  // Function for kicking a user (ADMIN ONLY) (W=4,R=1)
+  Future<void> kickUser(String currentGrp, String uid) async {
+    await groupdetails.document(currentGrp).collection('users').document(uid).delete();
+    var presentNum;
+    await groupdetails.document(currentGrp).get().then((value) {
+      presentNum = value.data['numberOfMembers'];
+    });
+    await userDetails.document(uid).updateData({
+      'currentGroup': null,
+    });
+    await groupdetails.document(currentGrp).updateData({
+      'users': FieldValue.arrayRemove([uid]),
+      'numberOfMembers': presentNum - 1,
+    });
+    await ChatService().kickedChatRoom(currentGrp, uid);
   }
 }

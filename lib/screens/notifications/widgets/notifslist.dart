@@ -34,9 +34,9 @@ class _NotifsListState extends State<NotifsList> {
       stream: Firestore.instance.collection('userdetails').document(user.uid).collection('Notifications').orderBy('createdAt', descending: true).snapshots(),
       builder: (ctx, futureSnapshot) {
         if (futureSnapshot.connectionState == ConnectionState.waiting) {
-          // return Center(
-          //   child: CircularProgressIndicator(),
-          // );
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
         return ListView.builder(
           itemCount: futureSnapshot.data == null ? 0 : futureSnapshot.data.documents.length,
@@ -50,9 +50,7 @@ class _NotifsListState extends State<NotifsList> {
             return FutureBuilder(
                 future: getUserDetails(fromuid, purpose, docId, response),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    // print('loading..');
-                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {}
                   if (snapshot != null) {
                     return NotifTile(docId, fromuid, name, createdAt, response, purpose);
                   }

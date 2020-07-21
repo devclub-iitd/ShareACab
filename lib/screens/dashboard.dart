@@ -50,14 +50,6 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
     setState(() {});
   }
 
-  Future<Null> refreshList() async {
-    await Future.delayed(Duration(seconds: 2));
-    setState(() {
-      // _listOfTrips = filtered;
-    });
-    return null;
-  }
-
   final FirebaseAuth auth = FirebaseAuth.instance;
   var inGroupFetch = false;
   var UID;
@@ -75,19 +67,6 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
     inGroupFetch = false;
     super.initState();
     getCurrentUser();
-    // Firestore.instance.collection('userdetails').document(UID).get().then((value) {
-    //   if (value.data['currentGroup'] != null) {
-    //     setState(() {
-    //       inGroup = true;
-    //       inGroupFetch = true;
-    //     });
-    //   } else {
-    //     setState(() {
-    //       inGroup = false;
-    //       inGroupFetch = true;
-    //     });
-    //   }
-    // });
   }
 
   @override
@@ -152,10 +131,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                       margin: EdgeInsets.all(5),
                       height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
                       width: double.infinity,
-                      child: RefreshIndicator(
-                        child: TripsList(_dest, _selecteddest, _notPrivacy),
-                        onRefresh: refreshList,
-                      ),
+                      child: TripsList(_dest, _selecteddest, _notPrivacy),
                     ),
                   ],
                 ),

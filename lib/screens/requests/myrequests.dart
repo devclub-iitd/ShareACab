@@ -19,33 +19,6 @@ class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMi
     return qn.documents;
   }
 
-  // var UID;
-  // Future getCurrentUser() async {
-  //   var user = await auth.currentUser();
-  //   final userid = user.uid;
-  //   setState(() {
-  //     UID = userid;
-  //   });
-  // }
-
-  // var currentGroup;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getCurrentUser();
-  //   Firestore.instance.collection('userdetails').document(UID).get().then((value) {
-  //     if (value.data['currentGroup'] != null) {
-  //       setState(() {
-  //         currentGroup = value.data['currentGroup'].toString();
-  //       });
-  //     } else {
-  //       setState(() {
-  //         currentGroup = '';
-  //       });
-  //     }
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -62,7 +35,6 @@ class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMi
                   future: getOldTrips(),
                   builder: (_, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      //print('myrequests waiting');
                       return Center(
                         child: CircularProgressIndicator(),
                       );
