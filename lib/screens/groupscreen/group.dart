@@ -11,7 +11,6 @@ import 'package:shareacab/services/trips.dart';
 import 'package:shareacab/shared/loading.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
-import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class GroupPage extends StatefulWidget {
   @override
@@ -407,18 +406,10 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                       Row(
                                                         children: <Widget>[
                                                           Text('User Rating:'),
-                                                          SmoothStarRating(
-                                                            rating: userRating,
-                                                            filledIconData: Icons.star,
-                                                            color: Theme.of(context).accentColor,
-                                                            borderColor: Theme.of(context).accentColor,
-                                                            halfFilledIconData: Icons.star_half,
-                                                            defaultIconData: Icons.star_border,
-                                                            starCount: 5,
-                                                            allowHalfRating: true,
-                                                            isReadOnly: true,
-                                                            spacing: 2.0,
+                                                          Row(
+                                                            children: <Widget>[],
                                                           ),
+                                                          showRating(userRating),
                                                         ],
                                                       )
                                                     ],
@@ -529,4 +520,23 @@ class Members {
   String hostel;
 
   Members({@required this.name, @required this.isAdmin, @required this.hostel});
+}
+
+Widget showRating(double rating) {
+  var row = Row(
+    children: <Widget>[],
+  );
+  var fullStars = rating.floor();
+  var halfStar = rating - fullStars >= 0.5 ? 1 : 0;
+  var emptyStars = (5 - rating).floor();
+  for (var i = 0; i < fullStars; i++) {
+    row.children.add(Icon(Icons.star));
+  }
+  for (var i = 0; i < halfStar; i++) {
+    row.children.add(Icon(Icons.star_half));
+  }
+  for (var i = 0; i < emptyStars; i++) {
+    row.children.add(Icon(Icons.star_border));
+  }
+  return row;
 }

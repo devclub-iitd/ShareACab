@@ -190,12 +190,14 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                             ],
                           ),
                           Container(
-                              margin: EdgeInsets.only(top: 50, bottom: 20),
+                              margin: EdgeInsets.only(top: 50, bottom: 20, right: 20, left: 20),
                               child: Center(
-                                child: SelectableText(
-                                  name,
-                                  style: TextStyle(
-                                    fontSize: 40,
+                                child: FittedBox(
+                                  child: SelectableText(
+                                    name,
+                                    style: TextStyle(
+                                      fontSize: 40,
+                                    ),
                                   ),
                                 ),
                               )),
