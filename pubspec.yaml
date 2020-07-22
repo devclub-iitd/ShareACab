@@ -47,6 +47,15 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+    - assets/images/accent color.jpg
+    - assets/images/chat group.jpg
+    - assets/images/create trip.jpg
+    - assets/images/ended trips.jpg
+    - assets/images/filter.jpg
+    - assets/images/max no of poolers.jpg
+    - assets/images/notifications.jpg
+    - assets/images/profile and edit.jpg
+    - assets/images/require permission to join trip.jpg
   fonts:
     - family: Poiret
       fonts:
