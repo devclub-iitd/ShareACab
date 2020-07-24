@@ -241,18 +241,18 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                               child: destination == 'New Delhi Railway Station' || destination == 'Hazrat Nizamuddin Railway Station'
                                                   ? Icon(
                                                       Icons.train,
-                                                      color: Theme.of(context).accentColor,
+                                                      color: getVisibleIconColorOnScaffold(context),
                                                       size: 30,
                                                     )
                                                   : destination == 'Indira Gandhi International Airport'
                                                       ? Icon(
                                                           Icons.airplanemode_active,
-                                                          color: Theme.of(context).accentColor,
+                                                          color: getVisibleIconColorOnScaffold(context),
                                                           size: 30,
                                                         )
                                                       : Icon(
                                                           Icons.directions_bus,
-                                                          color: Theme.of(context).accentColor,
+                                                          color: getVisibleIconColorOnScaffold(context),
                                                           size: 30,
                                                         )),
                                         ),
@@ -458,7 +458,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                   trailing: grpOwner == snapshots.data.documents[index].documentID
                                                       ? FaIcon(
                                                           FontAwesomeIcons.crown,
-                                                          color: Theme.of(context).accentColor,
+                                                          color: getVisibleIconColorOnScaffold(context),
                                                         )
                                                       : grpOwner == currentuser.uid && !timestampFlag
                                                           ? IconButton(

@@ -83,6 +83,34 @@ Color getVisibleTextColorOnScaffold(BuildContext context) {
   }
 }
 
+Color getVisibleIconColorOnScaffold(BuildContext context) {
+  var color = Theme.of(context).accentColor;
+  var theme;
+  if (Theme.of(context).brightness == Brightness.dark) {
+    theme = 'dark';
+  } else {
+    theme = 'light';
+  }
+  var list = [Colors.tealAccent, Colors.cyanAccent, Colors.yellowAccent, Colors.greenAccent];
+  if (list.contains(color) && theme == 'light') {
+    if (color == Colors.cyanAccent) {
+      return Colors.cyan;
+    }
+    if (color == Colors.greenAccent) {
+      return Colors.green;
+    }
+    if (color == Colors.tealAccent) {
+      return Colors.teal;
+    }
+    if (color == Colors.yellowAccent) {
+      return Colors.amber;
+    }
+    return color;
+  } else {
+    return color;
+  }
+}
+
 Color getBorderColorForInputFields(BuildContext context) {
   if (Theme.of(context).brightness == Brightness.dark) {
     return Colors.white;
