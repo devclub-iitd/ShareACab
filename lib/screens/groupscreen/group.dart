@@ -463,6 +463,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                       : grpOwner == currentuser.uid && !timestampFlag
                                                           ? IconButton(
                                                               icon: Icon(Icons.exit_to_app),
+                                                              color: getVisibleIconColorOnScaffold(context),
                                                               tooltip: 'Kick User',
                                                               onPressed: () async {
                                                                 await showDialog(

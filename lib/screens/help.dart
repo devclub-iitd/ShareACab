@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shareacab/main.dart';
 
 class Help extends StatefulWidget {
   @override
@@ -6,7 +7,6 @@ class Help extends StatefulWidget {
 }
 
 class _HelpState extends State<Help> {
-
   List<Helper> helper = [
     Helper(thumbnail: Image(image: AssetImage('assets/images/create trip.jpg')), heading: 'Creating a Trip', description: 'To create a new trip, click the Floating Action button(plus sign) on the dashboard. Note that you should not be present in any existing group. Then fill the information and click CreateTrip', isExpanded: false),
     Helper(thumbnail: Image(image: AssetImage('assets/images/profile and edit.jpg')), heading: 'Your Profile/Edit Profile', description: 'You can view your profile by clicking on profile icon in navbar. Also, you can edit details of your profile by clicking on Edit Profile', isExpanded: false),
@@ -43,7 +43,7 @@ class _HelpState extends State<Help> {
                       helper.heading,
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        color: Theme.of(context).accentColor,
+                        color: getVisibleColorOnScaffold(context),
                         fontSize: 20.0,
                         fontWeight: FontWeight.w400,
                       ),
@@ -60,11 +60,7 @@ class _HelpState extends State<Help> {
                           style: TextStyle(fontSize: 16),
                         ),
                       ),
-                      Container(
-                        height: helper.heading == 'Maximum number of Poolers' || helper.heading == 'Require permission to join trip' ? MediaQuery.of(context).size.height*0.1 : MediaQuery.of(context).size.height*0.6,
-                        margin: EdgeInsets.all(13),
-                        child: helper.thumbnail
-                        ),
+                      Container(height: helper.heading == 'Maximum number of Poolers' || helper.heading == 'Require permission to join trip' ? MediaQuery.of(context).size.height * 0.1 : MediaQuery.of(context).size.height * 0.6, margin: EdgeInsets.all(13), child: helper.thumbnail),
                     ],
                   ),
                 );
