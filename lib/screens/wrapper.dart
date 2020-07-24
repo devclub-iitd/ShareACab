@@ -17,8 +17,11 @@ class Wrapper extends StatelessWidget {
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (_, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
+          return Scaffold(
+            body: Center(
+              child: Container(height: 200, child: Image(image: AssetImage('assets/images/logo.png'))),
+            ),
+            backgroundColor: Theme.of(context).primaryColor,
           );
         } else {
           if (user == null) {
