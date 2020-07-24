@@ -64,6 +64,9 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
             if (buttonEnabled == true) {
               groupUID = usersnapshot.data['currentGroup'];
             }
+            if (usersnapshot.data['currentGroup'] == null) {
+              Navigator.pop(context);
+            }
             return StreamBuilder(
                 stream: Firestore.instance.collection('group').document(groupUID).snapshots(),
                 builder: (context, groupsnapshot) {
@@ -566,7 +569,7 @@ Widget showRating(double rating) {
   );
   var fullStars = rating.floor();
   var halfStar = rating - fullStars >= 0.5 ? 1 : 0;
-  var emptyStars = (5 - rating).floor();
+  var emptyStars = (5 - fullStars - halfStar);
   for (var i = 0; i < fullStars; i++) {
     row.children.add(Icon(Icons.star));
   }
