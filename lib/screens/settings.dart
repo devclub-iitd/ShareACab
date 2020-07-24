@@ -266,29 +266,39 @@ class _SettingsState extends State<Settings> {
               ),
             ),
           ),
-          ListTile(
-            onTap: () {
-              launch('https://github.com/devclub-iitd/ShareACab/issues/new?assignees=&labels=bug&template=bug_report.md&title=Issue+Title+%40AssignedUser');
-            },
-            title: Text(
-              'Bug Report',
-              style: TextStyle(fontSize: 28.0),
-            ),
-            contentPadding: EdgeInsets.all(26.0),
-            subtitle: Text('Found a bug, report here:'),
-            trailing: Tooltip(
-              message: 'Report Bug',
-              verticalOffset: -60,
-              child: IconButton(
-                padding: EdgeInsets.only(bottom: 100),
-                icon: Icon(
-                  Icons.bug_report,
-                  size: 40.0,
-                  color: getVisibleTextColorOnScaffold(context),
-                ),
-                onPressed: () {
+          SizedBox(
+            height: w * 0.03,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+            child: Card(
+              elevation: 0,
+              shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(0)),
+              child: ListTile(
+                onTap: () {
                   launch('https://github.com/devclub-iitd/ShareACab/issues/new?assignees=&labels=bug&template=bug_report.md&title=Issue+Title+%40AssignedUser');
                 },
+                title: Text(
+                  'Bug Report',
+                  style: TextStyle(fontSize: 26.0),
+                ),
+                contentPadding: EdgeInsets.all(18.0),
+                subtitle: Text('Found a bug, report here:'),
+                trailing: Tooltip(
+                  message: 'Report Bug',
+                  verticalOffset: -60,
+                  child: IconButton(
+                    padding: EdgeInsets.only(bottom: 60),
+                    icon: Icon(
+                      Icons.bug_report,
+                      size: 40.0,
+                      color: getVisibleTextColorOnScaffold(context),
+                    ),
+                    onPressed: () {
+                      launch('https://github.com/devclub-iitd/ShareACab/issues/new?assignees=&labels=bug&template=bug_report.md&title=Issue+Title+%40AssignedUser');
+                    },
+                  ),
+                ),
               ),
             ),
           ),
