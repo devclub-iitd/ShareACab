@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shareacab/screens/chatscreen/chat_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -11,6 +14,7 @@ import 'package:shareacab/services/trips.dart';
 import 'package:shareacab/shared/loading.dart';
 import 'package:intl/intl.dart';
 import 'package:progress_dialog/progress_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GroupPage extends StatefulWidget {
   @override
@@ -402,7 +406,41 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: <Widget>[
                                                       Text('Hostel: ${snapshots.data.documents[index].data['hostel']}'),
-                                                      Text('Mobile Number: ${snapshots.data.documents[index].data['mobilenum']}'),
+                                                      GestureDetector(
+                                                          onTap: () async {
+                                                            try {
+                                                              if (Platform.isIOS) {
+                                                                await Clipboard.setData(ClipboardData(text: '${snapshots.data.documents[index].data['mobilenum']}')).then((result) {
+                                                                  final snackBar = SnackBar(
+                                                                    backgroundColor: Theme.of(context).primaryColor,
+                                                                    content: Text(
+                                                                      'Copied to Clipboard',
+                                                                      style: TextStyle(color: Theme.of(context).accentColor),
+                                                                    ),
+                                                                    duration: Duration(seconds: 1),
+                                                                  );
+                                                                  Scaffold.of(context).hideCurrentSnackBar();
+                                                                  Scaffold.of(context).showSnackBar(snackBar);
+                                                                });
+                                                              } else {
+                                                                await launch('tel://${snapshots.data.documents[index].data['mobilenum']}');
+                                                              }
+                                                            } catch (e) {
+                                                              await Clipboard.setData(ClipboardData(text: '${snapshots.data.documents[index].data['mobilenum']}')).then((result) {
+                                                                final snackBar = SnackBar(
+                                                                  backgroundColor: Theme.of(context).primaryColor,
+                                                                  content: Text(
+                                                                    'Copied to Clipboard',
+                                                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                                                  ),
+                                                                  duration: Duration(seconds: 1),
+                                                                );
+                                                                Scaffold.of(context).hideCurrentSnackBar();
+                                                                Scaffold.of(context).showSnackBar(snackBar);
+                                                              });
+                                                            }
+                                                          },
+                                                          child: Text('Mobile Number: ${snapshots.data.documents[index].data['mobilenum']}')),
                                                       Row(
                                                         children: <Widget>[
                                                           Text('User Rating:'),

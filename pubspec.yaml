@@ -56,6 +56,7 @@ flutter:
     - assets/images/notifications.jpg
     - assets/images/profile and edit.jpg
     - assets/images/require permission to join trip.jpg
+    - assets/images/logo.png
   fonts:
     - family: Poiret
       fonts:
