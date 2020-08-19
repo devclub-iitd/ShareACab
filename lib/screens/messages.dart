@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shareacab/screens/chatscreen/chat_widgets/chat_users_list.dart';
-import 'package:shareacab/screens/dashboard.dart';
 import 'package:shareacab/screens/rootscreen.dart';
 
 class Messages extends StatefulWidget {

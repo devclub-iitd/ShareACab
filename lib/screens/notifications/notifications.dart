@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shareacab/main.dart';
-import 'package:shareacab/screens/dashboard.dart';
 import 'package:shareacab/screens/rootscreen.dart';
 import './widgets/notifslist.dart';
 import './services/notifservices.dart';
