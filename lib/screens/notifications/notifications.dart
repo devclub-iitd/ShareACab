@@ -14,7 +14,7 @@ class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: () {
         Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
         return Future.value(false);
@@ -27,8 +27,14 @@ class _NotificationsState extends State<Notifications> {
                 onPressed: () async {
                   await _notifServices.removeAll();
                 },
-                icon: Icon(Icons.delete, color: getVisibleColorOnPrimaryColor(context),),
-                label: Text('Remove All', style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),))
+                icon: Icon(
+                  Icons.delete,
+                  color: getVisibleColorOnPrimaryColor(context),
+                ),
+                label: Text(
+                  'Remove All',
+                  style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
+                ))
           ],
         ),
         body: Container(

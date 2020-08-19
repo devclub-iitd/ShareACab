@@ -25,7 +25,7 @@ class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMi
     super.build(context);
     final currentuser = Provider.of<FirebaseUser>(context);
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: () {
         Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
         return Future.value(false);

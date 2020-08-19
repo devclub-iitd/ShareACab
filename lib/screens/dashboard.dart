@@ -123,7 +123,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
             fetched = true;
           }
 
-          try{
+          try {
             if (snapshot.connectionState == ConnectionState.active && fetched == true) {
               return Scaffold(
                 body: SingleChildScrollView(
@@ -141,39 +141,38 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                 floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
                 floatingActionButton: inGroupFetch
                     ? !inGroup
-                    ? Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
-                  child: FloatingActionButton(
-                    onPressed: () => _startCreatingTrip(context),
-                    child: Tooltip(
-                      message: 'Create Group',
-                      verticalOffset: -60,
-                      child: Icon(Icons.add),
-                    ),
-                  ),
-                )
-                    : Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
-                  child: FloatingActionButton.extended(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
-                    },
-                    icon: Icon(Icons.group),
-                    label: Text('Group'),
-                  ),
-                )
+                        ? Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
+                            child: FloatingActionButton(
+                              onPressed: () => _startCreatingTrip(context),
+                              child: Tooltip(
+                                message: 'Create Group',
+                                verticalOffset: -60,
+                                child: Icon(Icons.add),
+                              ),
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
+                            child: FloatingActionButton.extended(
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
+                              },
+                              icon: Icon(Icons.group),
+                              label: Text('Group'),
+                            ),
+                          )
                     : null,
               );
             }
-          } catch(e){
+          } catch (e) {
             return Center(
               child: CircularProgressIndicator(),
             );
           }
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         },
       ),
     );

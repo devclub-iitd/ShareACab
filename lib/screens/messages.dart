@@ -13,7 +13,7 @@ class _MessagesState extends State<Messages> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: () {
         Navigator.pop(context);
         Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
         return Future.value(false);
