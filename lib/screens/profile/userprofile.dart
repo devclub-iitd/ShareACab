@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:shareacab/screens/dashboard.dart';
 import 'package:shareacab/screens/rootscreen.dart';
 import 'package:shareacab/shared/loading.dart';
 import '../../main.dart';
