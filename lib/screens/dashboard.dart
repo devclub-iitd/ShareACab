@@ -122,51 +122,58 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
             }
             fetched = true;
           }
-          if (snapshot.connectionState == ConnectionState.active && fetched == true) {
-            return Scaffold(
-              body: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.all(5),
-                      height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
-                      width: double.infinity,
-                      child: TripsList(_dest, _selecteddest, _notPrivacy),
-                    ),
-                  ],
+
+          try{
+            if (snapshot.connectionState == ConnectionState.active && fetched == true) {
+              return Scaffold(
+                body: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.all(5),
+                        height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
+                        width: double.infinity,
+                        child: TripsList(_dest, _selecteddest, _notPrivacy),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-              floatingActionButton: inGroupFetch
-                  ? !inGroup
-                      ? Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
-                          child: FloatingActionButton(
-                            onPressed: () => _startCreatingTrip(context),
-                            child: Tooltip(
-                              message: 'Create Group',
-                              verticalOffset: -60,
-                              child: Icon(Icons.add),
-                            ),
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
-                          child: FloatingActionButton.extended(
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
-                            },
-                            icon: Icon(Icons.group),
-                            label: Text('Group'),
-                          ),
-                        )
-                  : null,
-            );
-          } else {
+                floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                floatingActionButton: inGroupFetch
+                    ? !inGroup
+                    ? Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
+                  child: FloatingActionButton(
+                    onPressed: () => _startCreatingTrip(context),
+                    child: Tooltip(
+                      message: 'Create Group',
+                      verticalOffset: -60,
+                      child: Icon(Icons.add),
+                    ),
+                  ),
+                )
+                    : Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
+                  child: FloatingActionButton.extended(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
+                    },
+                    icon: Icon(Icons.group),
+                    label: Text('Group'),
+                  ),
+                )
+                    : null,
+              );
+            }
+          } catch(e){
             return Center(
               child: CircularProgressIndicator(),
             );
           }
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+
         },
       ),
     );
