@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shareacab/screens/dashboard.dart';
+import 'package:shareacab/screens/rootscreen.dart';
 import 'package:shareacab/shared/loading.dart';
 import '../../main.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -66,235 +68,257 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     super.build(context);
     final currentuser = Provider.of<FirebaseUser>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'My Profile',
-          style: TextStyle(fontSize: 25),
-        ),
-        elevation: 0,
-        actions: <Widget>[
-          FlatButton.icon(
+    return WillPopScope(
+      onWillPop: (){
+        Navigator.pop(context);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
+        return Future.value(false);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'My Profile',
+            style: TextStyle(fontSize: 25),
+          ),
+          elevation: 0,
+          actions: <Widget>[
+            FlatButton.icon(
+                textColor: getVisibleColorOnPrimaryColor(context),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/edituserdetails');
+                },
+                icon: Icon(Icons.edit),
+                label: Text('Edit')),
+            FlatButton.icon(
               textColor: getVisibleColorOnPrimaryColor(context),
-              onPressed: () {
-                Navigator.pushNamed(context, '/edituserdetails');
+              icon: Icon(FontAwesomeIcons.signOutAlt),
+              onPressed: () async {
+                await showDialog(
+                    context: context,
+                    builder: (BuildContext ctx) {
+                      return AlertDialog(
+                        title: Text('Log out'),
+                        content: Text('Are you sure you want to log out?'),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: Text('Log out', style: TextStyle(color: Theme.of(context).accentColor)),
+                            onPressed: () async {
+                              ProgressDialog pr;
+                              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                              pr.style(
+                                message: 'Logging out...',
+                                backgroundColor: Theme.of(context).backgroundColor,
+                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                              );
+                              await pr.show();
+                              await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
+                              try {
+                                await widget._auth.signOut();
+                                await pr.hide();
+                              } catch (err) {
+                                await pr.hide();
+                                String errStr = err.message ?? err.toString();
+                                final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+                                scaffoldKey.currentState.showSnackBar(snackBar);
+                              }
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          FlatButton(
+                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    });
               },
-              icon: Icon(Icons.edit),
-              label: Text('Edit')),
-          FlatButton.icon(
-            textColor: getVisibleColorOnPrimaryColor(context),
-            icon: Icon(FontAwesomeIcons.signOutAlt),
-            onPressed: () async {
-              await showDialog(
-                  context: context,
-                  builder: (BuildContext ctx) {
-                    return AlertDialog(
-                      title: Text('Log out'),
-                      content: Text('Are you sure you want to log out?'),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                      actions: <Widget>[
-                        FlatButton(
-                          child: Text('Log out', style: TextStyle(color: Theme.of(context).accentColor)),
-                          onPressed: () async {
-                            ProgressDialog pr;
-                            pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
-                            pr.style(
-                              message: 'Logging out...',
-                              backgroundColor: Theme.of(context).backgroundColor,
-                              messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
-                            );
-                            await pr.show();
-                            await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
-                            try {
-                              await widget._auth.signOut();
-                              await pr.hide();
-                            } catch (err) {
-                              await pr.hide();
-                              String errStr = err.message ?? err.toString();
-                              final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
-                              scaffoldKey.currentState.showSnackBar(snackBar);
-                            }
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        FlatButton(
-                          child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                    );
-                  });
-            },
-            label: Text('Logout'),
-          )
-        ],
-      ),
-      body: StreamBuilder(
-          stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              name = snapshot.data['name'];
-              hostel = snapshot.data['hostel'];
-              sex = snapshot.data['sex'];
-              mobilenum = snapshot.data['mobileNumber'];
-              totalrides = snapshot.data['totalRides'];
-              actualrating = snapshot.data['actualRating'];
-              cancelledrides = snapshot.data['cancelledRides'];
-              numberofratings = snapshot.data['numberOfRatings'];
-              loading = false;
+              label: Text('Logout'),
+            )
+          ],
+        ),
+        body: StreamBuilder(
+            stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active) {
+                name = snapshot.data['name'];
+                hostel = snapshot.data['hostel'];
+                sex = snapshot.data['sex'];
+                mobilenum = snapshot.data['mobileNumber'];
+                totalrides = snapshot.data['totalRides'];
+                actualrating = snapshot.data['actualRating'];
+                cancelledrides = snapshot.data['cancelledRides'];
+                numberofratings = snapshot.data['numberOfRatings'];
+                loading = false;
 
-              namefirst = name.substring(0, 1);
+                namefirst = name.substring(0, 1);
 
-              rating = 5 - (0.2 * cancelledrides) + (0.35 * totalrides);
-              if (rating < 0) {
-                rating = 0;
+                rating = 5 - (0.2 * cancelledrides) + (0.35 * totalrides);
+                if (rating < 0) {
+                  rating = 0;
+                }
+                if (rating > 5) {
+                  rating = 5;
+                }
+                finalrating = rating.round();
               }
-              if (rating > 5) {
-                rating = 5;
-              }
-              finalrating = rating.round();
-            }
-            if (snapshot.connectionState == ConnectionState.active) {
-              return loading
-                  ? Loading()
-                  : Scaffold(
-                      body: ListView(
-                        children: <Widget>[
-                          Stack(
-                            overflow: Overflow.visible,
-                            alignment: Alignment.center,
-                            children: <Widget>[
-                              Container(
-                                height: MediaQuery.of(context).size.height / 6,
-                                width: MediaQuery.of(context).size.width,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                              Positioned(
-                                top: MediaQuery.of(context).size.height / 6 - 74,
-                                child: CircleAvatar(
-                                  radius: 50,
-                                  backgroundColor: Theme.of(context).accentColor,
-                                  child: Text(
-                                    namefirst.toUpperCase(),
-                                    style: TextStyle(
-                                      fontSize: 48,
-                                      fontFamily: 'Poiret',
-                                      fontWeight: FontWeight.bold,
-                                      color: getVisibleColorOnAccentColor(context),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(top: 50, bottom: 20, right: 20, left: 20),
-                              child: Center(
-                                child: FittedBox(
-                                  child: SelectableText(
-                                    name,
-                                    style: TextStyle(
-                                      fontSize: 40,
-                                    ),
-                                  ),
-                                ),
-                              )),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              if (snapshot.connectionState == ConnectionState.active) {
+                return loading
+                    ? Loading()
+                    : Scaffold(
+                        body: ListView(
+                          children: <Widget>[
+                            Stack(
+                              overflow: Overflow.visible,
+                              alignment: Alignment.center,
                               children: <Widget>[
-                                Expanded(
-                                  child: ListTile(
-                                    onTap: () {},
-                                    title: Center(
-                                      child: Text(
-                                        'HOSTEL',
-                                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-                                      ),
-                                    ),
-                                    subtitle: Center(
-                                      child: Text(
-                                        hostel,
-                                        style: TextStyle(fontSize: 15),
+                                Container(
+                                  height: MediaQuery.of(context).size.height / 6,
+                                  width: MediaQuery.of(context).size.width,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                Positioned(
+                                  top: MediaQuery.of(context).size.height / 6 - 74,
+                                  child: CircleAvatar(
+                                    radius: 50,
+                                    backgroundColor: Theme.of(context).accentColor,
+                                    child: Text(
+                                      namefirst.toUpperCase(),
+                                      style: TextStyle(
+                                        fontSize: 48,
+                                        fontFamily: 'Poiret',
+                                        fontWeight: FontWeight.bold,
+                                        color: getVisibleColorOnAccentColor(context),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Expanded(
-                                  child: ListTile(
-                                    onTap: () {},
-                                    title: Center(
-                                      child: Text(
-                                        'GENDER',
-                                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
-                                      ),
-                                    ),
-                                    subtitle: Center(
-                                      child: Text(
-                                        sex,
-                                        style: TextStyle(fontSize: 15),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                )
                               ],
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                  child: ListTile(
-                                    onTap: () {},
-                                    title: Center(
-                                      child: Text(
-                                        'TOTAL RIDES',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
-                                      ),
-                                    ),
-                                    subtitle: Center(
-                                      child: Text(
-                                        '${totalrides}',
-                                        style: TextStyle(fontSize: 15),
+                            Container(
+                                margin: EdgeInsets.only(top: 50, bottom: 20, right: 20, left: 20),
+                                child: Center(
+                                  child: FittedBox(
+                                    child: SelectableText(
+                                      name,
+                                      style: TextStyle(
+                                        fontSize: 40,
                                       ),
                                     ),
                                   ),
-                                ),
-                                Expanded(
+                                )),
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Expanded(
                                     child: ListTile(
-                                        onTap: () {},
-                                        title: Center(
-                                          child: Text(
-                                            'CANCELLED TRIPS',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
-                                          ),
+                                      onTap: () {},
+                                      title: Center(
+                                        child: Text(
+                                          'HOSTEL',
+                                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
                                         ),
-                                        subtitle: Center(
-                                          child: Text(
-                                            '${cancelledrides}',
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ))),
-                              ],
+                                      ),
+                                      subtitle: Center(
+                                        child: Text(
+                                          hostel,
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: ListTile(
+                                      onTap: () {},
+                                      title: Center(
+                                        child: Text(
+                                          'GENDER',
+                                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+                                        ),
+                                      ),
+                                      subtitle: Center(
+                                        child: Text(
+                                          sex,
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                  child: ListTile(
-                                      onTap: () async {
-                                        try {
-                                          if (Platform.isIOS) {
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: ListTile(
+                                      onTap: () {},
+                                      title: Center(
+                                        child: Text(
+                                          'TOTAL RIDES',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                                        ),
+                                      ),
+                                      subtitle: Center(
+                                        child: Text(
+                                          '${totalrides}',
+                                          style: TextStyle(fontSize: 15),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                      child: ListTile(
+                                          onTap: () {},
+                                          title: Center(
+                                            child: Text(
+                                              'CANCELLED TRIPS',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                                            ),
+                                          ),
+                                          subtitle: Center(
+                                            child: Text(
+                                              '${cancelledrides}',
+                                              style: TextStyle(fontSize: 15),
+                                            ),
+                                          ))),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: ListTile(
+                                        onTap: () async {
+                                          try {
+                                            if (Platform.isIOS) {
+                                              await Clipboard.setData(ClipboardData(text: '${mobilenum}')).then((result) {
+                                                final snackBar = SnackBar(
+                                                  backgroundColor: Theme.of(context).primaryColor,
+                                                  content: Text(
+                                                    'Copied to Clipboard',
+                                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                                  ),
+                                                  duration: Duration(seconds: 1),
+                                                );
+                                                Scaffold.of(context).hideCurrentSnackBar();
+                                                Scaffold.of(context).showSnackBar(snackBar);
+                                              });
+                                            } else {
+                                              await launch('tel://${mobilenum}');
+                                            }
+                                          } catch (e) {
                                             await Clipboard.setData(ClipboardData(text: '${mobilenum}')).then((result) {
                                               final snackBar = SnackBar(
                                                 backgroundColor: Theme.of(context).primaryColor,
@@ -307,91 +331,76 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                                               Scaffold.of(context).hideCurrentSnackBar();
                                               Scaffold.of(context).showSnackBar(snackBar);
                                             });
-                                          } else {
-                                            await launch('tel://${mobilenum}');
                                           }
-                                        } catch (e) {
-                                          await Clipboard.setData(ClipboardData(text: '${mobilenum}')).then((result) {
-                                            final snackBar = SnackBar(
-                                              backgroundColor: Theme.of(context).primaryColor,
-                                              content: Text(
-                                                'Copied to Clipboard',
-                                                style: TextStyle(color: Theme.of(context).accentColor),
-                                              ),
-                                              duration: Duration(seconds: 1),
-                                            );
-                                            Scaffold.of(context).hideCurrentSnackBar();
-                                            Scaffold.of(context).showSnackBar(snackBar);
-                                          });
-                                        }
-                                      },
-                                      title: Center(
-                                        child: Text(
-                                          'MOBILE NUMBER',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                                        },
+                                        title: Center(
+                                          child: Text(
+                                            'MOBILE NUMBER',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                                          ),
                                         ),
-                                      ),
-                                      subtitle: Center(
-                                        child: Text(
-                                          mobilenum,
-                                          style: TextStyle(fontSize: 15),
+                                        subtitle: Center(
+                                          child: Text(
+                                            mobilenum,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        )),
+                                  ),
+                                  Expanded(
+                                    child: ListTile(
+                                        onTap: () {},
+                                        title: Center(
+                                          child: Text(
+                                            'USER RATING',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                                          ),
                                         ),
-                                      )),
-                                ),
-                                Expanded(
-                                  child: ListTile(
-                                      onTap: () {},
-                                      title: Center(
-                                        child: Text(
-                                          'USER RATING',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
-                                        ),
-                                      ),
-                                      subtitle: Center(
-                                        child: Text(
-                                          '${finalrating}',
-                                          style: TextStyle(fontSize: 15),
-                                        ),
-                                      )),
-                                ),
-                              ],
+                                        subtitle: Center(
+                                          child: Text(
+                                            '${finalrating}',
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Expanded(
-                                  child: ListTile(
-                                      onTap: () {},
-                                      title: Center(
-                                        child: Text(
-                                          'EMAIL ID',
-                                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: ListTile(
+                                        onTap: () {},
+                                        title: Center(
+                                          child: Text(
+                                            'EMAIL ID',
+                                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
+                                          ),
                                         ),
-                                      ),
-                                      subtitle: Center(
-                                        child: Text(
-                                          _email(),
-                                          style: TextStyle(fontSize: 15),
-                                        ),
-                                      )),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-            } else {
-              return Center(
-                child: Text('Loading..'),
-              );
-            }
-          }),
+                                        subtitle: Center(
+                                          child: Text(
+                                            _email(),
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+              } else {
+                return Center(
+                  child: Text('Loading..'),
+                );
+              }
+            }),
+      ),
     );
   }
 
