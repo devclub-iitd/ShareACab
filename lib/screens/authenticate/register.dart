@@ -117,6 +117,7 @@ class _RegisterState extends State<Register> {
                                   child: Icon(
                                     CupertinoIcons.car_detailed,
                                     size: 48,
+                                    color: getVisibleColorOnAccentColor(context),
                                   ),
                                 ),
                                 SizedBox(height: 20.0),
