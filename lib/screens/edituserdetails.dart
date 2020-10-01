@@ -114,7 +114,7 @@ class _EditFormState extends State<EditForm> {
                             decoration: InputDecoration(hintText: 'Mobile Number', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
                             validator: (val) => val.length != 10 ? 'Enter a valid mobile number.' : null,
                             keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
+                            inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
                             onChanged: (val) {
                               setState(() => mobileNum = val);
                             },
