@@ -454,10 +454,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                         'My Group Page', // visiting a group page
                                         style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
                                       )
-                                    : full
-                                        ? Text('Group is full', style: TextStyle(fontSize: 20))
-                                        : Text('Join Now', style: TextStyle(fontSize: 20)),
-                            // Visiting a public group page and not in any group
+                                    : full ? Text('Group is full', style: TextStyle(fontSize: 20)) : Text('Join Now', style: TextStyle(fontSize: 20)), // Visiting a public group page and not in any group
                             color: Theme.of(context).accentColor,
                           ),
                         ));

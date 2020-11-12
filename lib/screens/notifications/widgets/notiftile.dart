@@ -61,15 +61,7 @@ class _NotifTileState extends State<NotifTile> {
               ),
             ),
           ),
-          title: widget.purpose == 'Request to Join'
-              ? Text('${widget.name} requested to join your trip')
-              : widget.purpose == 'joined the group'
-                  ? Text('${widget.name} joined your group')
-                  : widget.purpose == 'Request to Join Declined'
-                      ? Text('Your request to join the trip is declined')
-                      : widget.purpose == 'Your request is accepted'
-                          ? Text('Your request is accepted')
-                          : Text('${widget.name} left your group'),
+          title: widget.purpose == 'Request to Join' ? Text('${widget.name} requested to join your trip') : widget.purpose == 'joined the group' ? Text('${widget.name} joined your group') : widget.purpose == 'Request to Join Declined' ? Text('Your request to join the trip is declined') : widget.purpose == 'Your request is accepted' ? Text('Your request is accepted') : Text('${widget.name} left your group'),
           subtitle: widget.purpose == 'Request to Join'
               ? widget.response == null
                   ? Container(
@@ -129,9 +121,7 @@ class _NotifTileState extends State<NotifTile> {
                         ],
                       ),
                     )
-                  : widget.response == true
-                      ? Text('You accepted the request')
-                      : Text('You declined the request')
+                  : widget.response == true ? Text('You accepted the request') : Text('You declined the request')
               : null,
           trailing: Text(DateFormat.yMMMd().format(widget.createdAt.toDate())),
         ),
