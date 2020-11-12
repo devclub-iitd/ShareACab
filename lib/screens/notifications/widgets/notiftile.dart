@@ -11,13 +11,16 @@ class NotifTile extends StatefulWidget {
   final createdAt;
   final response;
   final purpose;
+
   NotifTile(this.docId, this.fromuid, this.name, this.createdAt, this.response, this.purpose);
+
   @override
   _NotifTileState createState() => _NotifTileState();
 }
 
 class _NotifTileState extends State<NotifTile> {
   final NotifServices _notifServices = NotifServices();
+
   @override
   Widget build(BuildContext context) {
     return Dismissible(
@@ -58,7 +61,15 @@ class _NotifTileState extends State<NotifTile> {
               ),
             ),
           ),
-          title: widget.purpose == 'Request to Join' ? Text('${widget.name} requested to join your trip') : widget.purpose == 'joined the group' ? Text('${widget.name} joined your group') : widget.purpose == 'Request to Join Declined' ? Text('Your request to join the trip is declined') : widget.purpose == 'Your request is accepted' ? Text('Your request is accepted') : Text('${widget.name} left your group'),
+          title: widget.purpose == 'Request to Join'
+              ? Text('${widget.name} requested to join your trip')
+              : widget.purpose == 'joined the group'
+                  ? Text('${widget.name} joined your group')
+                  : widget.purpose == 'Request to Join Declined'
+                      ? Text('Your request to join the trip is declined')
+                      : widget.purpose == 'Your request is accepted'
+                          ? Text('Your request is accepted')
+                          : Text('${widget.name} left your group'),
           subtitle: widget.purpose == 'Request to Join'
               ? widget.response == null
                   ? Container(
@@ -81,6 +92,13 @@ class _NotifTileState extends State<NotifTile> {
                               } catch (e) {
                                 await pr.hide();
                                 print(e.toString());
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  content: Text(
+                                    e.toString(),
+                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                  ),
+                                ));
                               }
                             },
                             child: Text(
@@ -94,6 +112,13 @@ class _NotifTileState extends State<NotifTile> {
                                 await _notifServices.responseToRequest(false, widget.docId);
                               } catch (e) {
                                 print(e.toString());
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  content: Text(
+                                    e.toString(),
+                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                  ),
+                                ));
                               }
                             },
                             child: Text(
@@ -104,7 +129,9 @@ class _NotifTileState extends State<NotifTile> {
                         ],
                       ),
                     )
-                  : widget.response == true ? Text('You accepted the request') : Text('You declined the request')
+                  : widget.response == true
+                      ? Text('You accepted the request')
+                      : Text('You declined the request')
               : null,
           trailing: Text(DateFormat.yMMMd().format(widget.createdAt.toDate())),
         ),

@@ -8,6 +8,7 @@ import 'package:shareacab/services/trips.dart';
 class CreateTrip extends StatefulWidget {
   static const routeName = '/createTrip';
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   _CreateTripState createState() => _CreateTripState();
 }
@@ -40,6 +41,14 @@ class _CreateTripState extends State<CreateTrip> {
       // ));
     } catch (e) {
       print(e.toString());
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        duration: Duration(seconds: 2),
+        content: Text(
+          e.toString(),
+          style: TextStyle(color: Theme.of(context).accentColor),
+        ),
+      ));
       //String errStr = e.message ?? e.toString();
       //final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
       //_scaffoldKey.currentState.showSnackBar(snackBar);

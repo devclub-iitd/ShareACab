@@ -8,6 +8,7 @@ class EditGroup extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   final String groupUID;
+
   EditGroup({Key key, this.groupUID}) : super(key: key);
 
   @override
@@ -18,6 +19,7 @@ class _EditGroupState extends State<EditGroup> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final DatabaseService _databaseService = DatabaseService();
   String groupUID;
+
   _EditGroupState(this.groupUID);
 
   DateTime _selectedStartDate;
@@ -38,6 +40,14 @@ class _EditGroupState extends State<EditGroup> {
       await _databaseService.updateGroup(groupUID, _selectedStartDate, _selectedStartTime, _selectedEndDate, _selectedEndTime, privacy, _maxPoolers);
     } catch (e) {
       print(e.toString());
+      _scaffoldKey.currentState.showSnackBar(SnackBar(
+        backgroundColor: Theme.of(context).primaryColor,
+        duration: Duration(seconds: 2),
+        content: Text(
+          e.toString(),
+          style: TextStyle(color: Theme.of(context).accentColor),
+        ),
+      ));
     }
   }
 

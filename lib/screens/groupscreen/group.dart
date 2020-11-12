@@ -145,6 +145,14 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                     });
                                               } catch (e) {
                                                 print(e.toString());
+                                                scaffoldKey.currentState.showSnackBar(SnackBar(
+                                                  backgroundColor: Theme.of(context).primaryColor,
+                                                  duration: Duration(seconds: 2),
+                                                  content: Text(
+                                                    e.toString(),
+                                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                                  ),
+                                                ));
                                               }
                                             },
                                             label: Text('End Trip'),
@@ -203,6 +211,14 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                     });
                                               } catch (e) {
                                                 print(e.toString());
+                                                scaffoldKey.currentState.showSnackBar(SnackBar(
+                                                  backgroundColor: Theme.of(context).primaryColor,
+                                                  duration: Duration(seconds: 2),
+                                                  content: Text(
+                                                    e.toString(),
+                                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                                  ),
+                                                ));
                                               }
                                             },
                                             label: Text('Leave Group'),
@@ -494,6 +510,14 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                                               } catch (e) {
                                                                                 await pr.hide();
                                                                                 print(e.toString());
+                                                                                Scaffold.of(context).showSnackBar(SnackBar(
+                                                                                  backgroundColor: Theme.of(context).primaryColor,
+                                                                                  duration: Duration(seconds: 2),
+                                                                                  content: Text(
+                                                                                    e.toString(),
+                                                                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                                                                  ),
+                                                                                ));
                                                                               }
                                                                             },
                                                                           ),

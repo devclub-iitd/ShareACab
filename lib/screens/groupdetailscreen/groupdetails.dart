@@ -28,6 +28,7 @@ class GroupDetails extends StatefulWidget {
   final data;
 
   GroupDetails(this.destination, this.docId, this.privacy, this.start, this.end, this.numberOfMembers, this.data);
+
   static bool inGroup = false;
 
   @override
@@ -37,6 +38,7 @@ class GroupDetails extends StatefulWidget {
 class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClientMixin<GroupDetails> {
   final RequestService _request = RequestService();
   final NotifServices _notifServices = NotifServices();
+
   Future getUserDetails() async {
     final userDetails = await Firestore.instance.collection('group').document(widget.docId).collection('users').snapshots();
     return userDetails;
@@ -54,6 +56,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
   bool full = false;
 
   Timer _countdownTimer;
+
   @override
   void dispose() {
     _countdownTimer?.cancel();
@@ -336,6 +339,14 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                     } catch (e) {
                                                       await pr.hide();
                                                       print(e.toString());
+                                                      Scaffold.of(ctx).showSnackBar(SnackBar(
+                                                        backgroundColor: Theme.of(context).primaryColor,
+                                                        duration: Duration(seconds: 2),
+                                                        content: Text(
+                                                          e.toString(),
+                                                          style: TextStyle(color: Theme.of(context).accentColor),
+                                                        ),
+                                                      ));
                                                     }
                                                   },
                                                 ),
@@ -376,6 +387,14 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                 } catch (e) {
                                                   await pr.hide();
                                                   print(e.toString());
+                                                  Scaffold.of(ctx).showSnackBar(SnackBar(
+                                                    backgroundColor: Theme.of(context).primaryColor,
+                                                    duration: Duration(seconds: 2),
+                                                    content: Text(
+                                                      e.toString(),
+                                                      style: TextStyle(color: Theme.of(context).accentColor),
+                                                    ),
+                                                  ));
                                                 }
                                                 Navigator.of(context).pop();
                                                 // final snackBar = SnackBar(
@@ -402,6 +421,14 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                 }
                               } catch (e) {
                                 print(e.toString());
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  duration: Duration(seconds: 2),
+                                  content: Text(
+                                    e.toString(),
+                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                  ),
+                                ));
                               }
                             },
                             padding: EdgeInsets.all(20),
@@ -427,7 +454,10 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                         'My Group Page', // visiting a group page
                                         style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
                                       )
-                                    : full ? Text('Group is full', style: TextStyle(fontSize: 20)) : Text('Join Now', style: TextStyle(fontSize: 20)), // Visiting a public group page and not in any group
+                                    : full
+                                        ? Text('Group is full', style: TextStyle(fontSize: 20))
+                                        : Text('Join Now', style: TextStyle(fontSize: 20)),
+                            // Visiting a public group page and not in any group
                             color: Theme.of(context).accentColor,
                           ),
                         ));

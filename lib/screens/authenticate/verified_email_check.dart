@@ -70,6 +70,13 @@ class _VerificationCheckState extends State<VerificationCheck> {
                     } catch (e) {
                       setState(() {
                         error = e.message;
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            content: Text(
+                              e.toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Theme.of(context).accentColor),
+                            )));
                         setState(() => loading = false);
                       });
                     }
@@ -121,6 +128,15 @@ class _VerificationCheckState extends State<VerificationCheck> {
                               setState(() {
                                 error = e.toString();
                               });
+                              Scaffold.of(context).showSnackBar(SnackBar(
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  content: Text(
+                                    error,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Theme.of(context).accentColor,
+                                    ),
+                                  )));
                             }
                           },
                         ),
