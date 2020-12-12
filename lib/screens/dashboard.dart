@@ -19,8 +19,7 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard>
-    with AutomaticKeepAliveClientMixin<Dashboard> {
+class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixin<Dashboard> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthService _auth = AuthService();
   List<RequestDetails> filtered = allTrips;
@@ -100,16 +99,14 @@ class _DashboardState extends State<Dashboard>
             icon: Icon(Icons.help),
             tooltip: 'Help',
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Help()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Help()));
             },
           ),
           IconButton(
               icon: Icon(Icons.settings),
               tooltip: 'Settings',
               onPressed: () {
-                return Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
+                return Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return Settings(_auth);
                 }));
               }),
@@ -117,12 +114,8 @@ class _DashboardState extends State<Dashboard>
       ),
       resizeToAvoidBottomInset: false,
       body: StreamBuilder(
-        stream: Firestore.instance
-            .collection('userdetails')
-            .document(currentuser.uid)
-            .snapshots(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             var temp = snapshot.data['currentGroup'];
             if (temp != null) {
@@ -136,34 +129,27 @@ class _DashboardState extends State<Dashboard>
           }
 
           try {
-            if (snapshot.connectionState == ConnectionState.active &&
-                fetched == true) {
+            if (snapshot.connectionState == ConnectionState.active && fetched == true) {
               return Scaffold(
                 body: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.all(5),
-                        height: (MediaQuery.of(context).size.height -
-                                MediaQuery.of(context).padding.top) *
-                            0.87,
+                        height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
                         width: double.infinity,
-                        child: TripsList(
-                            _dest, _selecteddest, _notPrivacy, refreshState),
+                        child: TripsList(_dest, _selecteddest, _notPrivacy, refreshState),
                       ),
                     ],
                   ),
                 ),
-                floatingActionButtonLocation:
-                    FloatingActionButtonLocation.endFloat,
-                floatingActionButton: globals.scrollDirection ==
-                        'ScrollDirection.reverse'
+                floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+                floatingActionButton: globals.scrollDirection == 'ScrollDirection.reverse'
                     ? Container()
                     : (inGroupFetch
                         ? !inGroup
                             ? Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 20, 0, 80),
+                                padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
                                 child: FloatingActionButton(
                                   onPressed: () => _startCreatingTrip(context),
                                   child: Tooltip(
@@ -174,14 +160,10 @@ class _DashboardState extends State<Dashboard>
                                 ),
                               )
                             : Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(0, 20, 0, 80),
+                                padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
                                 child: FloatingActionButton.extended(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => GroupPage()));
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
                                   },
                                   icon: Icon(Icons.group),
                                   label: Text('Group'),
