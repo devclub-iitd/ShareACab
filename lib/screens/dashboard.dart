@@ -2,23 +2,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shareacab/screens/createtrip.dart';
-import 'package:shareacab/screens/groupscreen/group.dart';
-import 'package:shareacab/screens/help.dart';
-import 'package:shareacab/screens/tripslist.dart';
-import 'package:shareacab/screens/filter.dart';
-import 'package:shareacab/screens/settings.dart';
+import 'package:shareacab/main.dart';
 import 'package:shareacab/models/alltrips.dart';
 import 'package:shareacab/models/requestdetails.dart';
-import 'package:shareacab/main.dart';
+import 'package:shareacab/screens/createtrip.dart';
+import 'package:shareacab/screens/filter.dart';
+import 'package:shareacab/screens/groupscreen/group.dart';
+import 'package:shareacab/screens/help.dart';
+import 'package:shareacab/screens/settings.dart';
+import 'package:shareacab/screens/tripslist.dart';
 import 'package:shareacab/services/auth.dart';
+import 'package:shareacab/shared/global.dart' as globals;
 
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixin<Dashboard> {
+class _DashboardState extends State<Dashboard>
+    with AutomaticKeepAliveClientMixin<Dashboard> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthService _auth = AuthService();
   List<RequestDetails> filtered = allTrips;
@@ -31,6 +33,10 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
     _notPrivacy = priv;
     _dest = destination;
     _selecteddest = dest;
+    setState(() {});
+  }
+
+  void refreshState() {
     setState(() {});
   }
 
@@ -94,14 +100,16 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
             icon: Icon(Icons.help),
             tooltip: 'Help',
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Help()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Help()));
             },
           ),
           IconButton(
               icon: Icon(Icons.settings),
               tooltip: 'Settings',
               onPressed: () {
-                return Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
                   return Settings(_auth);
                 }));
               }),
@@ -109,8 +117,12 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
       ),
       resizeToAvoidBottomInset: false,
       body: StreamBuilder(
-        stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        stream: Firestore.instance
+            .collection('userdetails')
+            .document(currentuser.uid)
+            .snapshots(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             var temp = snapshot.data['currentGroup'];
             if (temp != null) {
@@ -124,45 +136,58 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
           }
 
           try {
-            if (snapshot.connectionState == ConnectionState.active && fetched == true) {
+            if (snapshot.connectionState == ConnectionState.active &&
+                fetched == true) {
               return Scaffold(
                 body: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.all(5),
-                        height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
+                        height: (MediaQuery.of(context).size.height -
+                                MediaQuery.of(context).padding.top) *
+                            0.87,
                         width: double.infinity,
-                        child: TripsList(_dest, _selecteddest, _notPrivacy),
+                        child: TripsList(
+                            _dest, _selecteddest, _notPrivacy, refreshState),
                       ),
                     ],
                   ),
                 ),
-                floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                floatingActionButton: inGroupFetch
-                    ? !inGroup
-                        ? Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
-                            child: FloatingActionButton(
-                              onPressed: () => _startCreatingTrip(context),
-                              child: Tooltip(
-                                message: 'Create Group',
-                                verticalOffset: -60,
-                                child: Icon(Icons.add),
-                              ),
-                            ),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
-                            child: FloatingActionButton.extended(
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
-                              },
-                              icon: Icon(Icons.group),
-                              label: Text('Group'),
-                            ),
-                          )
-                    : null,
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.endFloat,
+                floatingActionButton: globals.scrollDirection ==
+                        'ScrollDirection.reverse'
+                    ? Container()
+                    : (inGroupFetch
+                        ? !inGroup
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 20, 0, 80),
+                                child: FloatingActionButton(
+                                  onPressed: () => _startCreatingTrip(context),
+                                  child: Tooltip(
+                                    message: 'Create Group',
+                                    verticalOffset: -60,
+                                    child: Icon(Icons.add),
+                                  ),
+                                ),
+                              )
+                            : Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(0, 20, 0, 80),
+                                child: FloatingActionButton.extended(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => GroupPage()));
+                                  },
+                                  icon: Icon(Icons.group),
+                                  label: Text('Group'),
+                                ),
+                              )
+                        : null),
               );
             }
           } catch (e) {
