@@ -23,7 +23,7 @@ class _TripsListState extends State<TripsList> {
   var requestsArray = [];
   @override
   Widget build(BuildContext context) {
-    ScrollController _scrollController = ScrollController();
+    var _scrollController = ScrollController();
 
     final currentuser = Provider.of<FirebaseUser>(context);
     return StreamBuilder(
