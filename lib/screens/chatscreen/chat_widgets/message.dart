@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shareacab/screens/chatscreen/chat_widgets/chat_bubble.dart';
 
 class MessageScreen extends StatelessWidget {
@@ -36,10 +37,21 @@ class MessageScreen extends StatelessWidget {
                 );
               }
               final chatDocs = chatSnapshot.data.documents;
+
               return ListView.builder(
                 reverse: true,
                 itemCount: chatDocs.length,
-                itemBuilder: (ctx, index) => MessageBubble(chatDocs[index]['text'], chatDocs[index]['name'], chatDocs[index]['userId'] == futureSnapshot.data.uid, key: ValueKey(chatDocs[index].documentID)),
+                itemBuilder: (ctx, index) => MessageBubble(
+                  chatDocs[index]['text'],
+                  chatDocs[index]['name'],
+                  chatDocs[index]['userId'] == futureSnapshot.data.uid,
+                  key: ValueKey(chatDocs[index].documentID),
+                  time: DateFormat().add_jm().format(
+                        DateTime.parse(
+                          chatDocs[index]['createdAt'].toDate().toString(),
+                        ),
+                      ),
+                ),
               );
             });
       },
