@@ -2,15 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shareacab/screens/createtrip.dart';
-import 'package:shareacab/screens/groupscreen/group.dart';
-import 'package:shareacab/screens/help.dart';
-import 'package:shareacab/screens/tripslist.dart';
-import 'package:shareacab/screens/filter.dart';
-import 'package:shareacab/screens/settings.dart';
+import 'package:shareacab/main.dart';
 import 'package:shareacab/models/alltrips.dart';
 import 'package:shareacab/models/requestdetails.dart';
-import 'package:shareacab/main.dart';
+import 'package:shareacab/screens/createtrip.dart';
+import 'package:shareacab/screens/filter.dart';
+import 'package:shareacab/screens/help.dart';
+import 'package:shareacab/screens/settings.dart';
+import 'package:shareacab/screens/tripslist.dart';
 import 'package:shareacab/services/auth.dart';
 
 class Dashboard extends StatefulWidget {
@@ -133,36 +132,18 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                         margin: EdgeInsets.all(5),
                         height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
                         width: double.infinity,
-                        child: TripsList(_dest, _selecteddest, _notPrivacy),
+                        child: TripsList(
+                          _dest,
+                          _selecteddest,
+                          _notPrivacy,
+                          inGroup: inGroup,
+                          inGroupFetch: inGroupFetch,
+                          startCreatingTrip: _startCreatingTrip,
+                        ),
                       ),
                     ],
                   ),
                 ),
-                floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-                floatingActionButton: inGroupFetch
-                    ? !inGroup
-                        ? Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
-                            child: FloatingActionButton(
-                              onPressed: () => _startCreatingTrip(context),
-                              child: Tooltip(
-                                message: 'Create Group',
-                                verticalOffset: -60,
-                                child: Icon(Icons.add),
-                              ),
-                            ),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 20, 0, 80),
-                            child: FloatingActionButton.extended(
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
-                              },
-                              icon: Icon(Icons.group),
-                              label: Text('Group'),
-                            ),
-                          )
-                    : null,
               );
             }
           } catch (e) {
