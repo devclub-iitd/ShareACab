@@ -95,8 +95,8 @@ class _SettingsState extends State<Settings> {
         title: Text('Settings'),
         actions: <Widget>[
           user != null
-              ? FlatButton.icon(
-                  textColor: getVisibleColorOnPrimaryColor(context),
+              ? TextButton.icon(
+                  style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
                   icon: Icon(FontAwesomeIcons.signOutAlt),
                   onPressed: () async {
                     await showDialog(
@@ -107,7 +107,7 @@ class _SettingsState extends State<Settings> {
                             content: Text('Are you sure you want to log out?'),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                             actions: <Widget>[
-                              FlatButton(
+                              TextButton(
                                 child: Text('Log out', style: TextStyle(color: Theme.of(context).accentColor)),
                                 onPressed: () async {
                                   ProgressDialog pr;
@@ -126,13 +126,13 @@ class _SettingsState extends State<Settings> {
                                     await pr.hide();
                                     String errStr = err.message ?? err.toString();
                                     final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
-                                    scaffoldKey.currentState.showSnackBar(snackBar);
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                   }
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
                                 },
                               ),
-                              FlatButton(
+                              TextButton(
                                 child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
                                 onPressed: () {
                                   Navigator.of(context).pop();
@@ -144,7 +144,7 @@ class _SettingsState extends State<Settings> {
                   },
                   label: Text('Logout'),
                 )
-              : FlatButton(onPressed: null, child: null)
+              : TextButton(onPressed: null, child: null)
         ],
       ),
       body: ListView(
@@ -392,8 +392,10 @@ class PreviewWidgetState extends State<PreviewWidget> {
                     });
                   },
                 ),
-                RaisedButton(
-                  color: Theme.of(context).accentColor,
+                ElevatedButton(
+                  style: ButtonStyle(
+                    foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                  ),
                   child: Text(
                     'BUTTON',
                     style: TextStyle(color: getVisibleColorOnAccentColor(context)),

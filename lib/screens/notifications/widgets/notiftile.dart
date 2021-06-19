@@ -58,13 +58,21 @@ class _NotifTileState extends State<NotifTile> {
               ),
             ),
           ),
-          title: widget.purpose == 'Request to Join' ? Text('${widget.name} requested to join your trip') : widget.purpose == 'joined the group' ? Text('${widget.name} joined your group') : widget.purpose == 'Request to Join Declined' ? Text('Your request to join the trip is declined') : widget.purpose == 'Your request is accepted' ? Text('Your request is accepted') : Text('${widget.name} left your group'),
+          title: widget.purpose == 'Request to Join'
+              ? Text('${widget.name} requested to join your trip')
+              : widget.purpose == 'joined the group'
+                  ? Text('${widget.name} joined your group')
+                  : widget.purpose == 'Request to Join Declined'
+                      ? Text('Your request to join the trip is declined')
+                      : widget.purpose == 'Your request is accepted'
+                          ? Text('Your request is accepted')
+                          : Text('${widget.name} left your group'),
           subtitle: widget.purpose == 'Request to Join'
               ? widget.response == null
                   ? Container(
                       child: Wrap(
                         children: <Widget>[
-                          FlatButton(
+                          TextButton(
                             onPressed: () async {
                               ProgressDialog pr;
                               pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
@@ -88,7 +96,7 @@ class _NotifTileState extends State<NotifTile> {
                               style: TextStyle(color: Theme.of(context).accentColor),
                             ),
                           ),
-                          FlatButton(
+                          TextButton(
                             onPressed: () async {
                               try {
                                 await _notifServices.responseToRequest(false, widget.docId);
@@ -104,7 +112,9 @@ class _NotifTileState extends State<NotifTile> {
                         ],
                       ),
                     )
-                  : widget.response == true ? Text('You accepted the request') : Text('You declined the request')
+                  : widget.response == true
+                      ? Text('You accepted the request')
+                      : Text('You declined the request')
               : null,
           trailing: Text(DateFormat.yMMMd().format(widget.createdAt.toDate())),
         ),

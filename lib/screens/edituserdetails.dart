@@ -59,7 +59,7 @@ class _EditFormState extends State<EditForm> {
                   elevation: 0.0,
                   title: Text('Edit User Details'),
                   actions: <Widget>[
-                    FlatButton.icon(
+                    TextButton.icon(
                         onPressed: () async {
                           if (_formKey.currentState.validate()) {
                             Navigator.pop(context);

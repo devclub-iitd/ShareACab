@@ -78,8 +78,8 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
       appBar: AppBar(
         title: Text('Dashboard'),
         actions: <Widget>[
-          FlatButton.icon(
-            textColor: getVisibleColorOnPrimaryColor(context),
+          TextButton.icon(
+            style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
             icon: Icon(
               Icons.filter_list,
               size: 30.0,

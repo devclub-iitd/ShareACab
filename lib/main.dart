@@ -274,9 +274,7 @@ ThemeData getThemeDataForAccentColor(Color accentColor, bool darkTheme) {
           accentIconTheme: IconThemeData(color: Colors.black),
           dividerColor: Colors.black12,
           scaffoldBackgroundColor: Colors.black,
-          textSelectionHandleColor: Colors.blue,
-          cursorColor: Colors.white,
-          textSelectionColor: Colors.blue,
+          textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white, selectionColor: Colors.blue, selectionHandleColor: Colors.blue),
         )
       : ThemeData(
           appBarTheme: AppBarTheme(color: Colors.black),
@@ -290,8 +288,10 @@ ThemeData getThemeDataForAccentColor(Color accentColor, bool darkTheme) {
           accentIconTheme: IconThemeData(color: Colors.white),
           dividerColor: Colors.white54,
           scaffoldBackgroundColor: const Color(0xFFE5E5E5),
-          textSelectionHandleColor: Colors.blueGrey[700],
-          cursorColor: Colors.black,
-          textSelectionColor: Colors.blueGrey[700],
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: Colors.black,
+            selectionColor: Colors.blueGrey[700],
+            selectionHandleColor: Colors.blueGrey[700],
+          ),
         );
 }
