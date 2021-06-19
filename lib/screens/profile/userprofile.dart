@@ -81,15 +81,15 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
           ),
           elevation: 0,
           actions: <Widget>[
-            FlatButton.icon(
-                textColor: getVisibleColorOnPrimaryColor(context),
+            TextButton.icon(
+                style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
                 onPressed: () {
                   Navigator.pushNamed(context, '/edituserdetails');
                 },
                 icon: Icon(Icons.edit),
                 label: Text('Edit')),
-            FlatButton.icon(
-              textColor: getVisibleColorOnPrimaryColor(context),
+            TextButton.icon(
+              style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
               icon: Icon(FontAwesomeIcons.signOutAlt),
               onPressed: () async {
                 await showDialog(
@@ -100,7 +100,7 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                         content: Text('Are you sure you want to log out?'),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                         actions: <Widget>[
-                          FlatButton(
+                          TextButton(
                             child: Text('Log out', style: TextStyle(color: Theme.of(context).accentColor)),
                             onPressed: () async {
                               ProgressDialog pr;
@@ -119,12 +119,12 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                                 await pr.hide();
                                 String errStr = err.message ?? err.toString();
                                 final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
-                                scaffoldKey.currentState.showSnackBar(snackBar);
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                               }
                               Navigator.of(context).pop();
                             },
                           ),
-                          FlatButton(
+                          TextButton(
                             child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
                             onPressed: () {
                               Navigator.of(context).pop();
@@ -170,7 +170,7 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                         body: ListView(
                           children: <Widget>[
                             Stack(
-                              overflow: Overflow.visible,
+                              clipBehavior: Clip.none,
                               alignment: Alignment.center,
                               children: <Widget>[
                                 Container(
@@ -311,8 +311,8 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                                                   ),
                                                   duration: Duration(seconds: 1),
                                                 );
-                                                Scaffold.of(context).hideCurrentSnackBar();
-                                                Scaffold.of(context).showSnackBar(snackBar);
+                                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                               });
                                             } else {
                                               await launch('tel://${mobilenum}');
@@ -327,8 +327,8 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                                                 ),
                                                 duration: Duration(seconds: 1),
                                               );
-                                              Scaffold.of(context).hideCurrentSnackBar();
-                                              Scaffold.of(context).showSnackBar(snackBar);
+                                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                             });
                                           }
                                         },

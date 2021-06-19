@@ -23,7 +23,7 @@ class _NotificationsState extends State<Notifications> {
         appBar: AppBar(
           title: Text('Notifications'),
           actions: <Widget>[
-            FlatButton.icon(
+            TextButton.icon(
                 onPressed: () async {
                   await _notifServices.removeAll();
                 },

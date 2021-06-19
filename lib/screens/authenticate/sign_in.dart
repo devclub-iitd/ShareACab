@@ -54,7 +54,7 @@ class _SignInState extends State<SignIn> {
                         return Settings(_auth);
                       }));
                     }),
-                FlatButton.icon(
+                TextButton.icon(
                   icon: Icon(Icons.person_add, color: getVisibleColorOnPrimaryColor(context)),
                   label: Text(
                     'Register',
@@ -138,8 +138,10 @@ class _SignInState extends State<SignIn> {
                             },
                           ),
                           SizedBox(height: 20.0),
-                          RaisedButton(
-                            color: Theme.of(context).accentColor,
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               child: Text(
@@ -170,8 +172,8 @@ class _SignInState extends State<SignIn> {
                                   var flag = await _auth.signInWithEmailAndPassword(email, password);
                                   if (flag == false) {
                                     error = 'ID not verified, verification mail sent again.';
-                                    Scaffold.of(context).hideCurrentSnackBar();
-                                    Scaffold.of(context).showSnackBar(SnackBar(
+                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                       backgroundColor: Theme.of(context).primaryColor,
                                       duration: Duration(seconds: 2),
                                       content: Text(
@@ -209,8 +211,8 @@ class _SignInState extends State<SignIn> {
                                           error = 'An undefined Error happened.';
                                         }
                                     }
-                                    Scaffold.of(context).hideCurrentSnackBar();
-                                    Scaffold.of(context).showSnackBar(SnackBar(
+                                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                       backgroundColor: Theme.of(context).primaryColor,
                                       duration: Duration(seconds: 2),
                                       content: Text(
@@ -224,8 +226,10 @@ class _SignInState extends State<SignIn> {
                             },
                           ),
                           SizedBox(height: 20.0),
-                          RaisedButton(
-                            color: Theme.of(context).accentColor,
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                            ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               child: Text(

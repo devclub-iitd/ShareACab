@@ -66,8 +66,10 @@ class _ChangeEmailState extends State<ChangeEmail> {
                       SizedBox(
                         height: 20.0,
                       ),
-                      RaisedButton(
-                          color: Theme.of(context).accentColor,
+                      ElevatedButton(
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                          ),
                           child: Text(
                             'Change Email',
                             style: TextStyle(color: Colors.white),

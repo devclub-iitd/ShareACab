@@ -84,7 +84,7 @@ class _RegisterState extends State<Register> {
                     style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
                   ),
                   actions: <Widget>[
-                    FlatButton.icon(
+                    TextButton.icon(
                       icon: Icon(Icons.person, color: getVisibleColorOnPrimaryColor(context)),
                       label: Text(
                         'Sign in',
@@ -260,8 +260,10 @@ class _RegisterState extends State<Register> {
                                   validator: (val) => val == null ? 'Please select your sex' : null,
                                 ),
                                 SizedBox(height: 20.0),
-                                RaisedButton(
-                                  color: Theme.of(context).accentColor,
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                    foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                                  ),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 17.0),
                                     child: Text(
@@ -306,8 +308,8 @@ class _RegisterState extends State<Register> {
                                             default:
                                               error = 'An undefined Error happened.';
                                           }
-                                          Scaffold.of(context).hideCurrentSnackBar();
-                                          Scaffold.of(context).showSnackBar(SnackBar(
+                                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                             backgroundColor: Theme.of(context).primaryColor,
                                             duration: Duration(seconds: 2),
                                             content: Text(

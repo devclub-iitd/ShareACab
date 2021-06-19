@@ -57,7 +57,7 @@ class _VerificationCheckState extends State<VerificationCheck> {
               elevation: 0.0,
               title: Text('Verification Screen'),
               actions: <Widget>[
-                FlatButton.icon(
+                TextButton.icon(
                   icon: Icon(
                     Icons.person,
                     color: getVisibleColorOnPrimaryColor(context),
@@ -106,8 +106,10 @@ class _VerificationCheckState extends State<VerificationCheck> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
-                        RaisedButton(
-                          color: Theme.of(context).accentColor,
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                          ),
                           child: Text(
                             'Resend email',
                             style: TextStyle(color: getVisibleColorOnAccentColor(context)),
@@ -124,8 +126,10 @@ class _VerificationCheckState extends State<VerificationCheck> {
                             }
                           },
                         ),
-                        RaisedButton(
-                          color: Theme.of(context).accentColor,
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                          ),
                           child: Text(
                             'Change email',
                             style: TextStyle(color: getVisibleColorOnAccentColor(context)),

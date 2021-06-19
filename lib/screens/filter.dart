@@ -20,7 +20,7 @@ class _FilterState extends State<Filter> {
   String _destination;
   bool _dest = false;
   bool _notPrivacy = false;
- 
+
   @override
   void initState() {
     _dest = widget._dest;
@@ -119,11 +119,13 @@ class _FilterState extends State<Filter> {
                     bottom: 5,
                     right: 20,
                   ),
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () {
                       _submitData();
                     },
-                    color: Theme.of(context).accentColor,
+                    style: ButtonStyle(
+                      foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                    ),
                     child: Text('Filter', style: TextStyle(fontSize: 16, color: getVisibleColorOnAccentColor(context))),
                   ),
                 ),

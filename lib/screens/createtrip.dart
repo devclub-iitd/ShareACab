@@ -53,16 +53,16 @@ class _CreateTripState extends State<CreateTrip> {
     enteredFinalDestination = '';
 
     if (enteredFinalDestination == null || _maxPoolers == null || enteredDestination == null) {
-      _scaffoldKey.currentState.hideCurrentSnackBar();
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         duration: Duration(seconds: 1),
         backgroundColor: Theme.of(context).primaryColor,
         content: Text('One or more fields is missing', style: TextStyle(color: Theme.of(context).accentColor)),
       ));
       return; //return stops function execution and thus nothing is called or returned
     } else if (_selectedStartDate == null || _selectedStartTime == null || _selectedEndDate == null || _selectedEndTime == null) {
-      _scaffoldKey.currentState.hideCurrentSnackBar();
-      _scaffoldKey.currentState.showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         duration: Duration(seconds: 1),
         backgroundColor: Theme.of(context).primaryColor,
         content: Text('Date or Time is missing', style: TextStyle(color: Theme.of(context).accentColor)),
@@ -78,8 +78,8 @@ class _CreateTripState extends State<CreateTrip> {
         });
         Navigator.of(context).pop();
       } else {
-        _scaffoldKey.currentState.hideCurrentSnackBar();
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Theme.of(context).primaryColor,
           duration: Duration(seconds: 2),
           content: Text(
@@ -345,13 +345,15 @@ class _CreateTripState extends State<CreateTrip> {
                         bottom: 30,
                         right: 20,
                       ),
-                      child: RaisedButton(
-                        textColor: getVisibleColorOnAccentColor(context),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Theme.of(context).accentColor,
+                          textStyle: TextStyle(color: getVisibleColorOnAccentColor(context)),
+                        ),
                         onPressed: () {
                           SystemChannels.textInput.invokeMethod('Text Input hide');
                           _submitData();
                         },
-                        color: Theme.of(context).accentColor,
                         child: Text('Create Trip', style: TextStyle(fontSize: 18)),
                       ),
                     ),

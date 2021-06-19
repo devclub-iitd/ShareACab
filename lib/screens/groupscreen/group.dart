@@ -92,8 +92,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                               actions: <Widget>[
                                 buttonEnabled
                                     ? timestampFlag
-                                        ? FlatButton.icon(
-                                            textColor: getVisibleColorOnPrimaryColor(context),
+                                        ? TextButton.icon(
+                                            style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
                                             icon: Icon(FontAwesomeIcons.signOutAlt),
                                             onPressed: () async {
                                               try {
@@ -105,7 +105,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                         content: Text('Are you sure you want to end this trip?'),
                                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                         actions: <Widget>[
-                                                          FlatButton(
+                                                          TextButton(
                                                             child: Text('End', style: TextStyle(color: Theme.of(context).accentColor)),
                                                             onPressed: () async {
                                                               ProgressDialog pr;
@@ -129,12 +129,12 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                                 print(e.toString());
                                                                 String errStr = e.message ?? e.toString();
                                                                 final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
-                                                                scaffoldKey.currentState.showSnackBar(snackBar);
+                                                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                               }
                                                               Navigator.pop(context);
                                                             },
                                                           ),
-                                                          FlatButton(
+                                                          TextButton(
                                                             child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
                                                             onPressed: () {
                                                               Navigator.of(context).pop();
@@ -149,8 +149,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                             },
                                             label: Text('End Trip'),
                                           )
-                                        : FlatButton.icon(
-                                            textColor: getVisibleColorOnPrimaryColor(context),
+                                        : TextButton.icon(
+                                            style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
                                             icon: Icon(FontAwesomeIcons.signOutAlt),
                                             onPressed: () async {
                                               try {
@@ -162,7 +162,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                         content: Text('Are you sure you want to leave this group?'),
                                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                         actions: <Widget>[
-                                                          FlatButton(
+                                                          TextButton(
                                                             child: Text('Leave', style: TextStyle(color: Theme.of(context).accentColor)),
                                                             onPressed: () async {
                                                               ProgressDialog pr;
@@ -187,12 +187,12 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                                 print(e.toString());
                                                                 String errStr = e.message ?? e.toString();
                                                                 final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
-                                                                scaffoldKey.currentState.showSnackBar(snackBar);
+                                                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                               }
                                                               Navigator.pop(context);
                                                             },
                                                           ),
-                                                          FlatButton(
+                                                          TextButton(
                                                             child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
                                                             onPressed: () {
                                                               Navigator.of(context).pop();
@@ -208,14 +208,14 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                             label: Text('Leave Group'),
                                           )
                                     : timestampFlag
-                                        ? FlatButton.icon(
-                                            textColor: getVisibleColorOnPrimaryColor(context),
+                                        ? TextButton.icon(
+                                            style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
                                             icon: Icon(FontAwesomeIcons.signOutAlt),
                                             onPressed: null,
                                             label: Text('End Trip'),
                                           )
-                                        : FlatButton.icon(
-                                            textColor: getVisibleColorOnPrimaryColor(context),
+                                        : TextButton.icon(
+                                            style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
                                             icon: Icon(FontAwesomeIcons.signOutAlt),
                                             onPressed: null,
                                             label: Text('Leave Group'),
@@ -282,7 +282,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                               mainAxisAlignment: MainAxisAlignment.end,
                                               children: <Widget>[
                                                 Text('Press here to edit the details: '),
-                                                FlatButton.icon(
+                                                TextButton.icon(
                                                     onPressed: () {
                                                       Navigator.push(context, MaterialPageRoute(builder: (context) => EditGroup(groupUID: groupUID)));
                                                     },
@@ -422,8 +422,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                                     ),
                                                                     duration: Duration(seconds: 1),
                                                                   );
-                                                                  Scaffold.of(context).hideCurrentSnackBar();
-                                                                  Scaffold.of(context).showSnackBar(snackBar);
+                                                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                                 });
                                                               } else {
                                                                 await launch('tel://${snapshots.data.documents[index].data['mobilenum']}');
@@ -438,8 +438,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                                   ),
                                                                   duration: Duration(seconds: 1),
                                                                 );
-                                                                Scaffold.of(context).hideCurrentSnackBar();
-                                                                Scaffold.of(context).showSnackBar(snackBar);
+                                                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                               });
                                                             }
                                                           },
@@ -474,7 +474,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                                         content: Text('Are you sure you want to kick this user?'),
                                                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                                         actions: <Widget>[
-                                                                          FlatButton(
+                                                                          TextButton(
                                                                             child: Text('Kick', style: TextStyle(color: Theme.of(context).accentColor)),
                                                                             onPressed: () async {
                                                                               Navigator.pop(context);
@@ -497,7 +497,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                                               }
                                                                             },
                                                                           ),
-                                                                          FlatButton(
+                                                                          TextButton(
                                                                             child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
                                                                             onPressed: () {
                                                                               Navigator.of(context).pop();

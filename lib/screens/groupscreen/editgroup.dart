@@ -275,16 +275,19 @@ class _EditGroupState extends State<EditGroup> {
                           bottom: 30,
                           right: 20,
                         ),
-                        child: RaisedButton(
-                          textColor: getVisibleColorOnAccentColor(context),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).accentColor,
+                            textStyle: TextStyle(color: getVisibleColorOnAccentColor(context)),
+                          ),
                           onPressed: () {
                             var starting = DateTime(_selectedStartDate.year, _selectedStartDate.month, _selectedStartDate.day, _selectedStartTime.hour, _selectedStartTime.minute);
                             var ending = DateTime(_selectedEndDate.year, _selectedEndDate.month, _selectedEndDate.day, _selectedEndTime.hour, _selectedEndTime.minute);
                             if (starting.compareTo(ending) < 0) {
                               _submitData();
                             } else {
-                              Scaffold.of(context).hideCurrentSnackBar();
-                              Scaffold.of(context).showSnackBar(SnackBar(
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 backgroundColor: Theme.of(context).primaryColor,
                                 duration: Duration(seconds: 2),
                                 content: Text(
@@ -294,7 +297,6 @@ class _EditGroupState extends State<EditGroup> {
                               ));
                             }
                           },
-                          color: Theme.of(context).accentColor,
                           child: Text('Update Trip', style: TextStyle(fontSize: 18)),
                         ),
                       ),

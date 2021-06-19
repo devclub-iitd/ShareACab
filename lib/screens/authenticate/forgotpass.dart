@@ -57,8 +57,10 @@ class _ForgotPassState extends State<ForgotPass> {
                           },
                         ),
                         SizedBox(height: 20.0),
-                        RaisedButton(
-                          color: Theme.of(context).accentColor,
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 14.0),
                             child: Text(
@@ -105,8 +107,10 @@ class _ForgotPassState extends State<ForgotPass> {
                           },
                         ),
                         SizedBox(height: 15.0),
-                        RaisedButton(
-                          color: Theme.of(context).accentColor,
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 14.0),
                             child: Text(

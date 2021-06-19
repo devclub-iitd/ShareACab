@@ -200,8 +200,8 @@ class _EndedGroupDetailsState extends State<EndedGroupDetails> {
                                                       ),
                                                       duration: Duration(seconds: 1),
                                                     );
-                                                    Scaffold.of(ctx).hideCurrentSnackBar();
-                                                    Scaffold.of(ctx).showSnackBar(snackBar);
+                                                    ScaffoldMessenger.of(ctx).hideCurrentSnackBar();
+                                                    ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
                                                   });
                                                 } else {
                                                   await launch('tel://${futureSnapshot.data[index].data['mobilenum'].toString()}');
@@ -216,8 +216,8 @@ class _EndedGroupDetailsState extends State<EndedGroupDetails> {
                                                     ),
                                                     duration: Duration(seconds: 1),
                                                   );
-                                                  Scaffold.of(ctx).hideCurrentSnackBar();
-                                                  Scaffold.of(ctx).showSnackBar(snackBar);
+                                                  ScaffoldMessenger.of(ctx).hideCurrentSnackBar();
+                                                  ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
                                                 });
                                               }
                                             },

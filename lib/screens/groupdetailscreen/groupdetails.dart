@@ -260,8 +260,8 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                                       ),
                                                                       duration: Duration(seconds: 1),
                                                                     );
-                                                                    Scaffold.of(ctx).hideCurrentSnackBar();
-                                                                    Scaffold.of(ctx).showSnackBar(snackBar);
+                                                                    ScaffoldMessenger.of(ctx).hideCurrentSnackBar();
+                                                                    ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
                                                                   });
                                                                 } else {
                                                                   await launch('tel://${futureSnapshot.data.documents[index].data['mobilenum'].toString()}');
@@ -276,8 +276,8 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                                     ),
                                                                     duration: Duration(seconds: 1),
                                                                   );
-                                                                  Scaffold.of(ctx).hideCurrentSnackBar();
-                                                                  Scaffold.of(ctx).showSnackBar(snackBar);
+                                                                  ScaffoldMessenger.of(ctx).hideCurrentSnackBar();
+                                                                  ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
                                                                 });
                                                               }
                                                             },
@@ -298,8 +298,12 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                               ),
                             ),
                           ),
-                          bottomNavigationBar: FlatButton(
-                            textColor: getVisibleColorOnAccentColor(context),
+                          bottomNavigationBar: TextButton(
+                            style: TextButton.styleFrom(
+                              textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
+                              padding: EdgeInsets.all(20),
+                            ),
+
                             onPressed: () async {
                               try {
                                 if (GroupDetails.inGroup) {
@@ -317,7 +321,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                               title: Text('Request To Join Group'),
                                               content: Text('Are you sure you want to request to join this group?'),
                                               actions: <Widget>[
-                                                FlatButton(
+                                                TextButton(
                                                   child: Text('Request', style: TextStyle(color: Theme.of(context).accentColor)),
                                                   onPressed: () async {
                                                     ProgressDialog pr;
@@ -339,7 +343,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                     }
                                                   },
                                                 ),
-                                                FlatButton(
+                                                TextButton(
                                                   child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
@@ -356,7 +360,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                           title: Text('Join Group'),
                                           content: Text('Are you sure you want to join this group?'),
                                           actions: <Widget>[
-                                            FlatButton(
+                                            TextButton(
                                               child: Text('Join', style: TextStyle(color: Theme.of(context).accentColor)),
                                               onPressed: () async {
                                                 ProgressDialog pr;
@@ -390,7 +394,7 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                 // Scaffold.of(ctx).showSnackBar(snackBar);
                                               },
                                             ),
-                                            FlatButton(
+                                            TextButton(
                                               child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
@@ -404,7 +408,6 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                 print(e.toString());
                               }
                             },
-                            padding: EdgeInsets.all(20),
                             child: privacy == 'true'
                                 ? GroupDetails.inGroup
                                     ? Text(
@@ -427,8 +430,9 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                         'My Group Page', // visiting a group page
                                         style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
                                       )
-                                    : full ? Text('Group is full', style: TextStyle(fontSize: 20)) : Text('Join Now', style: TextStyle(fontSize: 20)), // Visiting a public group page and not in any group
-                            color: Theme.of(context).accentColor,
+                                    : full
+                                        ? Text('Group is full', style: TextStyle(fontSize: 20))
+                                        : Text('Join Now', style: TextStyle(fontSize: 20)), // Visiting a public group page and not in any group
                           ),
                         ));
                   } else {
