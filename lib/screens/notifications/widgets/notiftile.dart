@@ -11,13 +11,16 @@ class NotifTile extends StatefulWidget {
   final createdAt;
   final response;
   final purpose;
+
   NotifTile(this.docId, this.fromuid, this.name, this.createdAt, this.response, this.purpose);
+
   @override
   _NotifTileState createState() => _NotifTileState();
 }
 
 class _NotifTileState extends State<NotifTile> {
   final NotifServices _notifServices = NotifServices();
+
   @override
   Widget build(BuildContext context) {
     return Dismissible(
@@ -89,6 +92,13 @@ class _NotifTileState extends State<NotifTile> {
                               } catch (e) {
                                 await pr.hide();
                                 print(e.toString());
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  content: Text(
+                                    e.toString(),
+                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                  ),
+                                ));
                               }
                             },
                             child: Text(
@@ -102,6 +112,13 @@ class _NotifTileState extends State<NotifTile> {
                                 await _notifServices.responseToRequest(false, widget.docId);
                               } catch (e) {
                                 print(e.toString());
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  content: Text(
+                                    e.toString(),
+                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                  ),
+                                ));
                               }
                             },
                             child: Text(
