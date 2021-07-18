@@ -39,3 +39,6 @@ lib/generated_plugin_registrant.dart
 # Deploy Bot
 .gitsecret/keys/random_seed
 !*.secret
+
+# VS Code
+.vscode
