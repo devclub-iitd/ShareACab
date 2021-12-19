@@ -17,8 +17,7 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard>
-    with AutomaticKeepAliveClientMixin<Dashboard> {
+class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixin<Dashboard> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthService _auth = AuthService();
   List<RequestDetails> filtered = allTrips;
@@ -80,9 +79,7 @@ class _DashboardState extends State<Dashboard>
         title: Text('Dashboard'),
         actions: <Widget>[
           TextButton.icon(
-            style: TextButton.styleFrom(
-                textStyle:
-                    TextStyle(color: getVisibleColorOnPrimaryColor(context))),
+            style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
             icon: Icon(
               Icons.filter_list,
               size: 30.0,
@@ -96,16 +93,14 @@ class _DashboardState extends State<Dashboard>
             icon: Icon(Icons.help),
             tooltip: 'Help',
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Help()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Help()));
             },
           ),
           IconButton(
               icon: Icon(Icons.settings),
               tooltip: 'Settings',
               onPressed: () {
-                return Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
+                return Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return settings.Settings(_auth);
                 }));
               }),
@@ -113,12 +108,8 @@ class _DashboardState extends State<Dashboard>
       ),
       resizeToAvoidBottomInset: false,
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('userdetails')
-            .doc(currentuser.uid)
-            .snapshots(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        stream: FirebaseFirestore.instance.collection('userdetails').doc(currentuser.uid).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             var temp = snapshot.data['currentGroup'];
             if (temp != null) {
@@ -132,17 +123,14 @@ class _DashboardState extends State<Dashboard>
           }
 
           try {
-            if (snapshot.connectionState == ConnectionState.active &&
-                fetched == true) {
+            if (snapshot.connectionState == ConnectionState.active && fetched == true) {
               return Scaffold(
                 body: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.all(5),
-                        height: (MediaQuery.of(context).size.height -
-                                MediaQuery.of(context).padding.top) *
-                            0.87,
+                        height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
                         width: double.infinity,
                         child: TripsList(
                           _dest,

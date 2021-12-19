@@ -13,8 +13,7 @@ class AuthService {
   //sign in with email pass
 
   Future<bool> signInWithEmailAndPassword(String email, String password) async {
-    var result = await _auth.signInWithEmailAndPassword(
-        email: email, password: password);
+    var result = await _auth.signInWithEmailAndPassword(email: email, password: password);
     if (result.user.emailVerified) {
       return true;
     } else {
@@ -29,19 +28,11 @@ class AuthService {
 
   // sign up with email pass
 
-  Future<void> registerWithEmailAndPassword(
-      {String email,
-      String password,
-      String name,
-      String mobilenum,
-      String hostel,
-      String sex}) async {
-    var result = await _auth.createUserWithEmailAndPassword(
-        email: email, password: password);
+  Future<void> registerWithEmailAndPassword({String email, String password, String name, String mobilenum, String hostel, String sex}) async {
+    var result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
     var user = result.user;
     // creating a new document for user
-    await DatabaseService(uid: user.uid).enterUserData(
-        name: name, mobileNumber: mobilenum, hostel: hostel, sex: sex);
+    await DatabaseService(uid: user.uid).enterUserData(name: name, mobileNumber: mobilenum, hostel: hostel, sex: sex);
     await result.user.sendEmailVerification();
   }
 

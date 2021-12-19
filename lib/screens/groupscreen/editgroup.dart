@@ -35,24 +35,14 @@ class _EditGroupState extends State<EditGroup> {
 
   void _updateGroup() async {
     try {
-      await _databaseService.updateGroup(
-          groupUID,
-          _selectedStartDate,
-          _selectedStartTime,
-          _selectedEndDate,
-          _selectedEndTime,
-          privacy,
-          _maxPoolers);
+      await _databaseService.updateGroup(groupUID, _selectedStartDate, _selectedStartTime, _selectedEndDate, _selectedEndTime, privacy, _maxPoolers);
     } catch (e) {
       print(e.toString());
     }
   }
 
   void _submitData() {
-    if (_selectedStartDate == null ||
-        _selectedStartTime == null ||
-        _selectedEndDate == null ||
-        _selectedEndTime == null) {
+    if (_selectedStartDate == null || _selectedStartTime == null || _selectedEndDate == null || _selectedEndTime == null) {
       return; //return stops function execution and thus nothing is called or returned
     }
     setState(() {
@@ -62,12 +52,7 @@ class _EditGroupState extends State<EditGroup> {
   }
 
   void _startDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: _selectedStartDate,
-            firstDate: DateTime.parse(_selectedStartDate.toString()),
-            lastDate: DateTime.now().add(Duration(days: 30)))
-        .then((pickedDate) {
+    showDatePicker(context: context, initialDate: _selectedStartDate, firstDate: DateTime.parse(_selectedStartDate.toString()), lastDate: DateTime.now().add(Duration(days: 30))).then((pickedDate) {
       if (pickedDate == null) {
         return;
       }
@@ -79,12 +64,7 @@ class _EditGroupState extends State<EditGroup> {
   }
 
   void _endDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: _selectedEndDate,
-            firstDate: DateTime.parse(_selectedEndDate.toString()),
-            lastDate: DateTime.now().add(Duration(days: 30)))
-        .then((pickedDate) {
+    showDatePicker(context: context, initialDate: _selectedEndDate, firstDate: DateTime.parse(_selectedEndDate.toString()), lastDate: DateTime.now().add(Duration(days: 30))).then((pickedDate) {
       if (pickedDate == null) {
         return;
       }
@@ -146,16 +126,13 @@ class _EditGroupState extends State<EditGroup> {
     );
   }
 
-  Widget buildContainer(String point, DateTime date, TimeOfDay time,
-      Function DatePicker, Function TimePicker) {
+  Widget buildContainer(String point, DateTime date, TimeOfDay time, Function DatePicker, Function TimePicker) {
     return Container(
       margin: EdgeInsets.only(top: 20, left: 30, right: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Text(date == null
-              ? '$point Date'
-              : '${DateFormat.yMd().format(date)}'),
+          Text(date == null ? '$point Date' : '${DateFormat.yMd().format(date)}'),
           IconButton(
             icon: Icon(
               Icons.calendar_today,
@@ -163,9 +140,7 @@ class _EditGroupState extends State<EditGroup> {
             ),
             onPressed: () => DatePicker(),
           ),
-          Text(time == null
-              ? '$point Time'
-              : '${time.toString().substring(10, 15)}'),
+          Text(time == null ? '$point Time' : '${time.toString().substring(10, 15)}'),
           IconButton(
             icon: Icon(
               Icons.schedule,
@@ -180,21 +155,15 @@ class _EditGroupState extends State<EditGroup> {
 
   @override
   void initState() {
-    FirebaseFirestore.instance
-        .collection('group')
-        .doc(groupUID)
-        .get()
-        .then((value) {
+    FirebaseFirestore.instance.collection('group').doc(groupUID).get().then((value) {
       setState(() {
         startTS = value.data()['start'];
         endTS = value.data()['end'];
         tempPrivacy = value.data()['privacy'];
         _selectedStartDate = startTS.toDate();
         _selectedEndDate = endTS.toDate();
-        _selectedStartTime = TimeOfDay(
-            hour: _selectedStartDate.hour, minute: _selectedStartDate.minute);
-        _selectedEndTime = TimeOfDay(
-            hour: _selectedEndDate.hour, minute: _selectedEndDate.minute);
+        _selectedStartTime = TimeOfDay(hour: _selectedStartDate.hour, minute: _selectedStartDate.minute);
+        _selectedEndTime = TimeOfDay(hour: _selectedEndDate.hour, minute: _selectedEndDate.minute);
         _maxPoolers = value.data()['maxpoolers'];
       });
       if (tempPrivacy == 'true') {
@@ -225,21 +194,14 @@ class _EditGroupState extends State<EditGroup> {
                   child: Column(
                     children: <Widget>[
                       buildLabel('Starting'),
-                      buildContainer(
-                          'Start',
-                          _selectedStartDate,
-                          _selectedStartTime,
-                          _startDatePicker,
-                          _startTimePicker),
+                      buildContainer('Start', _selectedStartDate, _selectedStartTime, _startDatePicker, _startTimePicker),
                       buildLabel('Ending'),
-                      buildContainer('End', _selectedEndDate, _selectedEndTime,
-                          _endDatePicker, _endTimePicker),
+                      buildContainer('End', _selectedEndDate, _selectedEndTime, _endDatePicker, _endTimePicker),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding:
-                                const EdgeInsets.only(top: 30.0, left: 40.0),
+                            padding: const EdgeInsets.only(top: 30.0, left: 40.0),
                             child: Text('Max No. of poolers:',
                                 style: TextStyle(
                                   fontSize: 20.0,
@@ -260,9 +222,7 @@ class _EditGroupState extends State<EditGroup> {
                                   child: Text(
                                     dropDownIntItem.toString(),
                                     style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                                      color: Theme.of(context).colorScheme.secondary,
                                     ),
                                   ),
                                 );
@@ -292,10 +252,8 @@ class _EditGroupState extends State<EditGroup> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Checkbox(
-                                checkColor:
-                                    getVisibleColorOnAccentColor(context),
-                                activeColor:
-                                    Theme.of(context).colorScheme.secondary,
+                                checkColor: getVisibleColorOnAccentColor(context),
+                                activeColor: Theme.of(context).colorScheme.secondary,
                                 value: privacy,
                                 onChanged: (bool value) {
                                   setState(() {
@@ -320,43 +278,26 @@ class _EditGroupState extends State<EditGroup> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             primary: Theme.of(context).colorScheme.secondary,
-                            textStyle: TextStyle(
-                                color: getVisibleColorOnAccentColor(context)),
+                            textStyle: TextStyle(color: getVisibleColorOnAccentColor(context)),
                           ),
                           onPressed: () {
-                            var starting = DateTime(
-                                _selectedStartDate.year,
-                                _selectedStartDate.month,
-                                _selectedStartDate.day,
-                                _selectedStartTime.hour,
-                                _selectedStartTime.minute);
-                            var ending = DateTime(
-                                _selectedEndDate.year,
-                                _selectedEndDate.month,
-                                _selectedEndDate.day,
-                                _selectedEndTime.hour,
-                                _selectedEndTime.minute);
+                            var starting = DateTime(_selectedStartDate.year, _selectedStartDate.month, _selectedStartDate.day, _selectedStartTime.hour, _selectedStartTime.minute);
+                            var ending = DateTime(_selectedEndDate.year, _selectedEndDate.month, _selectedEndDate.day, _selectedEndTime.hour, _selectedEndTime.minute);
                             if (starting.compareTo(ending) < 0) {
                               _submitData();
                             } else {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 backgroundColor: Theme.of(context).primaryColor,
                                 duration: Duration(seconds: 2),
                                 content: Text(
                                   'INVALID : Start Time > End Time',
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary),
+                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                 ),
                               ));
                             }
                           },
-                          child: Text('Update Trip',
-                              style: TextStyle(fontSize: 18)),
+                          child: Text('Update Trip', style: TextStyle(fontSize: 18)),
                         ),
                       ),
                     ],

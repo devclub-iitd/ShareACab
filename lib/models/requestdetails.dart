@@ -22,15 +22,5 @@ class RequestDetails {
   @required
   final int maxPoolers;
 
-  RequestDetails(
-      {this.name,
-      this.id,
-      this.destination,
-      this.finalDestination,
-      this.startDate,
-      this.startTime,
-      this.endDate,
-      this.endTime,
-      this.privacy,
-      this.maxPoolers});
+  RequestDetails({this.name, this.id, this.destination, this.finalDestination, this.startDate, this.startTime, this.endDate, this.endTime, this.privacy, this.maxPoolers});
 }

@@ -11,16 +11,12 @@ class DatabaseService {
   DatabaseService({this.uid});
 
   //collection reference
-  final CollectionReference<Map<String, dynamic>> userDetails =
-      FirebaseFirestore.instance.collection('userdetails');
-  final CollectionReference<Map<String, dynamic>> groupdetails =
-      FirebaseFirestore.instance.collection('group');
-  final CollectionReference<Map<String, dynamic>> requests =
-      FirebaseFirestore.instance.collection('requests');
+  final CollectionReference<Map<String, dynamic>> userDetails = FirebaseFirestore.instance.collection('userdetails');
+  final CollectionReference<Map<String, dynamic>> groupdetails = FirebaseFirestore.instance.collection('group');
+  final CollectionReference<Map<String, dynamic>> requests = FirebaseFirestore.instance.collection('requests');
 
   // Enter user data (W=1, R=0)
-  Future enterUserData(
-      {String name, String mobileNumber, String hostel, String sex}) async {
+  Future enterUserData({String name, String mobileNumber, String hostel, String sex}) async {
     return await userDetails.doc(uid).set({
       'name': name,
       'mobileNumber': mobileNumber,
@@ -34,15 +30,10 @@ class DatabaseService {
   }
 
   // Update user data (W=1/2,R=1)
-  Future updateUserData(
-      {String name, String mobileNumber, String hostel, String sex}) async {
+  Future updateUserData({String name, String mobileNumber, String hostel, String sex}) async {
     var currentGrp;
     var user = _auth.currentUser;
-    await FirebaseFirestore.instance
-        .collection('userdetails')
-        .doc(user.uid)
-        .get()
-        .then((value) {
+    await FirebaseFirestore.instance.collection('userdetails').doc(user.uid).get().then((value) {
       currentGrp = value.data()['currentGroup'];
     });
     await userDetails.doc(uid).update({
@@ -62,8 +53,7 @@ class DatabaseService {
   }
 
   // user list from snapshot
-  List<Userdetails> _UserListFromSnapshot(
-      QuerySnapshot<Map<String, dynamic>> snapshot) {
+  List<Userdetails> _UserListFromSnapshot(QuerySnapshot<Map<String, dynamic>> snapshot) {
     return snapshot.docs.map((doc) {
       return Userdetails(
         uid: doc.id,
@@ -96,19 +86,9 @@ class DatabaseService {
     // CODE FOR CONVERTING DATE TIME TO TIMESTAMP
 
     var temp = requestDetails.startTime;
-    var starting = DateTime(
-        requestDetails.startDate.year,
-        requestDetails.startDate.month,
-        requestDetails.startDate.day,
-        temp.hour,
-        temp.minute);
+    var starting = DateTime(requestDetails.startDate.year, requestDetails.startDate.month, requestDetails.startDate.day, temp.hour, temp.minute);
     var temp2 = requestDetails.endTime;
-    var ending = DateTime(
-        requestDetails.endDate.year,
-        requestDetails.endDate.month,
-        requestDetails.endDate.day,
-        temp2.hour,
-        temp2.minute);
+    var ending = DateTime(requestDetails.endDate.year, requestDetails.endDate.month, requestDetails.endDate.day, temp2.hour, temp2.minute);
 
     final docRef = await groupdetails.add({
       'owner': user.uid.toString(),
@@ -124,37 +104,22 @@ class DatabaseService {
     });
 
     //adding user to group chat
-    await ChatService().createChatRoom(
-        docRef.id, user.uid.toString(), requestDetails.destination.toString());
+    await ChatService().createChatRoom(docRef.id, user.uid.toString(), requestDetails.destination.toString());
 
     await userDetails.doc(user.uid).update({
       'currentGroup': docRef.id,
     });
 
     var request = groupdetails.doc(docRef.id).collection('users');
-    await FirebaseFirestore.instance
-        .collection('userdetails')
-        .doc(user.uid)
-        .get()
-        .then((value) async {
+    await FirebaseFirestore.instance.collection('userdetails').doc(user.uid).get().then((value) async {
       if (value.exists) {
-        await request.doc(user.uid).set({
-          'name': value.data()['name'],
-          'hostel': value.data()['hostel'],
-          'sex': value.data()['sex'],
-          'mobilenum': value.data()['mobileNumber'],
-          'totalrides': value.data()['totalRides'],
-          'cancelledrides': value.data()['cancelledRides'],
-          'actualrating': value.data()['actualRating'],
-          'numberofratings': value.data()['numberOfRatings']
-        });
+        await request.doc(user.uid).set({'name': value.data()['name'], 'hostel': value.data()['hostel'], 'sex': value.data()['sex'], 'mobilenum': value.data()['mobileNumber'], 'totalrides': value.data()['totalRides'], 'cancelledrides': value.data()['cancelledRides'], 'actualrating': value.data()['actualRating'], 'numberofratings': value.data()['numberOfRatings']});
       }
     });
   }
 
   // to update group details (W=1, R=0)
-  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST,
-      DateTime ED, TimeOfDay ET, bool privacy, int maxPoolers) async {
+  Future<void> updateGroup(String groupUID, DateTime SD, TimeOfDay ST, DateTime ED, TimeOfDay ET, bool privacy, int maxPoolers) async {
     var starting = DateTime(SD.year, SD.month, SD.day, ST.hour, ST.minute);
     var ending = DateTime(ED.year, ED.month, ED.day, ET.hour, ET.minute);
 
@@ -175,11 +140,7 @@ class DatabaseService {
     var totalRides;
     var cancelledRides;
     var owner;
-    await FirebaseFirestore.instance
-        .collection('userdetails')
-        .doc(user.uid)
-        .get()
-        .then((value) {
+    await FirebaseFirestore.instance.collection('userdetails').doc(user.uid).get().then((value) {
       currentGrp = value.data()['currentGroup'];
       totalRides = value.data()['totalRides'];
       cancelledRides = value.data()['cancelledRides'];
@@ -208,11 +169,7 @@ class DatabaseService {
           'owner': newowner,
         });
       }
-      await groupdetails
-          .doc(currentGrp)
-          .collection('users')
-          .doc(user.uid)
-          .delete();
+      await groupdetails.doc(currentGrp).collection('users').doc(user.uid).delete();
       //deleting user from chat group
       await ChatService().exitChatRoom(currentGrp);
     }
@@ -247,11 +204,7 @@ class DatabaseService {
     });
 
     var request = groupdetails.doc(listuid).collection('users');
-    await FirebaseFirestore.instance
-        .collection('userdetails')
-        .doc(user.uid)
-        .get()
-        .then((value) async {
+    await FirebaseFirestore.instance.collection('userdetails').doc(user.uid).get().then((value) async {
       if (value.exists) {
         await request.doc(user.uid).set({
           'name': value.data()['name'],

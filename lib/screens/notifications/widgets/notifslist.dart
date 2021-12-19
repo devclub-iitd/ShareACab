@@ -15,19 +15,12 @@ class NotifsList extends StatefulWidget {
 class _NotifsListState extends State<NotifsList> {
   final NotifServices _notifServices = NotifServices();
 
-  Future getUserDetails(
-      String uid, String purpose, String notifId, var response) async {
+  Future getUserDetails(String uid, String purpose, String notifId, var response) async {
     var currentGroup;
-    await FirebaseFirestore.instance
-        .collection('userdetails')
-        .doc(uid)
-        .get()
-        .then((value) {
+    await FirebaseFirestore.instance.collection('userdetails').doc(uid).get().then((value) {
       currentGroup = value.data()['currentGroup'];
     });
-    if (currentGroup != null &&
-        purpose == 'Request to Join' &&
-        response == null) {
+    if (currentGroup != null && purpose == 'Request to Join' && response == null) {
       await _notifServices.removeNotif(notifId, purpose, uid, response);
       return null;
     }
@@ -38,12 +31,7 @@ class _NotifsListState extends State<NotifsList> {
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
     return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('userdetails')
-          .doc(user.uid)
-          .collection('Notifications')
-          .orderBy('createdAt', descending: true)
-          .snapshots(),
+      stream: FirebaseFirestore.instance.collection('userdetails').doc(user.uid).collection('Notifications').orderBy('createdAt', descending: true).snapshots(),
       builder: (ctx, futureSnapshot) {
         if (futureSnapshot.connectionState == ConnectionState.waiting) {
           return Center(
@@ -51,14 +39,12 @@ class _NotifsListState extends State<NotifsList> {
           );
         }
         return ListView.builder(
-          itemCount:
-              futureSnapshot.data == null ? 0 : futureSnapshot.data.docs.length,
+          itemCount: futureSnapshot.data == null ? 0 : futureSnapshot.data.docs.length,
           itemBuilder: (context, index) {
             final docId = futureSnapshot.data.docs[index].id;
             final fromuid = futureSnapshot.data.docs[index].data()['from'];
             final name = futureSnapshot.data.docs[index].data()['senderName'];
-            final createdAt =
-                futureSnapshot.data.docs[index].data()['createdAt'];
+            final createdAt = futureSnapshot.data.docs[index].data()['createdAt'];
             final response = futureSnapshot.data.docs[index].data()['response'];
             final purpose = futureSnapshot.data.docs[index].data()['purpose'];
             return FutureBuilder(
@@ -66,8 +52,7 @@ class _NotifsListState extends State<NotifsList> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {}
                   if (snapshot != null) {
-                    return NotifTile(
-                        docId, fromuid, name, createdAt, response, purpose);
+                    return NotifTile(docId, fromuid, name, createdAt, response, purpose);
                   }
                   return null;
                 });

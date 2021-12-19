@@ -21,8 +21,7 @@ class GroupPage extends StatefulWidget {
   _GroupPageState createState() => _GroupPageState();
 }
 
-class _GroupPageState extends State<GroupPage>
-    with AutomaticKeepAliveClientMixin<GroupPage> {
+class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixin<GroupPage> {
   final RequestService _request = RequestService();
   final NotifServices _notifServices = NotifServices();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -45,11 +44,7 @@ class _GroupPageState extends State<GroupPage>
   double userRating;
 
   Future getMembers(String docid) async {
-    var qp = await FirebaseFirestore.instance
-        .collection('group')
-        .doc(docid)
-        .collection('users')
-        .get();
+    var qp = await FirebaseFirestore.instance.collection('group').doc(docid).collection('users').get();
     return qp.docs;
   }
 
@@ -63,10 +58,7 @@ class _GroupPageState extends State<GroupPage>
     super.build(context);
     final currentuser = Provider.of<User>(context);
     return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('userdetails')
-            .doc(currentuser.uid)
-            .snapshots(),
+        stream: FirebaseFirestore.instance.collection('userdetails').doc(currentuser.uid).snapshots(),
         builder: (context, usersnapshot) {
           if (usersnapshot.connectionState == ConnectionState.active) {
             if (buttonEnabled == true) {
@@ -76,21 +68,15 @@ class _GroupPageState extends State<GroupPage>
               Navigator.pop(context);
             }
             return StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('group')
-                    .doc(groupUID)
-                    .snapshots(),
+                stream: FirebaseFirestore.instance.collection('group').doc(groupUID).snapshots(),
                 builder: (context, groupsnapshot) {
                   if (groupsnapshot.connectionState == ConnectionState.active) {
                     if (buttonEnabled == true) {
                       destination = groupsnapshot.data()['destination'];
-                      start = DateFormat('dd.MM.yyyy - kk:mm a')
-                          .format(groupsnapshot.data()['start'].toDate());
-                      end = DateFormat('dd.MM.yyyy - kk:mm a')
-                          .format(groupsnapshot.data()['end'].toDate());
+                      start = DateFormat('dd.MM.yyyy - kk:mm a').format(groupsnapshot.data()['start'].toDate());
+                      end = DateFormat('dd.MM.yyyy - kk:mm a').format(groupsnapshot.data()['end'].toDate());
                       grpOwner = groupsnapshot.data()['owner'];
-                      presentNum =
-                          groupsnapshot.data()['numberOfMembers'].toString();
+                      presentNum = groupsnapshot.data()['numberOfMembers'].toString();
                       endTimeStamp = groupsnapshot.data()['end'];
                       maxPoolers = groupsnapshot.data()['maxpoolers'];
                       loading = false;
@@ -107,107 +93,51 @@ class _GroupPageState extends State<GroupPage>
                                 buttonEnabled
                                     ? timestampFlag
                                         ? TextButton.icon(
-                                            style: TextButton.styleFrom(
-                                                textStyle: TextStyle(
-                                                    color:
-                                                        getVisibleColorOnPrimaryColor(
-                                                            context))),
-                                            icon: Icon(
-                                                FontAwesomeIcons.signOutAlt),
+                                            style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
+                                            icon: Icon(FontAwesomeIcons.signOutAlt),
                                             onPressed: () async {
                                               try {
                                                 await showDialog(
                                                     context: context,
-                                                    builder:
-                                                        (BuildContext ctx) {
+                                                    builder: (BuildContext ctx) {
                                                       return AlertDialog(
                                                         title: Text('End Trip'),
-                                                        content: Text(
-                                                            'Are you sure you want to end this trip?'),
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20.0)),
+                                                        content: Text('Are you sure you want to end this trip?'),
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                         actions: <Widget>[
                                                           TextButton(
-                                                            child: Text('End',
-                                                                style: TextStyle(
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .colorScheme
-                                                                        .secondary)),
-                                                            onPressed:
-                                                                () async {
+                                                            child: Text('End', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+                                                            onPressed: () async {
                                                               ProgressDialog pr;
-                                                              pr = ProgressDialog(
-                                                                  context,
-                                                                  type: ProgressDialogType
-                                                                      .Normal,
-                                                                  isDismissible:
-                                                                      false,
-                                                                  showLogs:
-                                                                      false);
+                                                              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
                                                               pr.style(
-                                                                message:
-                                                                    'Ending Trip...',
-                                                                backgroundColor:
-                                                                    Theme.of(
-                                                                            context)
-                                                                        .backgroundColor,
-                                                                messageTextStyle:
-                                                                    TextStyle(
-                                                                  color: getVisibleTextColorOnScaffold(
-                                                                      context),
+                                                                message: 'Ending Trip...',
+                                                                backgroundColor: Theme.of(context).backgroundColor,
+                                                                messageTextStyle: TextStyle(
+                                                                  color: getVisibleTextColorOnScaffold(context),
                                                                 ),
                                                               );
                                                               await pr.show();
-                                                              await Future.delayed(
-                                                                  Duration(
-                                                                      seconds:
-                                                                          1));
+                                                              await Future.delayed(Duration(seconds: 1));
                                                               try {
-                                                                buttonEnabled =
-                                                                    false;
-                                                                await _request
-                                                                    .exitGroup();
-                                                                Navigator.pop(
-                                                                    context);
+                                                                buttonEnabled = false;
+                                                                await _request.exitGroup();
+                                                                Navigator.pop(context);
                                                                 await pr.hide();
                                                               } catch (e) {
                                                                 await pr.hide();
-                                                                print(e
-                                                                    .toString());
-                                                                String errStr =
-                                                                    e.message ??
-                                                                        e.toString();
-                                                                final snackBar = SnackBar(
-                                                                    content: Text(
-                                                                        errStr),
-                                                                    duration: Duration(
-                                                                        seconds:
-                                                                            3));
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .showSnackBar(
-                                                                        snackBar);
+                                                                print(e.toString());
+                                                                String errStr = e.message ?? e.toString();
+                                                                final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+                                                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                               }
-                                                              Navigator.pop(
-                                                                  context);
+                                                              Navigator.pop(context);
                                                             },
                                                           ),
                                                           TextButton(
-                                                            child: Text(
-                                                                'Cancel',
-                                                                style: TextStyle(
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .colorScheme
-                                                                        .secondary)),
+                                                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                                                             onPressed: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
+                                                              Navigator.of(context).pop();
                                                             },
                                                           ),
                                                         ],
@@ -220,113 +150,52 @@ class _GroupPageState extends State<GroupPage>
                                             label: Text('End Trip'),
                                           )
                                         : TextButton.icon(
-                                            style: TextButton.styleFrom(
-                                                textStyle: TextStyle(
-                                                    color:
-                                                        getVisibleColorOnPrimaryColor(
-                                                            context))),
-                                            icon: Icon(
-                                                FontAwesomeIcons.signOutAlt),
+                                            style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
+                                            icon: Icon(FontAwesomeIcons.signOutAlt),
                                             onPressed: () async {
                                               try {
                                                 await showDialog(
                                                     context: context,
-                                                    builder:
-                                                        (BuildContext ctx) {
+                                                    builder: (BuildContext ctx) {
                                                       return AlertDialog(
-                                                        title:
-                                                            Text('Leave Group'),
-                                                        content: Text(
-                                                            'Are you sure you want to leave this group?'),
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20.0)),
+                                                        title: Text('Leave Group'),
+                                                        content: Text('Are you sure you want to leave this group?'),
+                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                         actions: <Widget>[
                                                           TextButton(
-                                                            child: Text('Leave',
-                                                                style: TextStyle(
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .colorScheme
-                                                                        .secondary)),
-                                                            onPressed:
-                                                                () async {
+                                                            child: Text('Leave', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+                                                            onPressed: () async {
                                                               ProgressDialog pr;
-                                                              pr = ProgressDialog(
-                                                                  context,
-                                                                  type: ProgressDialogType
-                                                                      .Normal,
-                                                                  isDismissible:
-                                                                      false,
-                                                                  showLogs:
-                                                                      false);
+                                                              pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
                                                               pr.style(
-                                                                message:
-                                                                    'Leaving Group...',
-                                                                backgroundColor:
-                                                                    Theme.of(
-                                                                            context)
-                                                                        .backgroundColor,
-                                                                messageTextStyle:
-                                                                    TextStyle(
-                                                                  color: getVisibleTextColorOnScaffold(
-                                                                      context),
+                                                                message: 'Leaving Group...',
+                                                                backgroundColor: Theme.of(context).backgroundColor,
+                                                                messageTextStyle: TextStyle(
+                                                                  color: getVisibleTextColorOnScaffold(context),
                                                                 ),
                                                               );
                                                               await pr.show();
-                                                              await Future.delayed(
-                                                                  Duration(
-                                                                      seconds:
-                                                                          1));
+                                                              await Future.delayed(Duration(seconds: 1));
                                                               try {
-                                                                buttonEnabled =
-                                                                    false;
-                                                                await _notifServices.leftGroup(
-                                                                    usersnapshot
-                                                                            .data()[
-                                                                        'name'],
-                                                                    groupUID);
-                                                                await _request
-                                                                    .exitGroup();
-                                                                Navigator.pop(
-                                                                    context);
+                                                                buttonEnabled = false;
+                                                                await _notifServices.leftGroup(usersnapshot.data()['name'], groupUID);
+                                                                await _request.exitGroup();
+                                                                Navigator.pop(context);
                                                                 await pr.hide();
                                                               } catch (e) {
                                                                 await pr.hide();
-                                                                print(e
-                                                                    .toString());
-                                                                String errStr =
-                                                                    e.message ??
-                                                                        e.toString();
-                                                                final snackBar = SnackBar(
-                                                                    content: Text(
-                                                                        errStr),
-                                                                    duration: Duration(
-                                                                        seconds:
-                                                                            3));
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .showSnackBar(
-                                                                        snackBar);
+                                                                print(e.toString());
+                                                                String errStr = e.message ?? e.toString();
+                                                                final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
+                                                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                               }
-                                                              Navigator.pop(
-                                                                  context);
+                                                              Navigator.pop(context);
                                                             },
                                                           ),
                                                           TextButton(
-                                                            child: Text(
-                                                                'Cancel',
-                                                                style: TextStyle(
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .colorScheme
-                                                                        .secondary)),
+                                                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                                                             onPressed: () {
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
+                                                              Navigator.of(context).pop();
                                                             },
                                                           ),
                                                         ],
@@ -340,24 +209,14 @@ class _GroupPageState extends State<GroupPage>
                                           )
                                     : timestampFlag
                                         ? TextButton.icon(
-                                            style: TextButton.styleFrom(
-                                                textStyle: TextStyle(
-                                                    color:
-                                                        getVisibleColorOnPrimaryColor(
-                                                            context))),
-                                            icon: Icon(
-                                                FontAwesomeIcons.signOutAlt),
+                                            style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
+                                            icon: Icon(FontAwesomeIcons.signOutAlt),
                                             onPressed: null,
                                             label: Text('End Trip'),
                                           )
                                         : TextButton.icon(
-                                            style: TextButton.styleFrom(
-                                                textStyle: TextStyle(
-                                                    color:
-                                                        getVisibleColorOnPrimaryColor(
-                                                            context))),
-                                            icon: Icon(
-                                                FontAwesomeIcons.signOutAlt),
+                                            style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
+                                            icon: Icon(FontAwesomeIcons.signOutAlt),
                                             onPressed: null,
                                             label: Text('Leave Group'),
                                           )
@@ -369,8 +228,7 @@ class _GroupPageState extends State<GroupPage>
                                 child: Column(
                                   children: <Widget>[
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Flexible(
                                           fit: FlexFit.tight,
@@ -380,32 +238,21 @@ class _GroupPageState extends State<GroupPage>
                                                 left: 20,
                                                 top: 20,
                                               ),
-                                              child: destination ==
-                                                          'New Delhi Railway Station' ||
-                                                      destination ==
-                                                          'Hazrat Nizamuddin Railway Station'
+                                              child: destination == 'New Delhi Railway Station' || destination == 'Hazrat Nizamuddin Railway Station'
                                                   ? Icon(
                                                       Icons.train,
-                                                      color:
-                                                          getVisibleIconColorOnScaffold(
-                                                              context),
+                                                      color: getVisibleIconColorOnScaffold(context),
                                                       size: 30,
                                                     )
-                                                  : destination ==
-                                                          'Indira Gandhi International Airport'
+                                                  : destination == 'Indira Gandhi International Airport'
                                                       ? Icon(
-                                                          Icons
-                                                              .airplanemode_active,
-                                                          color:
-                                                              getVisibleIconColorOnScaffold(
-                                                                  context),
+                                                          Icons.airplanemode_active,
+                                                          color: getVisibleIconColorOnScaffold(context),
                                                           size: 30,
                                                         )
                                                       : Icon(
                                                           Icons.directions_bus,
-                                                          color:
-                                                              getVisibleIconColorOnScaffold(
-                                                                  context),
+                                                          color: getVisibleIconColorOnScaffold(context),
                                                           size: 30,
                                                         )),
                                         ),
@@ -413,8 +260,7 @@ class _GroupPageState extends State<GroupPage>
                                           fit: FlexFit.tight,
                                           flex: 4,
                                           child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 10.0),
+                                            padding: const EdgeInsets.only(top: 10.0),
                                             child: Text(
                                               destination,
                                               style: TextStyle(
@@ -433,34 +279,22 @@ class _GroupPageState extends State<GroupPage>
                                               top: 10,
                                             ),
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
+                                              mainAxisAlignment: MainAxisAlignment.end,
                                               children: <Widget>[
-                                                Text(
-                                                    'Press here to edit the details: '),
+                                                Text('Press here to edit the details: '),
                                                 TextButton.icon(
                                                     onPressed: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  EditGroup(
-                                                                      groupUID:
-                                                                          groupUID)));
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context) => EditGroup(groupUID: groupUID)));
                                                     },
                                                     icon: Icon(
                                                       FontAwesomeIcons.pen,
                                                       size: 16.0,
-                                                      color:
-                                                          getVisibleTextColorOnScaffold(
-                                                              context),
+                                                      color: getVisibleTextColorOnScaffold(context),
                                                     ),
                                                     label: Text(
                                                       'Edit',
                                                       style: TextStyle(
-                                                        color:
-                                                            getVisibleTextColorOnScaffold(
-                                                                context),
+                                                        color: getVisibleTextColorOnScaffold(context),
                                                       ),
                                                     )),
                                               ],
@@ -471,15 +305,11 @@ class _GroupPageState extends State<GroupPage>
                                               top: 10,
                                             ),
                                             child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                              mainAxisAlignment: MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
                                                   '*Contact group admin to edit details.',
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary),
+                                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                                 ),
                                               ],
                                             ),
@@ -490,8 +320,7 @@ class _GroupPageState extends State<GroupPage>
                                         top: 10,
                                       ),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
                                             'Start : $start',
@@ -507,8 +336,7 @@ class _GroupPageState extends State<GroupPage>
                                         bottom: 5,
                                       ),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
                                             'End: $end',
@@ -524,8 +352,7 @@ class _GroupPageState extends State<GroupPage>
                                         bottom: 5,
                                       ),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
                                             'Number of members in group: $presentNum',
@@ -541,8 +368,7 @@ class _GroupPageState extends State<GroupPage>
                                         bottom: 5,
                                       ),
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
                                             'Max number of poolers: $maxPoolers',
@@ -555,33 +381,20 @@ class _GroupPageState extends State<GroupPage>
                                     ),
                                     Container(
                                       child: StreamBuilder(
-                                        stream: FirebaseFirestore.instance
-                                            .collection('group')
-                                            .doc(groupUID)
-                                            .collection('users')
-                                            .snapshots(),
+                                        stream: FirebaseFirestore.instance.collection('group').doc(groupUID).collection('users').snapshots(),
                                         builder: (_, snapshots) {
                                           if (!snapshots.hasData) {
                                             return Center(
-                                              child:
-                                                  CircularProgressIndicator(),
+                                              child: CircularProgressIndicator(),
                                             );
                                           }
                                           return ListView.builder(
                                             shrinkWrap: true,
-                                            itemCount: snapshots.data == null
-                                                ? 0
-                                                : snapshots.data.docs.length,
+                                            itemCount: snapshots.data == null ? 0 : snapshots.data.docs.length,
                                             itemBuilder: (ctx, index) {
-                                              var cancelledRides = snapshots
-                                                  .data.docs[index]
-                                                  .data()['cancelledrides'];
-                                              var totalRides = snapshots
-                                                  .data.docs[index]
-                                                  .data()['totalrides'];
-                                              userRating = 5 -
-                                                  (0.2 * cancelledRides) +
-                                                  (0.35 * totalRides);
+                                              var cancelledRides = snapshots.data.docs[index].data()['cancelledrides'];
+                                              var totalRides = snapshots.data.docs[index].data()['totalrides'];
+                                              userRating = 5 - (0.2 * cancelledRides) + (0.35 * totalRides);
                                               if (userRating < 0) {
                                                 userRating = 0;
                                               }
@@ -589,154 +402,81 @@ class _GroupPageState extends State<GroupPage>
                                                 userRating = 5;
                                               }
                                               return Card(
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
+                                                color: Theme.of(context).scaffoldBackgroundColor,
                                                 child: ListTile(
-                                                  title: Text(snapshots
-                                                      .data.docs[index]
-                                                      .data()['name']),
+                                                  title: Text(snapshots.data.docs[index].data()['name']),
                                                   subtitle: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: <Widget>[
-                                                      Text(
-                                                          'Hostel: ${snapshots.data.docs[index].data()['hostel']}'),
+                                                      Text('Hostel: ${snapshots.data.docs[index].data()['hostel']}'),
                                                       GestureDetector(
                                                           onTap: () async {
                                                             try {
-                                                              if (Platform
-                                                                  .isIOS) {
-                                                                await Clipboard.setData(
-                                                                        ClipboardData(
-                                                                            text:
-                                                                                '${snapshots.data.docs[index].data()['mobilenum']}'))
-                                                                    .then(
-                                                                        (result) {
-                                                                  final snackBar =
-                                                                      SnackBar(
-                                                                    backgroundColor:
-                                                                        Theme.of(context)
-                                                                            .primaryColor,
-                                                                    content:
-                                                                        Text(
+                                                              if (Platform.isIOS) {
+                                                                await Clipboard.setData(ClipboardData(text: '${snapshots.data.docs[index].data()['mobilenum']}')).then((result) {
+                                                                  final snackBar = SnackBar(
+                                                                    backgroundColor: Theme.of(context).primaryColor,
+                                                                    content: Text(
                                                                       'Copied to Clipboard',
-                                                                      style: TextStyle(
-                                                                          color: Theme.of(context)
-                                                                              .colorScheme
-                                                                              .secondary),
+                                                                      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                                                     ),
-                                                                    duration: Duration(
-                                                                        seconds:
-                                                                            1),
+                                                                    duration: Duration(seconds: 1),
                                                                   );
-                                                                  ScaffoldMessenger.of(
-                                                                          context)
-                                                                      .hideCurrentSnackBar();
-                                                                  ScaffoldMessenger.of(
-                                                                          context)
-                                                                      .showSnackBar(
-                                                                          snackBar);
+                                                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                                 });
                                                               } else {
-                                                                await launch(
-                                                                    'tel://${snapshots.data.docs[index].data()['mobilenum']}');
+                                                                await launch('tel://${snapshots.data.docs[index].data()['mobilenum']}');
                                                               }
                                                             } catch (e) {
-                                                              await Clipboard.setData(
-                                                                      ClipboardData(
-                                                                          text:
-                                                                              '${snapshots.data.docs[index].data()['mobilenum']}'))
-                                                                  .then(
-                                                                      (result) {
-                                                                final snackBar =
-                                                                    SnackBar(
-                                                                  backgroundColor:
-                                                                      Theme.of(
-                                                                              context)
-                                                                          .primaryColor,
+                                                              await Clipboard.setData(ClipboardData(text: '${snapshots.data.docs[index].data()['mobilenum']}')).then((result) {
+                                                                final snackBar = SnackBar(
+                                                                  backgroundColor: Theme.of(context).primaryColor,
                                                                   content: Text(
                                                                     'Copied to Clipboard',
-                                                                    style: TextStyle(
-                                                                        color: Theme.of(context)
-                                                                            .colorScheme
-                                                                            .secondary),
+                                                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                                                   ),
-                                                                  duration:
-                                                                      Duration(
-                                                                          seconds:
-                                                                              1),
+                                                                  duration: Duration(seconds: 1),
                                                                 );
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .hideCurrentSnackBar();
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .showSnackBar(
-                                                                        snackBar);
+                                                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                               });
                                                             }
                                                           },
-                                                          child: Text(
-                                                              'Mobile Number: ${snapshots.data.docs[index].data()['mobilenum']}')),
+                                                          child: Text('Mobile Number: ${snapshots.data.docs[index].data()['mobilenum']}')),
                                                       Row(
                                                         children: <Widget>[
                                                           Text('User Rating:'),
                                                           Row(
-                                                            children: <
-                                                                Widget>[],
+                                                            children: <Widget>[],
                                                           ),
-                                                          showRating(
-                                                              userRating),
+                                                          showRating(userRating),
                                                         ],
                                                       )
                                                     ],
                                                   ),
-                                                  trailing: grpOwner ==
-                                                          snapshots.data
-                                                              .docs[index].id
+                                                  trailing: grpOwner == snapshots.data.docs[index].id
                                                       ? FaIcon(
-                                                          FontAwesomeIcons
-                                                              .crown,
-                                                          color:
-                                                              getVisibleIconColorOnScaffold(
-                                                                  context),
+                                                          FontAwesomeIcons.crown,
+                                                          color: getVisibleIconColorOnScaffold(context),
                                                         )
-                                                      : grpOwner ==
-                                                                  currentuser
-                                                                      .uid &&
-                                                              !timestampFlag
+                                                      : grpOwner == currentuser.uid && !timestampFlag
                                                           ? IconButton(
-                                                              icon: Icon(Icons
-                                                                  .exit_to_app),
-                                                              color:
-                                                                  getVisibleIconColorOnScaffold(
-                                                                      context),
-                                                              tooltip:
-                                                                  'Kick User',
-                                                              onPressed:
-                                                                  () async {
+                                                              icon: Icon(Icons.exit_to_app),
+                                                              color: getVisibleIconColorOnScaffold(context),
+                                                              tooltip: 'Kick User',
+                                                              onPressed: () async {
                                                                 await showDialog(
-                                                                    context:
-                                                                        context,
-                                                                    builder:
-                                                                        (BuildContext
-                                                                            ctx) {
+                                                                    context: context,
+                                                                    builder: (BuildContext ctx) {
                                                                       return AlertDialog(
-                                                                        title: Text(
-                                                                            'Kick User'),
-                                                                        content:
-                                                                            Text('Are you sure you want to kick this user?'),
-                                                                        shape: RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(20.0)),
-                                                                        actions: <
-                                                                            Widget>[
+                                                                        title: Text('Kick User'),
+                                                                        content: Text('Are you sure you want to kick this user?'),
+                                                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                                                                        actions: <Widget>[
                                                                           TextButton(
-                                                                            child:
-                                                                                Text('Kick', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
-                                                                            onPressed:
-                                                                                () async {
+                                                                            child: Text('Kick', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+                                                                            onPressed: () async {
                                                                               Navigator.pop(context);
                                                                               ProgressDialog pr;
                                                                               pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
@@ -758,10 +498,8 @@ class _GroupPageState extends State<GroupPage>
                                                                             },
                                                                           ),
                                                                           TextButton(
-                                                                            child:
-                                                                                Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
-                                                                            onPressed:
-                                                                                () {
+                                                                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
+                                                                            onPressed: () {
                                                                               Navigator.of(context).pop();
                                                                             },
                                                                           ),
@@ -786,11 +524,7 @@ class _GroupPageState extends State<GroupPage>
                             ),
                             floatingActionButton: FloatingActionButton(
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ChatScreen(groupUID)));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(groupUID)));
                               },
                               child: Stack(
                                 alignment: Alignment(-10, -10),
@@ -805,8 +539,7 @@ class _GroupPageState extends State<GroupPage>
                             ),
                           );
                   } else {
-                    return Container(
-                        child: Center(child: CircularProgressIndicator()));
+                    return Container(child: Center(child: CircularProgressIndicator()));
                   }
                 });
           } else {

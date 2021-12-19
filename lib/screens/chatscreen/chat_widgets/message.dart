@@ -36,8 +36,7 @@ class MessageScreen extends StatelessWidget {
             itemBuilder: (ctx, index) => MessageBubble(
               chatDocs[index]['text'],
               chatDocs[index]['name'],
-              chatDocs[index]['userId'] ==
-                  FirebaseAuth.instance.currentUser.uid,
+              chatDocs[index]['userId'] == FirebaseAuth.instance.currentUser.uid,
               key: ValueKey(chatDocs[index].id),
               time: DateFormat().add_jm().format(
                     DateTime.parse(

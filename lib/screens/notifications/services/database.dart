@@ -3,12 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class NotificationDatabase {
   final _auth = FirebaseAuth.instance;
-  final CollectionReference<Map<String, dynamic>> groupdetails =
-      FirebaseFirestore.instance.collection('group');
-  final CollectionReference<Map<String, dynamic>> userDetails =
-      FirebaseFirestore.instance.collection('userdetails');
-  final CollectionReference<Map<String, dynamic>> chatLists =
-      FirebaseFirestore.instance.collection('chatroom');
+  final CollectionReference<Map<String, dynamic>> groupdetails = FirebaseFirestore.instance.collection('group');
+  final CollectionReference<Map<String, dynamic>> userDetails = FirebaseFirestore.instance.collection('userdetails');
+  final CollectionReference<Map<String, dynamic>> chatLists = FirebaseFirestore.instance.collection('chatroom');
 
 //Request created to join a group
   Future<void> createRequest(String groupId) async {
@@ -71,21 +68,12 @@ class NotificationDatabase {
     var name;
     var nameo;
 
-    await userDetails
-        .doc(user.uid)
-        .collection('Notifications')
-        .doc(notifId)
-        .update({
+    await userDetails.doc(user.uid).collection('Notifications').doc(notifId).update({
       'response': response,
     });
 
     if (response == true) {
-      await userDetails
-          .doc(user.uid)
-          .collection('Notifications')
-          .doc(notifId)
-          .get()
-          .then((value) {
+      await userDetails.doc(user.uid).collection('Notifications').doc(notifId).get().then((value) {
         listuid = value.data()['groupId'];
         uid = value.data()['from'];
       });
@@ -114,11 +102,7 @@ class NotificationDatabase {
       }
 
       var request = groupdetails.doc(listuid).collection('users');
-      await FirebaseFirestore.instance
-          .collection('userdetails')
-          .doc(uid)
-          .get()
-          .then((value) async {
+      await FirebaseFirestore.instance.collection('userdetails').doc(uid).get().then((value) async {
         if (value.exists) {
           await request.doc(uid).set({
             'name': value.data()['name'],
@@ -174,12 +158,7 @@ class NotificationDatabase {
         name = value.data()['name'];
       });
 
-      await userDetails
-          .doc(user.uid)
-          .collection('Notifications')
-          .doc(notifId)
-          .get()
-          .then((value) {
+      await userDetails.doc(user.uid).collection('Notifications').doc(notifId).get().then((value) {
         listuid = value.data()['groupId'];
         uid = value.data()['from'];
       });
@@ -218,8 +197,7 @@ class NotificationDatabase {
   }
 
   //Deleting a notification
-  Future<void> remNotif(
-      String notifId, var purpose, var uid, var response) async {
+  Future<void> remNotif(String notifId, var purpose, var uid, var response) async {
     final user = _auth.currentUser;
     if (purpose == 'Request to Join' && response == false) {
       var name;
@@ -229,12 +207,7 @@ class NotificationDatabase {
         name = value.data()['name'];
       });
 
-      await userDetails
-          .doc(user.uid)
-          .collection('Notifications')
-          .doc(notifId)
-          .get()
-          .then((value) {
+      await userDetails.doc(user.uid).collection('Notifications').doc(notifId).get().then((value) {
         listuid = value.data()['groupId'];
       });
 
@@ -247,20 +220,14 @@ class NotificationDatabase {
         'groupId': listuid,
       });
     }
-    await userDetails
-        .doc(user.uid)
-        .collection('Notifications')
-        .doc(notifId)
-        .delete();
+    await userDetails.doc(user.uid).collection('Notifications').doc(notifId).delete();
   }
 
   Future<void> removeAllNotif() async {
     final user = _auth.currentUser;
-    final notifs =
-        await userDetails.doc(user.uid).collection('Notifications').get();
+    final notifs = await userDetails.doc(user.uid).collection('Notifications').get();
     for (var i = 0; i < notifs.docs.length; i++) {
-      if (notifs.docs[i].data()['response'] == null &&
-          notifs.docs[i].data()['purpose'] == 'Request to Join') {
+      if (notifs.docs[i].data()['response'] == null && notifs.docs[i].data()['purpose'] == 'Request to Join') {
         var name;
         var listuid;
 
@@ -268,10 +235,7 @@ class NotificationDatabase {
           name = value.data()['name'];
         });
         listuid = notifs.docs[i].id;
-        await userDetails
-            .doc(notifs.docs[i].data()['from'])
-            .collection('Notifications')
-            .add({
+        await userDetails.doc(notifs.docs[i].data()['from']).collection('Notifications').add({
           'from': user.uid,
           'senderName': name,
           'createdAt': Timestamp.now(),
@@ -280,11 +244,7 @@ class NotificationDatabase {
           'groupId': listuid,
         });
       }
-      await userDetails
-          .doc(user.uid)
-          .collection('Notifications')
-          .doc(notifs.docs[i].id)
-          .delete();
+      await userDetails.doc(user.uid).collection('Notifications').doc(notifs.docs[i].id).delete();
     }
   }
 }

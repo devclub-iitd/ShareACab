@@ -19,9 +19,7 @@ class Wrapper extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             body: Center(
-              child: Container(
-                  height: 200,
-                  child: Image(image: AssetImage('assets/images/logo.png'))),
+              child: Container(height: 200, child: Image(image: AssetImage('assets/images/logo.png'))),
             ),
             backgroundColor: Theme.of(context).primaryColor,
           );

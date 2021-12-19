@@ -50,10 +50,8 @@ ThemeData getSearchAppBarTheme(BuildContext context) {
   }
 }
 
-Color chatBubbleBackgroundColorReceiver = Colors
-    .lightBlue; // Needs to be changed acc to combinations, requires creativity
-Color chatBubbleBackgroundColorSender = Colors
-    .lightGreen; // Needs to be changed acc to combinations, requires creativity
+Color chatBubbleBackgroundColorReceiver = Colors.lightBlue; // Needs to be changed acc to combinations, requires creativity
+Color chatBubbleBackgroundColorSender = Colors.lightGreen; // Needs to be changed acc to combinations, requires creativity
 Color chatSearchBackgroundColor = Colors.white;
 
 Color getVisibleColorOnPrimaryColor(BuildContext context) {
@@ -62,12 +60,7 @@ Color getVisibleColorOnPrimaryColor(BuildContext context) {
 
 Color getVisibleColorOnAccentColor(BuildContext context) {
   var color = Theme.of(context).colorScheme.secondary;
-  var list = [
-    Colors.tealAccent,
-    Colors.cyanAccent,
-    Colors.yellowAccent,
-    Colors.greenAccent
-  ];
+  var list = [Colors.tealAccent, Colors.cyanAccent, Colors.yellowAccent, Colors.greenAccent];
   if (list.contains(color)) {
     return Colors.black;
   }
@@ -82,12 +75,7 @@ Color getVisibleTextColorOnScaffold(BuildContext context) {
   } else {
     theme = 'light';
   }
-  var list = [
-    Colors.tealAccent,
-    Colors.cyanAccent,
-    Colors.yellowAccent,
-    Colors.greenAccent
-  ];
+  var list = [Colors.tealAccent, Colors.cyanAccent, Colors.yellowAccent, Colors.greenAccent];
   if (list.contains(color) && theme == 'light') {
     return Colors.black;
   } else {
@@ -103,12 +91,7 @@ Color getVisibleIconColorOnScaffold(BuildContext context) {
   } else {
     theme = 'light';
   }
-  var list = [
-    Colors.tealAccent,
-    Colors.cyanAccent,
-    Colors.yellowAccent,
-    Colors.greenAccent
-  ];
+  var list = [Colors.tealAccent, Colors.cyanAccent, Colors.yellowAccent, Colors.greenAccent];
   if (list.contains(color) && theme == 'light') {
     if (color == Colors.cyanAccent) {
       return Colors.cyan;
@@ -157,8 +140,7 @@ class ThemeNotifier with ChangeNotifier {
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences.getInstance().then((prefs) {
-    if (prefs.getBool('darkMode') == null ||
-        prefs.getString('accentColor') == null) {
+    if (prefs.getBool('darkMode') == null || prefs.getString('accentColor') == null) {
       prefs.setBool('darkMode', true);
       prefs.setString('accentColor', 'Blue');
     }
@@ -182,80 +164,63 @@ void main() {
     if (chosenAccentColor == 'Blue') {
       runApp(
         ChangeNotifierProvider<ThemeNotifier>(
-          create: (_) => ThemeNotifier(
-              getThemeDataForAccentColor(Colors.blueAccent, darkModeOn),
-              darkModeOn),
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.blueAccent, darkModeOn), darkModeOn),
           child: MyApp(),
         ),
       );
     } else if (chosenAccentColor == 'Cyan') {
       runApp(
         ChangeNotifierProvider<ThemeNotifier>(
-          create: (_) => ThemeNotifier(
-              getThemeDataForAccentColor(Colors.cyanAccent, darkModeOn),
-              darkModeOn),
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.cyanAccent, darkModeOn), darkModeOn),
           child: MyApp(),
         ),
       );
     } else if (chosenAccentColor == 'Teal') {
       runApp(
         ChangeNotifierProvider<ThemeNotifier>(
-          create: (_) => ThemeNotifier(
-              getThemeDataForAccentColor(Colors.tealAccent, darkModeOn),
-              darkModeOn),
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.tealAccent, darkModeOn), darkModeOn),
           child: MyApp(),
         ),
       );
     } else if (chosenAccentColor == 'Purple') {
       runApp(
         ChangeNotifierProvider<ThemeNotifier>(
-          create: (_) => ThemeNotifier(
-              getThemeDataForAccentColor(Colors.purpleAccent, darkModeOn),
-              darkModeOn),
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.purpleAccent, darkModeOn), darkModeOn),
           child: MyApp(),
         ),
       );
     } else if (chosenAccentColor == 'Red') {
       runApp(
         ChangeNotifierProvider<ThemeNotifier>(
-          create: (_) => ThemeNotifier(
-              getThemeDataForAccentColor(Colors.redAccent, darkModeOn),
-              darkModeOn),
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.redAccent, darkModeOn), darkModeOn),
           child: MyApp(),
         ),
       );
     } else if (chosenAccentColor == 'Orange') {
       runApp(
         ChangeNotifierProvider<ThemeNotifier>(
-          create: (_) => ThemeNotifier(
-              getThemeDataForAccentColor(Colors.deepOrangeAccent, darkModeOn),
-              darkModeOn),
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.deepOrangeAccent, darkModeOn), darkModeOn),
           child: MyApp(),
         ),
       );
     } else if (chosenAccentColor == 'Yellow') {
       runApp(
         ChangeNotifierProvider<ThemeNotifier>(
-          create: (_) => ThemeNotifier(
-              getThemeDataForAccentColor(Colors.yellowAccent, darkModeOn),
-              darkModeOn),
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.yellowAccent, darkModeOn), darkModeOn),
           child: MyApp(),
         ),
       );
     } else if (chosenAccentColor == 'Green') {
       runApp(
         ChangeNotifierProvider<ThemeNotifier>(
-          create: (_) => ThemeNotifier(
-              getThemeDataForAccentColor(Colors.greenAccent, darkModeOn),
-              darkModeOn),
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.greenAccent, darkModeOn), darkModeOn),
           child: MyApp(),
         ),
       );
     } else {
       runApp(
         ChangeNotifierProvider<ThemeNotifier>(
-          create: (_) => ThemeNotifier(
-              getThemeDataForAccentColor(Colors.blue, darkModeOn), darkModeOn),
+          create: (_) => ThemeNotifier(getThemeDataForAccentColor(Colors.blue, darkModeOn), darkModeOn),
           child: MyApp(),
         ),
       );
@@ -307,12 +272,8 @@ ThemeData getThemeDataForAccentColor(Color accentColor, bool darkTheme) {
           backgroundColor: const Color(0xFF212121),
           dividerColor: Colors.black12,
           scaffoldBackgroundColor: Colors.black,
-          textSelectionTheme: TextSelectionThemeData(
-              cursorColor: Colors.white,
-              selectionColor: Colors.blue,
-              selectionHandleColor: Colors.blue),
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey)
-              .copyWith(secondary: accentColor),
+          textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white, selectionColor: Colors.blue, selectionHandleColor: Colors.blue),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey).copyWith(secondary: accentColor),
         )
       : ThemeData(
           appBarTheme: AppBarTheme(color: Colors.black),
@@ -328,7 +289,6 @@ ThemeData getThemeDataForAccentColor(Color accentColor, bool darkTheme) {
             selectionColor: Colors.blueGrey[700],
             selectionHandleColor: Colors.blueGrey[700],
           ),
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey)
-              .copyWith(secondary: accentColor),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey).copyWith(secondary: accentColor),
         );
 }

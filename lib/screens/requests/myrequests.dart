@@ -11,17 +11,12 @@ class MyRequests extends StatefulWidget {
   _MyRequestsState createState() => _MyRequestsState();
 }
 
-class _MyRequestsState extends State<MyRequests>
-    with AutomaticKeepAliveClientMixin<MyRequests> {
+class _MyRequestsState extends State<MyRequests> with AutomaticKeepAliveClientMixin<MyRequests> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   Future getOldTrips() async {
     var user = auth.currentUser;
     final userid = user.uid;
-    var qn = await FirebaseFirestore.instance
-        .collection('group')
-        .where('users', arrayContains: userid)
-        .orderBy('end', descending: true)
-        .get();
+    var qn = await FirebaseFirestore.instance.collection('group').where('users', arrayContains: userid).orderBy('end', descending: true).get();
     return qn.docs;
   }
 
@@ -32,8 +27,7 @@ class _MyRequestsState extends State<MyRequests>
     return WillPopScope(
       onWillPop: () {
         Navigator.pop(context);
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => RootScreen()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => RootScreen()));
         return Future.value(false);
       },
       child: Scaffold(
@@ -42,10 +36,7 @@ class _MyRequestsState extends State<MyRequests>
         ),
         body: Container(
             child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('userdetails')
-                    .doc(currentuser.uid)
-                    .snapshots(),
+                stream: FirebaseFirestore.instance.collection('userdetails').doc(currentuser.uid).snapshots(),
                 builder: (context, usersnapshot) {
                   return FutureBuilder(
                     future: getOldTrips(),
@@ -56,129 +47,74 @@ class _MyRequestsState extends State<MyRequests>
                         );
                       } else {
                         return ListView.builder(
-                            itemCount: snapshot.data == null
-                                ? 0
-                                : snapshot.data.length,
+                            itemCount: snapshot.data == null ? 0 : snapshot.data.length,
                             itemBuilder: (ctx, index) {
-                              final destination =
-                                  snapshot.data()[index].data()['destination'];
-                              final start = snapshot
-                                  .data()[index]
-                                  .data()['start']
-                                  .toDate();
-                              final end =
-                                  snapshot.data()[index].data()['end'].toDate();
+                              final destination = snapshot.data()[index].data()['destination'];
+                              final start = snapshot.data()[index].data()['start'].toDate();
+                              final end = snapshot.data()[index].data()['end'].toDate();
                               final docId = snapshot.data()[index].id;
-                              final privacy =
-                                  snapshot.data()[index].data()['privacy'];
-                              final numberOfMembers = snapshot
-                                  .data()[index]
-                                  .data()['numberOfMembers'];
+                              final privacy = snapshot.data()[index].data()['privacy'];
+                              final numberOfMembers = snapshot.data()[index].data()['numberOfMembers'];
                               final data = snapshot.data()[index];
                               return Hero(
                                 tag: Text(docId),
-                                child: (docId !=
-                                        usersnapshot.data()['currentGroup'])
+                                child: (docId != usersnapshot.data()['currentGroup'])
                                     ? Card(
-                                        color: Theme.of(context)
-                                            .scaffoldBackgroundColor,
+                                        color: Theme.of(context).scaffoldBackgroundColor,
                                         elevation: 0.0,
                                         child: InkWell(
                                           onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EndedGroupDetails(
-                                                            destination,
-                                                            docId,
-                                                            privacy,
-                                                            start,
-                                                            end,
-                                                            numberOfMembers,
-                                                            data)));
+                                            Navigator.push(context, MaterialPageRoute(builder: (context) => EndedGroupDetails(destination, docId, privacy, start, end, numberOfMembers, data)));
                                           },
                                           child: Card(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(25.0))),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
                                             elevation: 5,
-                                            margin: EdgeInsets.symmetric(
-                                                vertical: 6, horizontal: 5),
+                                            margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
                                             child: Container(
                                               child: SingleChildScrollView(
                                                 child: Column(
                                                   children: <Widget>[
                                                     Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                       children: <Widget>[
                                                         Flexible(
                                                           fit: FlexFit.tight,
                                                           flex: 1,
                                                           child: Container(
-                                                              margin: EdgeInsets
-                                                                  .only(
+                                                              margin: EdgeInsets.only(
                                                                 left: 20,
                                                                 top: 20,
                                                               ),
-                                                              child: snapshot.data()[index].data()[
-                                                                              'destination'] ==
-                                                                          'New Delhi Railway Station' ||
-                                                                      snapshot.data()[index].data()[
-                                                                              'destination'] ==
-                                                                          'Hazrat Nizamuddin Railway Station'
+                                                              child: snapshot.data()[index].data()['destination'] == 'New Delhi Railway Station' || snapshot.data()[index].data()['destination'] == 'Hazrat Nizamuddin Railway Station'
                                                                   ? Icon(
-                                                                      Icons
-                                                                          .train,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .colorScheme
-                                                                          .secondary,
+                                                                      Icons.train,
+                                                                      color: Theme.of(context).colorScheme.secondary,
                                                                       size: 30,
                                                                     )
-                                                                  : snapshot.data()[index].data()[
-                                                                              'destination'] ==
-                                                                          'Indira Gandhi International Airport'
+                                                                  : snapshot.data()[index].data()['destination'] == 'Indira Gandhi International Airport'
                                                                       ? Icon(
-                                                                          Icons
-                                                                              .airplanemode_active,
-                                                                          color: Theme.of(context)
-                                                                              .colorScheme
-                                                                              .secondary,
-                                                                          size:
-                                                                              30,
+                                                                          Icons.airplanemode_active,
+                                                                          color: Theme.of(context).colorScheme.secondary,
+                                                                          size: 30,
                                                                         )
                                                                       : Icon(
-                                                                          Icons
-                                                                              .directions_bus,
-                                                                          color: Theme.of(context)
-                                                                              .colorScheme
-                                                                              .secondary,
-                                                                          size:
-                                                                              30,
+                                                                          Icons.directions_bus,
+                                                                          color: Theme.of(context).colorScheme.secondary,
+                                                                          size: 30,
                                                                         )),
                                                         ),
                                                         Flexible(
                                                           fit: FlexFit.tight,
                                                           flex: 4,
                                                           child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .only(
-                                                                    top: 10.0),
+                                                            padding: const EdgeInsets.only(top: 10.0),
                                                             child: Text(
                                                               '${snapshot.data()[index].data()['destination']}',
                                                               style: TextStyle(
                                                                 fontSize: 17,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                                fontWeight: FontWeight.bold,
                                                               ),
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
+                                                              textAlign: TextAlign.center,
                                                             ),
                                                           ),
                                                         ),
@@ -190,9 +126,7 @@ class _MyRequestsState extends State<MyRequests>
                                                         top: 10,
                                                       ),
                                                       child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Text(
                                                             'Started : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data()[index].data()['start'].toDate())}',
@@ -208,9 +142,7 @@ class _MyRequestsState extends State<MyRequests>
                                                         bottom: 5,
                                                       ),
                                                       child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
                                                         children: <Widget>[
                                                           Text(
                                                             'Ended : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data()[index].data()['end'].toDate())}',
@@ -222,19 +154,12 @@ class _MyRequestsState extends State<MyRequests>
                                                       ),
                                                     ),
                                                     Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
+                                                      padding: const EdgeInsets.all(8.0),
                                                       child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceAround,
+                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                         children: <Widget>[
                                                           Column(
-                                                            children: <Widget>[
-                                                              Text(
-                                                                  'Number of poolers: ${snapshot.data()[index].data()['numberOfMembers'].toString()}')
-                                                            ],
+                                                            children: <Widget>[Text('Number of poolers: ${snapshot.data()[index].data()['numberOfMembers'].toString()}')],
                                                           ),
                                                         ],
                                                       ),

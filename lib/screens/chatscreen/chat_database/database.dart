@@ -4,14 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 class ChatDatabase {
   final _auth = FirebaseAuth.instance;
 
-  final CollectionReference chatLists =
-      FirebaseFirestore.instance.collection('chatroom');
-  final CollectionReference group =
-      FirebaseFirestore.instance.collection('group');
+  final CollectionReference chatLists = FirebaseFirestore.instance.collection('chatroom');
+  final CollectionReference group = FirebaseFirestore.instance.collection('group');
 
   //adding user to chat room
-  Future<void> createChatRoom(
-      String docId, String uid, String destination) async {
+  Future<void> createChatRoom(String docId, String uid, String destination) async {
     var user = _auth.currentUser;
     await chatLists.doc(docId).set({
       'lastMessage': Timestamp.now(),
