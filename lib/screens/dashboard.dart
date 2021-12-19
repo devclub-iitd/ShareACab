@@ -8,7 +8,7 @@ import 'package:shareacab/models/requestdetails.dart';
 import 'package:shareacab/screens/createtrip.dart';
 import 'package:shareacab/screens/filter.dart';
 import 'package:shareacab/screens/help.dart';
-import 'package:shareacab/screens/settings.dart';
+import 'package:shareacab/screens/settings.dart' as SettingsScreen;
 import 'package:shareacab/screens/tripslist.dart';
 import 'package:shareacab/services/auth.dart';
 
@@ -17,7 +17,8 @@ class Dashboard extends StatefulWidget {
   _DashboardState createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixin<Dashboard> {
+class _DashboardState extends State<Dashboard>
+    with AutomaticKeepAliveClientMixin<Dashboard> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthService _auth = AuthService();
   List<RequestDetails> filtered = allTrips;
@@ -53,7 +54,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
   var inGroupFetch = false;
   var UID;
   Future getCurrentUser() async {
-    var user = await auth.currentUser();
+    var user = auth.currentUser;
     final userid = user.uid;
     setState(() {
       UID = userid;
@@ -72,14 +73,16 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     var fetched = false;
     super.build(context);
-    final currentuser = Provider.of<FirebaseUser>(context);
+    final currentuser = Provider.of<User>(context);
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
         title: Text('Dashboard'),
         actions: <Widget>[
           TextButton.icon(
-            style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
+            style: TextButton.styleFrom(
+                textStyle:
+                    TextStyle(color: getVisibleColorOnPrimaryColor(context))),
             icon: Icon(
               Icons.filter_list,
               size: 30.0,
@@ -93,23 +96,29 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
             icon: Icon(Icons.help),
             tooltip: 'Help',
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => Help()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Help()));
             },
           ),
           IconButton(
               icon: Icon(Icons.settings),
               tooltip: 'Settings',
               onPressed: () {
-                return Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Settings(_auth);
+                return Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
+                  return SettingsScreen.Settings(_auth);
                 }));
               }),
         ],
       ),
       resizeToAvoidBottomInset: false,
       body: StreamBuilder(
-        stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        stream: FirebaseFirestore.instance
+            .collection('userdetails')
+            .doc(currentuser.uid)
+            .snapshots(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             var temp = snapshot.data['currentGroup'];
             if (temp != null) {
@@ -123,14 +132,17 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
           }
 
           try {
-            if (snapshot.connectionState == ConnectionState.active && fetched == true) {
+            if (snapshot.connectionState == ConnectionState.active &&
+                fetched == true) {
               return Scaffold(
                 body: SingleChildScrollView(
                   child: Column(
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.all(5),
-                        height: (MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top) * 0.87,
+                        height: (MediaQuery.of(context).size.height -
+                                MediaQuery.of(context).padding.top) *
+                            0.87,
                         width: double.infinity,
                         child: TripsList(
                           _dest,

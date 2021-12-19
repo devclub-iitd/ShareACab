@@ -20,7 +20,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
 
   @override
   Widget build(BuildContext context) {
-    var currentuser = Provider.of<FirebaseUser>(context);
+    var currentuser = Provider.of<User>(context);
     if (currentuser != null) {
       setState(() {
         originalEmail = currentuser.email;
@@ -43,7 +43,18 @@ class _ChangeEmailState extends State<ChangeEmail> {
                       SizedBox(height: 20.0),
                       TextFormField(
                         initialValue: originalEmail,
-                        decoration: InputDecoration(hintText: 'Email', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                        decoration: InputDecoration(
+                            hintText: 'Email',
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color:
+                                        getBorderColorForInputFields(context),
+                                    width: 2.0)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                    width: 2.0))),
                         validator: (val) {
                           if (val.isEmpty) {
                             return 'Enter a valid Email';
@@ -68,7 +79,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
                       ),
                       ElevatedButton(
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                            foregroundColor: MaterialStateProperty.all<Color>(
+                                Theme.of(context).colorScheme.secondary),
                           ),
                           child: Text(
                             'Change Email',
@@ -82,7 +94,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
                                 });
                                 await _auth.changeEmail(email);
                                 await _auth.signOut();
-                                await Navigator.pushNamedAndRemoveUntil(context, '/wrapper', (route) => false);
+                                await Navigator.pushNamedAndRemoveUntil(
+                                    context, '/wrapper', (route) => false);
                                 setState(() {
                                   loading = false;
                                 });
@@ -95,7 +108,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
                                         error = 'Your email is invalid';
                                         break;
                                       case 'ERROR_EMAIL_ALREADY_IN_USE':
-                                        error = 'Email is already in use on different account';
+                                        error =
+                                            'Email is already in use on different account';
                                         break;
                                       default:
                                         error = 'An undefined Error happened.';
@@ -109,7 +123,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
                       SizedBox(height: 24.0),
                       Text(
                         'Once you change your email, please log-in again by entering your new email ID and your previous password.',
-                        style: TextStyle(fontSize: 17.0, fontStyle: FontStyle.italic),
+                        style: TextStyle(
+                            fontSize: 17.0, fontStyle: FontStyle.italic),
                         textAlign: TextAlign.justify,
                       ),
                       SizedBox(

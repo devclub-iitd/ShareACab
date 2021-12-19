@@ -113,7 +113,7 @@ class _RegisterState extends State<Register> {
                                 SizedBox(height: 20.0),
                                 CircleAvatar(
                                   radius: 48,
-                                  backgroundColor: Theme.of(context).accentColor,
+                                  backgroundColor: Theme.of(context).colorScheme.secondary,
                                   child: Icon(
                                     CupertinoIcons.car_detailed,
                                     size: 48,
@@ -125,7 +125,7 @@ class _RegisterState extends State<Register> {
                                   decoration: InputDecoration(
                                     hintText: 'Email',
                                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)),
-                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0)),
+                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0)),
                                   ),
                                   validator: (val) {
                                     if (val.isEmpty) {
@@ -151,7 +151,7 @@ class _RegisterState extends State<Register> {
                                   decoration: InputDecoration(
                                     hintText: 'Password',
                                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)),
-                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0)),
+                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0)),
                                     suffixIcon: IconButton(
                                       icon: Icon(
                                         passwordHide ? Icons.visibility_off : Icons.visibility,
@@ -175,7 +175,7 @@ class _RegisterState extends State<Register> {
                                   decoration: InputDecoration(
                                     hintText: 'Confirm Password',
                                     enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)),
-                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0)),
+                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0)),
                                     suffixIcon: IconButton(
                                       icon: Icon(
                                         passwordHide ? Icons.visibility_off : Icons.visibility,
@@ -205,7 +205,7 @@ class _RegisterState extends State<Register> {
                                 SizedBox(height: 20.0),
                                 TextFormField(
                                   textCapitalization: TextCapitalization.words,
-                                  decoration: InputDecoration(hintText: 'Name', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                                  decoration: InputDecoration(hintText: 'Name', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0))),
                                   validator: (val) => val.isEmpty ? 'Enter a valid Name' : null,
                                   onChanged: (val) {
                                     setState(() => name = val);
@@ -213,7 +213,7 @@ class _RegisterState extends State<Register> {
                                 ),
                                 SizedBox(height: 20.0),
                                 TextFormField(
-                                  decoration: InputDecoration(hintText: 'Mobile Number', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                                  decoration: InputDecoration(hintText: 'Mobile Number', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0))),
                                   validator: (val) => val.length != 10 ? 'Enter a valid mobile number.' : null,
                                   keyboardType: TextInputType.number,
                                   inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
@@ -223,7 +223,7 @@ class _RegisterState extends State<Register> {
                                 ),
                                 SizedBox(height: 20.0),
                                 DropdownButtonFormField(
-                                  decoration: InputDecoration(hintText: 'Select Hostel', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                                  decoration: InputDecoration(hintText: 'Select Hostel', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0))),
                                   value: hostel,
                                   onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
                                   onChanged: (newValue) {
@@ -234,15 +234,15 @@ class _RegisterState extends State<Register> {
                                   },
                                   items: _hostels.map((temp) {
                                     return DropdownMenuItem(
-                                      child: Text(temp),
                                       value: temp,
+                                      child: Text(temp),
                                     );
                                   }).toList(),
                                   validator: (val) => val == null ? 'Please select your hostel' : null,
                                 ),
                                 SizedBox(height: 20.0),
                                 DropdownButtonFormField(
-                                  decoration: InputDecoration(hintText: 'Select Gender', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                                  decoration: InputDecoration(hintText: 'Select Gender', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0))),
                                   value: sex,
                                   onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
                                   onChanged: (newValue) {
@@ -253,8 +253,8 @@ class _RegisterState extends State<Register> {
                                   },
                                   items: _sex.map((temp) {
                                     return DropdownMenuItem(
-                                      child: Text(temp),
                                       value: temp,
+                                      child: Text(temp),
                                     );
                                   }).toList(),
                                   validator: (val) => val == null ? 'Please select your sex' : null,
@@ -262,7 +262,7 @@ class _RegisterState extends State<Register> {
                                 SizedBox(height: 20.0),
                                 ElevatedButton(
                                   style: ButtonStyle(
-                                    foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                                    foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.secondary),
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(vertical: 17.0),
@@ -283,7 +283,7 @@ class _RegisterState extends State<Register> {
                                       pr.style(
                                         message: 'Signing up...',
                                         backgroundColor: Theme.of(context).backgroundColor,
-                                        messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                        messageTextStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                       );
                                       await pr.show();
                                       await Future.delayed(Duration(seconds: 1));
@@ -314,7 +314,7 @@ class _RegisterState extends State<Register> {
                                             duration: Duration(seconds: 2),
                                             content: Text(
                                               error,
-                                              style: TextStyle(color: Theme.of(context).accentColor),
+                                              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                             ),
                                           ));
                                         }

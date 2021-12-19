@@ -11,50 +11,41 @@ class MessageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: FirebaseAuth.instance.currentUser(),
-      builder: (ctx, futureSnapshot) {
-        if (futureSnapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return StreamBuilder(
-            stream: Firestore.instance
-                .collection('chatroom')
-                .document(docId)
-                .collection('chats')
-                .orderBy(
-                  'createdAt',
-                  descending: true,
-                )
-                .limit(30)
-                .snapshots(),
-            builder: (ctx, chatSnapshot) {
-              if (chatSnapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              final chatDocs = chatSnapshot.data.documents;
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('chatroom')
+            .doc(docId)
+            .collection('chats')
+            .orderBy(
+              'createdAt',
+              descending: true,
+            )
+            .limit(30)
+            .snapshots(),
+        builder: (ctx, chatSnapshot) {
+          if (chatSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          final chatDocs = chatSnapshot.data.docs;
 
-              return ListView.builder(
-                reverse: true,
-                itemCount: chatDocs.length,
-                itemBuilder: (ctx, index) => MessageBubble(
-                  chatDocs[index]['text'],
-                  chatDocs[index]['name'],
-                  chatDocs[index]['userId'] == futureSnapshot.data.uid,
-                  key: ValueKey(chatDocs[index].documentID),
-                  time: DateFormat().add_jm().format(
-                        DateTime.parse(
-                          chatDocs[index]['createdAt'].toDate().toString(),
-                        ),
-                      ),
-                ),
-              );
-            });
-      },
-    );
+          return ListView.builder(
+            reverse: true,
+            itemCount: chatDocs.length,
+            itemBuilder: (ctx, index) => MessageBubble(
+              chatDocs[index]['text'],
+              chatDocs[index]['name'],
+              chatDocs[index]['userId'] ==
+                  FirebaseAuth.instance.currentUser.uid,
+              key: ValueKey(chatDocs[index].id),
+              time: DateFormat().add_jm().format(
+                    DateTime.parse(
+                      chatDocs[index]['createdAt'].toDate().toString(),
+                    ),
+                  ),
+            ),
+          );
+        });
   }
 }

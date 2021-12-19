@@ -85,7 +85,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<FirebaseUser>(context);
+    final user = Provider.of<User>(context);
     w = MediaQuery.of(context).size.width;
     h = MediaQuery.of(context).size.height;
     final themeNotifier = Provider.of<ThemeNotifier>(context);
@@ -96,7 +96,9 @@ class _SettingsState extends State<Settings> {
         actions: <Widget>[
           user != null
               ? TextButton.icon(
-                  style: TextButton.styleFrom(textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context))),
+                  style: TextButton.styleFrom(
+                      textStyle: TextStyle(
+                          color: getVisibleColorOnPrimaryColor(context))),
                   icon: Icon(FontAwesomeIcons.signOutAlt),
                   onPressed: () async {
                     await showDialog(
@@ -105,35 +107,57 @@ class _SettingsState extends State<Settings> {
                           return AlertDialog(
                             title: Text('Log out'),
                             content: Text('Are you sure you want to log out?'),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0)),
                             actions: <Widget>[
                               TextButton(
-                                child: Text('Log out', style: TextStyle(color: Theme.of(context).accentColor)),
+                                child: Text('Log out',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary)),
                                 onPressed: () async {
                                   ProgressDialog pr;
-                                  pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                                  pr = ProgressDialog(context,
+                                      type: ProgressDialogType.Normal,
+                                      isDismissible: false,
+                                      showLogs: false);
                                   pr.style(
                                     message: 'Logging out...',
-                                    backgroundColor: Theme.of(context).backgroundColor,
-                                    messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                    backgroundColor:
+                                        Theme.of(context).backgroundColor,
+                                    messageTextStyle: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary),
                                   );
                                   await pr.show();
-                                  await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
+                                  await Future.delayed(Duration(
+                                      seconds:
+                                          1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
                                   try {
                                     await widget._auth.signOut();
                                     await pr.hide();
                                   } catch (err) {
                                     await pr.hide();
-                                    String errStr = err.message ?? err.toString();
-                                    final snackBar = SnackBar(content: Text(errStr), duration: Duration(seconds: 3));
-                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                    String errStr =
+                                        err.message ?? err.toString();
+                                    final snackBar = SnackBar(
+                                        content: Text(errStr),
+                                        duration: Duration(seconds: 3));
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
                                   }
                                   Navigator.of(context).pop();
                                   Navigator.of(context).pop();
                                 },
                               ),
                               TextButton(
-                                child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                child: Text('Cancel',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary)),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -168,13 +192,15 @@ class _SettingsState extends State<Settings> {
                     DropdownButton<String>(
                       icon: Icon(
                         Icons.arrow_drop_down,
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       iconSize: 30,
-                      style: TextStyle(color: getVisibleColorOnScaffold(context), fontSize: 15),
+                      style: TextStyle(
+                          color: getVisibleColorOnScaffold(context),
+                          fontSize: 15),
                       underline: Container(
                         height: 2,
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       items: List.generate(themeList.length, (index) {
                         return DropdownMenuItem<String>(
@@ -188,13 +214,20 @@ class _SettingsState extends State<Settings> {
                         newValueSelected != 'system'
                             ? setState(() {
                                 _theme = newValueSelected;
-                                _darkTheme = newValueSelected == 'dark' ? true : false;
-                                newValueSelected == 'dark' ? onThemeChanged(true, themeNotifier) : onThemeChanged(false, themeNotifier);
+                                _darkTheme =
+                                    newValueSelected == 'dark' ? true : false;
+                                newValueSelected == 'dark'
+                                    ? onThemeChanged(true, themeNotifier)
+                                    : onThemeChanged(false, themeNotifier);
                               })
                             : setState(() {
                                 _theme = newValueSelected;
-                                brightness == Brightness.dark ? _darkTheme = true : _darkTheme = false;
-                                brightness == Brightness.dark ? onThemeChanged(true, themeNotifier) : onThemeChanged(false, themeNotifier);
+                                brightness == Brightness.dark
+                                    ? _darkTheme = true
+                                    : _darkTheme = false;
+                                brightness == Brightness.dark
+                                    ? onThemeChanged(true, themeNotifier)
+                                    : onThemeChanged(false, themeNotifier);
                               });
                         setTheme(newValueSelected);
                       },
@@ -237,24 +270,29 @@ class _SettingsState extends State<Settings> {
                               height: w * 0.10,
                               child: GestureDetector(
                                   child: AnimatedContainer(
-                                    margin: const EdgeInsets.symmetric(horizontal: 3),
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 3),
+                                    decoration: BoxDecoration(
+                                      color: colorList[index].color,
+                                      borderRadius: BorderRadius.circular(
+                                          _selectedIndex == index
+                                              ? w * 0.05
+                                              : 0),
+                                    ),
+                                    duration: Duration(milliseconds: 300),
                                     child: _selectedIndex == index
                                         ? Icon(
                                             Icons.check,
                                             color: Colors.white,
                                           )
                                         : null,
-                                    decoration: BoxDecoration(
-                                      color: colorList[index].color,
-                                      borderRadius: BorderRadius.circular(_selectedIndex == index ? w * 0.05 : 0),
-                                    ),
-                                    duration: Duration(milliseconds: 300),
                                   ),
                                   onTap: () {
                                     setState(() {
                                       _selectedIndex = index;
                                     });
-                                    onColorChanged(colorList[index].value, colorList[index].color, themeNotifier);
+                                    onColorChanged(colorList[index].value,
+                                        colorList[index].color, themeNotifier);
                                   }),
                             );
                           }),
@@ -273,10 +311,12 @@ class _SettingsState extends State<Settings> {
             padding: const EdgeInsets.only(left: 12.0, right: 12.0),
             child: Card(
               elevation: 0,
-              shape: BeveledRectangleBorder(borderRadius: BorderRadius.circular(0)),
+              shape: BeveledRectangleBorder(
+                  borderRadius: BorderRadius.circular(0)),
               child: ListTile(
                 onTap: () {
-                  launch('https://github.com/devclub-iitd/ShareACab/issues/new?assignees=&labels=bug&template=bug_report.md&title=Issue+Title+%40AssignedUser');
+                  launch(
+                      'https://github.com/devclub-iitd/ShareACab/issues/new?assignees=&labels=bug&template=bug_report.md&title=Issue+Title+%40AssignedUser');
                 },
                 title: Text(
                   'Bug Report',
@@ -295,7 +335,8 @@ class _SettingsState extends State<Settings> {
                       color: getVisibleTextColorOnScaffold(context),
                     ),
                     onPressed: () {
-                      launch('https://github.com/devclub-iitd/ShareACab/issues/new?assignees=&labels=bug&template=bug_report.md&title=Issue+Title+%40AssignedUser');
+                      launch(
+                          'https://github.com/devclub-iitd/ShareACab/issues/new?assignees=&labels=bug&template=bug_report.md&title=Issue+Title+%40AssignedUser');
                     },
                   ),
                 ),
@@ -308,12 +349,14 @@ class _SettingsState extends State<Settings> {
   }
 
   void onThemeChanged(bool value, ThemeNotifier themeNotifier) async {
-    themeNotifier.setTheme(getThemeDataForAccentColor(Theme.of(context).accentColor, value));
+    themeNotifier.setTheme(getThemeDataForAccentColor(
+        Theme.of(context).colorScheme.secondary, value));
     var prefs = await SharedPreferences.getInstance();
     await prefs.setBool('darkMode', value);
   }
 
-  void onColorChanged(String value, Color accentColor, ThemeNotifier themeNotifier) async {
+  void onColorChanged(
+      String value, Color accentColor, ThemeNotifier themeNotifier) async {
     themeNotifier.setTheme(getThemeDataForAccentColor(accentColor, _darkTheme));
     var prefs = await SharedPreferences.getInstance();
     await prefs.setString('accentColor', value);
@@ -370,7 +413,7 @@ class PreviewWidgetState extends State<PreviewWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Switch(
-                    activeColor: Theme.of(context).accentColor,
+                    activeColor: Theme.of(context).colorScheme.secondary,
                     value: switchValue,
                     onChanged: (_) {
                       setState(() {
@@ -378,13 +421,13 @@ class PreviewWidgetState extends State<PreviewWidget> {
                       });
                     }),
                 Radio(
-                  activeColor: Theme.of(context).accentColor,
+                  activeColor: Theme.of(context).colorScheme.secondary,
                   groupValue: 0,
                   value: 0,
                   onChanged: (_) {},
                 ),
                 Checkbox(
-                  activeColor: Theme.of(context).accentColor,
+                  activeColor: Theme.of(context).colorScheme.secondary,
                   value: checkBoxValue,
                   onChanged: (_) {
                     setState(() {
@@ -394,18 +437,20 @@ class PreviewWidgetState extends State<PreviewWidget> {
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                    foregroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).colorScheme.secondary),
                   ),
                   child: Text(
                     'BUTTON',
-                    style: TextStyle(color: getVisibleColorOnAccentColor(context)),
+                    style:
+                        TextStyle(color: getVisibleColorOnAccentColor(context)),
                   ),
                   onPressed: () {},
                 )
               ],
             ),
             Slider(
-              activeColor: Theme.of(context).accentColor,
+              activeColor: Theme.of(context).colorScheme.secondary,
               onChanged: (double newValue) {
                 setState(() {
                   sliderValue = newValue;

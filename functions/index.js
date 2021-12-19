@@ -4,7 +4,7 @@ const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
 
-exports.myFunction = functions.firestore.document('chatroom/{chatroomid}/chats/{chatsId}').onCreate(async (snapshot, context) => {
+exports.myFunction = functions.firestore.doc('chatroom/{chatroomid}/chats/{chatsId}').onCreate(async (snapshot, context) => {
     var docId;
     var tokens = [];
     var usersChat = [];

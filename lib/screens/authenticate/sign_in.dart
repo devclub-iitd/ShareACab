@@ -82,7 +82,7 @@ class _SignInState extends State<SignIn> {
                           SizedBox(height: 20.0),
                           CircleAvatar(
                             radius: 48,
-                            backgroundColor: Theme.of(context).accentColor,
+                            backgroundColor: Theme.of(context).colorScheme.secondary,
                             child: Icon(
                               CupertinoIcons.car_detailed,
                               size: 48,
@@ -107,7 +107,7 @@ class _SignInState extends State<SignIn> {
                           ),
                           SizedBox(height: 20.0),
                           TextFormField(
-                            decoration: InputDecoration(hintText: 'Email', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                            decoration: InputDecoration(hintText: 'Email', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0))),
                             validator: (val) => val.isEmpty ? 'Enter a valid Email' : null,
                             onChanged: (val) {
                               setState(() => email = val);
@@ -118,7 +118,7 @@ class _SignInState extends State<SignIn> {
                             decoration: InputDecoration(
                               hintText: 'Password',
                               enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)),
-                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0)),
+                              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0)),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   passwordHide ? Icons.visibility_off : Icons.visibility,
@@ -140,7 +140,7 @@ class _SignInState extends State<SignIn> {
                           SizedBox(height: 20.0),
                           ElevatedButton(
                             style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                              foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.secondary),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -178,7 +178,7 @@ class _SignInState extends State<SignIn> {
                                       duration: Duration(seconds: 2),
                                       content: Text(
                                         error,
-                                        style: TextStyle(color: Theme.of(context).accentColor),
+                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                       ),
                                     ));
                                   }
@@ -217,7 +217,7 @@ class _SignInState extends State<SignIn> {
                                       duration: Duration(seconds: 2),
                                       content: Text(
                                         error,
-                                        style: TextStyle(color: Theme.of(context).accentColor),
+                                        style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                       ),
                                     ));
                                   }
@@ -228,7 +228,7 @@ class _SignInState extends State<SignIn> {
                           SizedBox(height: 20.0),
                           ElevatedButton(
                             style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                              foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.secondary),
                             ),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 16),

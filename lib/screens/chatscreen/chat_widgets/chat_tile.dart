@@ -22,14 +22,14 @@ class _ChatTileState extends State<ChatTile> {
       padding: EdgeInsets.symmetric(vertical: 15),
       decoration: BoxDecoration(
           border: Border(
-        bottom: BorderSide(width: 0.15, color: Theme.of(context).accentColor),
+        bottom: BorderSide(width: 0.15, color: Theme.of(context).colorScheme.secondary),
       )),
       child: ListTile(
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(widget.docId)));
         },
         leading: CircleAvatar(
-          backgroundColor: Theme.of(context).accentColor,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           radius: 30,
           child: Padding(
             padding: EdgeInsets.all(6),

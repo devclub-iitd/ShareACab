@@ -29,7 +29,7 @@ class _NotifTileState extends State<NotifTile> {
       background: Container(
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.only(left: 20),
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).colorScheme.secondary,
         child: Icon(
           Icons.delete,
           color: Colors.white,
@@ -39,11 +39,11 @@ class _NotifTileState extends State<NotifTile> {
         padding: EdgeInsets.symmetric(vertical: 15),
         decoration: BoxDecoration(
             border: Border(
-          bottom: BorderSide(width: 0.15, color: Theme.of(context).accentColor),
+          bottom: BorderSide(width: 0.15, color: Theme.of(context).colorScheme.secondary),
         )),
         child: ListTile(
           leading: CircleAvatar(
-            backgroundColor: Theme.of(context).accentColor,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             radius: 40,
             child: Padding(
               padding: EdgeInsets.all(6),
@@ -79,7 +79,7 @@ class _NotifTileState extends State<NotifTile> {
                               pr.style(
                                 message: 'Accepting...',
                                 backgroundColor: Theme.of(context).backgroundColor,
-                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                messageTextStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                               );
                               await pr.show();
                               await Future.delayed(Duration(seconds: 1));
@@ -93,7 +93,7 @@ class _NotifTileState extends State<NotifTile> {
                             },
                             child: Text(
                               'Accept',
-                              style: TextStyle(color: Theme.of(context).accentColor),
+                              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                             ),
                           ),
                           TextButton(
@@ -106,7 +106,7 @@ class _NotifTileState extends State<NotifTile> {
                             },
                             child: Text(
                               'Decline',
-                              style: TextStyle(color: Theme.of(context).accentColor),
+                              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                             ),
                           )
                         ],

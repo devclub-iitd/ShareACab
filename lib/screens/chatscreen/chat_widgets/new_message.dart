@@ -18,12 +18,22 @@ class _NewMessageState extends State<NewMessage> {
   void _sendMessage() async {
     FocusScope.of(context).unfocus();
     _controller.clear();
-    final user = await FirebaseAuth.instance.currentUser();
-    final userData = await Firestore.instance.collection('userdetails').document(user.uid).get();
-    await Firestore.instance.collection('chatroom').document(widget.docId).updateData({
+    final user = FirebaseAuth.instance.currentUser;
+    final userData = await FirebaseFirestore.instance
+        .collection('userdetails')
+        .doc(user.uid)
+        .get();
+    await FirebaseFirestore.instance
+        .collection('chatroom')
+        .doc(widget.docId)
+        .update({
       'lastMessage': Timestamp.now(),
     });
-    await Firestore.instance.collection('chatroom').document(widget.docId).collection('chats').add({
+    await FirebaseFirestore.instance
+        .collection('chatroom')
+        .doc(widget.docId)
+        .collection('chats')
+        .add({
       'text': _enteredMessage,
       'createdAt': Timestamp.now(),
       'userId': user.uid,
@@ -56,7 +66,7 @@ class _NewMessageState extends State<NewMessage> {
           IconButton(
             icon: Icon(
               Icons.send,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             onPressed: _enteredMessage.trim().isEmpty ? null : _sendMessage,
           )

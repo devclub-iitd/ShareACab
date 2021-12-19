@@ -6,15 +6,16 @@ class AuthService {
 
   // auth change user stream
 
-  Stream<FirebaseUser> get user {
-    return _auth.onAuthStateChanged;
+  Stream<User> get user {
+    return _auth.authStateChanges();
   }
 
   //sign in with email pass
 
   Future<bool> signInWithEmailAndPassword(String email, String password) async {
-    var result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-    if (result.user.isEmailVerified) {
+    var result = await _auth.signInWithEmailAndPassword(
+        email: email, password: password);
+    if (result.user.emailVerified) {
       return true;
     } else {
       await result.user.sendEmailVerification();
@@ -22,17 +23,25 @@ class AuthService {
     }
   }
 
-  Future<bool> checkVerification(FirebaseUser user) async {
-    return user.isEmailVerified;
+  Future<bool> checkVerification(User user) async {
+    return user.emailVerified;
   }
 
   // sign up with email pass
 
-  Future<void> registerWithEmailAndPassword({String email, String password, String name, String mobilenum, String hostel, String sex}) async {
-    var result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+  Future<void> registerWithEmailAndPassword(
+      {String email,
+      String password,
+      String name,
+      String mobilenum,
+      String hostel,
+      String sex}) async {
+    var result = await _auth.createUserWithEmailAndPassword(
+        email: email, password: password);
     var user = result.user;
     // creating a new document for user
-    await DatabaseService(uid: user.uid).enterUserData(name: name, mobileNumber: mobilenum, hostel: hostel, sex: sex);
+    await DatabaseService(uid: user.uid).enterUserData(
+        name: name, mobileNumber: mobilenum, hostel: hostel, sex: sex);
     await result.user.sendEmailVerification();
   }
 
@@ -44,7 +53,7 @@ class AuthService {
 
   // verification mail resend
 
-  Future<void> verificationEmail(FirebaseUser user) async {
+  Future<void> verificationEmail(User user) async {
     await user.sendEmailVerification();
   }
 
@@ -54,30 +63,30 @@ class AuthService {
   }
 
   // is user verified check
-  Future<bool> verificationcheck(FirebaseUser user) async {
+  Future<bool> verificationcheck(User user) async {
     await user.reload();
-    await user.getIdToken(refresh: true);
+    await user.getIdToken(true);
     await user.reload();
-    var flag = await user.isEmailVerified;
+    var flag = user.emailVerified;
     return flag;
   }
 
-  Future<FirebaseUser> reloadCurrentUser() async {
-    var oldUser = await FirebaseAuth.instance.currentUser();
+  Future<User> reloadCurrentUser() async {
+    var oldUser = FirebaseAuth.instance.currentUser;
     await oldUser.reload();
-    var newUser = await FirebaseAuth.instance.currentUser();
+    var newUser = FirebaseAuth.instance.currentUser;
     return newUser;
   }
 
   Future<String> getCurrentUID() async {
-    var user = await _auth.currentUser();
+    var user = _auth.currentUser;
     final uid = user.uid;
     return uid.toString();
   }
 
   // to update email
   Future<void> changeEmail(String newEmail) async {
-    var user = await _auth.currentUser();
+    var user = _auth.currentUser;
     await user.updateEmail(newEmail);
   }
 }

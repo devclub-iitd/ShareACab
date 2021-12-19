@@ -3,24 +3,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class NotificationDatabase {
   final _auth = FirebaseAuth.instance;
-  final CollectionReference groupdetails = Firestore.instance.collection('group');
-  final CollectionReference userDetails = Firestore.instance.collection('userdetails');
-  final CollectionReference chatLists = Firestore.instance.collection('chatroom');
+  final CollectionReference<Map<String, dynamic>> groupdetails =
+      FirebaseFirestore.instance.collection('group');
+  final CollectionReference<Map<String, dynamic>> userDetails =
+      FirebaseFirestore.instance.collection('userdetails');
+  final CollectionReference<Map<String, dynamic>> chatLists =
+      FirebaseFirestore.instance.collection('chatroom');
 
 //Request created to join a group
   Future<void> createRequest(String groupId) async {
-    var user = await _auth.currentUser();
+    var user = _auth.currentUser;
     var name;
     var admin;
 
-    await userDetails.document(user.uid).get().then((value) {
-      name = value.data['name'];
+    await userDetails.doc(user.uid).get().then((value) {
+      name = value.data()['name'];
     });
-    await groupdetails.document(groupId).get().then((value) {
-      admin = value.data['owner'];
+    await groupdetails.doc(groupId).get().then((value) {
+      admin = value.data()['owner'];
     });
     if (admin != null) {
-      await userDetails.document(admin).collection('Notifications').add({
+      await userDetails.doc(admin).collection('Notifications').add({
         'from': user.uid,
         'senderName': name,
         'createdAt': Timestamp.now(),
@@ -28,7 +31,7 @@ class NotificationDatabase {
         'response': null,
         'groupId': groupId,
       });
-      await userDetails.document(user.uid).updateData({
+      await userDetails.doc(user.uid).update({
         'currentGroupJoinRequests': FieldValue.arrayUnion([groupId])
       });
     }
@@ -37,18 +40,18 @@ class NotificationDatabase {
 //Creating a notification when a user joins the group (non-private groups)
   Future<void> joined(String name, String groupId) async {
     var allUsers;
-    final user = await _auth.currentUser();
+    final user = _auth.currentUser;
 
-    await groupdetails.document(groupId).get().then((value) {
-      allUsers = value.data['users'];
+    await groupdetails.doc(groupId).get().then((value) {
+      allUsers = value.data()['users'];
     });
-    await userDetails.document(user.uid).updateData({
+    await userDetails.doc(user.uid).update({
       'currentGroupJoinRequests': null,
     });
 
     for (var i = 0; i < allUsers.length; i++) {
       if (allUsers[i] != user.uid) {
-        await userDetails.document(allUsers[i]).collection('Notifications').add({
+        await userDetails.doc(allUsers[i]).collection('Notifications').add({
           'from': user.uid,
           'senderName': name,
           'createdAt': Timestamp.now(),
@@ -62,74 +65,87 @@ class NotificationDatabase {
 
 //Updating response, adding user to the group, adding user to chatroom
   Future<void> response(bool response, String notifId) async {
-    var user = await _auth.currentUser();
+    var user = _auth.currentUser;
     var listuid;
     var uid;
     var name;
     var nameo;
 
-    await userDetails.document(user.uid).collection('Notifications').document(notifId).updateData({
+    await userDetails
+        .doc(user.uid)
+        .collection('Notifications')
+        .doc(notifId)
+        .update({
       'response': response,
     });
 
     if (response == true) {
-      await userDetails.document(user.uid).collection('Notifications').document(notifId).get().then((value) {
-        listuid = value.data['groupId'];
-        uid = value.data['from'];
+      await userDetails
+          .doc(user.uid)
+          .collection('Notifications')
+          .doc(notifId)
+          .get()
+          .then((value) {
+        listuid = value.data()['groupId'];
+        uid = value.data()['from'];
       });
       var presentNum;
       var maxPoolers;
-      await userDetails.document(uid).updateData({
+      await userDetails.doc(uid).update({
         // 'previous_groups': FieldValue.arrayUnion([listuid]),
         'currentGroup': listuid,
         'currentGroupJoinRequests': null,
       });
-      await groupdetails.document(listuid).get().then((value) {
-        presentNum = value.data['numberOfMembers'];
-        maxPoolers = value.data['maxpoolers'];
+      await groupdetails.doc(listuid).get().then((value) {
+        presentNum = value.data()['numberOfMembers'];
+        maxPoolers = value.data()['maxpoolers'];
       });
       if (presentNum == maxPoolers) {
-        await groupdetails.document(listuid).updateData({
+        await groupdetails.doc(listuid).update({
           'users': FieldValue.arrayUnion([uid.toString()]),
           'numberOfMembers': presentNum + 1,
           'maxpoolers': maxPoolers + 1,
         });
       } else {
-        await groupdetails.document(listuid).updateData({
+        await groupdetails.doc(listuid).update({
           'users': FieldValue.arrayUnion([uid.toString()]),
           'numberOfMembers': presentNum + 1,
         });
       }
 
-      var request = groupdetails.document(listuid).collection('users');
-      await Firestore.instance.collection('userdetails').document(uid).get().then((value) async {
+      var request = groupdetails.doc(listuid).collection('users');
+      await FirebaseFirestore.instance
+          .collection('userdetails')
+          .doc(uid)
+          .get()
+          .then((value) async {
         if (value.exists) {
-          await request.document(uid).setData({
-            'name': value.data['name'],
-            'hostel': value.data['hostel'],
-            'sex': value.data['sex'],
-            'mobilenum': value.data['mobileNumber'],
-            'totalrides': value.data['totalRides'],
-            'actualrating': value.data['actualRating'],
-            'cancelledrides': value.data['cancelledRides'],
-            'numberofratings': value.data['numberOfRatings'],
+          await request.doc(uid).set({
+            'name': value.data()['name'],
+            'hostel': value.data()['hostel'],
+            'sex': value.data()['sex'],
+            'mobilenum': value.data()['mobileNumber'],
+            'totalrides': value.data()['totalRides'],
+            'actualrating': value.data()['actualRating'],
+            'cancelledrides': value.data()['cancelledRides'],
+            'numberofratings': value.data()['numberOfRatings'],
           });
-          name = value.data['name'];
+          name = value.data()['name'];
         }
       });
 
       var allUsers;
-      await groupdetails.document(listuid).get().then((value) {
-        allUsers = value.data['users'];
+      await groupdetails.doc(listuid).get().then((value) {
+        allUsers = value.data()['users'];
       });
 
-      await userDetails.document(user.uid).get().then((value) {
-        nameo = value.data['name'];
+      await userDetails.doc(user.uid).get().then((value) {
+        nameo = value.data()['name'];
       });
 
       for (var i = 0; i < allUsers.length; i++) {
         if (allUsers[i] != uid && allUsers[i] != user.uid) {
-          await userDetails.document(allUsers[i]).collection('Notifications').add({
+          await userDetails.doc(allUsers[i]).collection('Notifications').add({
             'from': uid,
             'senderName': name,
             'createdAt': Timestamp.now(),
@@ -138,7 +154,7 @@ class NotificationDatabase {
             'groupId': listuid,
           });
         } else if (allUsers[i] == uid) {
-          await userDetails.document(uid).collection('Notifications').add({
+          await userDetails.doc(uid).collection('Notifications').add({
             'from': user.uid,
             'senderName': nameo,
             'createdAt': Timestamp.now(),
@@ -149,21 +165,26 @@ class NotificationDatabase {
         }
       }
 
-      await chatLists.document(listuid).updateData({
+      await chatLists.doc(listuid).update({
         'users': FieldValue.arrayUnion([uid.toString()]),
       });
     } else if (response == false) {
       var name;
-      await userDetails.document(user.uid).get().then((value) {
-        name = value.data['name'];
+      await userDetails.doc(user.uid).get().then((value) {
+        name = value.data()['name'];
       });
 
-      await userDetails.document(user.uid).collection('Notifications').document(notifId).get().then((value) {
-        listuid = value.data['groupId'];
-        uid = value.data['from'];
+      await userDetails
+          .doc(user.uid)
+          .collection('Notifications')
+          .doc(notifId)
+          .get()
+          .then((value) {
+        listuid = value.data()['groupId'];
+        uid = value.data()['from'];
       });
 
-      await userDetails.document(uid).collection('Notifications').add({
+      await userDetails.doc(uid).collection('Notifications').add({
         'from': user.uid,
         'senderName': name,
         'createdAt': Timestamp.now(),
@@ -176,15 +197,15 @@ class NotificationDatabase {
 
 //Creating a notification for all users of a group when a user leaves that group
   Future<void> left(String name, String groupId) async {
-    final user = await _auth.currentUser();
+    final user = _auth.currentUser;
     var allUsers;
-    await groupdetails.document(groupId).get().then((value) {
-      allUsers = value.data['users'];
+    await groupdetails.doc(groupId).get().then((value) {
+      allUsers = value.data()['users'];
     });
 
     for (var i = 0; i < allUsers.length; i++) {
       if (user.uid != allUsers[i]) {
-        await userDetails.document(allUsers[i]).collection('Notifications').add({
+        await userDetails.doc(allUsers[i]).collection('Notifications').add({
           'from': user.uid,
           'senderName': name,
           'createdAt': Timestamp.now(),
@@ -197,21 +218,27 @@ class NotificationDatabase {
   }
 
   //Deleting a notification
-  Future<void> remNotif(String notifId, var purpose, var uid, var response) async {
-    final user = await _auth.currentUser();
+  Future<void> remNotif(
+      String notifId, var purpose, var uid, var response) async {
+    final user = _auth.currentUser;
     if (purpose == 'Request to Join' && response == false) {
       var name;
       var listuid;
 
-      await userDetails.document(user.uid).get().then((value) {
-        name = value.data['name'];
+      await userDetails.doc(user.uid).get().then((value) {
+        name = value.data()['name'];
       });
 
-      await userDetails.document(user.uid).collection('Notifications').document(notifId).get().then((value) {
-        listuid = value.data['groupId'];
+      await userDetails
+          .doc(user.uid)
+          .collection('Notifications')
+          .doc(notifId)
+          .get()
+          .then((value) {
+        listuid = value.data()['groupId'];
       });
 
-      await userDetails.document(uid).collection('Notifications').add({
+      await userDetails.doc(uid).collection('Notifications').add({
         'from': user.uid,
         'senderName': name,
         'createdAt': Timestamp.now(),
@@ -220,22 +247,31 @@ class NotificationDatabase {
         'groupId': listuid,
       });
     }
-    await userDetails.document(user.uid).collection('Notifications').document(notifId).delete();
+    await userDetails
+        .doc(user.uid)
+        .collection('Notifications')
+        .doc(notifId)
+        .delete();
   }
 
   Future<void> removeAllNotif() async {
-    final user = await _auth.currentUser();
-    final notifs = await userDetails.document(user.uid).collection('Notifications').getDocuments();
-    for (var i = 0; i < notifs.documents.length; i++) {
-      if (notifs.documents[i].data['response'] == null && notifs.documents[i].data['purpose'] == 'Request to Join') {
+    final user = _auth.currentUser;
+    final notifs =
+        await userDetails.doc(user.uid).collection('Notifications').get();
+    for (var i = 0; i < notifs.docs.length; i++) {
+      if (notifs.docs[i].data()['response'] == null &&
+          notifs.docs[i].data()['purpose'] == 'Request to Join') {
         var name;
         var listuid;
 
-        await userDetails.document(user.uid).get().then((value) {
-          name = value.data['name'];
+        await userDetails.doc(user.uid).get().then((value) {
+          name = value.data()['name'];
         });
-        listuid = notifs.documents[i].documentID;
-        await userDetails.document(notifs.documents[i].data['from']).collection('Notifications').add({
+        listuid = notifs.docs[i].id;
+        await userDetails
+            .doc(notifs.docs[i].data()['from'])
+            .collection('Notifications')
+            .add({
           'from': user.uid,
           'senderName': name,
           'createdAt': Timestamp.now(),
@@ -244,7 +280,11 @@ class NotificationDatabase {
           'groupId': listuid,
         });
       }
-      await userDetails.document(user.uid).collection('Notifications').document(notifs.documents[i].documentID).delete();
+      await userDetails
+          .doc(user.uid)
+          .collection('Notifications')
+          .doc(notifs.docs[i].id)
+          .delete();
     }
   }
 }

@@ -27,18 +27,24 @@ class GroupDetails extends StatefulWidget {
   final numberOfMembers;
   final data;
 
-  GroupDetails(this.destination, this.docId, this.privacy, this.start, this.end, this.numberOfMembers, this.data);
+  GroupDetails(this.destination, this.docId, this.privacy, this.start, this.end,
+      this.numberOfMembers, this.data);
   static bool inGroup = false;
 
   @override
   _GroupDetailsState createState() => _GroupDetailsState();
 }
 
-class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClientMixin<GroupDetails> {
+class _GroupDetailsState extends State<GroupDetails>
+    with AutomaticKeepAliveClientMixin<GroupDetails> {
   final RequestService _request = RequestService();
   final NotifServices _notifServices = NotifServices();
   Future getUserDetails() async {
-    final userDetails = await Firestore.instance.collection('group').document(widget.docId).collection('users').snapshots();
+    final userDetails = FirebaseFirestore.instance
+        .collection('group')
+        .doc(widget.docId)
+        .collection('users')
+        .snapshots();
     return userDetails;
   }
 
@@ -65,29 +71,43 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
   Widget build(BuildContext context) {
     super.build(context);
     timeDilation = 1.0;
-    final currentuser = Provider.of<FirebaseUser>(context);
+    final currentuser = Provider.of<User>(context);
     return StreamBuilder(
-        stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('userdetails')
+            .doc(currentuser.uid)
+            .snapshots(),
         builder: (context, usersnapshot) {
-          requestedToJoin = usersnapshot.hasData ? usersnapshot.data['currentGroupJoinRequests'] != null && usersnapshot.data['currentGroupJoinRequests'].contains(widget.docId) : false;
+          requestedToJoin = usersnapshot.hasData
+              ? usersnapshot.data()['currentGroupJoinRequests'] != null &&
+                  usersnapshot
+                      .data()['currentGroupJoinRequests']
+                      .contains(widget.docId)
+              : false;
           if (usersnapshot.connectionState == ConnectionState.active) {
-            var groupUID = usersnapshot.data['currentGroup'];
+            var groupUID = usersnapshot.data()['currentGroup'];
             if (groupUID != null) {
               GroupDetails.inGroup = true;
             } else {
               GroupDetails.inGroup = false;
             }
             return StreamBuilder(
-                stream: Firestore.instance.collection('group').document(widget.docId).snapshots(),
+                stream: FirebaseFirestore.instance
+                    .collection('group')
+                    .doc(widget.docId)
+                    .snapshots(),
                 builder: (context, groupsnapshot) {
                   if (groupsnapshot.connectionState == ConnectionState.active) {
-                    privacy = groupsnapshot.data['privacy'];
-                    destination = groupsnapshot.data['destination'];
-                    start = DateFormat('dd.MM.yyyy - kk:mm a').format(groupsnapshot.data['start'].toDate());
-                    end = DateFormat('dd.MM.yyyy - kk:mm a').format(groupsnapshot.data['end'].toDate());
-                    presentNum = groupsnapshot.data['numberOfMembers'].toString();
+                    privacy = groupsnapshot.data()['privacy'];
+                    destination = groupsnapshot.data()['destination'];
+                    start = DateFormat('dd.MM.yyyy - kk:mm a')
+                        .format(groupsnapshot.data()['start'].toDate());
+                    end = DateFormat('dd.MM.yyyy - kk:mm a')
+                        .format(groupsnapshot.data()['end'].toDate());
+                    presentNum =
+                        groupsnapshot.data()['numberOfMembers'].toString();
                     present = int.parse(presentNum);
-                    max = groupsnapshot.data['maxpoolers'];
+                    max = groupsnapshot.data()['maxpoolers'];
                     if (present >= max) {
                       full = true;
                     } else {
@@ -95,7 +115,8 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                     }
                     return NestedScrollView(
                         controller: ScrollController(keepScrollOffset: true),
-                        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                        headerSliverBuilder:
+                            (BuildContext context, bool innerBoxIsScrolled) {
                           return <Widget>[
                             SliverAppBar(
                               pinned: true,
@@ -109,8 +130,10 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                         },
                         body: Scaffold(
                           body: NestedScrollView(
-                            controller: ScrollController(keepScrollOffset: true),
-                            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                            controller:
+                                ScrollController(keepScrollOffset: true),
+                            headerSliverBuilder: (BuildContext context,
+                                bool innerBoxIsScrolled) {
                               return <Widget>[];
                             },
                             body: SingleChildScrollView(
@@ -119,16 +142,23 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                   Hero(
                                     tag: widget.docId,
                                     child: Card(
-                                      color: Theme.of(context).accentColor,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(25.0))),
                                       elevation: 5,
-                                      margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 6, horizontal: 5),
                                       child: Container(
                                         height: 120,
                                         child: Column(
                                           children: <Widget>[
                                             Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: <Widget>[
                                                 Flexible(
                                                   fit: FlexFit.tight,
@@ -137,15 +167,24 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                       margin: EdgeInsets.only(
                                                         left: 20,
                                                       ),
-                                                      child: widget.destination == 'New Delhi Railway Station'
+                                                      child: widget
+                                                                  .destination ==
+                                                              'New Delhi Railway Station'
                                                           ? Icon(
                                                               Icons.train,
-                                                              color: Theme.of(context).accentColor,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
                                                               size: 30,
                                                             )
                                                           : Icon(
-                                                              Icons.airplanemode_active,
-                                                              color: Theme.of(context).accentColor,
+                                                              Icons
+                                                                  .airplanemode_active,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
                                                               size: 30,
                                                             )),
                                                 ),
@@ -156,9 +195,15 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                 bottom: 5,
                                               ),
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
                                                 children: <Widget>[
-                                                  Text('Start : ${start}', style: TextStyle(fontSize: 15.0, color: getVisibleColorOnAccentColor(context))),
+                                                  Text('Start : $start',
+                                                      style: TextStyle(
+                                                          fontSize: 15.0,
+                                                          color:
+                                                              getVisibleColorOnAccentColor(
+                                                                  context))),
                                                 ],
                                               ),
                                             ),
@@ -167,26 +212,37 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                 bottom: 5,
                                               ),
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
                                                 children: <Widget>[
                                                   Text(
-                                                    'End : ${end}',
-                                                    style: TextStyle(fontSize: 15, color: getVisibleColorOnAccentColor(context)),
+                                                    'End : $end',
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        color:
+                                                            getVisibleColorOnAccentColor(
+                                                                context)),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             Padding(
-                                              padding: const EdgeInsets.only(bottom: 5),
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 5),
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: <Widget>[
                                                   Column(
                                                     children: <Widget>[
                                                       Text(
                                                         'Number of members in group: '
-                                                        '${presentNum}',
-                                                        style: TextStyle(color: getVisibleColorOnAccentColor(context)),
+                                                        '$presentNum',
+                                                        style: TextStyle(
+                                                            color:
+                                                                getVisibleColorOnAccentColor(
+                                                                    context)),
                                                       )
                                                     ],
                                                   ),
@@ -194,14 +250,18 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                               ),
                                             ),
                                             Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
                                               children: <Widget>[
                                                 Column(
                                                   children: <Widget>[
                                                     Text(
                                                       'Max Number of members: '
-                                                      '${max}',
-                                                      style: TextStyle(color: getVisibleColorOnAccentColor(context)),
+                                                      '$max',
+                                                      style: TextStyle(
+                                                          color:
+                                                              getVisibleColorOnAccentColor(
+                                                                  context)),
                                                     )
                                                   ],
                                                 ),
@@ -214,11 +274,17 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                   ),
                                   Container(
                                     margin: EdgeInsets.only(top: 60),
-                                    height: MediaQuery.of(context).size.height * 0.7,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.7,
                                     child: StreamBuilder(
-                                      stream: Firestore.instance.collection('group').document(widget.docId).collection('users').snapshots(),
+                                      stream: FirebaseFirestore.instance
+                                          .collection('group')
+                                          .doc(widget.docId)
+                                          .collection('users')
+                                          .snapshots(),
                                       builder: (ctx, futureSnapshot) {
-                                        if (futureSnapshot.connectionState == ConnectionState.waiting) {
+                                        if (futureSnapshot.connectionState ==
+                                            ConnectionState.waiting) {
                                           return Column(
                                             children: <Widget>[
                                               CircularProgressIndicator(),
@@ -226,64 +292,126 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                           );
                                         }
                                         return ListView.builder(
-                                            physics: NeverScrollableScrollPhysics(),
-                                            itemCount: futureSnapshot.data.documents.length,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            itemCount:
+                                                futureSnapshot.data.docs.length,
                                             itemBuilder: (ctx, index) {
                                               return Container(
-                                                margin: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                                                margin: EdgeInsets.symmetric(
+                                                    vertical: 2,
+                                                    horizontal: 10),
                                                 width: double.infinity,
                                                 child: Card(
                                                   elevation: 4,
                                                   child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
                                                     children: <Widget>[
                                                       Padding(
-                                                        padding: const EdgeInsets.all(8.0),
-                                                        child: Text(futureSnapshot.data.documents[index].data['name']),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Text(
+                                                            futureSnapshot.data
+                                                                    .docs[index]
+                                                                    .data()[
+                                                                'name']),
                                                       ),
                                                       Padding(
-                                                        padding: const EdgeInsets.all(8.0),
-                                                        child: Text(futureSnapshot.data.documents[index].data['hostel']),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Text(
+                                                            futureSnapshot.data
+                                                                    .docs[index]
+                                                                    .data()[
+                                                                'hostel']),
                                                       ),
                                                       Padding(
-                                                        padding: const EdgeInsets.all(8.0),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
                                                         child: IconButton(
-                                                            onPressed: () async {
+                                                            onPressed:
+                                                                () async {
                                                               try {
-                                                                if (Platform.isIOS) {
-                                                                  await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data.documents[index].data['mobilenum'].toString()}')).then((result) {
-                                                                    final snackBar = SnackBar(
-                                                                      backgroundColor: Theme.of(context).primaryColor,
-                                                                      content: Text(
+                                                                if (Platform
+                                                                    .isIOS) {
+                                                                  await Clipboard.setData(ClipboardData(
+                                                                          text:
+                                                                              '${futureSnapshot.data.docs[index].data()['mobilenum'].toString()}'))
+                                                                      .then(
+                                                                          (result) {
+                                                                    final snackBar =
+                                                                        SnackBar(
+                                                                      backgroundColor:
+                                                                          Theme.of(context)
+                                                                              .primaryColor,
+                                                                      content:
+                                                                          Text(
                                                                         'Copied to Clipboard',
-                                                                        style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                getVisibleColorOnPrimaryColor(context)),
                                                                       ),
-                                                                      duration: Duration(seconds: 1),
+                                                                      duration: Duration(
+                                                                          seconds:
+                                                                              1),
                                                                     );
-                                                                    ScaffoldMessenger.of(ctx).hideCurrentSnackBar();
-                                                                    ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
+                                                                    ScaffoldMessenger.of(
+                                                                            ctx)
+                                                                        .hideCurrentSnackBar();
+                                                                    ScaffoldMessenger.of(
+                                                                            ctx)
+                                                                        .showSnackBar(
+                                                                            snackBar);
                                                                   });
                                                                 } else {
-                                                                  await launch('tel://${futureSnapshot.data.documents[index].data['mobilenum'].toString()}');
+                                                                  await launch(
+                                                                      'tel://${futureSnapshot.data.docs[index].data()['mobilenum'].toString()}');
                                                                 }
                                                               } catch (e) {
-                                                                await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data.documents[index].data['mobilenum'].toString()}')).then((result) {
-                                                                  final snackBar = SnackBar(
-                                                                    backgroundColor: Theme.of(context).primaryColor,
-                                                                    content: Text(
+                                                                await Clipboard.setData(
+                                                                        ClipboardData(
+                                                                            text:
+                                                                                '${futureSnapshot.data.docs[index].data()['mobilenum'].toString()}'))
+                                                                    .then(
+                                                                        (result) {
+                                                                  final snackBar =
+                                                                      SnackBar(
+                                                                    backgroundColor:
+                                                                        Theme.of(context)
+                                                                            .primaryColor,
+                                                                    content:
+                                                                        Text(
                                                                       'Copied to Clipboard',
-                                                                      style: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              getVisibleColorOnPrimaryColor(context)),
                                                                     ),
-                                                                    duration: Duration(seconds: 1),
+                                                                    duration: Duration(
+                                                                        seconds:
+                                                                            1),
                                                                   );
-                                                                  ScaffoldMessenger.of(ctx).hideCurrentSnackBar();
-                                                                  ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
+                                                                  ScaffoldMessenger
+                                                                          .of(ctx)
+                                                                      .hideCurrentSnackBar();
+                                                                  ScaffoldMessenger
+                                                                          .of(
+                                                                              ctx)
+                                                                      .showSnackBar(
+                                                                          snackBar);
                                                                 });
                                                               }
                                                             },
                                                             icon: Icon(
                                                               Icons.phone,
-                                                              color: Theme.of(context).accentColor,
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary,
                                                             )),
                                                       ),
                                                     ],
@@ -300,14 +428,19 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                           ),
                           bottomNavigationBar: TextButton(
                             style: TextButton.styleFrom(
-                              textStyle: TextStyle(color: getVisibleColorOnPrimaryColor(context)),
+                              textStyle: TextStyle(
+                                  color:
+                                      getVisibleColorOnPrimaryColor(context)),
                               padding: EdgeInsets.all(20),
                             ),
 
                             onPressed: () async {
                               try {
                                 if (GroupDetails.inGroup) {
-                                  await Navigator.push(context, MaterialPageRoute(builder: (context) => GroupPage()));
+                                  await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => GroupPage()));
                                 } else if (full) {
                                   null;
                                 } else if (privacy == 'true' && !full) {
@@ -318,24 +451,46 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                           context: context,
                                           builder: (BuildContext ctx) {
                                             return AlertDialog(
-                                              title: Text('Request To Join Group'),
-                                              content: Text('Are you sure you want to request to join this group?'),
+                                              title:
+                                                  Text('Request To Join Group'),
+                                              content: Text(
+                                                  'Are you sure you want to request to join this group?'),
                                               actions: <Widget>[
                                                 TextButton(
-                                                  child: Text('Request', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                  child: Text('Request',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary)),
                                                   onPressed: () async {
                                                     ProgressDialog pr;
-                                                    pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                                                    pr = ProgressDialog(context,
+                                                        type: ProgressDialogType
+                                                            .Normal,
+                                                        isDismissible: false,
+                                                        showLogs: false);
                                                     pr.style(
                                                       message: 'Requesting...',
-                                                      backgroundColor: Theme.of(context).backgroundColor,
-                                                      messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                                      backgroundColor:
+                                                          Theme.of(context)
+                                                              .backgroundColor,
+                                                      messageTextStyle:
+                                                          TextStyle(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .secondary),
                                                     );
                                                     await pr.show();
-                                                    await Future.delayed(Duration(seconds: 1));
+                                                    await Future.delayed(
+                                                        Duration(seconds: 1));
                                                     try {
-                                                      await _notifServices.createRequest(widget.docId);
-                                                      await Navigator.of(context).pop();
+                                                      await _notifServices
+                                                          .createRequest(
+                                                              widget.docId);
+                                                      Navigator.of(context)
+                                                          .pop();
                                                       await pr.hide();
                                                     } catch (e) {
                                                       await pr.hide();
@@ -344,7 +499,12 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                                   },
                                                 ),
                                                 TextButton(
-                                                  child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                  child: Text('Cancel',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary)),
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
@@ -358,24 +518,44 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                       builder: (BuildContext ctx) {
                                         return AlertDialog(
                                           title: Text('Join Group'),
-                                          content: Text('Are you sure you want to join this group?'),
+                                          content: Text(
+                                              'Are you sure you want to join this group?'),
                                           actions: <Widget>[
                                             TextButton(
-                                              child: Text('Join', style: TextStyle(color: Theme.of(context).accentColor)),
+                                              child: Text('Join',
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary)),
                                               onPressed: () async {
                                                 ProgressDialog pr;
-                                                pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
+                                                pr = ProgressDialog(context,
+                                                    type: ProgressDialogType
+                                                        .Normal,
+                                                    isDismissible: false,
+                                                    showLogs: false);
                                                 pr.style(
                                                   message: 'Joining Group...',
-                                                  backgroundColor: Theme.of(context).backgroundColor,
-                                                  messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .backgroundColor,
+                                                  messageTextStyle: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary),
                                                 );
                                                 await pr.show();
-                                                await Future.delayed(Duration(seconds: 1));
+                                                await Future.delayed(
+                                                    Duration(seconds: 1));
                                                 try {
-                                                  await _request.joinGroup(widget.docId);
+                                                  await _request
+                                                      .joinGroup(widget.docId);
                                                   GroupDetails.inGroup = true;
-                                                  await _notifServices.groupJoin(usersnapshot.data['name'], widget.docId);
+                                                  await _notifServices
+                                                      .groupJoin(
+                                                          usersnapshot
+                                                              .data()['name'],
+                                                          widget.docId);
                                                   await pr.hide();
                                                 } catch (e) {
                                                   await pr.hide();
@@ -395,7 +575,11 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                               },
                                             ),
                                             TextButton(
-                                              child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                              child: Text('Cancel',
+                                                  style: TextStyle(
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary)),
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
@@ -412,27 +596,46 @@ class _GroupDetailsState extends State<GroupDetails> with AutomaticKeepAliveClie
                                 ? GroupDetails.inGroup
                                     ? Text(
                                         'My Group Page', // You are in a group and viewing a private group
-                                        style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: getVisibleColorOnAccentColor(
+                                                context)),
                                       )
                                     : full
-                                        ? Text('Group is full', style: TextStyle(fontSize: 20))
+                                        ? Text('Group is full',
+                                            style: TextStyle(fontSize: 20))
                                         : requestedToJoin
                                             ? Text(
                                                 'Requested', // You are not in any group and requested to join
-                                                style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    color:
+                                                        getVisibleColorOnAccentColor(
+                                                            context)),
                                               )
                                             : Text(
                                                 'Request to Join', // fresh visit to private group (and user is not in any group)
-                                                style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    color:
+                                                        getVisibleColorOnAccentColor(
+                                                            context)),
                                               )
                                 : GroupDetails.inGroup
                                     ? Text(
                                         'My Group Page', // visiting a group page
-                                        style: TextStyle(fontSize: 20, color: getVisibleColorOnAccentColor(context)),
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: getVisibleColorOnAccentColor(
+                                                context)),
                                       )
                                     : full
-                                        ? Text('Group is full', style: TextStyle(fontSize: 20))
-                                        : Text('Join Now', style: TextStyle(fontSize: 20)), // Visiting a public group page and not in any group
+                                        ? Text('Group is full',
+                                            style: TextStyle(fontSize: 20))
+                                        : Text('Join Now',
+                                            style: TextStyle(
+                                                fontSize:
+                                                    20)), // Visiting a public group page and not in any group
                           ),
                         ));
                   } else {
