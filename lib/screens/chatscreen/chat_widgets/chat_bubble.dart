@@ -16,18 +16,23 @@ class MessageBubble extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         Row(
-          mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+          mainAxisAlignment:
+              isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
           children: <Widget>[
             Stack(
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: isMe ? Colors.grey : Theme.of(context).colorScheme.secondary,
+                    color: isMe
+                        ? Colors.grey
+                        : Theme.of(context).colorScheme.secondary,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),
-                      bottomLeft: !isMe ? Radius.circular(0) : Radius.circular(12),
-                      bottomRight: isMe ? Radius.circular(0) : Radius.circular(12),
+                      bottomLeft:
+                          !isMe ? Radius.circular(0) : Radius.circular(12),
+                      bottomRight:
+                          isMe ? Radius.circular(0) : Radius.circular(12),
                     ),
                   ),
                   padding: EdgeInsets.only(
@@ -48,13 +53,17 @@ class MessageBubble extends StatelessWidget {
                         username,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: isMe ? Colors.black : Theme.of(context).accentTextTheme.subtitle1.color,
+                          color: isMe
+                              ? Colors.black
+                              : Theme.of(context).textTheme.subtitle1.color,
                         ),
                       ),
                       Text(
                         message,
                         style: TextStyle(
-                          color: isMe ? Colors.black : Theme.of(context).accentTextTheme.subtitle1.color,
+                          color: isMe
+                              ? Colors.black
+                              : Theme.of(context).textTheme.subtitle1.color,
                         ),
                         textAlign: TextAlign.start,
                       ),
@@ -69,7 +78,9 @@ class MessageBubble extends StatelessWidget {
                       Text(
                         time,
                         style: TextStyle(
-                          color: isMe ? Colors.black : Theme.of(context).accentTextTheme.subtitle1.color,
+                          color: isMe
+                              ? Colors.black
+                              : Theme.of(context).textTheme.subtitle1.color,
                           fontSize: 12,
                         ),
                       ),

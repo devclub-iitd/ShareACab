@@ -8,7 +8,7 @@ import 'package:shareacab/models/requestdetails.dart';
 import 'package:shareacab/screens/createtrip.dart';
 import 'package:shareacab/screens/filter.dart';
 import 'package:shareacab/screens/help.dart';
-import 'package:shareacab/screens/settings.dart' as SettingsScreen;
+import 'package:shareacab/screens/settings.dart' as settings;
 import 'package:shareacab/screens/tripslist.dart';
 import 'package:shareacab/services/auth.dart';
 
@@ -106,7 +106,7 @@ class _DashboardState extends State<Dashboard>
               onPressed: () {
                 return Navigator.push(context,
                     MaterialPageRoute(builder: (context) {
-                  return SettingsScreen.Settings(_auth);
+                  return settings.Settings(_auth);
                 }));
               }),
         ],

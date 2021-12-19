@@ -27,7 +27,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    final fbm = FirebaseMessaging.instance..requestPermission();
+    final fbm = FirebaseMessaging.instance;
+    fbm.requestPermission();
     _getToken();
     super.initState();
   }

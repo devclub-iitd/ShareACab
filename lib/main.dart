@@ -268,6 +268,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
     return StreamProvider<User>.value(
+      initialData: FirebaseAuth.instance.currentUser,
       value: AuthService().user,
       child: MaterialApp(
         initialRoute: '/wrapper',
