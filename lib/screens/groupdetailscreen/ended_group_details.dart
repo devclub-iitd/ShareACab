@@ -29,8 +29,8 @@ class EndedGroupDetails extends StatefulWidget {
 
 class _EndedGroupDetailsState extends State<EndedGroupDetails> {
   Future getUserDetails() async {
-    final userDetails = await Firestore.instance.collection('group').document(widget.docId).collection('users').getDocuments();
-    return userDetails.documents;
+    final userDetails = await FirebaseFirestore.instance.collection('group').doc(widget.docId).collection('users').get();
+    return userDetails.docs;
   }
 
   var _fetchData;
@@ -78,7 +78,7 @@ class _EndedGroupDetailsState extends State<EndedGroupDetails> {
                   Hero(
                     tag: widget.docId,
                     child: Card(
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).colorScheme.secondary,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
                       elevation: 5,
                       margin: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
@@ -99,12 +99,12 @@ class _EndedGroupDetailsState extends State<EndedGroupDetails> {
                                       child: widget.destination == 'New Delhi Railway Station'
                                           ? Icon(
                                               Icons.train,
-                                              color: Theme.of(context).accentColor,
+                                              color: Theme.of(context).colorScheme.secondary,
                                               size: 30,
                                             )
                                           : Icon(
                                               Icons.airplanemode_active,
-                                              color: Theme.of(context).accentColor,
+                                              color: Theme.of(context).colorScheme.secondary,
                                               size: 30,
                                             )),
                                 ),
@@ -179,11 +179,11 @@ class _EndedGroupDetailsState extends State<EndedGroupDetails> {
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(futureSnapshot.data[index].data['name']),
+                                        child: Text(futureSnapshot.data()[index].data()['name']),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
-                                        child: Text(futureSnapshot.data[index].data['hostel']),
+                                        child: Text(futureSnapshot.data()[index].data()['hostel']),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -191,7 +191,7 @@ class _EndedGroupDetailsState extends State<EndedGroupDetails> {
                                             onPressed: () async {
                                               try {
                                                 if (Platform.isIOS) {
-                                                  await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data[index].data['mobilenum'].toString()}')).then((result) {
+                                                  await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data()[index].data()['mobilenum'].toString()}')).then((result) {
                                                     final snackBar = SnackBar(
                                                       backgroundColor: Theme.of(context).primaryColor,
                                                       content: Text(
@@ -204,10 +204,10 @@ class _EndedGroupDetailsState extends State<EndedGroupDetails> {
                                                     ScaffoldMessenger.of(ctx).showSnackBar(snackBar);
                                                   });
                                                 } else {
-                                                  await launch('tel://${futureSnapshot.data[index].data['mobilenum'].toString()}');
+                                                  await launch('tel://${futureSnapshot.data()[index].data()['mobilenum'].toString()}');
                                                 }
                                               } catch (e) {
-                                                await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data[index].data['mobilenum'].toString()}')).then((result) {
+                                                await Clipboard.setData(ClipboardData(text: '${futureSnapshot.data()[index].data()['mobilenum'].toString()}')).then((result) {
                                                   final snackBar = SnackBar(
                                                     backgroundColor: Theme.of(context).primaryColor,
                                                     content: Text(
@@ -223,7 +223,7 @@ class _EndedGroupDetailsState extends State<EndedGroupDetails> {
                                             },
                                             icon: Icon(
                                               Icons.phone,
-                                              color: Theme.of(context).accentColor,
+                                              color: Theme.of(context).colorScheme.secondary,
                                             )),
                                       ),
                                     ],

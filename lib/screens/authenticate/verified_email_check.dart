@@ -28,13 +28,13 @@ class _VerificationCheckState extends State<VerificationCheck> {
 
     Future(() async {
       Timer.periodic(Duration(seconds: 5), (timer) async {
-        // FirebaseUser
-        var olduser = await FirebaseAuth.instance.currentUser();
+        // User
+        var olduser = FirebaseAuth.instance.currentUser;
         await olduser.reload();
-        var user = await FirebaseAuth.instance.currentUser();
-        if (user.isEmailVerified) {
+        var user = FirebaseAuth.instance.currentUser;
+        if (user.emailVerified) {
           setState(() {
-            verified = user.isEmailVerified;
+            verified = user.emailVerified;
           });
           timer.cancel();
         }
@@ -44,7 +44,7 @@ class _VerificationCheckState extends State<VerificationCheck> {
 
   @override
   Widget build(BuildContext context) {
-    var currentuser = Provider.of<FirebaseUser>(context);
+    var currentuser = Provider.of<User>(context);
 
     email = currentuser.email;
 
@@ -96,7 +96,7 @@ class _VerificationCheckState extends State<VerificationCheck> {
                     SizedBox(height: 30.0),
                     RichText(
                       text: TextSpan(
-                        text: 'The registered email id is: ${email}',
+                        text: 'The registered email id is: $email',
                         style: TextStyle(fontSize: 17.0, color: getBorderColorForInputFields(context), fontWeight: FontWeight.w700),
                       ),
                     ),
@@ -108,7 +108,7 @@ class _VerificationCheckState extends State<VerificationCheck> {
                       children: <Widget>[
                         ElevatedButton(
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.secondary),
                           ),
                           child: Text(
                             'Resend email',
@@ -128,7 +128,7 @@ class _VerificationCheckState extends State<VerificationCheck> {
                         ),
                         ElevatedButton(
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.secondary),
                           ),
                           child: Text(
                             'Change email',

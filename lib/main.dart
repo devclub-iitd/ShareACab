@@ -11,6 +11,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shareacab/screens/chatscreen/chat_screen.dart';
 
+// Import the generated file
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 Color userIsOnline(BuildContext context) => Colors.green;
 
 Color sendMessageIcon(BuildContext context) => Colors.green;
@@ -59,7 +63,7 @@ Color getVisibleColorOnPrimaryColor(BuildContext context) {
 }
 
 Color getVisibleColorOnAccentColor(BuildContext context) {
-  var color = Theme.of(context).accentColor;
+  var color = Theme.of(context).colorScheme.secondary;
   var list = [Colors.tealAccent, Colors.cyanAccent, Colors.yellowAccent, Colors.greenAccent];
   if (list.contains(color)) {
     return Colors.black;
@@ -68,7 +72,7 @@ Color getVisibleColorOnAccentColor(BuildContext context) {
 }
 
 Color getVisibleTextColorOnScaffold(BuildContext context) {
-  var color = Theme.of(context).accentColor;
+  var color = Theme.of(context).colorScheme.secondary;
   var theme;
   if (Theme.of(context).brightness == Brightness.dark) {
     theme = 'dark';
@@ -84,7 +88,7 @@ Color getVisibleTextColorOnScaffold(BuildContext context) {
 }
 
 Color getVisibleIconColorOnScaffold(BuildContext context) {
-  var color = Theme.of(context).accentColor;
+  var color = Theme.of(context).colorScheme.secondary;
   var theme;
   if (Theme.of(context).brightness == Brightness.dark) {
     theme = 'dark';
@@ -137,15 +141,18 @@ class ThemeNotifier with ChangeNotifier {
   }
 }
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences.getInstance().then((prefs) {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await SharedPreferences.getInstance().then((prefs) {
     if (prefs.getBool('darkMode') == null || prefs.getString('accentColor') == null) {
       prefs.setBool('darkMode', true);
       prefs.setString('accentColor', 'Blue');
     }
   });
-  SharedPreferences.getInstance().then((prefs) {
+  await SharedPreferences.getInstance().then((prefs) {
     var darkModeOn = prefs.getBool('darkMode') ?? true;
     var _theme = prefs.getString('theme') ?? 'system';
     var chosenAccentColor = prefs.getString('accentColor') ?? 'Blue';
@@ -232,7 +239,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-    return StreamProvider<FirebaseUser>.value(
+    return StreamProvider<User>.value(
+      initialData: FirebaseAuth.instance.currentUser,
       value: AuthService().user,
       child: MaterialApp(
         initialRoute: '/wrapper',
@@ -249,8 +257,8 @@ class MyApp extends StatelessWidget {
         title: 'Share A Cab',
         builder: (context, child) {
           return MediaQuery(
-            child: child,
             data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+            child: child,
           );
         },
         debugShowCheckedModeBanner: false,
@@ -264,28 +272,23 @@ ThemeData getThemeDataForAccentColor(Color accentColor, bool darkTheme) {
   //print('dark theme is $darkTheme');
   return darkTheme
       ? ThemeData(
-          primarySwatch: Colors.grey,
           bottomAppBarColor: const Color(0xFF212121),
           primaryColor: const Color(0xFF212121),
           primaryColorDark: Colors.black,
           brightness: Brightness.dark,
           backgroundColor: const Color(0xFF212121),
-          accentColor: accentColor,
-          accentIconTheme: IconThemeData(color: Colors.black),
           dividerColor: Colors.black12,
           scaffoldBackgroundColor: Colors.black,
           textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white, selectionColor: Colors.blue, selectionHandleColor: Colors.blue),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey).copyWith(secondary: accentColor),
         )
       : ThemeData(
           appBarTheme: AppBarTheme(color: Colors.black),
-          primarySwatch: Colors.grey,
           bottomAppBarColor: Color(0xFF212121),
           primaryColor: Colors.grey[600],
           primaryColorDark: Colors.grey[800],
           brightness: Brightness.light,
           backgroundColor: const Color(0xFFE5E5E5),
-          accentColor: accentColor,
-          accentIconTheme: IconThemeData(color: Colors.white),
           dividerColor: Colors.white54,
           scaffoldBackgroundColor: const Color(0xFFE5E5E5),
           textSelectionTheme: TextSelectionThemeData(
@@ -293,5 +296,6 @@ ThemeData getThemeDataForAccentColor(Color accentColor, bool darkTheme) {
             selectionColor: Colors.blueGrey[700],
             selectionHandleColor: Colors.blueGrey[700],
           ),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey).copyWith(secondary: accentColor),
         );
 }

@@ -45,7 +45,7 @@ class _EditFormState extends State<EditForm> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<FirebaseUser>(context);
+    final user = Provider.of<User>(context);
     return StreamBuilder<DocumentSnapshot>(
         stream: DatabaseService(uid: user.uid).userData,
         builder: (context, snapshot) {
@@ -102,7 +102,7 @@ class _EditFormState extends State<EditForm> {
                           TextFormField(
 //                            textCapitalization: TextCapitalization.words,
                             initialValue: snapshot.data['name'],
-                            decoration: InputDecoration(hintText: 'Name', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                            decoration: InputDecoration(hintText: 'Name', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0))),
                             validator: (val) => val.isEmpty ? 'Enter a valid Name' : null,
                             onChanged: (val) {
                               setState(() => name = val);
@@ -111,7 +111,7 @@ class _EditFormState extends State<EditForm> {
                           SizedBox(height: 20.0),
                           TextFormField(
                             initialValue: snapshot.data['mobileNumber'],
-                            decoration: InputDecoration(hintText: 'Mobile Number', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                            decoration: InputDecoration(hintText: 'Mobile Number', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0))),
                             validator: (val) => val.length != 10 ? 'Enter a valid mobile number.' : null,
                             keyboardType: TextInputType.number,
                             inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
@@ -121,7 +121,7 @@ class _EditFormState extends State<EditForm> {
                           ),
                           SizedBox(height: 20.0),
                           DropdownButtonFormField(
-                            decoration: InputDecoration(hintText: 'Select Hostel', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                            decoration: InputDecoration(hintText: 'Select Hostel', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0))),
                             value: hostel ?? snapshot.data['hostel'],
                             onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
                             onChanged: (newValue) {
@@ -132,15 +132,15 @@ class _EditFormState extends State<EditForm> {
                             },
                             items: _hostels.map((temp) {
                               return DropdownMenuItem(
-                                child: Text(temp),
                                 value: temp,
+                                child: Text(temp),
                               );
                             }).toList(),
                             validator: (val) => val == null ? 'Please select your hostel' : null,
                           ),
                           SizedBox(height: 20.0),
                           DropdownButtonFormField(
-                            decoration: InputDecoration(hintText: 'Select Gender', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                            decoration: InputDecoration(hintText: 'Select Gender', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0))),
                             value: sex ?? snapshot.data['sex'],
                             onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
                             onChanged: (newValue) {
@@ -151,8 +151,8 @@ class _EditFormState extends State<EditForm> {
                             },
                             items: _sex.map((temp) {
                               return DropdownMenuItem(
-                                child: Text(temp),
                                 value: temp,
+                                child: Text(temp),
                               );
                             }).toList(),
                             validator: (val) => val == null ? 'Please select your sex' : null,

@@ -20,7 +20,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
 
   @override
   Widget build(BuildContext context) {
-    var currentuser = Provider.of<FirebaseUser>(context);
+    var currentuser = Provider.of<User>(context);
     if (currentuser != null) {
       setState(() {
         originalEmail = currentuser.email;
@@ -43,7 +43,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                       SizedBox(height: 20.0),
                       TextFormField(
                         initialValue: originalEmail,
-                        decoration: InputDecoration(hintText: 'Email', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                        decoration: InputDecoration(hintText: 'Email', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0))),
                         validator: (val) {
                           if (val.isEmpty) {
                             return 'Enter a valid Email';
@@ -68,7 +68,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                       ),
                       ElevatedButton(
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.secondary),
                           ),
                           child: Text(
                             'Change Email',

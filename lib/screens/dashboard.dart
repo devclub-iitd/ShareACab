@@ -8,7 +8,7 @@ import 'package:shareacab/models/requestdetails.dart';
 import 'package:shareacab/screens/createtrip.dart';
 import 'package:shareacab/screens/filter.dart';
 import 'package:shareacab/screens/help.dart';
-import 'package:shareacab/screens/settings.dart';
+import 'package:shareacab/screens/settings.dart' as settings;
 import 'package:shareacab/screens/tripslist.dart';
 import 'package:shareacab/services/auth.dart';
 
@@ -53,7 +53,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
   var inGroupFetch = false;
   var UID;
   Future getCurrentUser() async {
-    var user = await auth.currentUser();
+    var user = auth.currentUser;
     final userid = user.uid;
     setState(() {
       UID = userid;
@@ -72,7 +72,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
   Widget build(BuildContext context) {
     var fetched = false;
     super.build(context);
-    final currentuser = Provider.of<FirebaseUser>(context);
+    final currentuser = Provider.of<User>(context);
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -101,14 +101,14 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
               tooltip: 'Settings',
               onPressed: () {
                 return Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Settings(_auth);
+                  return settings.Settings(_auth);
                 }));
               }),
         ],
       ),
       resizeToAvoidBottomInset: false,
       body: StreamBuilder(
-        stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
+        stream: FirebaseFirestore.instance.collection('userdetails').doc(currentuser.uid).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             var temp = snapshot.data['currentGroup'];

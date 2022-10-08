@@ -20,7 +20,7 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixin<MyProfile> {
-  FirebaseUser currentUser;
+  User currentUser;
   var namefirst = 'P';
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -32,11 +32,9 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
   }
 
   void _loadCurrentUser() {
-    FirebaseAuth.instance.currentUser().then((FirebaseUser user) {
-      setState(() {
-        // call setState to rebuild the view
-        currentUser = user;
-      });
+    setState(() {
+      // call setState to rebuild the view
+      currentUser = FirebaseAuth.instance.currentUser;
     });
   }
 
@@ -66,7 +64,7 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final currentuser = Provider.of<FirebaseUser>(context);
+    final currentuser = Provider.of<User>(context);
     return WillPopScope(
       onWillPop: () {
         Navigator.pop(context);
@@ -101,14 +99,14 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                         actions: <Widget>[
                           TextButton(
-                            child: Text('Log out', style: TextStyle(color: Theme.of(context).accentColor)),
+                            child: Text('Log out', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                             onPressed: () async {
                               ProgressDialog pr;
                               pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
                               pr.style(
                                 message: 'Logging out...',
                                 backgroundColor: Theme.of(context).backgroundColor,
-                                messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                messageTextStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                               );
                               await pr.show();
                               await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
@@ -125,7 +123,7 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                             },
                           ),
                           TextButton(
-                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
@@ -139,17 +137,17 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
           ],
         ),
         body: StreamBuilder(
-            stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
+            stream: FirebaseFirestore.instance.collection('userdetails').doc(currentuser.uid).snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active) {
-                name = snapshot.data['name'];
-                hostel = snapshot.data['hostel'];
-                sex = snapshot.data['sex'];
-                mobilenum = snapshot.data['mobileNumber'];
-                totalrides = snapshot.data['totalRides'];
-                actualrating = snapshot.data['actualRating'];
-                cancelledrides = snapshot.data['cancelledRides'];
-                numberofratings = snapshot.data['numberOfRatings'];
+                name = snapshot.data()['name'];
+                hostel = snapshot.data()['hostel'];
+                sex = snapshot.data()['sex'];
+                mobilenum = snapshot.data()['mobileNumber'];
+                totalrides = snapshot.data()['totalRides'];
+                actualrating = snapshot.data()['actualRating'];
+                cancelledrides = snapshot.data()['cancelledRides'];
+                numberofratings = snapshot.data()['numberOfRatings'];
                 loading = false;
 
                 namefirst = name.substring(0, 1);
@@ -182,7 +180,7 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                                   top: MediaQuery.of(context).size.height / 6 - 74,
                                   child: CircleAvatar(
                                     radius: 50,
-                                    backgroundColor: Theme.of(context).accentColor,
+                                    backgroundColor: Theme.of(context).colorScheme.secondary,
                                     child: Text(
                                       namefirst.toUpperCase(),
                                       style: TextStyle(
@@ -267,7 +265,7 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                                       ),
                                       subtitle: Center(
                                         child: Text(
-                                          '${totalrides}',
+                                          '$totalrides',
                                           style: TextStyle(fontSize: 15),
                                         ),
                                       ),
@@ -285,7 +283,7 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                                           ),
                                           subtitle: Center(
                                             child: Text(
-                                              '${cancelledrides}',
+                                              '$cancelledrides',
                                               style: TextStyle(fontSize: 15),
                                             ),
                                           ))),
@@ -302,12 +300,12 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                                         onTap: () async {
                                           try {
                                             if (Platform.isIOS) {
-                                              await Clipboard.setData(ClipboardData(text: '${mobilenum}')).then((result) {
+                                              await Clipboard.setData(ClipboardData(text: '$mobilenum')).then((result) {
                                                 final snackBar = SnackBar(
                                                   backgroundColor: Theme.of(context).primaryColor,
                                                   content: Text(
                                                     'Copied to Clipboard',
-                                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                                   ),
                                                   duration: Duration(seconds: 1),
                                                 );
@@ -315,15 +313,15 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                                                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                               });
                                             } else {
-                                              await launch('tel://${mobilenum}');
+                                              await launch('tel://$mobilenum');
                                             }
                                           } catch (e) {
-                                            await Clipboard.setData(ClipboardData(text: '${mobilenum}')).then((result) {
+                                            await Clipboard.setData(ClipboardData(text: '$mobilenum')).then((result) {
                                               final snackBar = SnackBar(
                                                 backgroundColor: Theme.of(context).primaryColor,
                                                 content: Text(
                                                   'Copied to Clipboard',
-                                                  style: TextStyle(color: Theme.of(context).accentColor),
+                                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                                 ),
                                                 duration: Duration(seconds: 1),
                                               );
@@ -358,7 +356,7 @@ class _MyProfileState extends State<MyProfile> with AutomaticKeepAliveClientMixi
                                         ),
                                         subtitle: Center(
                                           child: Text(
-                                            '${finalrating}',
+                                            '$finalrating',
                                             style: TextStyle(fontSize: 15),
                                           ),
                                         )),

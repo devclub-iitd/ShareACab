@@ -136,7 +136,7 @@ class _EditGroupState extends State<EditGroup> {
           IconButton(
             icon: Icon(
               Icons.calendar_today,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             onPressed: () => DatePicker(),
           ),
@@ -144,7 +144,7 @@ class _EditGroupState extends State<EditGroup> {
           IconButton(
             icon: Icon(
               Icons.schedule,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             onPressed: () => TimePicker(),
           ),
@@ -155,16 +155,16 @@ class _EditGroupState extends State<EditGroup> {
 
   @override
   void initState() {
-    Firestore.instance.collection('group').document(groupUID).get().then((value) {
+    FirebaseFirestore.instance.collection('group').doc(groupUID).get().then((value) {
       setState(() {
-        startTS = value.data['start'];
-        endTS = value.data['end'];
-        tempPrivacy = value.data['privacy'];
+        startTS = value.data()['start'];
+        endTS = value.data()['end'];
+        tempPrivacy = value.data()['privacy'];
         _selectedStartDate = startTS.toDate();
         _selectedEndDate = endTS.toDate();
         _selectedStartTime = TimeOfDay(hour: _selectedStartDate.hour, minute: _selectedStartDate.minute);
         _selectedEndTime = TimeOfDay(hour: _selectedEndDate.hour, minute: _selectedEndDate.minute);
-        _maxPoolers = value.data['maxpoolers'];
+        _maxPoolers = value.data()['maxpoolers'];
       });
       if (tempPrivacy == 'true') {
         privacy = true;
@@ -222,7 +222,7 @@ class _EditGroupState extends State<EditGroup> {
                                   child: Text(
                                     dropDownIntItem.toString(),
                                     style: TextStyle(
-                                      color: Theme.of(context).accentColor,
+                                      color: Theme.of(context).colorScheme.secondary,
                                     ),
                                   ),
                                 );
@@ -253,7 +253,7 @@ class _EditGroupState extends State<EditGroup> {
                           children: <Widget>[
                             Checkbox(
                                 checkColor: getVisibleColorOnAccentColor(context),
-                                activeColor: Theme.of(context).accentColor,
+                                activeColor: Theme.of(context).colorScheme.secondary,
                                 value: privacy,
                                 onChanged: (bool value) {
                                   setState(() {
@@ -277,7 +277,7 @@ class _EditGroupState extends State<EditGroup> {
                         ),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Theme.of(context).accentColor,
+                            primary: Theme.of(context).colorScheme.secondary,
                             textStyle: TextStyle(color: getVisibleColorOnAccentColor(context)),
                           ),
                           onPressed: () {
@@ -292,7 +292,7 @@ class _EditGroupState extends State<EditGroup> {
                                 duration: Duration(seconds: 2),
                                 content: Text(
                                   'INVALID : Start Time > End Time',
-                                  style: TextStyle(color: Theme.of(context).accentColor),
+                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                 ),
                               ));
                             }

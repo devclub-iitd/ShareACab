@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:shareacab/screens/dashboard.dart';
 import 'messages.dart';
 import 'profile/userprofile.dart';
@@ -33,7 +32,7 @@ class _RootScreenState extends State<RootScreen> {
         child: Icon(
           Icons.home,
           size: 20.0,
-          color: _selectedPage == 0 ? Theme.of(context).accentColor : Colors.white,
+          color: _selectedPage == 0 ? Theme.of(context).colorScheme.secondary : Colors.white,
         ),
       ),
       Tooltip(
@@ -41,7 +40,7 @@ class _RootScreenState extends State<RootScreen> {
         child: Icon(
           Icons.format_list_bulleted,
           size: 20.0,
-          color: _selectedPage == 1 ? Theme.of(context).accentColor : Colors.white,
+          color: _selectedPage == 1 ? Theme.of(context).colorScheme.secondary : Colors.white,
         ),
       ),
       Tooltip(
@@ -49,7 +48,7 @@ class _RootScreenState extends State<RootScreen> {
         child: Icon(
           _selectedPage == 2 ? Icons.chat_bubble : Icons.chat_bubble_outline,
           size: 20.0,
-          color: _selectedPage == 2 ? Theme.of(context).accentColor : Colors.white,
+          color: _selectedPage == 2 ? Theme.of(context).colorScheme.secondary : Colors.white,
         ),
       ),
       Tooltip(
@@ -57,7 +56,7 @@ class _RootScreenState extends State<RootScreen> {
         child: Icon(
           _selectedPage == 3 ? Icons.notifications : Icons.notifications_none,
           size: 20.0,
-          color: _selectedPage == 3 ? Theme.of(context).accentColor : Colors.white,
+          color: _selectedPage == 3 ? Theme.of(context).colorScheme.secondary : Colors.white,
         ),
       ),
       Tooltip(
@@ -65,7 +64,7 @@ class _RootScreenState extends State<RootScreen> {
         child: Icon(
           _selectedPage == 4 ? Icons.person : Icons.person_outline,
           size: 20.0,
-          color: _selectedPage == 4 ? Theme.of(context).accentColor : Colors.white,
+          color: _selectedPage == 4 ? Theme.of(context).colorScheme.secondary : Colors.white,
         ),
       ),
     ];

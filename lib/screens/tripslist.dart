@@ -28,7 +28,6 @@ class _TripsListState extends State<TripsList> with SingleTickerProviderStateMix
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _hideFabController = AnimationController(
       vsync: this,
@@ -39,16 +38,16 @@ class _TripsListState extends State<TripsList> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    final currentuser = Provider.of<FirebaseUser>(context);
+    final currentuser = Provider.of<User>(context);
     return Scaffold(
         body: StreamBuilder(
-            stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
+            stream: FirebaseFirestore.instance.collection('userdetails').doc(currentuser.uid).snapshots(),
             builder: (_, usersnapshot) {
               if (usersnapshot.connectionState == ConnectionState.waiting) {
                 Center(child: CircularProgressIndicator());
               }
               if (usersnapshot.connectionState == ConnectionState.active) {
-                requestsArray = usersnapshot.data['currentGroupJoinRequests'];
+                requestsArray = usersnapshot.data()['currentGroupJoinRequests'];
                 requestsArray ??= [];
               }
 
@@ -70,12 +69,12 @@ class _TripsListState extends State<TripsList> with SingleTickerProviderStateMix
               return Container(
                 child: StreamBuilder(
                   stream: widget._dest == true && widget._notPrivate == true
-                      ? Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).where('destination', isEqualTo: widget._selectedDestination).where('privacy', isEqualTo: false.toString()).orderBy('end', descending: true).snapshots()
+                      ? FirebaseFirestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).where('destination', isEqualTo: widget._selectedDestination).where('privacy', isEqualTo: false.toString()).orderBy('end', descending: true).snapshots()
                       : widget._dest == true
-                          ? Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).where('destination', isEqualTo: widget._selectedDestination).orderBy('end', descending: true).snapshots()
+                          ? FirebaseFirestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).where('destination', isEqualTo: widget._selectedDestination).orderBy('end', descending: true).snapshots()
                           : widget._notPrivate == true
-                              ? Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).where('privacy', isEqualTo: false.toString()).orderBy('end', descending: true).snapshots()
-                              : Firestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).orderBy('end', descending: true).snapshots(),
+                              ? FirebaseFirestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).where('privacy', isEqualTo: false.toString()).orderBy('end', descending: true).snapshots()
+                              : FirebaseFirestore.instance.collection('group').where('end', isGreaterThan: Timestamp.now()).orderBy('end', descending: true).snapshots(),
                   builder: (_, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       Center(child: CircularProgressIndicator());
@@ -84,16 +83,16 @@ class _TripsListState extends State<TripsList> with SingleTickerProviderStateMix
                     return ListView.builder(
                         controller: _controller,
                         physics: BouncingScrollPhysics(),
-                        itemCount: snapshot.data == null ? 0 : snapshot.data.documents.length,
+                        itemCount: snapshot.data == null ? 0 : snapshot.data.docs.length,
                         itemBuilder: (ctx, index) {
-                          final destination = snapshot.data.documents[index].data['destination'];
-                          final start = snapshot.data.documents[index].data['start'].toDate();
-                          final end = snapshot.data.documents[index].data['end'].toDate();
-                          final docId = snapshot.data.documents[index].documentID;
-                          final privacy = snapshot.data.documents[index].data['privacy'];
-                          final numberOfMembers = snapshot.data.documents[index].data['numberOfMembers'];
-                          final data = snapshot.data.documents[index];
-                          if (docId == usersnapshot.data['currentGroup']) {
+                          final destination = snapshot.data.docs[index].data()['destination'];
+                          final start = snapshot.data.docs[index].data()['start'].toDate();
+                          final end = snapshot.data.docs[index].data()['end'].toDate();
+                          final docId = snapshot.data.docs[index].id;
+                          final privacy = snapshot.data.docs[index].data()['privacy'];
+                          final numberOfMembers = snapshot.data.docs[index].data()['numberOfMembers'];
+                          final data = snapshot.data.docs[index];
+                          if (docId == usersnapshot.data()['currentGroup']) {
                             flag = true;
                           } else {
                             flag = false;
@@ -111,7 +110,7 @@ class _TripsListState extends State<TripsList> with SingleTickerProviderStateMix
                                   shape: flag
                                       ? RoundedRectangleBorder(
                                           borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                                          side: BorderSide(color: Theme.of(context).accentColor, width: 2.0),
+                                          side: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0),
                                         )
                                       : requestsArray.contains(docId)
                                           ? RoundedRectangleBorder(
@@ -138,21 +137,21 @@ class _TripsListState extends State<TripsList> with SingleTickerProviderStateMix
                                                       left: 20,
                                                       top: 20,
                                                     ),
-                                                    child: snapshot.data.documents[index].data['destination'] == 'New Delhi Railway Station' || snapshot.data.documents[index].data['destination'] == 'Hazrat Nizamuddin Railway Station'
+                                                    child: snapshot.data.docs[index].data()['destination'] == 'New Delhi Railway Station' || snapshot.data.docs[index].data()['destination'] == 'Hazrat Nizamuddin Railway Station'
                                                         ? Icon(
                                                             Icons.train,
-                                                            color: Theme.of(context).accentColor,
+                                                            color: Theme.of(context).colorScheme.secondary,
                                                             size: 30,
                                                           )
-                                                        : snapshot.data.documents[index].data['destination'] == 'Indira Gandhi International Airport'
+                                                        : snapshot.data.docs[index].data()['destination'] == 'Indira Gandhi International Airport'
                                                             ? Icon(
                                                                 Icons.airplanemode_active,
-                                                                color: Theme.of(context).accentColor,
+                                                                color: Theme.of(context).colorScheme.secondary,
                                                                 size: 30,
                                                               )
                                                             : Icon(
                                                                 Icons.directions_bus,
-                                                                color: Theme.of(context).accentColor,
+                                                                color: Theme.of(context).colorScheme.secondary,
                                                                 size: 30,
                                                               )),
                                               ),
@@ -162,7 +161,7 @@ class _TripsListState extends State<TripsList> with SingleTickerProviderStateMix
                                                 child: Padding(
                                                   padding: const EdgeInsets.only(top: 10.0),
                                                   child: Text(
-                                                    '${snapshot.data.documents[index].data['destination']}',
+                                                    '${snapshot.data.docs[index].data()['destination']}',
                                                     style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight: FontWeight.bold,
@@ -171,14 +170,14 @@ class _TripsListState extends State<TripsList> with SingleTickerProviderStateMix
                                                   ),
                                                 ),
                                               ),
-                                              snapshot.data.documents[index].data['privacy'] == 'true'
+                                              snapshot.data.docs[index].data()['privacy'] == 'true'
                                                   ? Flexible(
                                                       flex: 2,
                                                       child: Padding(
                                                         padding: const EdgeInsets.only(right: 25.0),
                                                         child: Icon(
                                                           Icons.lock,
-                                                          color: Theme.of(context).accentColor,
+                                                          color: Theme.of(context).colorScheme.secondary,
                                                         ),
                                                       ),
                                                     )
@@ -188,7 +187,7 @@ class _TripsListState extends State<TripsList> with SingleTickerProviderStateMix
                                                         padding: const EdgeInsets.only(right: 25.0),
                                                         child: Icon(
                                                           Icons.lock_open,
-                                                          color: Theme.of(context).accentColor,
+                                                          color: Theme.of(context).colorScheme.secondary,
                                                         ),
                                                       ),
                                                     ),
@@ -203,7 +202,7 @@ class _TripsListState extends State<TripsList> with SingleTickerProviderStateMix
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  'Start : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data.documents[index].data['start'].toDate())}',
+                                                  'Start : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data.docs[index].data()['start'].toDate())}',
                                                   style: TextStyle(
                                                     fontSize: 15,
                                                   ),
@@ -219,7 +218,7 @@ class _TripsListState extends State<TripsList> with SingleTickerProviderStateMix
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
-                                                  'End : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data.documents[index].data['end'].toDate())}',
+                                                  'End : ${DateFormat('dd.MM.yyyy - kk:mm a').format(snapshot.data.docs[index].data()['end'].toDate())}',
                                                   style: TextStyle(
                                                     fontSize: 15,
                                                   ),
@@ -235,7 +234,7 @@ class _TripsListState extends State<TripsList> with SingleTickerProviderStateMix
                                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                 children: <Widget>[
                                                   Column(
-                                                    children: <Widget>[Text('Number of members in group: ${snapshot.data.documents[index].data['numberOfMembers'].toString()}/${snapshot.data.documents[index].data['maxpoolers'].toString()}')],
+                                                    children: <Widget>[Text('Number of members in group: ${snapshot.data.docs[index].data()['numberOfMembers'].toString()}/${snapshot.data.docs[index].data()['maxpoolers'].toString()}')],
                                                   ),
                                                 ],
                                               ),

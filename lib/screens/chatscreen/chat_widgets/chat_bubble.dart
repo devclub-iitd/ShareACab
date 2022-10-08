@@ -13,6 +13,7 @@ class MessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
+      clipBehavior: Clip.none,
       children: [
         Row(
           mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
@@ -21,7 +22,7 @@ class MessageBubble extends StatelessWidget {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    color: isMe ? Colors.grey : Theme.of(context).accentColor,
+                    color: isMe ? Colors.grey : Theme.of(context).colorScheme.secondary,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
                       topRight: Radius.circular(12),
@@ -47,13 +48,13 @@ class MessageBubble extends StatelessWidget {
                         username,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: isMe ? Colors.black : Theme.of(context).accentTextTheme.subtitle1.color,
+                          color: isMe ? Colors.black : Theme.of(context).textTheme.subtitle1.color,
                         ),
                       ),
                       Text(
                         message,
                         style: TextStyle(
-                          color: isMe ? Colors.black : Theme.of(context).accentTextTheme.subtitle1.color,
+                          color: isMe ? Colors.black : Theme.of(context).textTheme.subtitle1.color,
                         ),
                         textAlign: TextAlign.start,
                       ),
@@ -68,7 +69,7 @@ class MessageBubble extends StatelessWidget {
                       Text(
                         time,
                         style: TextStyle(
-                          color: isMe ? Colors.black : Theme.of(context).accentTextTheme.subtitle1.color,
+                          color: isMe ? Colors.black : Theme.of(context).textTheme.subtitle1.color,
                           fontSize: 12,
                         ),
                       ),
@@ -80,7 +81,6 @@ class MessageBubble extends StatelessWidget {
           ],
         ),
       ],
-      clipBehavior: Clip.none,
     );
   }
 }

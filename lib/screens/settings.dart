@@ -85,7 +85,7 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<FirebaseUser>(context);
+    final user = Provider.of<User>(context);
     w = MediaQuery.of(context).size.width;
     h = MediaQuery.of(context).size.height;
     final themeNotifier = Provider.of<ThemeNotifier>(context);
@@ -108,14 +108,14 @@ class _SettingsState extends State<Settings> {
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                             actions: <Widget>[
                               TextButton(
-                                child: Text('Log out', style: TextStyle(color: Theme.of(context).accentColor)),
+                                child: Text('Log out', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                                 onPressed: () async {
                                   ProgressDialog pr;
                                   pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
                                   pr.style(
                                     message: 'Logging out...',
                                     backgroundColor: Theme.of(context).backgroundColor,
-                                    messageTextStyle: TextStyle(color: Theme.of(context).accentColor),
+                                    messageTextStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                   );
                                   await pr.show();
                                   await Future.delayed(Duration(seconds: 1)); // sudden logout will show ProgressDialog for a very short time making it not very nice to see :p
@@ -133,7 +133,7 @@ class _SettingsState extends State<Settings> {
                                 },
                               ),
                               TextButton(
-                                child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -168,13 +168,13 @@ class _SettingsState extends State<Settings> {
                     DropdownButton<String>(
                       icon: Icon(
                         Icons.arrow_drop_down,
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       iconSize: 30,
                       style: TextStyle(color: getVisibleColorOnScaffold(context), fontSize: 15),
                       underline: Container(
                         height: 2,
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                       items: List.generate(themeList.length, (index) {
                         return DropdownMenuItem<String>(
@@ -238,17 +238,17 @@ class _SettingsState extends State<Settings> {
                               child: GestureDetector(
                                   child: AnimatedContainer(
                                     margin: const EdgeInsets.symmetric(horizontal: 3),
+                                    decoration: BoxDecoration(
+                                      color: colorList[index].color,
+                                      borderRadius: BorderRadius.circular(_selectedIndex == index ? w * 0.05 : 0),
+                                    ),
+                                    duration: Duration(milliseconds: 300),
                                     child: _selectedIndex == index
                                         ? Icon(
                                             Icons.check,
                                             color: Colors.white,
                                           )
                                         : null,
-                                    decoration: BoxDecoration(
-                                      color: colorList[index].color,
-                                      borderRadius: BorderRadius.circular(_selectedIndex == index ? w * 0.05 : 0),
-                                    ),
-                                    duration: Duration(milliseconds: 300),
                                   ),
                                   onTap: () {
                                     setState(() {
@@ -308,7 +308,7 @@ class _SettingsState extends State<Settings> {
   }
 
   void onThemeChanged(bool value, ThemeNotifier themeNotifier) async {
-    themeNotifier.setTheme(getThemeDataForAccentColor(Theme.of(context).accentColor, value));
+    themeNotifier.setTheme(getThemeDataForAccentColor(Theme.of(context).colorScheme.secondary, value));
     var prefs = await SharedPreferences.getInstance();
     await prefs.setBool('darkMode', value);
   }
@@ -370,7 +370,7 @@ class PreviewWidgetState extends State<PreviewWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 Switch(
-                    activeColor: Theme.of(context).accentColor,
+                    activeColor: Theme.of(context).colorScheme.secondary,
                     value: switchValue,
                     onChanged: (_) {
                       setState(() {
@@ -378,13 +378,13 @@ class PreviewWidgetState extends State<PreviewWidget> {
                       });
                     }),
                 Radio(
-                  activeColor: Theme.of(context).accentColor,
+                  activeColor: Theme.of(context).colorScheme.secondary,
                   groupValue: 0,
                   value: 0,
                   onChanged: (_) {},
                 ),
                 Checkbox(
-                  activeColor: Theme.of(context).accentColor,
+                  activeColor: Theme.of(context).colorScheme.secondary,
                   value: checkBoxValue,
                   onChanged: (_) {
                     setState(() {
@@ -394,7 +394,7 @@ class PreviewWidgetState extends State<PreviewWidget> {
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                    foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.secondary),
                   ),
                   child: Text(
                     'BUTTON',
@@ -405,7 +405,7 @@ class PreviewWidgetState extends State<PreviewWidget> {
               ],
             ),
             Slider(
-              activeColor: Theme.of(context).accentColor,
+              activeColor: Theme.of(context).colorScheme.secondary,
               onChanged: (double newValue) {
                 setState(() {
                   sliderValue = newValue;

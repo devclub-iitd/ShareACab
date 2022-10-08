@@ -42,7 +42,7 @@ class _ForgotPassState extends State<ForgotPass> {
                         SizedBox(height: 100.0),
                         CircleAvatar(
                           radius: 48,
-                          backgroundColor: Theme.of(context).accentColor,
+                          backgroundColor: Theme.of(context).colorScheme.secondary,
                           child: Icon(
                             CupertinoIcons.car_detailed,
                             size: 48,
@@ -50,7 +50,7 @@ class _ForgotPassState extends State<ForgotPass> {
                         ),
                         SizedBox(height: 30.0),
                         TextFormField(
-                          decoration: InputDecoration(hintText: 'Email', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).accentColor, width: 2.0))),
+                          decoration: InputDecoration(hintText: 'Email', enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: getBorderColorForInputFields(context), width: 2.0)), focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0))),
                           validator: (val) => val.isEmpty ? 'Enter a valid Email' : null,
                           onChanged: (val) {
                             setState(() => email = val);
@@ -59,7 +59,7 @@ class _ForgotPassState extends State<ForgotPass> {
                         SizedBox(height: 20.0),
                         ElevatedButton(
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.secondary),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 14.0),
@@ -109,7 +109,7 @@ class _ForgotPassState extends State<ForgotPass> {
                         SizedBox(height: 15.0),
                         ElevatedButton(
                           style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                            foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.secondary),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 14.0),

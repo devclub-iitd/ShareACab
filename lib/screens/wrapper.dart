@@ -11,10 +11,10 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     // return either home or Authenticate widget
 
-    final user = Provider.of<FirebaseUser>(context);
+    final user = Provider.of<User>(context);
 
     return StreamBuilder(
-      stream: FirebaseAuth.instance.onAuthStateChanged,
+      stream: FirebaseAuth.instance.authStateChanges(),
       builder: (_, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
@@ -26,7 +26,7 @@ class Wrapper extends StatelessWidget {
         } else {
           if (user == null) {
             return Authenticate();
-          } else if (user.isEmailVerified) {
+          } else if (user.emailVerified) {
             return RootScreen();
           } else {
             return VerificationCheck();

@@ -57,7 +57,7 @@ class _CreateTripState extends State<CreateTrip> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         duration: Duration(seconds: 1),
         backgroundColor: Theme.of(context).primaryColor,
-        content: Text('One or more fields is missing', style: TextStyle(color: Theme.of(context).accentColor)),
+        content: Text('One or more fields is missing', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
       ));
       return; //return stops function execution and thus nothing is called or returned
     } else if (_selectedStartDate == null || _selectedStartTime == null || _selectedEndDate == null || _selectedEndTime == null) {
@@ -65,7 +65,7 @@ class _CreateTripState extends State<CreateTrip> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         duration: Duration(seconds: 1),
         backgroundColor: Theme.of(context).primaryColor,
-        content: Text('Date or Time is missing', style: TextStyle(color: Theme.of(context).accentColor)),
+        content: Text('Date or Time is missing', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
       ));
       return;
     } else {
@@ -84,7 +84,7 @@ class _CreateTripState extends State<CreateTrip> {
           duration: Duration(seconds: 2),
           content: Text(
             'INVALID : Start Time > End Time',
-            style: TextStyle(color: Theme.of(context).accentColor),
+            style: TextStyle(color: Theme.of(context).colorScheme.secondary),
           ),
         ));
       }
@@ -176,7 +176,7 @@ class _CreateTripState extends State<CreateTrip> {
           IconButton(
             icon: Icon(
               Icons.calendar_today,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             onPressed: () => DatePicker(),
           ),
@@ -184,7 +184,7 @@ class _CreateTripState extends State<CreateTrip> {
           IconButton(
             icon: Icon(
               Icons.schedule,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             onPressed: () => TimePicker(),
           ),
@@ -241,7 +241,7 @@ class _CreateTripState extends State<CreateTrip> {
                                 child: Text(
                                   dropDownStringItem,
                                   style: TextStyle(
-                                    color: Theme.of(context).accentColor,
+                                    color: Theme.of(context).colorScheme.secondary,
                                   ),
                                 ),
                               );
@@ -292,7 +292,7 @@ class _CreateTripState extends State<CreateTrip> {
                                 child: Text(
                                   dropDownIntItem.toString(),
                                   style: TextStyle(
-                                    color: Theme.of(context).accentColor,
+                                    color: Theme.of(context).colorScheme.secondary,
                                   ),
                                 ),
                               );
@@ -323,7 +323,7 @@ class _CreateTripState extends State<CreateTrip> {
                         children: <Widget>[
                           Checkbox(
                               checkColor: getVisibleColorOnAccentColor(context),
-                              activeColor: Theme.of(context).accentColor,
+                              activeColor: Theme.of(context).colorScheme.secondary,
                               value: privacy,
                               onChanged: (bool value) {
                                 setState(() {
@@ -347,7 +347,7 @@ class _CreateTripState extends State<CreateTrip> {
                       ),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Theme.of(context).accentColor,
+                          primary: Theme.of(context).colorScheme.secondary,
                           textStyle: TextStyle(color: getVisibleColorOnAccentColor(context)),
                         ),
                         onPressed: () {

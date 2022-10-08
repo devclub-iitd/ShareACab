@@ -58,7 +58,7 @@ class _FilterState extends State<Filter> {
               title: Text('Destination'),
               value: _dest,
               subtitle: Text('Select Preferred Destination'),
-              activeColor: Theme.of(context).accentColor,
+              activeColor: Theme.of(context).colorScheme.secondary,
               onChanged: (newValue) {
                 setState(() {
                   _dest = newValue;
@@ -81,7 +81,7 @@ class _FilterState extends State<Filter> {
                     child: Text(
                       dropDownStringItem,
                       style: TextStyle(
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
                     ),
                   );
@@ -101,7 +101,7 @@ class _FilterState extends State<Filter> {
               title: Text('Privacy'),
               value: _notPrivacy,
               subtitle: Text('Only see groups which are Free to Join'),
-              activeColor: Theme.of(context).accentColor,
+              activeColor: Theme.of(context).colorScheme.secondary,
               onChanged: (newValue) {
                 setState(() {
                   _notPrivacy = newValue;
@@ -124,7 +124,7 @@ class _FilterState extends State<Filter> {
                       _submitData();
                     },
                     style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
+                      foregroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.secondary),
                     ),
                     child: Text('Filter', style: TextStyle(fontSize: 16, color: getVisibleColorOnAccentColor(context))),
                   ),

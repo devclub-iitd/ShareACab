@@ -44,8 +44,8 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
   double userRating;
 
   Future getMembers(String docid) async {
-    var qp = await Firestore.instance.collection('group').document(docid).collection('users').getDocuments();
-    return qp.documents;
+    var qp = await FirebaseFirestore.instance.collection('group').doc(docid).collection('users').get();
+    return qp.docs;
   }
 
   bool buttonEnabled = true;
@@ -56,29 +56,29 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final currentuser = Provider.of<FirebaseUser>(context);
+    final currentuser = Provider.of<User>(context);
     return StreamBuilder(
-        stream: Firestore.instance.collection('userdetails').document(currentuser.uid).snapshots(),
+        stream: FirebaseFirestore.instance.collection('userdetails').doc(currentuser.uid).snapshots(),
         builder: (context, usersnapshot) {
           if (usersnapshot.connectionState == ConnectionState.active) {
             if (buttonEnabled == true) {
-              groupUID = usersnapshot.data['currentGroup'];
+              groupUID = usersnapshot.data()['currentGroup'];
             }
-            if (usersnapshot.data['currentGroup'] == null) {
+            if (usersnapshot.data()['currentGroup'] == null) {
               Navigator.pop(context);
             }
             return StreamBuilder(
-                stream: Firestore.instance.collection('group').document(groupUID).snapshots(),
+                stream: FirebaseFirestore.instance.collection('group').doc(groupUID).snapshots(),
                 builder: (context, groupsnapshot) {
                   if (groupsnapshot.connectionState == ConnectionState.active) {
                     if (buttonEnabled == true) {
-                      destination = groupsnapshot.data['destination'];
-                      start = DateFormat('dd.MM.yyyy - kk:mm a').format(groupsnapshot.data['start'].toDate());
-                      end = DateFormat('dd.MM.yyyy - kk:mm a').format(groupsnapshot.data['end'].toDate());
-                      grpOwner = groupsnapshot.data['owner'];
-                      presentNum = groupsnapshot.data['numberOfMembers'].toString();
-                      endTimeStamp = groupsnapshot.data['end'];
-                      maxPoolers = groupsnapshot.data['maxpoolers'];
+                      destination = groupsnapshot.data()['destination'];
+                      start = DateFormat('dd.MM.yyyy - kk:mm a').format(groupsnapshot.data()['start'].toDate());
+                      end = DateFormat('dd.MM.yyyy - kk:mm a').format(groupsnapshot.data()['end'].toDate());
+                      grpOwner = groupsnapshot.data()['owner'];
+                      presentNum = groupsnapshot.data()['numberOfMembers'].toString();
+                      endTimeStamp = groupsnapshot.data()['end'];
+                      maxPoolers = groupsnapshot.data()['maxpoolers'];
                       loading = false;
                       if (endTimeStamp.compareTo(Timestamp.now()) < 0) {
                         timestampFlag = true;
@@ -106,7 +106,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                         actions: <Widget>[
                                                           TextButton(
-                                                            child: Text('End', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                            child: Text('End', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                                                             onPressed: () async {
                                                               ProgressDialog pr;
                                                               pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
@@ -135,7 +135,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                             },
                                                           ),
                                                           TextButton(
-                                                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                                                             onPressed: () {
                                                               Navigator.of(context).pop();
                                                             },
@@ -163,7 +163,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                         actions: <Widget>[
                                                           TextButton(
-                                                            child: Text('Leave', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                            child: Text('Leave', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                                                             onPressed: () async {
                                                               ProgressDialog pr;
                                                               pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
@@ -178,7 +178,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                               await Future.delayed(Duration(seconds: 1));
                                                               try {
                                                                 buttonEnabled = false;
-                                                                await _notifServices.leftGroup(usersnapshot.data['name'], groupUID);
+                                                                await _notifServices.leftGroup(usersnapshot.data()['name'], groupUID);
                                                                 await _request.exitGroup();
                                                                 Navigator.pop(context);
                                                                 await pr.hide();
@@ -193,7 +193,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                             },
                                                           ),
                                                           TextButton(
-                                                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                                                             onPressed: () {
                                                               Navigator.of(context).pop();
                                                             },
@@ -309,7 +309,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                               children: <Widget>[
                                                 Text(
                                                   '*Contact group admin to edit details.',
-                                                  style: TextStyle(color: Theme.of(context).accentColor),
+                                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                                 ),
                                               ],
                                             ),
@@ -355,7 +355,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            'Number of members in group: ${presentNum}',
+                                            'Number of members in group: $presentNum',
                                             style: TextStyle(
                                               fontSize: 15,
                                             ),
@@ -371,7 +371,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            'Max number of poolers: ${maxPoolers}',
+                                            'Max number of poolers: $maxPoolers',
                                             style: TextStyle(
                                               fontSize: 15,
                                             ),
@@ -381,7 +381,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                     ),
                                     Container(
                                       child: StreamBuilder(
-                                        stream: Firestore.instance.collection('group').document(groupUID).collection('users').snapshots(),
+                                        stream: FirebaseFirestore.instance.collection('group').doc(groupUID).collection('users').snapshots(),
                                         builder: (_, snapshots) {
                                           if (!snapshots.hasData) {
                                             return Center(
@@ -390,10 +390,10 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                           }
                                           return ListView.builder(
                                             shrinkWrap: true,
-                                            itemCount: snapshots.data == null ? 0 : snapshots.data.documents.length,
+                                            itemCount: snapshots.data == null ? 0 : snapshots.data.docs.length,
                                             itemBuilder: (ctx, index) {
-                                              var cancelledRides = snapshots.data.documents[index].data['cancelledrides'];
-                                              var totalRides = snapshots.data.documents[index].data['totalrides'];
+                                              var cancelledRides = snapshots.data.docs[index].data()['cancelledrides'];
+                                              var totalRides = snapshots.data.docs[index].data()['totalrides'];
                                               userRating = 5 - (0.2 * cancelledRides) + (0.35 * totalRides);
                                               if (userRating < 0) {
                                                 userRating = 0;
@@ -404,21 +404,21 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                               return Card(
                                                 color: Theme.of(context).scaffoldBackgroundColor,
                                                 child: ListTile(
-                                                  title: Text(snapshots.data.documents[index].data['name']),
+                                                  title: Text(snapshots.data.docs[index].data()['name']),
                                                   subtitle: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: <Widget>[
-                                                      Text('Hostel: ${snapshots.data.documents[index].data['hostel']}'),
+                                                      Text('Hostel: ${snapshots.data.docs[index].data()['hostel']}'),
                                                       GestureDetector(
                                                           onTap: () async {
                                                             try {
                                                               if (Platform.isIOS) {
-                                                                await Clipboard.setData(ClipboardData(text: '${snapshots.data.documents[index].data['mobilenum']}')).then((result) {
+                                                                await Clipboard.setData(ClipboardData(text: '${snapshots.data.docs[index].data()['mobilenum']}')).then((result) {
                                                                   final snackBar = SnackBar(
                                                                     backgroundColor: Theme.of(context).primaryColor,
                                                                     content: Text(
                                                                       'Copied to Clipboard',
-                                                                      style: TextStyle(color: Theme.of(context).accentColor),
+                                                                      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                                                     ),
                                                                     duration: Duration(seconds: 1),
                                                                   );
@@ -426,15 +426,15 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                                                 });
                                                               } else {
-                                                                await launch('tel://${snapshots.data.documents[index].data['mobilenum']}');
+                                                                await launch('tel://${snapshots.data.docs[index].data()['mobilenum']}');
                                                               }
                                                             } catch (e) {
-                                                              await Clipboard.setData(ClipboardData(text: '${snapshots.data.documents[index].data['mobilenum']}')).then((result) {
+                                                              await Clipboard.setData(ClipboardData(text: '${snapshots.data.docs[index].data()['mobilenum']}')).then((result) {
                                                                 final snackBar = SnackBar(
                                                                   backgroundColor: Theme.of(context).primaryColor,
                                                                   content: Text(
                                                                     'Copied to Clipboard',
-                                                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                                                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                                                                   ),
                                                                   duration: Duration(seconds: 1),
                                                                 );
@@ -443,7 +443,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                               });
                                                             }
                                                           },
-                                                          child: Text('Mobile Number: ${snapshots.data.documents[index].data['mobilenum']}')),
+                                                          child: Text('Mobile Number: ${snapshots.data.docs[index].data()['mobilenum']}')),
                                                       Row(
                                                         children: <Widget>[
                                                           Text('User Rating:'),
@@ -455,7 +455,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                       )
                                                     ],
                                                   ),
-                                                  trailing: grpOwner == snapshots.data.documents[index].documentID
+                                                  trailing: grpOwner == snapshots.data.docs[index].id
                                                       ? FaIcon(
                                                           FontAwesomeIcons.crown,
                                                           color: getVisibleIconColorOnScaffold(context),
@@ -475,7 +475,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                                                                         actions: <Widget>[
                                                                           TextButton(
-                                                                            child: Text('Kick', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                                            child: Text('Kick', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                                                                             onPressed: () async {
                                                                               Navigator.pop(context);
                                                                               ProgressDialog pr;
@@ -489,7 +489,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                                               );
                                                                               await pr.show();
                                                                               try {
-                                                                                await _request.kickUser(groupUID, snapshots.data.documents[index].documentID);
+                                                                                await _request.kickUser(groupUID, snapshots.data.docs[index].id);
                                                                                 await pr.hide();
                                                                               } catch (e) {
                                                                                 await pr.hide();
@@ -498,7 +498,7 @@ class _GroupPageState extends State<GroupPage> with AutomaticKeepAliveClientMixi
                                                                             },
                                                                           ),
                                                                           TextButton(
-                                                                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).accentColor)),
+                                                                            child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.secondary)),
                                                                             onPressed: () {
                                                                               Navigator.of(context).pop();
                                                                             },
