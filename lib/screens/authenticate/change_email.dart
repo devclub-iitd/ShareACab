@@ -103,6 +103,14 @@ class _ChangeEmailState extends State<ChangeEmail> {
                                     loading = false;
                                   });
                                 }
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  duration: Duration(seconds: 2),
+                                  content: Text(
+                                    error,
+                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                  ),
+                                ));
                               }
                             }
                           }),
